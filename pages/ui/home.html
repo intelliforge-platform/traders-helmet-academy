@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traders Helmet Academy - Your Gateway to Trading Excellence</title>
+    <meta name="description" content="Professional trading signals, education, and community for forex, crypto, and stock traders. Join thousands of successful traders today.">
+    <meta name="keywords" content="trading signals, forex, crypto, stocks, trading education, trading academy">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tradershelmet.com/">
+    <meta property="og:title" content="Traders Helmet Academy - Professional Trading Platform">
+    <meta property="og:description" content="Join thousands of successful traders with our professional signals and education platform.">
+    <meta property="og:image" content="https://tradershelmet.com/assets/images/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://tradershelmet.com/">
+    <meta property="twitter:title" content="Traders Helmet Academy - Professional Trading Platform">
+    <meta property="twitter:description" content="Join thousands of successful traders with our professional signals and education platform.">
+    <meta property="twitter:image" content="https://tradershelmet.com/assets/images/twitter-image.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .brand-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            color: var(--text-primary);
+            border: 2px solid var(--primary-blue-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue-light);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        /* Tiers Section */
+        .tiers-section {
+            padding: 6rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tier-card {
+            background: linear-gradient(145deg, var(--dark-surface), var(--dark-card));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .tier-card.gold {
+            border-color: #f59e0b;
+        }
+
+        .tier-card.gold:hover {
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.3);
+        }
+
+        .tier-card.platinum {
+            border-color: #8b5cf6;
+            transform: scale(1.05);
+        }
+
+        .tier-card.platinum::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 2rem;
+            border-radius: 0 0 12px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tier-card.platinum:hover {
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .tier-card.diamond {
+            border-color: #06b6d4;
+        }
+
+        .tier-card.diamond:hover {
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.3);
+        }
+
+        .tier-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .tier-icon.gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .tier-icon.platinum { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .tier-icon.diamond { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tier-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-period {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .tier-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-surface);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tiers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tier-card.platinum {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="/" class="brand">
+                <div class="brand-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+            
+            <div class="auth-buttons">
+                <a href="/login.html" class="btn btn-secondary">Login</a>
+                <a href="/register.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Your Gateway to Trading Excellence</h1>
+            <p class="hero-subtitle">
+                Join thousands of successful traders with professional signals, expert education, 
+                and a supportive community. Start your trading journey today.
+            </p>
+            <div class="hero-buttons">
+                <a href="/register.html" class="btn btn-primary btn-large">
+                    <i class="fas fa-rocket"></i>
+                    Start Free Trial
+                </a>
+                <a href="/pages/payment/pricing.html" class="btn btn-secondary btn-large">
+                    <i class="fas fa-eye"></i>
+                    View Pricing
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tiers Section -->
+    <section class="tiers-section" id="pricing">
+        <div class="section-container">
+            <h2 class="section-title">Choose Your Trading Tier</h2>
+            <p class="section-subtitle">
+                Select the plan that matches your trading goals and experience level. 
+                Upgrade or downgrade anytime.
+            </p>
+            
+            <div class="tiers-grid">
+                <!-- Gold Tier -->
+                <div class="tier-card gold">
+                    <div class="tier-icon gold">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 class="tier-name">Gold</h3>
+                    <div class="tier-price">$29</div>
+                    <div class="tier-period">per month</div>
+                    
+                    <ul class="tier-features">
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Up to 50 signals per month</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Basic market analysis</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Mobile app access</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Email notifications</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Basic educational resources</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="/pages/payment/checkout.html?plan=gold" class="btn btn-primary">
+                        Choose Gold
+                    </a>
+                </div>
+
+                <!-- Platinum Tier -->
+                <div class="tier-card platinum">
+                    <div class="tier-icon platinum">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="tier-name">Platinum</h3>
+                    <div class="tier-price">$59</div>
+                    <div class="tier-period">per month</div>
+                    
+                    <ul class="tier-features">
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Up to 200 signals per month</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Advanced market analysis</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Live chat support</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Risk management tools</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Weekly market webinars</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Advanced educational content</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="/pages/payment/checkout.html?plan=platinum" class="btn btn-primary">
+                        Choose Platinum
+                    </a>
+                </div>
+
+                <!-- Diamond Tier -->
+                <div class="tier-card diamond">
+                    <div class="tier-icon diamond">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="tier-name">Diamond</h3>
+                    <div class="tier-price">$99</div>
+                    <div class="tier-period">per month</div>
+                    
+                    <ul class="tier-features">
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Unlimited premium signals</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Real-time market insights</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Priority 24/7 support</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Monthly 1-on-1 coaching</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>VIP community access</span>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-check"></i></div>
+                            <span>Advanced analytics dashboard</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="/pages/payment/checkout.html?plan=diamond" class="btn btn-primary">
+                        Choose Diamond
+                    </a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                    <i class="fas fa-shield-alt" style="color: var(--success);"></i>
+                    30-day money-back guarantee on all plans
+                </p>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    No setup fees • Cancel anytime • Secure payments by Stripe
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="/pages/legal/terms.html" class="footer-link">Terms of Service</a>
+                <a href="/pages/legal/privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="/pages/legal/disclaimer.html" class="footer-link">Risk Disclaimer</a>
+                <a href="#contact" class="footer-link">Contact</a>
+                <a href="#support" class="footer-link">Support</a>
+            </div>
+            <p class="footer-text">
+                &copy; 2025 Traders Helmet Academy. All rights reserved. 
+                Trading involves risk and may not be suitable for all investors.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(15, 23, 42, 0.98)';
+            } else {
+                header.style.background = 'rgba(15, 23, 42, 0.95)';
+            }
+        });
+
+        // Track tier selection
+        document.querySelectorAll('a[href*="checkout"]').forEach(link => {
+            link.addEventListener('click', function() {
+                const plan = new URL(this.href).searchParams.get('plan');
+                console.log(`User selected ${plan} tier`);
+                
+                // Analytics tracking would go here
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'tier_selection', {
+                        'tier': plan,
+                        'source': 'homepage'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

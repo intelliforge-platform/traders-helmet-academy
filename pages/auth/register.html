@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Traders Helmet Academy - Create Your Account</title>
+    <meta name="description" content="Join thousands of successful traders. Create your free account and start receiving professional trading signals today.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Your Config File -->
+    <script src="/assets/js/config.js"></script>
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Left Side - Information */
+        .info-section {
+            padding: 2rem;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background-image: url('/assets/images/traders-helmet-logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 12px;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .info-content h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .info-content p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+        }
+
+        .benefit-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .trust-indicators {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .trust-item {
+            text-align: center;
+        }
+
+        .trust-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            display: block;
+        }
+
+        .trust-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Right Side - Registration Form */
+        .form-section {
+            background: var(--gradient-card);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .registration-form {
+            width: 100%;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .password-strength.weak .password-strength-bar {
+            width: 33%;
+            background: var(--error);
+        }
+
+        .password-strength.medium .password-strength-bar {
+            width: 66%;
+            background: var(--warning);
+        }
+
+        .password-strength.strong .password-strength-bar {
+            width: 100%;
+            background: var(--success);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .custom-checkbox input:checked + .checkmark {
+            background: var(--primary-blue-light);
+            border-color: var(--primary-blue-light);
+        }
+
+        .custom-checkbox input:checked + .checkmark::after {
+            display: block;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: transparent;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .checkmark::after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .checkbox-label a {
+            color: var(--primary-blue-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .checkbox-label a:hover {
+            color: var(--primary-blue);
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .submit-btn .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        .submit-btn.loading .loading-spinner {
+            display: inline-block;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-footer p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .form-footer a {
+            color: var(--primary-blue-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            color: var(--primary-blue);
+            text-decoration: underline;
+        }
+
+        .social-login {
+            margin: 2rem 0;
+        }
+
+        .social-divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .social-divider::before,
+        .social-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .social-divider span {
+            padding: 0 1rem;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-blue-light);
+            transform: translateY(-1px);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: var(--success-light);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .global-error {
+            background: var(--error-light);
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            text-align: center;
+        }
+
+        .global-error.show {
+            display: block;
+        }
+
+        /* Floating Background Elements */
+        .bg-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                max-width: 500px;
+            }
+
+            .info-section {
+                order: 2;
+                text-align: center;
+            }
+
+            .form-section {
+                order: 1;
+            }
+
+            .info-content h1 {
+                font-size: 2rem;
+            }
+
+            .trust-indicators {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .form-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .info-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .trust-indicators {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-elements">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <div class="container">
+        <!-- Information Section -->
+        <div class="info-section">
+            <div class="brand-header">
+                <div class="logo-icon"></div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </div>
+            
+            <div class="info-content">
+                <h1>Join 15,000+ Successful Traders</h1>
+                <p>
+                    Create your free account and start receiving professional trading signals, 
+                    expert market analysis, and educational resources to accelerate your trading success.
+                </p>
+
+                <ul class="benefits-list">
+                    <li>
+                        <div class="benefit-icon"><i class="fas fa-check"></i></div>
+                        <span>Instant access to professional trading signals</span>
+                    </li>
+                    <li>
+                        <div class="benefit-icon"><i class="fas fa-check"></i></div>
+                        <span>Real-time market analysis and insights</span>
+                    </li>
+                    <li>
+                        <div class="benefit-icon"><i class="fas fa-check"></i></div>
+                        <span>Educational resources and trading guides</span>
+                    </li>
+                    <li>
+                        <div class="benefit-icon"><i class="fas fa-check"></i></div>
+                        <span>24/7 community support and expert guidance</span>
+                    </li>
+                    <li>
+                        <div class="benefit-icon"><i class="fas fa-check"></i></div>
+                        <span>Mobile app with push notifications</span>
+                    </li>
+                </ul>
+
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <span class="trust-number">87%</span>
+                        <span class="trust-label">Success Rate</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-number">500+</span>
+                        <span class="trust-label">Daily Signals</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-number">24/7</span>
+                        <span class="trust-label">Support</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Form Section -->
+        <div class="form-section">
+            <div class="form-header">
+                <h2 class="form-title">Create Your Account</h2>
+                <p class="form-subtitle">Start your trading journey today</p>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <div id="successText">Registration successful! Please check your email to verify your account.</div>
+            </div>
+
+            <div class="global-error" id="globalError">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div id="globalErrorText"></div>
+            </div>
+
+            <form class="registration-form" id="registrationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" class="form-input" placeholder="John" required>
+                        <div class="error-message" id="firstNameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Doe" required>
+                        <div class="error-message" id="lastNameError"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="john@example.com" required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567">
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="password" name="password" class="form-input" placeholder="Create a strong password" required>
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="password-strength-bar"></div>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Confirm Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="referralCode">Referral Code (Optional)</label>
+                    <input type="text" id="referralCode" name="referralCode" class="form-input" placeholder="Enter referral code">
+                </div>
+
+                <div class="checkbox-group">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label" for="agreeTerms">
+                        I agree to the <a href="/pages/legal/terms.html" target="_blank">Terms of Service</a> 
+                        and <a href="/pages/legal/privacy.html" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="agreeMarketing" name="agreeMarketing">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label" for="agreeMarketing">
+                        I want to receive trading tips, market updates, and promotional emails
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <div class="loading-spinner"></div>
+                    <span>Create Account</span>
+                </button>
+            </form>
+
+            <div class="social-login">
+                <div class="social-divider">
+                    <span>Or sign up with</span>
+                </div>
+                
+                <button type="button" class="social-btn" id="googleSignup">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+            </div>
+
+            <div class="form-footer">
+                <p>Already have an account?</p>
+                <a href="login.html">Sign in to your account</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword,
+            sendEmailVerification,
+            updateProfile,
+            GoogleAuthProvider,
+            signInWithPopup
+        } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+
+        // Global variables
+        let auth = null;
+        let googleProvider = null;
+
+        // Initialize Firebase when config is ready
+        function initializeFirebase() {
+            if (!window.THA_CONFIG?.firebase) {
+                console.error('❌ Firebase configuration not found');
+                return;
+            }
+
+            try {
+                const app = initializeApp(window.THA_CONFIG.firebase);
+                auth = getAuth(app);
+                googleProvider = new GoogleAuthProvider();
+                console.log('🔥 Firebase initialized successfully');
+            } catch (error) {
+                console.error('❌ Firebase initialization failed:', error);
+            }
+        }
+
+        // Wait for config to load
+        if (window.THA_CONFIG) {
+            initializeFirebase();
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(initializeFirebase, 100);
+            });
+        }
+
+        // Make Firebase functions globally available
+        window.firebaseAuth = {
+            createUser: async (email, password, displayName) => {
+                if (!auth) throw new Error('Firebase not initialized');
+                
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                
+                if (displayName) {
+                    await updateProfile(userCredential.user, { displayName });
+                }
+                
+                await sendEmailVerification(userCredential.user);
+                
+                return userCredential;
+            },
+            signInWithGoogle: async () => {
+                if (!auth || !googleProvider) throw new Error('Firebase not initialized');
+                return await signInWithPopup(auth, googleProvider);
+            }
+        };
+    </script>
+
+    <script>
+        // Form validation and submission
+        class RegistrationForm {
+            constructor() {
+                this.form = document.getElementById('registrationForm');
+                this.submitBtn = document.getElementById('submitBtn');
+                this.setupEventListeners();
+                this.setupPasswordStrength();
+                this.setupPasswordToggles();
+                console.log('🔧 Firebase Registration Form initialized');
+            }
+
+            setupEventListeners() {
+                this.form.addEventListener('submit', this.handleSubmit.bind(this));
+                
+                // Real-time validation
+                const inputs = this.form.querySelectorAll('.form-input');
+                inputs.forEach(input => {
+                    input.addEventListener('blur', () => this.validateField(input));
+                    input.addEventListener('input', () => this.clearFieldError(input));
+                });
+
+                // Password confirmation validation
+                document.getElementById('confirmPassword').addEventListener('input', 
+                    this.validatePasswordConfirmation.bind(this));
+
+                // Social login
+                document.getElementById('googleSignup').addEventListener('click', 
+                    this.handleGoogleSignup.bind(this));
+            }
+
+            setupPasswordToggles() {
+                const toggles = document.querySelectorAll('.password-toggle');
+                toggles.forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        const input = toggle.previousElementSibling;
+                        const icon = toggle.querySelector('i');
+                        
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            icon.classList.remove('fa-eye');
+                            icon.classList.add('fa-eye-slash');
+                        } else {
+                            input.type = 'password';
+                            icon.classList.remove('fa-eye-slash');
+                            icon.classList.add('fa-eye');
+                        }
+                    });
+                });
+            }
+
+            setupPasswordStrength() {
+                const passwordInput = document.getElementById('password');
+                const strengthIndicator = document.getElementById('passwordStrength');
+
+                passwordInput.addEventListener('input', () => {
+                    const password = passwordInput.value;
+                    const strength = this.calculatePasswordStrength(password);
+                    
+                    strengthIndicator.className = 'password-strength';
+                    if (password.length > 0) {
+                        strengthIndicator.classList.add(strength);
+                    }
+                });
+            }
+
+            calculatePasswordStrength(password) {
+                let score = 0;
+                
+                if (password.length >= 8) score++;
+                if (/[a-z]/.test(password)) score++;
+                if (/[A-Z]/.test(password)) score++;
+                if (/[0-9]/.test(password)) score++;
+                if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
+
+                if (score < 3) return 'weak';
+                if (score < 5) return 'medium';
+                return 'strong';
+            }
+
+            validateField(input) {
+                const value = input.value.trim();
+                const name = input.name;
+                let isValid = true;
+                let errorMessage = '';
+
+                switch (name) {
+                    case 'firstName':
+                    case 'lastName':
+                        if (!value) {
+                            errorMessage = 'This field is required';
+                            isValid = false;
+                        } else if (value.length < 2) {
+                            errorMessage = 'Must be at least 2 characters';
+                            isValid = false;
+                        }
+                        break;
+
+                    case 'email':
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!value) {
+                            errorMessage = 'Email is required';
+                            isValid = false;
+                        } else if (!emailRegex.test(value)) {
+                            errorMessage = 'Please enter a valid email';
+                            isValid = false;
+                        }
+                        break;
+
+                    case 'phone':
+                        const phoneRegex = /^\+?[\d\s-()]+$/;
+                        if (value && !phoneRegex.test(value)) {
+                            errorMessage = 'Please enter a valid phone number';
+                            isValid = false;
+                        }
+                        break;
+
+                    case 'password':
+                        if (!value) {
+                            errorMessage = 'Password is required';
+                            isValid = false;
+                        } else if (value.length < 6) {
+                            errorMessage = 'Password must be at least 6 characters';
+                            isValid = false;
+                        } else if (this.calculatePasswordStrength(value) === 'weak') {
+                            errorMessage = 'Password is too weak';
+                            isValid = false;
+                        }
+                        break;
+
+                    case 'confirmPassword':
+                        const password = document.getElementById('password').value;
+                        if (!value) {
+                            errorMessage = 'Please confirm your password';
+                            isValid = false;
+                        } else if (value !== password) {
+                            errorMessage = 'Passwords do not match';
+                            isValid = false;
+                        }
+                        break;
+                }
+
+                this.showFieldError(input, errorMessage, !isValid);
+                return isValid;
+            }
+
+            validatePasswordConfirmation() {
+                const confirmPasswordInput = document.getElementById('confirmPassword');
+                this.validateField(confirmPasswordInput);
+            }
+
+            showFieldError(input, message, hasError) {
+                const errorElement = document.getElementById(input.name + 'Error');
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.classList.toggle('show', hasError);
+                }
+                
+                input.style.borderColor = hasError ? 'var(--error)' : '';
+            }
+
+            clearFieldError(input) {
+                const errorElement = document.getElementById(input.name + 'Error');
+                if (errorElement) {
+                    errorElement.classList.remove('show');
+                }
+                input.style.borderColor = '';
+            }
+
+            showSuccess(message) {
+                const successElement = document.getElementById('successMessage');
+                const successText = document.getElementById('successText');
+                successText.textContent = message;
+                successElement.classList.add('show');
+                
+                // Hide the form
+                this.form.style.display = 'none';
+            }
+
+            showGlobalError(message) {
+                const errorElement = document.getElementById('globalError');
+                const errorText = document.getElementById('globalErrorText');
+                errorText.textContent = message;
+                errorElement.classList.add('show');
+            }
+
+            hideGlobalError() {
+                const errorElement = document.getElementById('globalError');
+                errorElement.classList.remove('show');
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                this.hideGlobalError();
+                
+                // Validate all fields
+                const inputs = this.form.querySelectorAll('.form-input[required]');
+                let isFormValid = true;
+                
+                inputs.forEach(input => {
+                    if (!this.validateField(input)) {
+                        isFormValid = false;
+                    }
+                });
+
+                // Check terms agreement
+                const agreeTerms = document.getElementById('agreeTerms');
+                if (!agreeTerms.checked) {
+                    this.showGlobalError('Please agree to the Terms of Service and Privacy Policy');
+                    return;
+                }
+
+                if (!isFormValid) {
+                    this.showGlobalError('Please fix the errors above before submitting');
+                    return;
+                }
+
+                // Show loading state
+                this.setLoadingState(true);
+
+                try {
+                    // Collect form data
+                    const formData = new FormData(this.form);
+                    const userData = Object.fromEntries(formData.entries());
+
+                    console.log('🔄 Starting Firebase registration:', userData.email);
+
+                    // Call Firebase registration
+                    const result = await this.registerUser(userData);
+                    
+                    if (result.success) {
+                        console.log('✅ Registration successful:', result.user.uid);
+                        this.showSuccess(`Registration successful! We've sent a verification email to ${userData.email}. Please check your inbox and click the verification link to activate your account.`);
+                        
+                        // Redirect to verification page after delay
+                        setTimeout(() => {
+                            window.location.href = `/pages/auth/verify-email.html?email=${encodeURIComponent(userData.email)}`;
+                        }, 3000);
+                    } else {
+                        throw new Error(result.message || 'Registration failed');
+                    }
+                } catch (error) {
+                    console.error('❌ Registration error:', error);
+                    this.showGlobalError(error.message);
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+
+            async registerUser(userData) {
+                try {
+                    const displayName = `${userData.firstName} ${userData.lastName}`.trim();
+                    
+                    const userCredential = await window.firebaseAuth.createUser(
+                        userData.email,
+                        userData.password,
+                        displayName
+                    );
+                    
+                    return {
+                        success: true,
+                        user: userCredential.user,
+                        message: 'Registration successful'
+                    };
+                } catch (error) {
+                    let message = 'Registration failed. Please try again.';
+                    
+                    switch (error.code) {
+                        case 'auth/email-already-in-use':
+                            message = 'This email address is already registered. Try signing in instead.';
+                            break;
+                        case 'auth/invalid-email':
+                            message = 'Please enter a valid email address.';
+                            break;
+                        case 'auth/weak-password':
+                            message = 'Password is too weak. Please choose a stronger password.';
+                            break;
+                        case 'auth/operation-not-allowed':
+                            message = 'Email registration is currently disabled. Please contact support.';
+                            break;
+                        case 'auth/network-request-failed':
+                            message = 'Network error. Please check your internet connection and try again.';
+                            break;
+                        default:
+                            message = error.message || 'An unexpected error occurred.';
+                    }
+                    
+                    return {
+                        success: false,
+                        message: message
+                    };
+                }
+            }
+
+            async handleGoogleSignup() {
+                try {
+                    console.log('🔄 Starting Google signup');
+                    this.hideGlobalError();
+                    
+                    const result = await window.firebaseAuth.signInWithGoogle();
+                    const user = result.user;
+                    
+                    console.log('✅ Google signup successful:', user.uid);
+                    this.showSuccess(`Welcome ${user.displayName}! Your account has been created successfully.`);
+                    
+                    // Redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = '/pages/dashboard/';
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('❌ Google signup error:', error);
+                    
+                    let message = 'Google signup failed. Please try again.';
+                    
+                    switch (error.code) {
+                        case 'auth/popup-closed-by-user':
+                            message = 'Signup was cancelled. Please try again.';
+                            break;
+                        case 'auth/popup-blocked':
+                            message = 'Popup was blocked. Please allow popups and try again.';
+                            break;
+                        case 'auth/account-exists-with-different-credential':
+                            message = 'An account already exists with this email using a different sign-in method.';
+                            break;
+                        default:
+                            message = error.message || 'Google signup failed.';
+                    }
+                    
+                    this.showGlobalError(message);
+                }
+            }
+
+            setLoadingState(loading) {
+                this.submitBtn.disabled = loading;
+                this.submitBtn.classList.toggle('loading', loading);
+                
+                const buttonText = this.submitBtn.querySelector('span');
+                buttonText.textContent = loading ? 'Creating Account...' : 'Create Account';
+            }
+        }
+
+        // Initialize the registration form
+        document.addEventListener('DOMContentLoaded', () => {
+            new RegistrationForm();
+        });
+    </script>
+</body>
+</html>

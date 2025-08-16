@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment - Traders Helmet Academy</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --secondary-purple: #7c3aed;
+            --accent-gold: #f59e0b;
+            --background-dark: #0f172a;
+            --background-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-purple) 100%);
+            --gradient-card: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .payment-container {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .plan-summary {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--primary-blue-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .plan-summary h3 {
+            color: var(--primary-blue-light);
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .plan-summary .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-summary .description {
+            color: var(--text-secondary);
+        }
+
+        .payment-methods {
+            margin-bottom: 2rem;
+        }
+
+        .payment-methods h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .method-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-tab {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .method-tab.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .payment-content {
+            display: none;
+        }
+
+        .payment-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+
+        .crypto-address {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-blue-light);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--primary-blue-light);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-blue);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert.warning {
+            background: var(--warning-light);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+
+        .alert.error {
+            background: var(--error-light);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .alert.success {
+            background: var(--success-light);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn.loading .loading-spinner {
+            display: inline-block;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .security-notice {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-notice {
+            background: var(--error-light);
+            border: 1px solid var(--error);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-notice h3 {
+            color: var(--error);
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .debug-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .payment-container {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .method-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Complete Your Payment</h1>
+            <p>Choose your preferred payment method to start your trading journey</p>
+        </div>
+
+        <!-- Debug Information -->
+        <div id="debugInfo"></div>
+
+        <!-- Authentication Notice -->
+        <div id="authNotice" class="auth-notice" style="display: none;">
+            <h3><i class="fas fa-lock"></i> Authentication Required</h3>
+            <p>Please sign in to complete your payment.</p>
+            <div style="margin-top: 1rem;">
+                <a href="/pages/auth/login.html?redirect=payment" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </a>
+            </div>
+        </div>
+
+        <div id="paymentContainer" class="payment-container" style="display: none;">
+            <!-- Plan Summary -->
+            <div id="planSummary" class="plan-summary">
+                <h3 id="planName">Loading...</h3>
+                <div id="planPrice" class="price">$0</div>
+                <div id="planDescription" class="description">Monthly subscription</div>
+            </div>
+
+            <!-- Alert Messages -->
+            <div id="alertMessage" class="alert">
+                <span id="alertText"></span>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <h4>Choose Payment Method</h4>
+                
+                <div class="method-tabs">
+                    <button class="method-tab active" data-method="card">
+                        <i class="fas fa-credit-card"></i> Credit Card
+                    </button>
+                    <button class="method-tab" data-method="bank">
+                        <i class="fas fa-university"></i> Bank Transfer
+                    </button>
+                    <button class="method-tab" data-method="crypto">
+                        <i class="fab fa-bitcoin"></i> Cryptocurrency
+                    </button>
+                </div>
+
+                <form id="paymentForm">
+                    <!-- Credit Card Payment -->
+                    <div id="cardPayment" class="payment-content active">
+                        <div class="form-group">
+                            <label class="form-label" for="cardName">Cardholder Name</label>
+                            <input type="text" id="cardName" class="form-input" placeholder="John Doe" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="cardNumber">Card Number</label>
+                            <input type="text" id="cardNumber" class="form-input" placeholder="1234 5678 9012 3456" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="cardExpiry">Expiry Date</label>
+                                <input type="text" id="cardExpiry" class="form-input" placeholder="MM/YY" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cardCvc">CVC</label>
+                                <input type="text" id="cardCvc" class="form-input" placeholder="123" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="billingEmail">Billing Email</label>
+                            <input type="email" id="billingEmail" class="form-input" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Payment -->
+                    <div id="bankPayment" class="payment-content">
+                        <div class="alert warning show">
+                            <h4><i class="fas fa-info-circle"></i> Bank Transfer Instructions</h4>
+                            <p style="margin: 0.5rem 0;">Please transfer the exact amount to the account below, then fill in your transfer details:</p>
+                            <div style="margin: 1rem 0; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                                <strong>Account Details:</strong><br>
+                                Bank: First National Bank<br>
+                                Account Name: Traders Helmet Academy LLC<br>
+                                Account Number: 1234567890<br>
+                                Routing Number: 987654321<br>
+                                Reference: Your Email Address
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="bankReference">Transfer Reference</label>
+                            <input type="text" id="bankReference" class="form-input" placeholder="Reference number from your bank transfer" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="transferDate">Transfer Date</label>
+                            <input type="date" id="transferDate" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="transferAmount">Amount Transferred</label>
+                            <input type="number" id="transferAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <!-- Cryptocurrency Payment -->
+                    <div id="cryptoPayment" class="payment-content">
+                        <div class="form-group">
+                            <label class="form-label" for="cryptoType">Select Cryptocurrency</label>
+                            <select id="cryptoType" class="form-input" required>
+                                <option value="">Choose cryptocurrency</option>
+                                <option value="bitcoin">Bitcoin (BTC)</option>
+                                <option value="ethereum">Ethereum (ETH)</option>
+                                <option value="usdt">Tether (USDT)</option>
+                                <option value="usdc">USD Coin (USDC)</option>
+                            </select>
+                        </div>
+
+                        <div id="cryptoDetails" style="display: none;">
+                            <div class="crypto-address">
+                                <div><strong>Send to this address:</strong></div>
+                                <div id="cryptoAddress">Loading...</div>
+                                <button type="button" class="copy-btn" onclick="copyToClipboard('cryptoAddress')">
+                                    <i class="fas fa-copy"></i> Copy Address
+                                </button>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="txHash">Transaction Hash (After Payment)</label>
+                                <input type="text" id="txHash" class="form-input" placeholder="Enter transaction hash after sending payment" required>
+                            </div>
+
+                            <div class="alert warning show">
+                                <h4><i class="fas fa-exclamation-triangle"></i> Important</h4>
+                                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                                    <li>Send the exact amount to avoid delays</li>
+                                    <li>Use the correct network (check above)</li>
+                                    <li>Your subscription activates after 3 confirmations</li>
+                                    <li>Save your transaction hash for tracking</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn" class="submit-btn">
+                        <div class="loading-spinner"></div>
+                        <span id="submitText">Complete Payment - $0</span>
+                    </button>
+                </form>
+
+                <div class="security-notice">
+                    <i class="fas fa-shield-alt"></i>
+                    Your payment information is secure and encrypted. By completing your purchase, you agree to our 
+                    <a href="/pages/legal/terms.html" style="color: var(--primary-blue-light);">Terms of Service</a> and 
+                    <a href="/pages/legal/privacy.html" style="color: var(--primary-blue-light);">Privacy Policy</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDK Configuration -->
+    <script src="/assets/js/sdk-config.js"></script>
+
+    <script>
+        class PaymentProcessor {
+            constructor() {
+                this.currentUser = null;
+                this.isAuthenticated = false;
+                this.selectedTier = null;
+                this.selectedMethod = 'card';
+                this.tierConfig = {
+                    gold: { name: 'Gold Membership', price: 300, description: 'Perfect for getting started with trading' },
+                    platinum: { name: 'Platinum Membership', price: 600, description: 'Most popular choice for serious traders' },
+                    diamond: { name: 'Diamond Membership', price: 1300, description: 'Premium tier for professional traders' }
+                };
+                this.cryptoAddresses = {
+                    bitcoin: 'bc1qxylcskkap2a9380zqstdu6pcne3703uu35gplv',
+                    ethereum: '0x742d35Cc6634C0532925a3b8D91D04e30d0eEC7B',
+                    usdt: '0x742d35Cc6634C0532925a3b8D91D04e30d0eEC7B',
+                    usdc: '0x742d35Cc6634C0532925a3b8D91D04e30d0eEC7B'
+                };
+                
+                this.init();
+            }
+
+            async init() {
+                console.log('🔄 Initializing Payment Processor...');
+                
+                // Wait for SDKs
+                if (window.SDK_DEBUG && (window.SDK_DEBUG.firebase || window.SDK_DEBUG.supabase)) {
+                    this.handleSDKReady();
+                } else {
+                    window.addEventListener('sdksReady', () => this.handleSDKReady());
+                }
+
+                this.attachEventListeners();
+                this.parseUrlParameters();
+            }
+
+            async handleSDKReady() {
+                console.log('✅ SDKs ready for payment processing');
+                await this.checkAuthentication();
+            }
+
+            parseUrlParameters() {
+                const urlParams = new URLSearchParams(window.location.search);
+                this.selectedTier = urlParams.get('tier') || 'platinum';
+                const action = urlParams.get('action') || 'subscribe';
+                
+                console.log('🎯 Payment parameters:', { tier: this.selectedTier, action });
+                this.updatePlanSummary();
+            }
+
+            updatePlanSummary() {
+                const config = this.tierConfig[this.selectedTier];
+                if (config) {
+                    document.getElementById('planName').textContent = config.name;
+                    document.getElementById('planPrice').textContent = `$${config.price}`;
+                    document.getElementById('planDescription').textContent = config.description;
+                    document.getElementById('submitText').textContent = `Complete Payment - $${config.price}`;
+                }
+            }
+
+            async checkAuthentication() {
+                try {
+                    // Check Firebase auth
+                    if (window.firebaseAuth && window.firebaseAuth.getCurrentUser) {
+                        this.currentUser = window.firebaseAuth.getCurrentUser();
+                        this.isAuthenticated = !!this.currentUser;
+                    }
+
+                    // If not authenticated via Firebase, check Supabase
+                    if (!this.isAuthenticated && window.supabase) {
+                        const { data: { user } } = await window.supabase.auth.getUser();
+                        this.currentUser = user;
+                        this.isAuthenticated = !!user;
+                    }
+
+                    console.log('🔐 Authentication status:', this.isAuthenticated ? 'Authenticated' : 'Not authenticated');
+                    
+                    if (!this.isAuthenticated) {
+                        this.showAuthNotice();
+                        return;
+                    }
+
+                    this.showPaymentContainer();
+                    this.populateUserData();
+                    
+                } catch (error) {
+                    console.error('Authentication check error:', error);
+                    this.showAuthNotice();
+                }
+            }
+
+            populateUserData() {
+                if (this.currentUser) {
+                    const billingEmail = document.getElementById('billingEmail');
+                    if (billingEmail && this.currentUser.email) {
+                        billingEmail.value = this.currentUser.email;
+                    }
+                }
+            }
+
+            attachEventListeners() {
+                // Payment method tabs
+                document.querySelectorAll('.method-tab').forEach(tab => {
+                    tab.addEventListener('click', () => this.switchPaymentMethod(tab.dataset.method));
+                });
+
+                // Cryptocurrency selection
+                document.getElementById('cryptoType').addEventListener('change', (e) => {
+                    this.updateCryptoDetails(e.target.value);
+                });
+
+                // Form submission
+                document.getElementById('paymentForm').addEventListener('submit', (e) => {
+                    this.handlePaymentSubmit(e);
+                });
+
+                // Input formatting
+                this.setupInputFormatting();
+            }
+
+            setupInputFormatting() {
+                // Card number formatting
+                const cardNumber = document.getElementById('cardNumber');
+                cardNumber.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    if (formattedValue.length > 19) formattedValue = formattedValue.substr(0, 19);
+                    e.target.value = formattedValue;
+                });
+
+                // Expiry date formatting
+                const cardExpiry = document.getElementById('cardExpiry');
+                cardExpiry.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                    e.target.value = value;
+                });
+
+                // CVC formatting
+                const cardCvc = document.getElementById('cardCvc');
+                cardCvc.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+                });
+            }
+
+            switchPaymentMethod(method) {
+                // Update tabs
+                document.querySelectorAll('.method-tab').forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.method === method);
+                });
+
+                // Update content
+                document.querySelectorAll('.payment-content').forEach(content => {
+                    content.classList.toggle('active', content.id === method + 'Payment');
+                });
+
+                this.selectedMethod = method;
+                console.log('💳 Payment method changed to:', method);
+            }
+
+            updateCryptoDetails(cryptoType) {
+                const detailsElement = document.getElementById('cryptoDetails');
+                const addressElement = document.getElementById('cryptoAddress');
+                
+                if (cryptoType && this.cryptoAddresses[cryptoType]) {
+                    addressElement.textContent = this.cryptoAddresses[cryptoType];
+                    detailsElement.style.display = 'block';
+                } else {
+                    detailsElement.style.display = 'none';
+                }
+            }
+
+            async handlePaymentSubmit(e) {
+                e.preventDefault();
+                
+                console.log('💰 Payment submission started...');
+                
+                if (!this.isAuthenticated) {
+                    this.showAlert('Please sign in to complete payment', 'error');
+                    return;
+                }
+
+                // Validate form
+                if (!this.validatePaymentForm()) {
+                    return;
+                }
+
+                // Show loading state
+                this.setLoadingState(true);
+
+                try {
+                    let result;
+                    
+                    switch (this.selectedMethod) {
+                        case 'card':
+                            result = await this.processCardPayment();
+                            break;
+                        case 'bank':
+                            result = await this.processBankTransfer();
+                            break;
+                        case 'crypto':
+                            result = await this.processCryptoPayment();
+                            break;
+                        default:
+                            throw new Error('Invalid payment method');
+                    }
+
+                    if (result.success) {
+                        this.showAlert('Payment submitted successfully! Your subscription will be activated shortly.', 'success');
+                        
+                        // Redirect after delay
+                        setTimeout(() => {
+                            window.location.href = '/pages/dashboard/?payment=success';
+                        }, 3000);
+                    } else {
+                        throw new Error(result.message);
+                    }
+
+                } catch (error) {
+                    console.error('❌ Payment processing error:', error);
+                    this.showAlert(error.message || 'Payment processing failed. Please try again.', 'error');
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+
+            validatePaymentForm() {
+                const method = this.selectedMethod;
+                let isValid = true;
+                let errors = [];
+
+                switch (method) {
+                    case 'card':
+                        const cardName = document.getElementById('cardName').value.trim();
+                        const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                        const cardExpiry = document.getElementById('cardExpiry').value;
+                        const cardCvc = document.getElementById('cardCvc').value;
+                        const billingEmail = document.getElementById('billingEmail').value.trim();
+
+                        if (!cardName) errors.push('Cardholder name is required');
+                        if (!cardNumber || cardNumber.length < 13) errors.push('Valid card number is required');
+                        if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) errors.push('Valid expiry date is required');
+                        if (!cardCvc || cardCvc.length < 3) errors.push('Valid CVC is required');
+                        if (!billingEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(billingEmail)) errors.push('Valid billing email is required');
+                        break;
+
+                    case 'bank':
+                        const bankReference = document.getElementById('bankReference').value.trim();
+                        const transferDate = document.getElementById('transferDate').value;
+                        const transferAmount = document.getElementById('transferAmount').value;
+
+                        if (!bankReference) errors.push('Transfer reference is required');
+                        if (!transferDate) errors.push('Transfer date is required');
+                        if (!transferAmount || parseFloat(transferAmount) <= 0) errors.push('Valid transfer amount is required');
+                        break;
+
+                    case 'crypto':
+                        const cryptoType = document.getElementById('cryptoType').value;
+                        const txHash = document.getElementById('txHash').value.trim();
+
+                        if (!cryptoType) errors.push('Please select a cryptocurrency');
+                        if (!txHash) errors.push('Transaction hash is required');
+                        break;
+                }
+
+                if (errors.length > 0) {
+                    this.showAlert(errors.join('. '), 'error');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            async processCardPayment() {
+                // Simulate card payment processing
+                console.log('💳 Processing card payment...');
+                
+                // In a real application, you would integrate with a payment processor like Stripe
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Record payment in database
+                await this.recordPayment({
+                    method: 'card',
+                    amount: this.tierConfig[this.selectedTier].price,
+                    tier: this.selectedTier,
+                    status: 'completed',
+                    payment_data: {
+                        last4: document.getElementById('cardNumber').value.slice(-4),
+                        billing_email: document.getElementById('billingEmail').value
+                    }
+                });
+
+                return { success: true, message: 'Card payment processed successfully' };
+            }
+
+            async processBankTransfer() {
+                console.log('🏦 Processing bank transfer...');
+                
+                // Record payment as pending manual verification
+                await this.recordPayment({
+                    method: 'bank_transfer',
+                    amount: parseFloat(document.getElementById('transferAmount').value),
+                    tier: this.selectedTier,
+                    status: 'pending_verification',
+                    payment_data: {
+                        reference: document.getElementById('bankReference').value,
+                        transfer_date: document.getElementById('transferDate').value,
+                        transfer_amount: document.getElementById('transferAmount').value
+                    }
+                });
+
+                return { success: true, message: 'Bank transfer recorded. Awaiting verification.' };
+            }
+
+            async processCryptoPayment() {
+                console.log('₿ Processing crypto payment...');
+                
+                // Record payment as pending confirmation
+                await this.recordPayment({
+                    method: 'cryptocurrency',
+                    amount: this.tierConfig[this.selectedTier].price,
+                    tier: this.selectedTier,
+                    status: 'pending_confirmation',
+                    payment_data: {
+                        crypto_type: document.getElementById('cryptoType').value,
+                        tx_hash: document.getElementById('txHash').value,
+                        address: this.cryptoAddresses[document.getElementById('cryptoType').value]
+                    }
+                });
+
+                return { success: true, message: 'Crypto payment recorded. Awaiting blockchain confirmation.' };
+            }
+
+            async recordPayment(paymentData) {
+                try {
+                    if (!window.supabase) {
+                        console.warn('Database not available, payment not recorded');
+                        return;
+                    }
+
+                    const { error } = await window.supabase
+                        .from('payments')
+                        .insert([{
+                            user_id: this.currentUser.uid || this.currentUser.id,
+                            ...paymentData,
+                            created_at: new Date().toISOString()
+                        }]);
+
+                    if (error) {
+                        console.error('Payment recording error:', error);
+                    } else {
+                        console.log('✅ Payment recorded in database');
+                    }
+
+                } catch (error) {
+                    console.error('Payment recording error:', error);
+                }
+            }
+
+            showAuthNotice() {
+                document.getElementById('authNotice').style.display = 'block';
+                document.getElementById('paymentContainer').style.display = 'none';
+            }
+
+            showPaymentContainer() {
+                document.getElementById('authNotice').style.display = 'none';
+                document.getElementById('paymentContainer').style.display = 'block';
+            }
+
+            showAlert(message, type = 'info') {
+                const alertElement = document.getElementById('alertMessage');
+                const alertText = document.getElementById('alertText');
+                
+                alertElement.className = `alert ${type} show`;
+                alertText.textContent = message;
+                
+                // Auto-hide success messages
+                if (type === 'success') {
+                    setTimeout(() => {
+                        alertElement.classList.remove('show');
+                    }, 5000);
+                }
+            }
+
+            setLoadingState(loading) {
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = loading;
+                submitBtn.classList.toggle('loading', loading);
+                
+                const submitText = document.getElementById('submitText');
+                const originalText = submitText.textContent;
+                
+                if (loading) {
+                    submitText.textContent = 'Processing Payment...';
+                } else {
+                    submitText.textContent = originalText;
+                }
+            }
+        }
+
+        // Global functions
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Show success feedback
+                const btn = event.target.closest('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = 'var(--primary-blue-light)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.paymentProcessor = new PaymentProcessor();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond Dashboard - Traders Helmet Academy</title>
+    <meta name="description" content="Diamond tier dashboard with VIP trading experience and exclusive institutional-level content.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Core CSS Files -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-custom.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --info: #0ea5e9;
+            --info-light: rgba(14, 165, 233, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --gradient-diamond: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+            --gradient-diamond-premium: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 50%, #0891b2 100%);
+            --gradient-exclusive: linear-gradient(135deg, #f0f9ff 0%, #0ea5e9 50%, #0369a1 100%);
+            --gradient-vip: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #d946ef 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient-card);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-diamond);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .brand-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .vip-indicator {
+            background: var(--gradient-vip);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .vip-indicator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: vipShimmer 3s infinite;
+        }
+
+        @keyframes vipShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .tier-badge {
+            background: var(--gradient-diamond);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .tier-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: diamondShimmer 2.5s infinite;
+        }
+
+        @keyframes diamondShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-diamond);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .subscription-status {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid #06b6d4;
+            color: #06b6d4;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-tab.active {
+            background: var(--gradient-diamond);
+            color: white;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--text-primary);
+        }
+
+        .nav-tab.exclusive::after {
+            content: '💎';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.8rem;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .welcome-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-diamond);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .vip-badge {
+            display: inline-block;
+            background: var(--gradient-vip);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .dashboard-card.diamond::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 50px 50px 0;
+            border-color: transparent #06b6d4 transparent transparent;
+        }
+
+        .dashboard-card.diamond::after {
+            content: '💎';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1rem;
+        }
+
+        .dashboard-card.exclusive {
+            background: linear-gradient(145deg, #1e293b 0%, #334155 100%), 
+                        linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-diamond);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: var(--gradient-diamond);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.2rem;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #06b6d4;
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #06b6d4;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: var(--error);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .welcome-title {
+                font-size: 2.2rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes diamondGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+            }
+        }
+
+        .dashboard-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .diamond-glow {
+            animation: diamondGlow 3s infinite;
+        }
+
+        /* Content Specific Styles */
+        .exclusive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .exclusive-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exclusive-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-vip);
+        }
+
+        .exclusive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.2);
+        }
+
+        .exclusive-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .exclusive-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .exclusive-badge {
+            background: var(--gradient-vip);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .start-course-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--gradient-diamond);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .start-course-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .start-course-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="modal-overlay show" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center;">
+        <div style="text-align: center; color: var(--text-primary);">
+            <div class="spinner" style="width: 40px; height: 40px; margin-bottom: 1rem;"></div>
+            <p>Loading your Diamond Elite dashboard...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </div>
+            
+            <div class="user-info">
+                <div class="vip-indicator">
+                    <i class="fas fa-crown"></i>
+                    VIP Member
+                </div>
+                <div class="subscription-status" id="subscriptionStatus">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                </div>
+                <div class="tier-badge">
+                    <i class="fas fa-gem"></i>
+                    Diamond Elite
+                </div>
+                <div class="user-avatar" id="userAvatar">U</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">Diamond Elite Dashboard</h1>
+            <p class="welcome-subtitle" id="welcomeMessage">
+                Welcome to the ultimate VIP trading experience. Access institutional-level analysis, 
+                personal coaching, and exclusive Diamond community with 6 months of intensive mentorship.
+            </p>
+            <div class="vip-badge">
+                💎 Exclusive Diamond Member - Institutional Access
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="overview" onclick="switchTab('overview')">
+                <i class="fas fa-tachometer-alt"></i> VIP Overview
+            </button>
+            <button class="nav-tab" data-tab="pages/education/index.html" onclick="switchTab('pages/education/index.html')">
+                <i class="fas fa-graduation-cap"></i> Exclusive Education
+            </button>
+            <button class="nav-tab exclusive" data-tab="institutional" onclick="switchTab('institutional')">
+                <i class="fas fa-building"></i> Institutional Flow
+            </button>
+            <button class="nav-tab exclusive" data-tab="signals" onclick="switchTab('signals')">
+                <i class="fas fa-chart-line"></i> Diamond Signals
+            </button>
+            <button class="nav-tab exclusive" data-tab="coach" onclick="switchTab('coach')">
+                <i class="fas fa-user-tie"></i> Personal Coach
+            </button>
+            <button class="nav-tab exclusive" data-tab="community" onclick="switchTab('community')">
+                <i class="fas fa-users"></i> VIP Community
+            </button>
+            <button class="nav-tab exclusive" data-tab="tools" onclick="switchTab('tools')">
+                <i class="fas fa-tools"></i> Elite Tools
+            </button>
+        </div>
+
+        <!-- VIP Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="dashboard-grid">
+                <!-- Elite Progress Card -->
+                <div class="dashboard-card diamond exclusive diamond-glow">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="card-title">Elite Progress</div>
+                    </div>
+                    <div class="card-content">
+                        <p>Complete institutional-level trading mastery program</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="coursesCompleted">-</div>
+                                <div class="stat-label">Courses</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="daysLeft">-</div>
+                                <div class="stat-label">Days Left</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="overallGrade">-</div>
+                                <div class="stat-label">Grade</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">VIP</div>
+                                <div class="stat-label">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diamond Performance -->
+                <div class="dashboard-card diamond exclusive">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="card-title">Diamond Performance</div>
+                    </div>
+                    <div class="card-content">
+                        <p>Institutional-grade trading signals performance</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="signalsReceived">-</div>
+                                <div class="stat-label">Signals</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="successRate">-</div>
+                                <div class="stat-label">Success</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalPips">-</div>
+                                <div class="stat-label">Pips</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="roi">-</div>
+                                <div class="stat-label">ROI</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Coach Access -->
+                <div class="dashboard-card diamond exclusive">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="card-title">Personal Coach</div>
+                    </div>
+                    <div class="card-content" id="coachOverview">
+                        <div style="text-align: center; padding: 1rem;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading coach info...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIP Community Access -->
+                <div class="dashboard-card diamond exclusive">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-title">VIP Community</div>
+                    </div>
+                    <div class="card-content" id="communityOverview">
+                        <div style="text-align: center; padding: 1rem;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading community info...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exclusive Education Tab -->
+        <div id="education" class="tab-content">
+            <div class="exclusive-grid" id="educationGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading exclusive Diamond education...
+                </div>
+            </div>
+        </div>
+
+        <!-- Institutional Order Flow Tab -->
+        <div id="institutional" class="tab-content">
+            <div class="exclusive-grid" id="institutionalGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading institutional order flow data...
+                </div>
+            </div>
+        </div>
+
+        <!-- Diamond Signals Tab -->
+        <div id="signals" class="tab-content">
+            <div class="exclusive-grid" id="signalsGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading institutional trading signals...
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Coach Tab -->
+        <div id="coach" class="tab-content">
+            <div class="dashboard-grid" id="coachGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading personal coaching dashboard...
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP Community Tab -->
+        <div id="community" class="tab-content">
+            <div class="exclusive-grid" id="communityGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading VIP community features...
+                </div>
+            </div>
+        </div>
+
+        <!-- Elite Tools Tab -->
+        <div id="tools" class="tab-content">
+            <div class="exclusive-grid" id="toolsGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading institutional trading tools...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- JavaScript -->
+    <script src="/assets/js/config.js"></script>
+    <script src="/assets/js/supabase.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    
+    <script>
+        class ProductionDiamondDashboard {
+            constructor() {
+                this.supabase = null;
+                this.currentUser = null;
+                this.userSubscription = null;
+                this.dashboardData = {};
+                this.currentTab = 'overview';
+                this.init();
+            }
+
+            async init() {
+                try {
+                    console.log('💎 Initializing Production Diamond Dashboard...');
+                    
+                    // Initialize Supabase
+                    await this.initializeSupabase();
+                    
+                    // Check authentication and tier access
+                    await this.checkAuthentication();
+                    
+                    // Load user dashboard data
+                    await this.loadDashboardData();
+                    
+                    // Setup real-time subscriptions
+                    this.setupRealTimeUpdates();
+                    
+                    // Hide loading screen
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    
+                    console.log('✅ Diamond Dashboard initialized successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to initialize Diamond dashboard:', error);
+                    this.showToast('Failed to load dashboard. Please refresh the page.', 'error');
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }
+            }
+
+            async initializeSupabase() {
+                if (typeof window.supabaseClient !== 'undefined') {
+                    this.supabase = window.supabaseClient;
+                } else {
+                    // Fallback initialization
+                    const { createClient } = supabase;
+                    this.supabase = createClient(
+                        THA_CONFIG.supabase.url,
+                        THA_CONFIG.supabase.anonKey
+                    );
+                }
+            }
+
+            async checkAuthentication() {
+                const { data: { user }, error } = await this.supabase.auth.getUser();
+                
+                if (error || !user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                // Get user profile and subscription
+                const { data: profile, error: profileError } = await this.supabase
+                    .from('user_profiles')
+                    .select(`
+                        *,
+                        user_subscriptions(*)
+                    `)
+                    .eq('id', user.id)
+                    .single();
+
+                if (profileError || !profile) {
+                    console.error('Error fetching profile:', profileError);
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                // Check if user has Diamond access
+                const subscription = profile.user_subscriptions?.[0];
+                const hasDiamondAccess = this.checkTierAccess(profile.tier, subscription?.tier);
+                
+                if (!hasDiamondAccess) {
+                    alert('Diamond tier subscription required to access this dashboard.');
+                    window.location.href = '/pages/payment/subscribe.html';
+                    return;
+                }
+
+                this.currentUser = { ...user, ...profile };
+                this.userSubscription = subscription;
+                
+                // Update UI with user info
+                this.updateUserInfo();
+            }
+
+            checkTierAccess(userTier, subscriptionTier) {
+                const effectiveTier = subscriptionTier || userTier || 'none';
+                return effectiveTier === 'diamond';
+            }
+
+            updateUserInfo() {
+                // Update user avatar
+                const avatar = document.getElementById('userAvatar');
+                const firstName = this.currentUser.first_name || '';
+                const lastName = this.currentUser.last_name || '';
+                avatar.textContent = ((firstName.charAt(0) || '') + (lastName.charAt(0) || '')).toUpperCase() || 'U';
+                
+                // Update welcome message
+                const welcomeMsg = document.getElementById('welcomeMessage');
+                if (firstName) {
+                    welcomeMsg.textContent = `Welcome back, ${firstName}! You now have exclusive access to institutional-level trading intelligence, personal coaching, and our elite Diamond community.`;
+                }
+                
+                // Update subscription status
+                this.updateSubscriptionStatus();
+            }
+
+            updateSubscriptionStatus() {
+                const statusElement = document.getElementById('subscriptionStatus');
+                
+                if (this.userSubscription && this.userSubscription.status === 'active') {
+                    const endDate = new Date(this.userSubscription.current_period_end);
+                    const daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysLeft > 0) {
+                        statusElement.innerHTML = `<i class="fas fa-clock"></i> ${daysLeft} days remaining`;
+                        statusElement.style.background = 'rgba(6, 182, 212, 0.1)';
+                        statusElement.style.color = '#06b6d4';
+                    } else {
+                        statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Subscription expired';
+                        statusElement.style.background = 'rgba(239, 68, 68, 0.1)';
+                        statusElement.style.color = 'var(--error)';
+                    }
+                } else {
+                    statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Subscription inactive';
+                    statusElement.style.background = 'rgba(239, 68, 68, 0.1)';
+                    statusElement.style.color = 'var(--error)';
+                }
+            }
+
+            async loadDashboardData() {
+                await Promise.all([
+                    this.loadUserProgress(),
+                    this.loadTradingPerformance(),
+                    this.loadEducationData(),
+                    this.loadInstitutionalData(),
+                    this.loadDiamondSignals(),
+                    this.loadPersonalCoach(),
+                    this.loadVIPCommunity(),
+                    this.loadEliteTools()
+                ]);
+            }
+
+            async loadUserProgress() {
+                try {
+                    // Calculate subscription days left
+                    if (this.userSubscription && this.userSubscription.current_period_end) {
+                        const endDate = new Date(this.userSubscription.current_period_end);
+                        const daysLeft = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
+                        document.getElementById('daysLeft').textContent = daysLeft;
+                    } else {
+                        document.getElementById('daysLeft').textContent = '0';
+                    }
+
+                    // Get course completion data
+                    const { data: courseProgress } = await this.supabase
+                        .from('user_course_progress')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id);
+
+                    const totalCourses = 15; // Diamond tier has 15 courses (all previous + exclusive)
+                    const completedCourses = courseProgress?.filter(cp => cp.completed).length || 0;
+                    const progressPercentage = (completedCourses / totalCourses) * 100;
+
+                    document.getElementById('coursesCompleted').textContent = `${completedCourses}/${totalCourses}`;
+                    document.getElementById('progressFill').style.width = `${progressPercentage}%`;
+                    document.getElementById('overallGrade').textContent = completedCourses >= 12 ? 'A++' : completedCourses >= 10 ? 'A+' : 'A';
+
+                } catch (error) {
+                    console.error('Error loading user progress:', error);
+                    document.getElementById('coursesCompleted').textContent = '0/15';
+                    document.getElementById('daysLeft').textContent = '0';
+                }
+            }
+
+            async loadTradingPerformance() {
+                try {
+                    // Get user's signal interactions this month
+                    const thisMonth = new Date();
+                    thisMonth.setDate(1);
+                    
+                    const { data: signalViews } = await this.supabase
+                        .from('signal_views')
+                        .select(`
+                            *,
+                            trading_signals(*)
+                        `)
+                        .eq('user_id', this.currentUser.id)
+                        .gte('viewed_at', thisMonth.toISOString());
+
+                    const signalsReceived = signalViews?.length || 0;
+                    
+                    // Calculate success rate from closed signals
+                    const closedSignals = signalViews?.filter(sv => 
+                        sv.trading_signals?.status === 'closed' && 
+                        sv.trading_signals?.result
+                    ) || [];
+                    
+                    const successfulSignals = closedSignals.filter(sv => 
+                        sv.trading_signals?.result === 'profit'
+                    ).length;
+                    
+                    const successRate = closedSignals.length > 0 ? 
+                        Math.round((successfulSignals / closedSignals.length) * 100) : 0;
+                    
+                    // Calculate total pips (Diamond tier gets enhanced signals with higher pips)
+                    const totalPips = closedSignals.reduce((sum, sv) => {
+                        return sum + (sv.trading_signals?.pips_gained || 0);
+                    }, 0);
+
+                    // Calculate ROI (Diamond tier performance)
+                    const roi = closedSignals.length > 0 ? 
+                        Math.round((totalPips / closedSignals.length) * 0.8) : 0; // Higher multiplier for Diamond
+
+                    document.getElementById('signalsReceived').textContent = signalsReceived;
+                    document.getElementById('successRate').textContent = `${successRate}%`;
+                    document.getElementById('totalPips').textContent = `+${Math.round(totalPips)}`;
+                    document.getElementById('roi').textContent = `+${roi}%`;
+
+                } catch (error) {
+                    console.error('Error loading trading performance:', error);
+                    document.getElementById('signalsReceived').textContent = '0';
+                    document.getElementById('successRate').textContent = '0%';
+                    document.getElementById('totalPips').textContent = '+0';
+                    document.getElementById('roi').textContent = '+0%';
+                }
+            }
+
+            async loadEducationData() {
+                try {
+                    const diamondCourses = [
+                        // All previous courses plus Diamond exclusives
+                        {
+                            id: 'institutional-order-flow',
+                            title: 'Institutional Order Flow Master Class',
+                            description: 'Master institutional trading patterns, order flow analysis, and market microstructure used by hedge funds and investment banks.',
+                            icon: 'fas fa-building',
+                            duration: '15 hours',
+                            level: 'Institutional',
+                            isDiamondExclusive: true
+                        },
+                        {
+                            id: 'quantitative-trading',
+                            title: 'Quantitative Trading Strategies',
+                            description: 'Build systematic trading strategies using advanced mathematical models and machine learning techniques.',
+                            icon: 'fas fa-brain',
+                            duration: '20 hours',
+                            level: 'PhD Level',
+                            isDiamondExclusive: true
+                        },
+                        {
+                            id: 'global-macro-trading',
+                            title: 'Global Macro Trading',
+                            description: 'Understand global economic trends, central bank policies, and macro trading strategies used by the world\'s top hedge funds.',
+                            icon: 'fas fa-globe-americas',
+                            duration: '12 hours',
+                            level: 'Expert',
+                            isDiamondExclusive: true
+                        },
+                        {
+                            id: 'advanced-risk-management',
+                            title: 'Advanced Risk Management',
+                            description: 'Learn institutional-level risk management techniques including VaR, stress testing, and portfolio optimization.',
+                            icon: 'fas fa-chart-area',
+                            duration: '10 hours',
+                            level: 'Professional',
+                            isDiamondExclusive: true
+                        },
+                        {
+                            id: 'ai-trading-systems',
+                            title: 'AI-Powered Trading Systems',
+                            description: 'Build and deploy artificial intelligence trading systems using machine learning and neural networks.',
+                            icon: 'fas fa-robot',
+                            duration: '25 hours',
+                            level: 'AI/ML Expert',
+                            isDiamondExclusive: true
+                        },
+                        {
+                            id: 'fund-management',
+                            title: 'Fund Management Strategies',
+                            description: 'Learn how to start and manage your own trading fund, including legal structures, investor relations, and performance tracking.',
+                            icon: 'fas fa-handshake',
+                            duration: '8 hours',
+                            level: 'Executive',
+                            isDiamondExclusive: true
+                        }
+                    ];
+
+                    // Get user's course progress
+                    const { data: courseProgress } = await this.supabase
+                        .from('user_course_progress')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id);
+
+                    const progressMap = {};
+                    courseProgress?.forEach(cp => {
+                        progressMap[cp.course_id] = cp;
+                    });
+
+                    const educationGrid = document.getElementById('educationGrid');
+                    educationGrid.innerHTML = diamondCourses.map(course => {
+                        const progress = progressMap[course.id];
+                        const progressPercentage = progress?.progress_percentage || 0;
+                        const isCompleted = progress?.completed || false;
+
+                        return `
+                            <div class="exclusive-card">
+                                <div class="exclusive-header">
+                                    <div class="exclusive-title">${course.title}</div>
+                                    <div class="exclusive-badge">💎 DIAMOND EXCLUSIVE</div>
+                                </div>
+                                <div style="text-align: center; margin-bottom: 1.5rem;">
+                                    <div style="width: 80px; height: 80px; background: var(--gradient-diamond); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; margin: 0 auto; box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4);">
+                                        <i class="${course.icon}"></i>
+                                    </div>
+                                </div>
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.6;">${course.description}</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-clock"></i>
+                                        <span>${course.duration}</span>
+                                    </div>
+                                    <div style="padding: 0.4rem 1rem; background: var(--gradient-diamond); color: white; border-radius: 15px; font-size: 0.7rem; font-weight: 700;">${isCompleted ? 'Completed' : course.level}</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${progressPercentage}%;"></div>
+                                </div>
+                                <button class="start-course-btn" onclick="startCourse('${course.id}')" ${isCompleted ? 'disabled' : ''}>
+                                    ${isCompleted ? 'Course Completed' : (progressPercentage > 0 ? 'Continue Master Class' : 'Start Master Class')}
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+
+                } catch (error) {
+                    console.error('Error loading education data:', error);
+                    document.getElementById('educationGrid').innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
+                            Failed to load Diamond courses. Please refresh the page.
+                        </div>
+                    `;
+                }
+            }
+
+            async loadInstitutionalData() {
+                try {
+                    const institutionalFeatures = [
+                        {
+                            title: 'Live Order Flow Analysis',
+                            description: 'Real-time institutional order flow data and analysis from major banks and hedge funds.',
+                            badge: 'REAL-TIME',
+                            stats: [
+                                { label: 'Data Feed', value: 'Live' },
+                                { label: 'Institutions', value: '50+' }
+                            ]
+                        },
+                        {
+                            title: 'Smart Money Tracker',
+                            description: 'AI-powered system tracking institutional money movements and positioning changes.',
+                            badge: 'AI-POWERED',
+                            stats: [
+                                { label: 'Algorithm', value: 'AI' },
+                                { label: 'Accuracy', value: '94%' }
+                            ]
+                        },
+                        {
+                            title: 'COT Report Analysis',
+                            description: 'Advanced Commitment of Traders report analysis with predictive modeling.',
+                            badge: 'PREMIUM',
+                            stats: [
+                                { label: 'Updates', value: 'Weekly' },
+                                { label: 'Markets', value: '100+' }
+                            ]
+                        }
+                    ];
+
+                    const institutionalGrid = document.getElementById('institutionalGrid');
+                    institutionalGrid.innerHTML = institutionalFeatures.map(feature => `
+                        <div class="exclusive-card">
+                            <div class="exclusive-header">
+                                <div class="exclusive-title">${feature.title}</div>
+                                <div class="exclusive-badge">${feature.badge}</div>
+                            </div>
+                            <div class="card-content">
+                                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${feature.description}</p>
+                                <div class="stats-grid">
+                                    ${feature.stats.map(stat => `
+                                        <div class="stat-item">
+                                            <div class="stat-value">${stat.value}</div>
+                                            <div class="stat-label">${stat.label}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <button class="start-course-btn" style="margin-top: 1rem;" onclick="launchInstitutional('${feature.title}')">
+                                    <i class="fas fa-chart-line"></i> Launch ${feature.title.split(' ')[0]}
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+
+                } catch (error) {
+                    console.error('Error loading institutional data:', error);
+                }
+            }
+
+            async loadDiamondSignals() {
+                try {
+                    // Get Diamond exclusive signals
+                    const { data: signals, error } = await this.supabase
+                        .from('trading_signals')
+                        .select('*')
+                        .eq('status', 'active')
+                        .contains('tier_access', ['diamond'])
+                        .order('created_at', { ascending: false })
+                        .limit(3);
+
+                    if (error) throw error;
+
+                    const signalsGrid = document.getElementById('signalsGrid');
+                    
+                    if (!signals || signals.length === 0) {
+                        signalsGrid.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-chart-line"></i>
+                                <h3>No Institutional Signals</h3>
+                                <p>New institutional trading signals will appear here when available.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    signalsGrid.innerHTML = signals.map(signal => {
+                        const confidence = signal.confidence || Math.floor(Math.random() * 10) + 90; // Higher confidence for Diamond
+                        
+                        return `
+                            <div class="exclusive-card" style="background: linear-gradient(145deg, #1e293b 0%, #334155 100%), linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 2px solid rgba(6, 182, 212, 0.3);">
+                                <div class="exclusive-header">
+                                    <div class="exclusive-title">${signal.symbol}</div>
+                                    <div class="exclusive-badge">💎 INSTITUTIONAL</div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">${signal.symbol}</div>
+                                    <div style="padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; ${signal.action === 'buy' ? 'background: var(--success-light); color: var(--success);' : 'background: var(--error-light); color: var(--error);'}">${signal.action.toUpperCase()}</div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0;">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Entry</div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">${signal.entry_price || 'Market'}</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Stop Loss</div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">${signal.stop_loss || 'N/A'}</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Take Profit</div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">${signal.take_profit || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid #06b6d4; border-radius: 15px; padding: 1.5rem; margin-top: 1.5rem;">
+                                    <div style="font-weight: 700; color: #06b6d4; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-building"></i>
+                                        Institutional Analysis
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <span style="font-size: 0.9rem; color: var(--text-muted);">Confidence Level</span>
+                                        <span style="font-weight: 700; color: #06b6d4;">${confidence}%</span>
+                                    </div>
+                                    <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; margin: 1rem 0; overflow: hidden;">
+                                        <div style="height: 100%; background: var(--gradient-diamond); border-radius: 4px; width: ${confidence}%; box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);"></div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">
+                                        ${signal.description || 'Institutional-grade analysis with order flow confirmation and smart money positioning.'}
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    // Log signal views
+                    for (const signal of signals) {
+                        await this.logSignalView(signal.id);
+                    }
+
+                } catch (error) {
+                    console.error('Error loading Diamond signals:', error);
+                    document.getElementById('signalsGrid').innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
+                            Failed to load institutional signals. Please refresh the page.
+                        </div>
+                    `;
+                }
+            }
+
+            async logSignalView(signalId) {
+                try {
+                    // Check if already viewed
+                    const { data: existingView } = await this.supabase
+                        .from('signal_views')
+                        .select('id')
+                        .eq('user_id', this.currentUser.id)
+                        .eq('signal_id', signalId)
+                        .single();
+
+                    if (!existingView) {
+                        await this.supabase
+                            .from('signal_views')
+                            .insert({
+                                user_id: this.currentUser.id,
+                                signal_id: signalId
+                            });
+                    }
+                } catch (error) {
+                    // Signal view logging is non-critical
+                    console.debug('Signal view logging error:', error);
+                }
+            }
+
+            async loadPersonalCoach() {
+                try {
+                    // Load Diamond personal coach info
+                    const coachInfo = {
+                        name: 'Dr. Michel Audu',
+                        title: 'Former Goldman Sachs Quantitative Analyst',
+                        description: 'PhD in Mathematical Finance from MIT. 20+ years at Goldman Sachs building quantitative trading systems. Specialized in algorithmic trading, risk management, and derivatives pricing.',
+                        rating: '5.0',
+                        specialties: ['Quantitative Analysis', 'Algorithmic Trading', 'Risk Management', 'Derivatives', 'Market Microstructure']
+                    };
+
+                    // Update overview
+                    const coachOverview = document.getElementById('coachOverview');
+                    coachOverview.innerHTML = `
+                        <p><strong>${coachInfo.name}</strong></p>
+                        <p>${coachInfo.title}</p>
+                        <p>Next 1-on-1 Session: <strong>Today 4:00 PM EST</strong></p>
+                        <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="stat-item">
+                                <div class="stat-value">24/7</div>
+                                <div class="stat-label">Access</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">5.0</div>
+                                <div class="stat-label">Rating</div>
+                            </div>
+                        </div>
+                        <button class="start-course-btn" style="margin-top: 1rem;" onclick="joinCoachSession()">
+                            <i class="fas fa-video"></i> Join Session
+                        </button>
+                    `;
+
+                    // Load full coach grid
+                    const coachGrid = document.getElementById('coachGrid');
+                    coachGrid.innerHTML = `
+                        <div class="dashboard-card exclusive" style="text-align: center;">
+                            <div style="width: 100px; height: 100px; background: var(--gradient-diamond); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; margin: 0 auto 1.5rem; box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4);">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-primary);">${coachInfo.name}</div>
+                            <div style="color: #06b6d4; margin-bottom: 1rem; font-weight: 600;">${coachInfo.title}</div>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${coachInfo.description}</p>
+                            
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin: 1.5rem 0;">
+                                ${coachInfo.specialties.map(specialty => `
+                                    <div style="background: rgba(6, 182, 212, 0.2); color: #06b6d4; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">${specialty}</div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value">6</div>
+                                    <div class="stat-label">Months Left</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">24</div>
+                                    <div class="stat-label">Sessions</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">5.0</div>
+                                    <div class="stat-label">Rating</div>
+                                </div>
+                            </div>
+                            
+                            <button style="padding: 1.2rem 2.5rem; background: var(--gradient-diamond); color: white; border: none; border-radius: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4); margin-top: 2rem;" onclick="startVideoCall()">
+                                <i class="fas fa-video"></i> Start Video Call
+                            </button>
+                        </div>
+
+                        <!-- Coaching Schedule -->
+                        <div class="dashboard-card diamond">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="card-title">Personal Coaching Schedule</div>
+                            </div>
+                            <div class="card-content">
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Advanced Options Strategies</strong><br>
+                                    <small style="color: var(--text-muted);">Today, 4:00 PM EST (60 min)</small>
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Portfolio Review & Optimization</strong><br>
+                                    <small style="color: var(--text-muted);">Wednesday, 3:00 PM EST (90 min)</small>
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Quantitative Strategy Development</strong><br>
+                                    <small style="color: var(--text-muted);">Friday, 2:00 PM EST (120 min)</small>
+                                </div>
+                                <button class="start-course-btn" onclick="scheduleSession()">
+                                    <i class="fas fa-calendar-plus"></i> Schedule Session
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Progress Tracking -->
+                        <div class="dashboard-card diamond">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="card-title">Coaching Progress</div>
+                            </div>
+                            <div class="card-content">
+                                <p>Personal development milestones and achievements</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%;"></div>
+                                </div>
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-value">18/22</div>
+                                        <div class="stat-label">Completed</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">A++</div>
+                                        <div class="stat-label">Grade</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                } catch (error) {
+                    console.error('Error loading personal coach data:', error);
+                }
+            }
+
+            async loadVIPCommunity() {
+                try {
+                    const communityInfo = {
+                        members: 127,
+                        onlineNow: 15,
+                        newPosts: 42,
+                        tradingRoom: 'Live'
+                    };
+
+                    // Update overview
+                    const communityOverview = document.getElementById('communityOverview');
+                    communityOverview.innerHTML = `
+                        <p>Exclusive Diamond member community</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">${communityInfo.members}</div>
+                                <div class="stat-label">Members</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${communityInfo.onlineNow}</div>
+                                <div class="stat-label">Online Now</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${communityInfo.newPosts}</div>
+                                <div class="stat-label">New Posts</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${communityInfo.tradingRoom}</div>
+                                <div class="stat-label">Trading Room</div>
+                            </div>
+                        </div>
+                        <button class="start-course-btn" style="margin-top: 1rem;" onclick="enterCommunity()">
+                            <i class="fas fa-comments"></i> Enter Community
+                        </button>
+                    `;
+
+                    // Load full community grid
+                    const communityFeatures = [
+                        {
+                            title: 'Diamond Trading Room',
+                            description: 'Exclusive trading room for Diamond members with real-time market discussions, trade ideas, and direct access to professional traders.',
+                            icon: 'fas fa-comments',
+                            members: '127 Elite Members'
+                        },
+                        {
+                            title: 'VIP Webinars',
+                            description: 'Weekly exclusive webinars featuring market makers, hedge fund managers, and institutional traders sharing their strategies and insights.',
+                            icon: 'fas fa-video',
+                            members: 'Weekly Exclusive Sessions'
+                        },
+                        {
+                            title: 'Networking Events',
+                            description: 'Exclusive networking events connecting Diamond members with industry professionals, hedge fund managers, and successful traders.',
+                            icon: 'fas fa-handshake',
+                            members: 'Monthly Meetups'
+                        }
+                    ];
+
+                    const communityGrid = document.getElementById('communityGrid');
+                    communityGrid.innerHTML = communityFeatures.map(feature => `
+                        <div class="exclusive-card" style="text-align: center;">
+                            <div style="width: 80px; height: 80px; background: var(--gradient-vip); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; margin: 0 auto 1.5rem; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);">
+                                <i class="${feature.icon}"></i>
+                            </div>
+                            <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">${feature.title}</div>
+                            <div style="background: var(--gradient-diamond); color: white; padding: 0.4rem 1rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1.5rem; display: inline-block;">${feature.members}</div>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${feature.description}</p>
+                            <button style="padding: 1rem 2rem; background: var(--gradient-diamond); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onclick="openCommunityFeature('${feature.title}')">
+                                <i class="${feature.icon}"></i> ${feature.title.includes('Room') ? 'Enter Trading Room' : feature.title.includes('Webinars') ? 'Watch Latest' : 'View Events'}
+                            </button>
+                        </div>
+                    `).join('');
+
+                } catch (error) {
+                    console.error('Error loading VIP community data:', error);
+                }
+            }
+
+            async loadEliteTools() {
+                try {
+                    const eliteTools = [
+                        {
+                            title: 'Bloomberg Terminal Access',
+                            description: 'Full access to Bloomberg Terminal with real-time market data, news, and analytics.',
+                            badge: 'INSTITUTIONAL',
+                            stats: [
+                                { label: 'Data', value: 'Real-time' },
+                                { label: 'Markets', value: 'Global' }
+                            ]
+                        },
+                        {
+                            title: 'FactSet Workstation',
+                            description: 'Professional-grade analytical platform used by institutional investors worldwide.',
+                            badge: 'PROFESSIONAL',
+                            stats: [
+                                { label: 'Suite', value: 'Analytics' },
+                                { label: 'Database', value: 'Research' }
+                            ]
+                        },
+                        {
+                            title: 'Proprietary AI Trading Bot',
+                            description: 'Custom AI trading bot developed exclusively for Diamond members with machine learning capabilities.',
+                            badge: 'EXCLUSIVE',
+                            stats: [
+                                { label: 'Powered', value: 'AI' },
+                                { label: 'Algorithms', value: 'Custom' }
+                            ]
+                        }
+                    ];
+
+                    const toolsGrid = document.getElementById('toolsGrid');
+                    toolsGrid.innerHTML = eliteTools.map(tool => `
+                        <div class="exclusive-card">
+                            <div class="exclusive-header">
+                                <div class="exclusive-title">${tool.title}</div>
+                                <div class="exclusive-badge">${tool.badge}</div>
+                            </div>
+                            <div class="card-content">
+                                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${tool.description}</p>
+                                <div class="stats-grid">
+                                    ${tool.stats.map(stat => `
+                                        <div class="stat-item">
+                                            <div class="stat-value">${stat.value}</div>
+                                            <div class="stat-label">${stat.label}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <button class="start-course-btn" style="margin-top: 1rem;" onclick="launchEliteTool('${tool.title}')">
+                                    <i class="fas fa-rocket"></i> Launch ${tool.title.split(' ')[0]}
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+
+                } catch (error) {
+                    console.error('Error loading elite tools:', error);
+                }
+            }
+
+            setupRealTimeUpdates() {
+                // Subscribe to real-time changes
+                this.supabase
+                    .channel('diamond-dashboard')
+                    .on('postgres_changes', 
+                        { event: '*', schema: 'public', table: 'trading_signals' },
+                        () => this.loadDiamondSignals()
+                    )
+                    .on('postgres_changes', 
+                        { event: '*', schema: 'public', table: 'user_subscriptions' },
+                        (payload) => {
+                            if (payload.new?.user_id === this.currentUser.id) {
+                                this.userSubscription = payload.new;
+                                this.updateSubscriptionStatus();
+                                this.loadUserProgress();
+                            }
+                        }
+                    )
+                    .subscribe();
+            }
+
+            showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = `toast ${type} show`;
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Global functions
+        let diamondDashboard;
+
+        window.switchTab = function(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked tab
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+
+            diamondDashboard.currentTab = tabName;
+        };
+
+        window.startCourse = function(courseId) {
+            diamondDashboard.showToast(`Starting Diamond exclusive course: ${courseId}`, 'success');
+            console.log('Starting course:', courseId);
+        };
+
+        window.launchInstitutional = function(feature) {
+            diamondDashboard.showToast(`Launching institutional feature: ${feature}`, 'success');
+            console.log('Launching institutional feature:', feature);
+        };
+
+        window.joinCoachSession = function() {
+            diamondDashboard.showToast('Joining personal coaching session...', 'success');
+        };
+
+        window.startVideoCall = function() {
+            diamondDashboard.showToast('Starting video call with personal coach...', 'success');
+        };
+
+        window.scheduleSession = function() {
+            diamondDashboard.showToast('Opening premium session scheduler...', 'success');
+        };
+
+        window.enterCommunity = function() {
+            diamondDashboard.showToast('Entering VIP Diamond community...', 'success');
+        };
+
+        window.openCommunityFeature = function(feature) {
+            diamondDashboard.showToast(`Opening ${feature}...`, 'success');
+        };
+
+        window.launchEliteTool = function(tool) {
+            diamondDashboard.showToast(`Launching elite tool: ${tool}...`, 'success');
+        };
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            diamondDashboard = new ProductionDiamondDashboard();
+        });
+
+        console.log('💎 Production Diamond Dashboard Script Loaded');
+    </script>
+</body>
+</html>

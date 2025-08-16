@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traders Helmet Academy - Your Gateway to Trading Excellence</title>
+    <meta name="description" content="Master forex, crypto, and stock trading with professional signals, education, and tools. Join thousands of successful traders at Traders Helmet Academy.">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            --accent-platinum: #8b5cf6;
+            --accent-diamond: #06b6d4;
+            
+            /* Neutral Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            --light-bg: #ffffff;
+            --light-surface: #f8fafc;
+            --light-card: #ffffff;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --text-primary-light: #1e293b;
+            --text-secondary-light: #475569;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --gradient-accent: linear-gradient(45deg, #f59e0b, #fbbf24);
+            
+            /* Animations */
+            --animation-fast: 0.2s;
+            --animation-normal: 0.3s;
+            --animation-slow: 0.5s;
+            
+            /* Spacing */
+            --section-padding: 6rem 0;
+            --container-padding: 0 2rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--container-padding);
+        }
+
+        .container-wide {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--container-padding);
+        }
+
+        /* ===================================
+           HEADER & NAVIGATION
+           =================================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: all var(--animation-normal) ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header.scrolled {
+            background: rgba(15, 23, 42, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-blue-light);
+            text-decoration: none;
+            transition: transform var(--animation-fast) ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 45px;
+   		 	height: 45px;
+			background-image: url('/assets/images/traders-helmet-logo.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--animation-fast) ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue-light);
+            transition: width var(--animation-normal) ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all var(--animation-fast) ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--primary-blue-light);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-blue-light);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ===================================
+           HERO SECTION
+           =================================== */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grad" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:rgba(59,130,246,0.1)"/><stop offset="100%" style="stop-color:transparent"/></radialGradient></defs><circle cx="200" cy="300" r="150" fill="url(%23grad)"/><circle cx="800" cy="200" r="100" fill="url(%23grad)"/><circle cx="600" cy="700" r="120" fill="url(%23grad)"/></svg>');
+            pointer-events: none;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text {
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .hero-visual {
+            position: relative;
+            animation: slideInRight 1s ease-out;
+        }
+
+        .trading-dashboard {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .dashboard-balance {
+            text-align: right;
+        }
+
+        .balance-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .balance-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .trading-chart {
+            height: 200px;
+            background: linear-gradient(45deg, #10b981, #059669);
+            border-radius: 12px;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-overlay {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-card:nth-child(1) {
+            top: 20%;
+            right: -10%;
+            animation-delay: 0s;
+        }
+
+        .floating-card:nth-child(2) {
+            bottom: 30%;
+            left: -10%;
+            animation-delay: 2s;
+        }
+
+        .floating-card:nth-child(3) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 4s;
+        }
+
+        /* ===================================
+           FEATURES SECTION
+           =================================== */
+        .features {
+            padding: var(--section-padding);
+            background: var(--dark-surface);
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform var(--animation-normal) ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===================================
+           SIGNALS SHOWCASE
+           =================================== */
+        .signals-showcase {
+            padding: var(--section-padding);
+            background: var(--dark-bg);
+        }
+
+        .signals-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .signals-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .signals-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .signals-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signals-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .signals-demo {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signal-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .signal-card.buy {
+            border-left-color: #10b981;
+        }
+
+        .signal-card.sell {
+            border-left-color: #ef4444;
+        }
+
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .signal-pair {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .signal-action {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .signal-action.buy {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .signal-action.sell {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .signal-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .signal-detail {
+            text-align: center;
+        }
+
+        .signal-label {
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .signal-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ===================================
+           PRICING SECTION
+           =================================== */
+        .pricing {
+            padding: var(--section-padding);
+            background: var(--dark-surface);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            border: 2px solid transparent;
+            transition: all var(--animation-normal) ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent-gold);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-accent);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tier-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .tier-icon.gold {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+
+        .tier-icon.platinum {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+        }
+
+        .tier-icon.diamond {
+            background: linear-gradient(135deg, #06b6d4, #67e8f9);
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tier-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-period {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .tier-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .tier-features .fa-check {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+        }
+
+        .btn-tier {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===================================
+           NEWS SECTION
+           =================================== */
+        .news {
+            padding: var(--section-padding);
+            background: var(--dark-bg);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .news-card {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform var(--animation-normal) ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .news-image {
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-blue-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .news-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .news-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .news-link {
+            color: var(--primary-blue-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .news-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===================================
+           FOOTER
+           =================================== */
+        .footer {
+            background: var(--dark-bg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            color: var(--text-primary);
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1rem;
+        }
+
+        .footer-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: transform var(--animation-fast) ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .footer-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--animation-fast) ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+
+        /* ===================================
+           ANIMATIONS
+           =================================== */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===================================
+           RESPONSIVE DESIGN
+           =================================== */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .signals-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features-grid,
+            .pricing-grid,
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===================================
+           SCROLL ANIMATIONS
+           =================================== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===================================
+           LOADING ANIMATION
+           =================================== */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top-color: var(--primary-blue-light);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <span>Traders Helmet Academy</span>
+                </a>
+
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#features" class="nav-link">Features</a></li>
+                    <li><a href="#signals" class="nav-link">Signals</a></li>
+                    <li><a href="#education" class="nav-link">Education</a></li>
+                    <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                    <li><a href="#news" class="nav-link">News</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="file:///C|/Users/CIPSLPro/Desktop/Traders Helme Academy/pages/auth/login.html" class="btn btn-outline">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                    <a href="/pages/auth/register.html" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        Get Started
+                    </a>
+                    <button class="mobile-menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+	<section class="top-banner">
+    <div class="banner-container">
+        <img src="file:///C|/Users/CIPSLPro/Desktop/Traders Helme Academy/assets/images/top-banner.jpg" alt="Traders Helmet Academy Banner" class="banner-image">
+        <div class="banner-overlay">
+            <div class="container">
+                <div class="banner-content">
+                    <h2 class="banner-title">Trade with Confidence</h2>
+                    <p class="banner-subtitle">Professional signals, expert analysis, proven results</p>
+                </div>
+          </div>
+      </div>
+    </div>
+</section>
+	
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Master Trading with Professional Signals & Education</h1>
+                    <p class="hero-subtitle">
+                        Join thousands of successful traders who trust Traders Helmet Academy for premium forex, crypto, 
+                        and stock market signals. Learn, trade, and profit with our expert guidance.
+                    </p>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="15000">0</span>
+                            <span class="stat-label">Active Traders</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="87">0</span>
+                            <span class="stat-label">Success Rate %</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="500">0</span>
+                            <span class="stat-label">Daily Signals</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="/pages/auth/register.html" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i>
+                            Start Free Trial
+                        </a>
+                        <a href="#features" class="btn btn-outline">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="trading-dashboard">
+                        <div class="dashboard-header">
+                            <div class="dashboard-title">Live Trading Dashboard</div>
+                            <div class="dashboard-balance">
+                                <div class="balance-label">Portfolio Value</div>
+                                <div class="balance-amount">$124,567</div>
+                            </div>
+                        </div>
+                        
+                        <div class="trading-chart">
+                            <div class="chart-overlay">
+                                <span>EUR/USD</span>
+                                <span>+2.4%</span>
+                            </div>
+                        </div>
+
+                        <div class="signal-card buy">
+                            <div class="signal-header">
+                                <div class="signal-pair">GBP/USD</div>
+                                <div class="signal-action buy">BUY</div>
+                            </div>
+                            <div class="signal-details">
+                                <div class="signal-detail">
+                                    <span class="signal-label">Entry</span>
+                                    <span class="signal-value">1.2650</span>
+                                </div>
+                                <div class="signal-detail">
+                                    <span class="signal-label">TP</span>
+                                    <span class="signal-value">1.2720</span>
+                                </div>
+                                <div class="signal-detail">
+                                    <span class="signal-label">SL</span>
+                                    <span class="signal-value">1.2580</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="floating-elements">
+                        <div class="floating-card">
+                            <i class="fas fa-chart-line" style="color: #10b981; margin-right: 0.5rem;"></i>
+                            <span style="font-size: 0.9rem; color: var(--text-primary);">+15.2%</span>
+                        </div>
+                        <div class="floating-card">
+                            <i class="fas fa-bell" style="color: #f59e0b; margin-right: 0.5rem;"></i>
+                            <span style="font-size: 0.9rem; color: var(--text-primary);">New Signal</span>
+                        </div>
+                        <div class="floating-card">
+                            <i class="fas fa-users" style="color: #3b82f6; margin-right: 0.5rem;"></i>
+                            <span style="font-size: 0.9rem; color: var(--text-primary);">1.2K Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Why Choose Traders Helmet Academy?</h2>
+                <p class="section-subtitle">
+                    Experience the most comprehensive trading platform with professional tools, 
+                    expert analysis, and proven strategies that deliver results.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Signals</h3>
+                    <p class="feature-description">
+                        Advanced algorithms analyze 100+ market indicators to generate 
+                        high-probability trading signals with 87% success rate.
+                    </p>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="feature-title">Expert Education</h3>
+                    <p class="feature-description">
+                        Learn from professional traders with 15+ years experience through 
+                        live webinars, courses, and one-on-one mentoring sessions.
+                    </p>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="feature-title">24/7 Market Coverage</h3>
+                    <p class="feature-description">
+                        Never miss an opportunity with round-the-clock analysis of 
+                        forex, crypto, and stock markets across all time zones.
+                    </p>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Mobile Trading App</h3>
+                    <p class="feature-description">
+                        Trade on the go with our powerful mobile app featuring real-time 
+                        notifications, advanced charts, and instant signal delivery.
+                    </p>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Risk Management</h3>
+                    <p class="feature-description">
+                        Protect your capital with our advanced risk management tools, 
+                        position sizing calculators, and stop-loss optimization.
+                    </p>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Trading Community</h3>
+                    <p class="feature-description">
+                        Connect with 15,000+ traders worldwide, share strategies, 
+                        and learn from the most successful traders in our community.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signals Showcase -->
+    <section class="signals-showcase" id="signals">
+        <div class="container">
+            <div class="signals-container">
+                <div class="signals-content animate-on-scroll">
+                    <h2>Premium Trading Signals That Deliver Results</h2>
+                    <p class="section-subtitle">
+                        Our expert analysts provide high-quality trading signals across multiple markets 
+                        with detailed entry points, stop losses, and take profit targets.
+                    </p>
+
+                    <ul class="signals-list">
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <span>Real-time signal delivery via app & email</span>
+                        </li>
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <span>Detailed market analysis with each signal</span>
+                        </li>
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <span>Risk management guidelines included</span>
+                        </li>
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <span>Performance tracking & statistics</span>
+                        </li>
+                        <li>
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                            <span>Multi-timeframe analysis available</span>
+                        </li>
+                    </ul>
+
+                    <a href="/pages/auth/register.html" class="btn btn-primary">
+                        <i class="fas fa-signal"></i>
+                        Get Premium Signals
+                    </a>
+                </div>
+
+                <div class="signals-demo animate-on-scroll">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-primary);">Live Signals Preview</h3>
+                    
+                    <div class="signal-card buy">
+                        <div class="signal-header">
+                            <div class="signal-pair">EUR/USD</div>
+                            <div class="signal-action buy">BUY</div>
+                        </div>
+                        <div class="signal-details">
+                            <div class="signal-detail">
+                                <span class="signal-label">Entry</span>
+                                <span class="signal-value">1.0950</span>
+                            </div>
+                            <div class="signal-detail">
+                                <span class="signal-label">TP</span>
+                                <span class="signal-value">1.1020</span>
+                            </div>
+                            <div class="signal-detail">
+                                <span class="signal-label">SL</span>
+                                <span class="signal-value">1.0880</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="signal-card sell">
+                        <div class="signal-header">
+                            <div class="signal-pair">BTC/USD</div>
+                            <div class="signal-action sell">SELL</div>
+                        </div>
+                        <div class="signal-details">
+                            <div class="signal-detail">
+                                <span class="signal-label">Entry</span>
+                                <span class="signal-value">45,200</span>
+                            </div>
+                            <div class="signal-detail">
+                                <span class="signal-label">TP</span>
+                                <span class="signal-value">43,800</span>
+                            </div>
+                            <div class="signal-detail">
+                                <span class="signal-label">SL</span>
+                                <span class="signal-value">46,500</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="signal-card buy">
+                        <div class="signal-header">
+                            <div class="signal-pair">GOLD</div>
+                            <div class="signal-action buy">BUY</div>
+                        </div>
+                        <div class="signal-details">
+                            <div class="signal-detail">
+                                <span class="signal-label">Entry</span>
+                                <span class="signal-value">1,985</span>
+                            </div>
+                            <div class="signal-detail">
+                                <span class="signal-label">TP</span>
+                                <span class="signal-value">2,015</span>
+                            </div>
+                            <div class="signal-detail">
+                                <span class="signal-label">SL</span>
+                                <span class="signal-value">1,965</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+	<section class="media-showcase">
+    <div class="container">
+        <div class="media-container">
+            <div class="media-banner">
+                <img src="../assets/images/adv-01.jpg" alt="Trading Success Stories" class="media-banner-image">
+                <div class="media-banner-overlay">
+                    <div class="media-banner-content">
+                        <h3>Success Stories</h3>
+                        <p>See how our members achieve consistent profits</p>
+                        <a href="/pages/testimonials/" class="btn btn-outline btn-sm">
+                            <i class="fas fa-users"></i>
+                            View Stories
+                        </a>
+                  </div>
+              </div>
+          </div>
+			
+		<section class="media-showcase">
+    <div class="container">
+        <div class="media-container">
+            <div class="media-banner">
+                <img src="../assets/images/adv-01.jpg" alt="Trading Success Stories" class="media-banner-image">
+                <div class="media-banner-overlay">
+                    <div class="media-banner-content">
+                        <h3>Success Stories</h3>
+                        <p>See how our members achieve consistent profits</p>
+                        <a href="/pages/testimonials/" class="btn btn-outline btn-sm">
+                            <i class="fas fa-users"></i>
+                            View Stories
+                        </a>
+                  </div>
+              </div>
+          </div>
+            
+            <div class="media-video">
+                <div class="video-container">
+                    <video controls poster="/assets/images/video-thumbnail.jpg" class="video-player">
+                      <source src="/assets/videos/intro.mp4" type="video/mp4">
+                      <source src="/assets/videos/intro.webm" type="video/webm">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-info">
+                        <h4>Master Trading Basics</h4>
+                        <p>Learn the fundamentals of successful trading in this comprehensive tutorial.</p>
+                        <div class="video-meta">
+                            <span><i class="fas fa-play"></i> 12.5K views</span>
+                            <span><i class="fas fa-clock"></i> 15 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+	
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Choose Your Trading Plan</h2>
+                <p class="section-subtitle">
+                    Select the perfect plan for your trading journey. All plans include our core features 
+                    with varying levels of access and premium tools.
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card animate-on-scroll">
+                    <div class="tier-icon gold">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3 class="tier-name">Gold</h3>
+                    <div class="tier-price">$300</div>
+                    <div class="tier-period">per 2 month</div>
+                    
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> Free Education</li>
+                        <li><i class="fas fa-check"></i> Cryptocurrency Education</li>
+                        <li><i class="fas fa-check"></i> Binary Options (HFX)</li>
+                        <li><i class="fas fa-check"></i> Forex Master Class on Pivot Strategy</li>
+                        <li><i class="fas fa-check"></i> Forex Master Class on Rhombus Strategy</li>
+                        <li><i class="fas fa-check"></i> 2 Months Mentorship</li>
+						<li><i class="fas fa-check"></i> Free Signals</li>
+                    </ul>
+                    
+                    <a href="/pages/payment/subscribe.html?plan=gold" class="btn btn-tier btn-outline">
+                        Start Gold Plan
+                    </a>
+                </div>
+
+                <div class="pricing-card featured animate-on-scroll">
+                    <div class="tier-icon platinum">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="tier-name">Platinum</h3>
+                    <div class="tier-price">$600</div>
+                    <div class="tier-period">per 3 month</div>
+                    
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> Free Education</li>
+                        <li><i class="fas fa-check"></i> Cryptocurrency Education</li>
+                        <li><i class="fas fa-check"></i> Binary Options (HFX)</li>
+                        <li><i class="fas fa-check"></i> Forex Master Class on Pivot Strategy</li>
+                        <li><i class="fas fa-check"></i> Forex Master Class on Rhombus Strategy</li>
+                        <li><i class="fas fa-check"></i> 3 Months Mentorship</li>
+						<li><i class="fas fa-check"></i> Free Trading Software Tools</li>
+						<li><i class="fas fa-check"></i> Free Signals</li>
+                    </ul>
+                    
+                    <a href="/pages/payment/subscribe.html?plan=platinum" class="btn btn-tier btn-primary">
+                        Start Platinum Plan
+                    </a>
+                </div>
+
+                <div class="pricing-card animate-on-scroll">
+                    <div class="tier-icon diamond">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="tier-name">Diamond</h3>
+                    <div class="tier-price">$1300</div>
+                    <div class="tier-period">per 6 month</div>
+                    
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> Free Education</li>
+                        <li><i class="fas fa-check"></i> Cryptocurrency Education</li>
+                        <li><i class="fas fa-check"></i> Binary Options (HFX)</li>
+                        <li><i class="fas fa-check"></i> Forex Master Class on Pivot Strategy</li>
+                        <li><i class="fas fa-check"></i> Forex Master Class on Rhombus Strategy</li>
+						<li><i class="fas fa-check"></i> Forex Master Class on Institutional Order Flow</li>
+                        <li><i class="fas fa-check"></i> 6 Months Mentorship</li>
+						<li><i class="fas fa-check"></i> Free Trading Software Tools</li>
+						<li><i class="fas fa-check"></i> Free Signals</li>
+                    </ul>
+                    
+                    <a href="/pages/payment/subscribe.html?plan=diamond" class="btn btn-tier btn-primary">
+                        Start Diamond Plan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news" id="news">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Latest Market News & Analysis</h2>
+                <p class="section-subtitle">
+                    Stay informed with the latest market developments, expert analysis, 
+                    and trading insights from our professional team.
+                </p>
+            </div>
+
+            <div class="news-grid">
+                <article class="news-card animate-on-scroll">
+                    <div class="news-image">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span><i class="fas fa-calendar"></i> Dec 15, 2024</span>
+                            <span><i class="fas fa-tag"></i> Forex</span>
+                        </div>
+                        <h3 class="news-title">Federal Reserve Decision Impacts USD Strength</h3>
+                        <p class="news-excerpt">
+                            The latest Fed meeting results show a dovish stance, affecting dollar pairs 
+                            across major markets. Our analysis reveals potential trading opportunities...
+                        </p>
+                        <a href="#" class="news-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="news-card animate-on-scroll">
+                    <div class="news-image">
+                        <i class="fab fa-bitcoin"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span><i class="fas fa-calendar"></i> Dec 14, 2024</span>
+                            <span><i class="fas fa-tag"></i> Crypto</span>
+                        </div>
+                        <h3 class="news-title">Bitcoin Breaks Key Resistance at $45,000</h3>
+                        <p class="news-excerpt">
+                            BTC shows strong bullish momentum after breaking through critical resistance. 
+                            Technical indicators suggest potential for further upside movement...
+                        </p>
+                        <a href="#" class="news-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="news-card animate-on-scroll">
+                    <div class="news-image">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span><i class="fas fa-calendar"></i> Dec 13, 2024</span>
+                            <span><i class="fas fa-tag"></i> Commodities</span>
+                        </div>
+                        <h3 class="news-title">Gold Rally Continues Amid Market Uncertainty</h3>
+                        <p class="news-excerpt">
+                            Precious metals show strength as investors seek safe-haven assets. 
+                            Gold targets $2,000 level with strong institutional backing...
+                        </p>
+                        <a href="#" class="news-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="/pages/news/" class="btn btn-outline">
+                    <i class="fas fa-newspaper"></i>
+                    View All News
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <span>Traders Helmet Academy</span>
+                    </a>
+                    <p class="footer-description">
+                        Your gateway to trading excellence. We provide professional trading signals, 
+                        education, and tools to help you succeed in the financial markets.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="/pages/dashboard/">Dashboard</a></li>
+                        <li><a href="/pages/signals/">Trading Signals</a></li>
+                        <li><a href="#education">Education</a></li>
+                        <li><a href="/pages/news/">Market News</a></li>
+                        <li><a href="/pages/profile/">My Account</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="/pages/legal/terms.html">Terms of Service</a></li>
+                        <li><a href="/pages/legal/privacy.html">Privacy Policy</a></li>
+                        <li><a href="/pages/legal/disclaimer.html">Risk Disclaimer</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#about">About Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#support">Live Chat</a></li>
+                        <li><a href="mailto:support@tradershelmet.com">Email Support</a></li>
+                        <li><a href="tel:+1234567890">Phone Support</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Traders Helmet Academy. All rights reserved. Trading involves risk and may not be suitable for all investors.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Page Loader
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('pageLoader');
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        });
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth Scrolling for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('[data-count]');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    counter.textContent = Math.floor(current);
+                    
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    }
+                }, 16);
+            });
+        }
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    
+                    // Animate counters when hero section is visible
+                    if (entry.target.classList.contains('hero')) {
+                        setTimeout(animateCounters, 500);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Observe hero section for counter animation
+        observer.observe(document.querySelector('.hero'));
+
+        // Mobile Menu Toggle (basic implementation)
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        mobileToggle.addEventListener('click', () => {
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Performance optimization: Debounce scroll events
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Optimized scroll handler
+        const optimizedScrollHandler = debounce(() => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }, 10);
+
+        window.addEventListener('scroll', optimizedScrollHandler);
+
+        // Preload critical resources
+        function preloadResources() {
+            const criticalResources = [
+                '/assets/css/main.css',
+                '/assets/js/main.js',
+                '/login.html'
+            ];
+
+            criticalResources.forEach(resource => {
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = resource;
+                document.head.appendChild(link);
+            });
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            preloadResources();
+            
+            // Add any other initialization code here
+            console.log('🚀 Traders Helmet Academy Homepage Loaded');
+        });
+    </script>
+</body>
+</html>

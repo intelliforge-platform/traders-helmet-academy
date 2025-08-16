@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traders Helmet Academy - Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Your Config File -->
+    <script src="/assets/js/config.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo {
+            color: #f7f3e9;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            color: #f7f3e9;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .tier-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .tier-btn {
+            padding: 12px 24px;
+            border: 2px solid transparent;
+            background: rgba(247, 243, 233, 0.1);
+            color: #f7f3e9;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .tier-btn:hover::before {
+            left: 100%;
+        }
+
+        .tier-btn.active {
+            background: linear-gradient(135deg, #f7f3e9 0%, #e8dcc6 100%);
+            color: #1e3c72;
+            border-color: #f7f3e9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .tier-btn.gold.active {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+            color: #1a1a1a;
+        }
+
+        .tier-btn.platinum.active {
+            background: linear-gradient(135deg, #e5e4e2 0%, #c0c0c0 100%);
+            color: #1a1a1a;
+        }
+
+        .tier-btn.diamond.active {
+            background: linear-gradient(135deg, #b9f2ff 0%, #4facfe 100%);
+            color: #1a1a1a;
+        }
+
+        .tier-btn.admin.active {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+            color: white;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .login-form {
+            display: none;
+            background: rgba(247, 243, 233, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-form.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .tier-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-title {
+            color: #1e3c72;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .form-input:focus + .input-icon {
+            color: #2a5298;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 25px;
+        }
+
+        .forgot-password a {
+            color: #2a5298;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .forgot-password a:hover {
+            color: #1e3c72;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 60, 114, 0.3);
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+        }
+
+        .signup-link a {
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: #1e3c72;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(247, 243, 233, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 10%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            right: 20%;
+            animation-delay: 1s;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            color: #10b981;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .warning-message {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid #f59e0b;
+            color: #f59e0b;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .warning-message.show {
+            display: block;
+        }
+
+        .resend-verification {
+            margin-top: 10px;
+        }
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: #2a5298;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        .btn-link:hover {
+            color: #1e3c72;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .tier-selector {
+                gap: 10px;
+            }
+
+            .tier-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+
+            .login-form {
+                padding: 30px 20px;
+                margin: 0 10px;
+            }
+
+            .tier-icon {
+                font-size: 2.5rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tier-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tier-btn {
+                width: 200px;
+            }
+        }
+
+        /* Tier-specific styling */
+        .gold-form .tier-icon {
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .platinum-form .tier-icon {
+            background: linear-gradient(135deg, #e5e4e2, #c0c0c0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .diamond-form .tier-icon {
+            background: linear-gradient(135deg, #b9f2ff, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-form .tier-icon {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        .login-btn.loading .loading-spinner {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+				
+                <a href='../../assets/images/traders-helmet-logo.png'/assets/images/traders-helmet-logo.png"></a> Traders Helmet Academy
+            </div>
+            <div class="tagline">Your Gateway to Trading Excellence</div>
+        </div>
+
+        <div class="tier-selector">
+            <button class="tier-btn gold active" data-tier="gold">
+                <i class="fas fa-coins"></i> Gold
+            </button>
+            <button class="tier-btn platinum" data-tier="platinum">
+                <i class="fas fa-gem"></i> Platinum
+            </button>
+            <button class="tier-btn diamond" data-tier="diamond">
+                <i class="fas fa-crown"></i> Diamond
+            </button>
+            <button class="tier-btn admin" data-tier="admin">
+                <i class="fas fa-user-shield"></i> Admin
+            </button>
+        </div>
+
+        <div class="login-container">
+            <!-- Gold Login Form -->
+            <form class="login-form gold-form active" id="gold-form">
+                <div class="form-header">
+                    <div class="tier-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h2 class="form-title">Gold Membership</h2>
+                    <p class="form-subtitle">Access essential trading signals</p>
+                </div>
+
+                <div class="error-message" id="gold-error"></div>
+                <div class="success-message" id="gold-success"></div>
+                <div class="warning-message" id="gold-warning">
+                    <div id="gold-warning-text"></div>
+                    <div class="resend-verification" id="gold-resend" style="display: none;">
+                        <button type="button" class="btn-link" onclick="resendVerification('gold')">
+                            Resend Verification Email
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" class="form-input" name="email" placeholder="Email Address" required>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-input" name="password" placeholder="Password" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#" onclick="handleForgotPassword('gold')">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <div class="loading-spinner"></div>
+                    <span>Login to Gold Account</span>
+                </button>
+
+                <div class="signup-link">
+                    Don't have an account? <a href='register.html'>Sign up</a>
+                </div>
+            </form>
+
+            <!-- Platinum Login Form -->
+            <form class="login-form platinum-form" id="platinum-form">
+                <div class="form-header">
+                    <div class="tier-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h2 class="form-title">Platinum Membership</h2>
+                    <p class="form-subtitle">Advanced trading insights & tools</p>
+                </div>
+
+                <div class="error-message" id="platinum-error"></div>
+                <div class="success-message" id="platinum-success"></div>
+                <div class="warning-message" id="platinum-warning">
+                    <div id="platinum-warning-text"></div>
+                    <div class="resend-verification" id="platinum-resend" style="display: none;">
+                        <button type="button" class="btn-link" onclick="resendVerification('platinum')">
+                            Resend Verification Email
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" class="form-input" name="email" placeholder="Email Address" required>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-input" name="password" placeholder="Password" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#" onclick="handleForgotPassword('platinum')">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <div class="loading-spinner"></div>
+                    <span>Login to Platinum Account</span>
+                </button>
+
+                <div class="signup-link">
+                    Don't have an account? <a href="/register.html">Sign up</a>
+                </div>
+            </form>
+
+            <!-- Diamond Login Form -->
+            <form class="login-form diamond-form" id="diamond-form">
+                <div class="form-header">
+                    <div class="tier-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h2 class="form-title">Diamond Membership</h2>
+                    <p class="form-subtitle">Premium access to all features</p>
+                </div>
+
+                <div class="error-message" id="diamond-error"></div>
+                <div class="success-message" id="diamond-success"></div>
+                <div class="warning-message" id="diamond-warning">
+                    <div id="diamond-warning-text"></div>
+                    <div class="resend-verification" id="diamond-resend" style="display: none;">
+                        <button type="button" class="btn-link" onclick="resendVerification('diamond')">
+                            Resend Verification Email
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" class="form-input" name="email" placeholder="Email Address" required>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-input" name="password" placeholder="Password" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#" onclick="handleForgotPassword('diamond')">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <div class="loading-spinner"></div>
+                    <span>Login to Diamond Account</span>
+                </button>
+
+                <div class="signup-link">
+                    Don't have an account? <a href="/register.html">Sign up</a>
+                </div>
+            </form>
+
+            <!-- Admin Login Form -->
+            <form class="login-form admin-form" id="admin-form">
+                <div class="form-header">
+                    <div class="tier-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h2 class="form-title">Admin Portal</h2>
+                    <p class="form-subtitle">Administrative access & controls</p>
+                </div>
+
+                <div class="error-message" id="admin-error"></div>
+                <div class="success-message" id="admin-success"></div>
+                <div class="warning-message" id="admin-warning">
+                    <div id="admin-warning-text"></div>
+                    <div class="resend-verification" id="admin-resend" style="display: none;">
+                        <button type="button" class="btn-link" onclick="resendVerification('admin')">
+                            Resend Verification Email
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" class="form-input" name="email" placeholder="Admin Email" required>
+                    <i class="fas fa-user-shield input-icon"></i>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-input" name="password" placeholder="Admin Password" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <div class="loading-spinner"></div>
+                    <span>Access Admin Portal</span>
+                </button>
+
+                <div class="signup-link">
+                    <a href="#support">Contact Support</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail,
+            sendEmailVerification,
+            onAuthStateChanged
+        } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+
+        // Global variables
+        let auth = null;
+        let currentUser = null;
+
+        // Initialize Firebase when config is ready
+        function initializeFirebase() {
+            if (!window.THA_CONFIG?.firebase) {
+                console.error('❌ Firebase configuration not found');
+                return;
+            }
+
+            try {
+                const app = initializeApp(window.THA_CONFIG.firebase);
+                auth = getAuth(app);
+                console.log('🔥 Firebase initialized successfully');
+
+                // Listen for auth state changes
+                onAuthStateChanged(auth, (user) => {
+                    if (user && user.emailVerified) {
+                        console.log('🔄 User already logged in, redirecting...');
+                        window.location.href = '../payment/checkout.html';
+                    }
+                });
+
+            } catch (error) {
+                console.error('❌ Firebase initialization failed:', error);
+            }
+        }
+
+        // Wait for config to load
+        if (window.THA_CONFIG) {
+            initializeFirebase();
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(initializeFirebase, 100);
+            });
+        }
+
+        // Make Firebase functions globally available
+        window.firebaseAuth = {
+            signIn: async (email, password) => {
+                if (!auth) throw new Error('Firebase not initialized');
+                return await signInWithEmailAndPassword(auth, email, password);
+            },
+            resetPassword: async (email) => {
+                if (!auth) throw new Error('Firebase not initialized');
+                return await sendPasswordResetEmail(auth, email);
+            },
+            resendVerification: async () => {
+                if (!auth || !currentUser) throw new Error('No user found');
+                return await sendEmailVerification(currentUser);
+            }
+        };
+    </script>
+
+    <script>
+        // ===================================================
+        // FIREBASE LOGIN INTEGRATION
+        // ===================================================
+
+        class LoginSystem {
+            constructor() {
+                this.currentTier = 'gold';
+                this.init();
+                console.log('🔧 Login system initialized with Firebase');
+            }
+
+            init() {
+                this.setupTierSelector();
+                this.setupFormHandlers();
+                this.checkUrlParams();
+            }
+
+            checkUrlParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('verified') === '1') {
+                    this.showSuccess('gold', 'Email verified successfully! You can now sign in.');
+                }
+                if (urlParams.get('error') === 'verification_failed') {
+                    this.showError('gold', 'Email verification failed. Please try again or contact support.');
+                }
+            }
+
+            setupTierSelector() {
+                const tierButtons = document.querySelectorAll('.tier-btn');
+                const loginForms = document.querySelectorAll('.login-form');
+
+                tierButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove active class from all buttons and forms
+                        tierButtons.forEach(btn => btn.classList.remove('active'));
+                        loginForms.forEach(form => form.classList.remove('active'));
+
+                        // Add active class to clicked button
+                        button.classList.add('active');
+                        this.currentTier = button.getAttribute('data-tier');
+
+                        // Show corresponding form
+                        const targetForm = document.getElementById(`${this.currentTier}-form`);
+                        if (targetForm) {
+                            targetForm.classList.add('active');
+                        }
+                    });
+                });
+            }
+
+            setupFormHandlers() {
+                const loginForms = document.querySelectorAll('.login-form');
+                
+                loginForms.forEach(form => {
+                    form.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        await this.handleLogin(form);
+                    });
+                });
+            }
+
+            async handleLogin(form) {
+                const formData = new FormData(form);
+                const email = formData.get('email');
+                const password = formData.get('password');
+                const tier = form.id.replace('-form', '');
+
+                // Clear previous messages
+                this.clearMessages(tier);
+
+                // Validate input
+                if (!email || !password) {
+                    this.showError(tier, 'Please enter both email and password');
+                    return;
+                }
+
+                if (!this.isValidEmail(email)) {
+                    this.showError(tier, 'Please enter a valid email address');
+                    return;
+                }
+
+                // Show loading state
+                this.setLoadingState(form, true);
+
+                try {
+                    console.log(`🔄 Starting Firebase login for ${tier}:`, email);
+
+                    // Attempt login with Firebase
+                    const userCredential = await window.firebaseAuth.signIn(email.trim().toLowerCase(), password);
+                    const user = userCredential.user;
+                    currentUser = user;
+
+                    console.log('✅ Firebase login successful:', user.uid);
+                    console.log('📧 Email verified:', user.emailVerified);
+
+                    // Check if email is verified
+                    if (!user.emailVerified) {
+                        console.warn('⚠️ Email not verified');
+                        this.showEmailNotVerified(tier, user);
+                        return;
+                    }
+
+                    // Handle successful login
+                    await this.handleSuccessfulLogin(user, tier);
+
+                } catch (error) {
+                    console.error('❌ Login error:', error);
+                    this.handleLoginError(error, tier);
+                } finally {
+                    this.setLoadingState(form, false);
+                }
+            }
+
+            async handleSuccessfulLogin(user, requestedTier) {
+                try {
+                    // Get user's tier from your database or use default
+                    const userTier = await this.getUserTier(user.uid) || 'gold';
+                    const userRole = await this.getUserRole(user.uid) || 'user';
+
+                    console.log(`User tier: ${userTier}, Role: ${userRole}, Requested: ${requestedTier}`);
+
+                    // Check if user has access to requested tier
+                    if (!this.hasAccessToTier(userTier, userRole, requestedTier)) {
+                        this.showError(requestedTier, `You don't have access to ${requestedTier} tier. Your current tier is ${userTier}.`);
+                        
+                        // Redirect to user's actual tier after a delay
+                        setTimeout(() => {
+                            window.location.href = this.getTierDashboardUrl(userTier, userRole);
+                        }, 3000);
+                        return;
+                    }
+
+                    // Store user data for quick access
+                    const userData = {
+                        id: user.uid,
+                        email: user.email,
+                        displayName: user.displayName,
+                        emailVerified: user.emailVerified,
+                        tier: userTier,
+                        role: userRole
+                    };
+                    
+                    localStorage.setItem('tha_firebase_user', JSON.stringify(userData));
+
+                    // Show success message
+                    this.showSuccess(requestedTier, `Welcome back, ${user.displayName || user.email}!`);
+
+                    // Redirect to appropriate dashboard
+                    setTimeout(() => {
+                        const redirectUrl = this.getTierDashboardUrl(requestedTier, userRole);
+                        window.location.href = redirectUrl;
+                    }, 1500);
+
+                } catch (error) {
+                    console.error('Post-login error:', error);
+                    // Still redirect to dashboard on error
+                    setTimeout(() => {
+                        window.location.href = '/pages/dashboard/';
+                    }, 1500);
+                }
+            }
+
+            showEmailNotVerified(tier, user) {
+                const message = `Please verify your email address before signing in. We sent a verification email to ${user.email}.`;
+                const warningElement = document.getElementById(`${tier}-warning`);
+                const warningText = document.getElementById(`${tier}-warning-text`);
+                const resendElement = document.getElementById(`${tier}-resend`);
+                
+                warningText.textContent = message;
+                resendElement.style.display = 'block';
+                warningElement.classList.add('show');
+            }
+
+            async getUserTier(userId) {
+                // Implement your logic to get user tier from database
+                // For now, return default tier
+                return 'gold';
+            }
+
+            async getUserRole(userId) {
+                // Implement your logic to get user role from database
+                // For now, return default role
+                return 'user';
+            }
+
+            hasAccessToTier(userTier, userRole, requestedTier) {
+                // Admin role can access anything
+                if (userRole === 'admin') {
+                    return true;
+                }
+
+                // Admin tier requires admin role
+                if (requestedTier === 'admin' && userRole !== 'admin') {
+                    return false;
+                }
+
+                // Tier hierarchy: gold < platinum < diamond
+                const tierLevels = {
+                    'gold': 1,
+                    'platinum': 2,
+                    'diamond': 3
+                };
+
+                const userLevel = tierLevels[userTier] || 0;
+                const requestedLevel = tierLevels[requestedTier] || 0;
+
+                return userLevel >= requestedLevel;
+            }
+
+            getTierDashboardUrl(tier, role) {
+                if (role === 'admin' && tier === 'admin') {
+                    return '/pages/admin/dashboard.html';
+                }
+
+                const dashboardUrls = {
+                    'gold': '/pages/dashboard/gold.html',
+                    'platinum': '/pages/dashboard/platinum.html',
+                    'diamond': '/pages/dashboard/diamond.html'
+                };
+
+                return dashboardUrls[tier] || '/pages/dashboard/';
+            }
+
+            handleLoginError(error, tier) {
+                let message = 'Login failed. Please try again.';
+
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        message = 'No account found with this email address. Please check your email or create a new account.';
+                        break;
+                    case 'auth/wrong-password':
+                        message = 'Incorrect password. Please try again or reset your password.';
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'Please enter a valid email address.';
+                        break;
+                    case 'auth/user-disabled':
+                        message = 'This account has been disabled. Please contact support.';
+                        break;
+                    case 'auth/too-many-requests':
+                        message = 'Too many failed login attempts. Please wait a few minutes and try again.';
+                        break;
+                    case 'auth/network-request-failed':
+                        message = 'Network error. Please check your internet connection and try again.';
+                        break;
+                    default:
+                        message = error.message || 'An unexpected error occurred.';
+                }
+
+                this.showError(tier, message);
+            }
+
+            // Utility methods
+            isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            setLoadingState(form, loading) {
+                const button = form.querySelector('.login-btn');
+                const spinner = button.querySelector('.loading-spinner');
+                const text = button.querySelector('span');
+                
+                button.disabled = loading;
+                button.classList.toggle('loading', loading);
+                
+                if (loading) {
+                    text.textContent = 'Logging in...';
+                } else {
+                    const tier = form.id.replace('-form', '');
+                    const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
+                    text.textContent = tier === 'admin' ? 'Access Admin Portal' : `Login to ${tierName} Account`;
+                }
+            }
+
+            showError(tier, message) {
+                const errorElement = document.getElementById(`${tier}-error`);
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.classList.add('show');
+                }
+            }
+
+            showSuccess(tier, message) {
+                const successElement = document.getElementById(`${tier}-success`);
+                if (successElement) {
+                    successElement.textContent = message;
+                    successElement.classList.add('show');
+                }
+            }
+
+            clearMessages(tier) {
+                const errorElement = document.getElementById(`${tier}-error`);
+                const successElement = document.getElementById(`${tier}-success`);
+                const warningElement = document.getElementById(`${tier}-warning`);
+                
+                if (errorElement) errorElement.classList.remove('show');
+                if (successElement) successElement.classList.remove('show');
+                if (warningElement) warningElement.classList.remove('show');
+            }
+        }
+
+        // Global functions for forgot password and resend verification
+        async function handleForgotPassword(tier) {
+            const form = document.getElementById(`${tier}-form`);
+            const emailInput = form.querySelector('input[type="email"]');
+            const email = emailInput.value.trim();
+            
+            if (!email) {
+                alert('Please enter your email address first.');
+                return;
+            }
+            
+            try {
+                await window.firebaseAuth.resetPassword(email);
+                alert(`Password reset email sent to ${email}. Please check your inbox.`);
+            } catch (error) {
+                console.error('Password reset error:', error);
+                let message = 'Failed to send password reset email.';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        message = 'No account found with this email address.';
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'Please enter a valid email address.';
+                        break;
+                    default:
+                        message = error.message;
+                }
+                
+                alert(message);
+            }
+        }
+
+        async function resendVerification(tier) {
+            try {
+                await window.firebaseAuth.resendVerification();
+                alert('Verification email sent! Please check your inbox.');
+                
+                // Hide the warning message
+                const warningElement = document.getElementById(`${tier}-warning`);
+                warningElement.classList.remove('show');
+                
+            } catch (error) {
+                console.error('Resend verification error:', error);
+                alert('Failed to send verification email. Please try again.');
+            }
+        }
+
+        // Initialize login system when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginSystem();
+        });
+
+        // Add input focus animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.style.transform = 'scale(1.02)';
+                });
+
+                input.addEventListener('blur', () => {
+                    input.parentElement.style.transform = 'scale(1)';
+                });
+            });
+        });
+
+        // Floating elements animation enhancement
+        document.addEventListener('DOMContentLoaded', () => {
+            const floatingElements = document.querySelectorAll('.floating-element');
+            floatingElements.forEach((element, index) => {
+                element.addEventListener('mouseenter', () => {
+                    element.style.transform = 'scale(1.2)';
+                    element.style.opacity = '0.3';
+                });
+
+                element.addEventListener('mouseleave', () => {
+                    element.style.transform = 'scale(1)';
+                    element.style.opacity = '0.1';
+                });
+            });
+        });
+
+        // Add particle effect on button hover
+        document.addEventListener('DOMContentLoaded', () => {
+            const tierButtons = document.querySelectorAll('.tier-btn');
+            tierButtons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.style.boxShadow = '0 8px 25px rgba(247, 243, 233, 0.3)';
+                });
+
+                button.addEventListener('mouseleave', () => {
+                    if (!button.classList.contains('active')) {
+                        button.style.boxShadow = 'none';
+                    }
+                });
+            });
+        });
+
+        console.log('🔧 Traders Helmet Academy Firebase Login System Loaded Successfully!');
+    </script>
+</body>
+</html>

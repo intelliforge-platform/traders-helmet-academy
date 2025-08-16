@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Traders Helmet Academy</title>
+    <meta name="description" content="Privacy Policy for Traders Helmet Academy - Learn how we collect, use, and protect your personal information.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #0ea5e9;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: url('../../tradershelmetlogo.png') no-repeat center center;
+            background-size: contain;
+            border-radius: 8px;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .last-updated {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--primary-blue-light);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .toc {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc h3 {
+            color: var(--primary-blue-light);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+
+        .toc-list li {
+            counter-increment: toc-counter;
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-list a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toc-list a:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .toc-list a::before {
+            content: counter(toc-counter) ". ";
+            color: var(--primary-blue-light);
+            font-weight: 600;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem 0;
+        }
+
+        .section h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .section p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .section ul, .section ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .highlight-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--accent-gold);
+            margin: 0 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box h4 {
+            color: #ef4444;
+            margin: 0 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .info-box h4 {
+            color: #0ea5e9;
+            margin: 0 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .success-box h4 {
+            color: var(--success);
+            margin: 0 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--primary-blue-light);
+            font-weight: 600;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .contact-info {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-info h3 {
+            color: var(--primary-blue-light);
+            margin-bottom: 1rem;
+        }
+
+        .contact-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-item i {
+            color: var(--primary-blue-light);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient-primary);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .gdpr-rights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .right-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .right-card h4 {
+            color: var(--primary-blue-light);
+            margin: 0 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .consent-toggle {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .toggle-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 24px;
+            background: #374151;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--primary-blue-light);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .content {
+                padding: 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .contact-details {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .brand-text {
+                font-size: 1.2rem;
+            }
+
+            .gdpr-rights {
+                grid-template-columns: 1fr;
+            }
+
+            .toggle-options {
+                grid-template-columns: 1fr;
+            }
+
+            .data-table {
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Privacy Policy</span>
+        </div>
+
+        <a href="/" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+
+        <div class="header">
+            <div class="brand-header">
+                <div class="logo-icon"></div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </div>
+            
+            <h1 class="page-title">Privacy Policy</h1>
+            <p class="last-updated">Last Updated: December 2024</p>
+            <p style="color: var(--text-secondary); max-width: 700px; margin: 0 auto;">
+                Your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.
+            </p>
+        </div>
+
+        <div class="content">
+            <div class="toc">
+                <h3><i class="fas fa-list"></i> Table of Contents</h3>
+                <ol class="toc-list">
+                    <li><a href="#overview">Privacy Overview</a></li>
+                    <li><a href="#information-collection">Information We Collect</a></li>
+                    <li><a href="#information-use">How We Use Your Information</a></li>
+                    <li><a href="#information-sharing">Information Sharing and Disclosure</a></li>
+                    <li><a href="#data-security">Data Security</a></li>
+                    <li><a href="#data-retention">Data Retention</a></li>
+                    <li><a href="#cookies">Cookies and Tracking</a></li>
+                    <li><a href="#your-rights">Your Privacy Rights</a></li>
+                    <li><a href="#children">Children's Privacy</a></li>
+                    <li><a href="#international">International Users</a></li>
+                    <li><a href="#third-party">Third-Party Services</a></li>
+                    <li><a href="#marketing">Marketing Communications</a></li>
+                    <li><a href="#changes">Changes to This Policy</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ol>
+            </div>
+
+            <div class="section" id="overview">
+                <h2><i class="fas fa-shield-alt"></i> 1. Privacy Overview</h2>
+                
+                <p>Traders Helmet Academy ("we," "us," or "our") is committed to protecting your privacy and ensuring you have a positive experience on our website and while using our services.</p>
+
+                <div class="success-box">
+                    <h4><i class="fas fa-check-circle"></i> Our Commitment</h4>
+                    <p>We are committed to being transparent about what data we collect, how we use it, and providing you with control over your personal information.</p>
+                </div>
+
+                <h3>Key Principles</h3>
+                <ul>
+                    <li><strong>Transparency:</strong> We clearly explain what data we collect and why</li>
+                    <li><strong>Purpose Limitation:</strong> We only use data for specified, legitimate purposes</li>
+                    <li><strong>Data Minimization:</strong> We collect only what's necessary for our services</li>
+                    <li><strong>Security:</strong> We implement appropriate technical and organizational measures</li>
+                    <li><strong>User Control:</strong> You have rights over your personal data</li>
+                </ul>
+
+                <h3>Scope of This Policy</h3>
+                <p>This Privacy Policy applies to:</p>
+                <ul>
+                    <li>Our website at tradershelmetacademy.com</li>
+                    <li>Our trading education platform and services</li>
+                    <li>Email communications and newsletters</li>
+                    <li>Customer support interactions</li>
+                    <li>Payment processing for subscriptions</li>
+                </ul>
+            </div>
+
+            <div class="section" id="information-collection">
+                <h2><i class="fas fa-database"></i> 2. Information We Collect</h2>
+                
+                <h3>Personal Information You Provide</h3>
+                <p>We collect information you voluntarily provide to us, including:</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Data Types</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Account Information</td>
+                            <td>Name, email address, phone number, country</td>
+                            <td>Account creation, identity verification, communication</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Information</td>
+                            <td>Billing address, payment method details</td>
+                            <td>Processing subscriptions and payments</td>
+                        </tr>
+                        <tr>
+                            <td>Profile Information</td>
+                            <td>Avatar, preferences, trading experience level</td>
+                            <td>Personalizing your experience</td>
+                        </tr>
+                        <tr>
+                            <td>Communication Data</td>
+                            <td>Messages, support tickets, feedback</td>
+                            <td>Providing customer support, improving services</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Information Automatically Collected</h3>
+                <p>When you use our platform, we automatically collect certain information:</p>
+                
+                <h4>Technical Information</h4>
+                <ul>
+                    <li>IP address and location data</li>
+                    <li>Browser type and version</li>
+                    <li>Operating system</li>
+                    <li>Device identifiers</li>
+                    <li>Screen resolution and device type</li>
+                </ul>
+
+                <h4>Usage Information</h4>
+                <ul>
+                    <li>Pages visited and time spent</li>
+                    <li>Features used and click patterns</li>
+                    <li>Login times and frequency</li>
+                    <li>Course progress and completion</li>
+                    <li>Search queries and preferences</li>
+                </ul>
+
+                <h4>Communication Metadata</h4>
+                <ul>
+                    <li>Chat message timestamps</li>
+                    <li>Email open and click rates</li>
+                    <li>Support ticket history</li>
+                    <li>Notification preferences</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4><i class="fas fa-info-circle"></i> Data Collection Methods</h4>
+                    <p>We collect this information through cookies, log files, web beacons, and similar tracking technologies. You can control many of these through your browser settings.</p>
+                </div>
+            </div>
+
+            <div class="section" id="information-use">
+                <h2><i class="fas fa-cogs"></i> 3. How We Use Your Information</h2>
+                
+                <p>We use the collected information for various purposes, always within the scope of our legitimate business interests and your consent where required.</p>
+
+                <h3>Core Service Provision</h3>
+                <ul>
+                    <li><strong>Account Management:</strong> Creating and maintaining your account</li>
+                    <li><strong>Service Delivery:</strong> Providing access to educational content and features</li>
+                    <li><strong>Payment Processing:</strong> Handling subscriptions and billing</li>
+                    <li><strong>Customer Support:</strong> Responding to inquiries and resolving issues</li>
+                    <li><strong>Authentication:</strong> Verifying your identity and securing your account</li>
+                </ul>
+
+                <h3>Service Improvement</h3>
+                <ul>
+                    <li><strong>Analytics:</strong> Understanding how our platform is used</li>
+                    <li><strong>Personalization:</strong> Customizing content and recommendations</li>
+                    <li><strong>Feature Development:</strong> Building new tools and capabilities</li>
+                    <li><strong>Performance Optimization:</strong> Improving site speed and reliability</li>
+                    <li><strong>User Experience:</strong> Enhancing interface design and usability</li>
+                </ul>
+
+                <h3>Communication</h3>
+                <ul>
+                    <li><strong>Service Notifications:</strong> Account updates, security alerts</li>
+                    <li><strong>Educational Content:</strong> Course updates, new materials</li>
+                    <li><strong>Marketing Communications:</strong> Promotional offers (with consent)</li>
+                    <li><strong>Technical Updates:</strong> Platform changes, maintenance notices</li>
+                    <li><strong>Legal Communications:</strong> Policy updates, compliance notices</li>
+                </ul>
+
+                <h3>Legal and Security</h3>
+                <ul>
+                    <li><strong>Fraud Prevention:</strong> Detecting and preventing fraudulent activity</li>
+                    <li><strong>Security Monitoring:</strong> Protecting against unauthorized access</li>
+                    <li><strong>Legal Compliance:</strong> Meeting regulatory requirements</li>
+                    <li><strong>Risk Management:</strong> Assessing and mitigating business risks</li>
+                    <li><strong>Dispute Resolution:</strong> Handling complaints and legal issues</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h4><i class="fas fa-balance-scale"></i> Legal Basis for Processing</h4>
+                    <p>We process your personal data based on:</p>
+                    <ul style="margin: 0.5rem 0;">
+                        <li><strong>Contract:</strong> To provide services you've subscribed to</li>
+                        <li><strong>Legitimate Interest:</strong> For business operations and improvement</li>
+                        <li><strong>Consent:</strong> For marketing communications and optional features</li>
+                        <li><strong>Legal Obligation:</strong> To comply with applicable laws</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" id="information-sharing">
+                <h2><i class="fas fa-share-alt"></i> 4. Information Sharing and Disclosure</h2>
+                
+                <p>We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:</p>
+
+                <h3>Service Providers</h3>
+                <p>We work with trusted third-party service providers who assist us in operating our platform:</p>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Service Type</th>
+                            <th>Provider Examples</th>
+                            <th>Data Shared</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Payment Processing</td>
+                            <td>Stripe, PayPal</td>
+                            <td>Billing information, transaction data</td>
+                        </tr>
+                        <tr>
+                            <td>Cloud Hosting</td>
+                            <td>Supabase, AWS</td>
+                            <td>Account data, usage information</td>
+                        </tr>
+                        <tr>
+                            <td>Email Services</td>
+                            <td>SendGrid, Mailgun</td>
+                            <td>Email addresses, communication preferences</td>
+                        </tr>
+                        <tr>
+                            <td>Analytics</td>
+                            <td>Google Analytics</td>
+                            <td>Anonymized usage data</td>
+                        </tr>
+                        <tr>
+                            <td>Customer Support</td>
+                            <td>Zendesk, Intercom</td>
+                            <td>Contact information, support history</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Legal Requirements</h3>
+                <p>We may disclose your information when required by law or in good faith belief that such action is necessary to:</p>
+                <ul>
+                    <li>Comply with legal processes or government requests</li>
+                    <li>Enforce our Terms of Service</li>
+                    <li>Protect the rights, property, or safety of our users or the public</li>
+                    <li>Investigate and prevent fraud or other illegal activities</li>
+                    <li>Respond to claims of intellectual property infringement</li>
+                </ul>
+
+                <h3>Business Transfers</h3>
+                <p>In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of the transaction. We will:</p>
+                <ul>
+                    <li>Provide notice before your information is transferred</li>
+                    <li>Ensure the new entity honors this Privacy Policy</li>
+                    <li>Give you the option to delete your account before transfer</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Data Protection Agreements</h4>
+                    <p>All third-party service providers are bound by strict data protection agreements and are required to implement appropriate security measures.</p>
+                </div>
+            </div>
+
+            <div class="section" id="data-security">
+                <h2><i class="fas fa-lock"></i> 5. Data Security</h2>
+                
+                <p>We implement comprehensive security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+
+                <h3>Technical Safeguards</h3>
+                <ul>
+                    <li><strong>Encryption:</strong> Data encrypted in transit (TLS/SSL) and at rest (AES-256)</li>
+                    <li><strong>Access Controls:</strong> Multi-factor authentication and role-based access</li>
+                    <li><strong>Network Security:</strong> Firewalls, intrusion detection, and monitoring</li>
+                    <li><strong>Secure Development:</strong> Regular security audits and vulnerability testing</li>
+                    <li><strong>Data Backup:</strong> Regular backups with encryption and secure storage</li>
+                </ul>
+
+                <h3>Organizational Safeguards</h3>
+                <ul>
+                    <li><strong>Employee Training:</strong> Regular security awareness and privacy training</li>
+                    <li><strong>Access Limitation:</strong> Need-to-know basis for data access</li>
+                    <li><strong>Background Checks:</strong> Screening for employees with data access</li>
+                    <li><strong>Incident Response:</strong> Defined procedures for security breaches</li>
+                    <li><strong>Vendor Management:</strong> Security assessments for all service providers</li>
+                </ul>
+
+                <h3>Security Monitoring</h3>
+                <ul>
+                    <li>24/7 security monitoring and alerting</li>
+                    <li>Regular penetration testing and vulnerability assessments</li>
+                    <li>Automated threat detection and response</li>
+                    <li>Security incident logging and analysis</li>
+                    <li>Compliance with industry security standards</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4><i class="fas fa-shield-alt"></i> Security Standards</h4>
+                    <p>We follow industry best practices including OWASP guidelines, ISO 27001 principles, and SOC 2 Type II standards where applicable.</p>
+                </div>
+
+                <h3>Data Breach Response</h3>
+                <p>In the unlikely event of a data breach, we will:</p>
+                <ol>
+                    <li>Contain the breach and assess the scope within 24 hours</li>
+                    <li>Notify relevant authorities within 72 hours if required</li>
+                    <li>Inform affected users without undue delay</li>
+                    <li>Provide clear information about the breach and response measures</li>
+                    <li>Take steps to prevent future occurrences</li>
+                </ol>
+            </div>
+
+            <div class="section" id="data-retention">
+                <h2><i class="fas fa-calendar-alt"></i> 6. Data Retention</h2>
+                
+                <p>We retain your personal information only as long as necessary to fulfill the purposes outlined in this Privacy Policy, comply with legal obligations, resolve disputes, and enforce our agreements.</p>
+
+                <h3>Retention Periods</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Data Category</th>
+                            <th>Retention Period</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Account Information</td>
+                            <td>Duration of account + 3 years</td>
+                            <td>Service provision, legal compliance</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Records</td>
+                            <td>7 years after last transaction</td>
+                            <td>Tax and accounting requirements</td>
+                        </tr>
+                        <tr>
+                            <td>Communication Data</td>
+                            <td>2 years from last interaction</td>
+                            <td>Customer support, service improvement</td>
+                        </tr>
+                        <tr>
+                            <td>Usage Analytics</td>
+                            <td>26 months (anonymized)</td>
+                            <td>Platform optimization, trend analysis</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing Data</td>
+                            <td>Until consent withdrawn</td>
+                            <td>Marketing communications</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Data Deletion Process</h3>
+                <p>When data reaches the end of its retention period, we:</p>
+                <ul>
+                    <li>Securely delete personal identifiers</li>
+                    <li>Anonymize data where possible for statistical purposes</li>
+                    <li>Remove data from all backup systems</li>
+                    <li>Verify complete deletion through audit processes</li>
+                    <li>Maintain deletion logs for compliance purposes</li>
+                </ul>
+
+                <h3>Account Deletion</h3>
+                <p>When you delete your account:</p>
+                <ul>
+                    <li>Personal information is removed within 30 days</li>
+                    <li>Transactional records may be retained for legal compliance</li>
+                    <li>Anonymized usage data may be retained for analytics</li>
+                    <li>You'll receive confirmation of deletion completion</li>
+                </ul>
+            </div>
+
+            <div class="section" id="cookies">
+                <h2><i class="fas fa-cookie-bite"></i> 7. Cookies and Tracking</h2>
+                
+                <p>We use cookies and similar tracking technologies to enhance your experience, analyze usage, and provide personalized content.</p>
+
+                <h3>Types of Cookies We Use</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Cookie Type</th>
+                            <th>Purpose</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Essential Cookies</td>
+                            <td>Basic site functionality, security, authentication</td>
+                            <td>Session/1 year</td>
+                        </tr>
+                        <tr>
+                            <td>Performance Cookies</td>
+                            <td>Site analytics, error tracking, performance monitoring</td>
+                            <td>2 years</td>
+                        </tr>
+                        <tr>
+                            <td>Functional Cookies</td>
+                            <td>User preferences, language settings, features</td>
+                            <td>1 year</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing Cookies</td>
+                            <td>Personalized ads, conversion tracking</td>
+                            <td>1-2 years</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Cookie Management</h3>
+                <div class="consent-toggle">
+                    <h4><i class="fas fa-sliders-h"></i> Manage Your Cookie Preferences</h4>
+                    <p>You can control which cookies we use by adjusting your preferences below:</p>
+                    
+                    <div class="toggle-options">
+                        <div class="toggle-item">
+                            <span>Essential Cookies (Required)</span>
+                            <div class="toggle-switch active" data-required="true"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span>Performance Cookies</span>
+                            <div class="toggle-switch active" data-type="performance"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span>Functional Cookies</span>
+                            <div class="toggle-switch active" data-type="functional"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span>Marketing Cookies</span>
+                            <div class="toggle-switch" data-type="marketing"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Third-Party Cookies</h3>
+                <p>We may allow selected third parties to place cookies for:</p>
+                <ul>
+                    <li>Google Analytics - Website performance and usage analysis</li>
+                    <li>Stripe - Payment processing and fraud prevention</li>
+                    <li>Intercom - Customer support chat functionality</li>
+                    <li>Facebook Pixel - Advertising measurement (if enabled)</li>
+                </ul>
+
+                <h3>Browser Settings</h3>
+                <p>You can also control cookies through your browser settings:</p>
+                <ul>
+                    <li>Block all cookies or specific types</li>
+                    <li>Delete existing cookies</li>
+                    <li>Set preferences for future visits</li>
+                    <li>Enable/disable JavaScript</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Cookie Limitations</h4>
+                    <p>Disabling essential cookies may affect site functionality. Some features may not work properly without performance or functional cookies.</p>
+                </div>
+            </div>
+
+            <div class="section" id="your-rights">
+                <h2><i class="fas fa-user-shield"></i> 8. Your Privacy Rights</h2>
+                
+                <p>Depending on your location, you may have certain rights regarding your personal information. We respect these rights and provide tools to exercise them.</p>
+
+                <div class="gdpr-rights">
+                    <div class="right-card">
+                        <h4><i class="fas fa-eye"></i> Right to Access</h4>
+                        <p>Request a copy of the personal data we hold about you, including how it's used and who it's shared with.</p>
+                    </div>
+                    
+                    <div class="right-card">
+                        <h4><i class="fas fa-edit"></i> Right to Rectification</h4>
+                        <p>Request correction of inaccurate or incomplete personal information in your account.</p>
+                    </div>
+                    
+                    <div class="right-card">
+                        <h4><i class="fas fa-trash"></i> Right to Erasure</h4>
+                        <p>Request deletion of your personal data, subject to legal retention requirements.</p>
+                    </div>
+                    
+                    <div class="right-card">
+                        <h4><i class="fas fa-ban"></i> Right to Restrict</h4>
+                        <p>Request limitation of processing your personal data in certain circumstances.</p>
+                    </div>
+                    
+                    <div class="right-card">
+                        <h4><i class="fas fa-download"></i> Right to Portability</h4>
+                        <p>Request your personal data in a structured, machine-readable format for transfer.</p>
+                    </div>
+                    
+                    <div class="right-card">
+                        <h4><i class="fas fa-times-circle"></i> Right to Object</h4>
+                        <p>Object to processing of your personal data for marketing or legitimate interests.</p>
+                    </div>
+                </div>
+
+                <h3>How to Exercise Your Rights</h3>
+                <p>To exercise any of these rights, please:</p>
+                <ol>
+                    <li>Contact us at privacy@tradershelmetacademy.com</li>
+                    <li>Include your full name and account email address</li>
+                    <li>Specify which right(s) you want to exercise</li>
+                    <li>Provide any additional information to help us process your request</li>
+                </ol>
+
+                <h3>Response Timeline</h3>
+                <ul>
+                    <li><strong>Acknowledgment:</strong> Within 3 business days</li>
+                    <li><strong>Simple Requests:</strong> Within 30 days</li>
+                    <li><strong>Complex Requests:</strong> Up to 60 days (with notification)</li>
+                    <li><strong>Urgent Requests:</strong> Prioritized when legally required</li>
+                </ul>
+
+                <h3>Verification Process</h3>
+                <p>To protect your privacy, we may need to verify your identity before processing requests. This may involve:</p>
+                <ul>
+                    <li>Confirming your email address</li>
+                    <li>Answering security questions</li>
+                    <li>Providing account-related information</li>
+                    <li>Additional verification for sensitive requests</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4><i class="fas fa-info-circle"></i> Data Protection Authority</h4>
+                    <p>If you're not satisfied with our response to your privacy request, you have the right to lodge a complaint with your local data protection authority.</p>
+                </div>
+            </div>
+
+            <div class="section" id="children">
+                <h2><i class="fas fa-child"></i> 9. Children's Privacy</h2>
+                
+                <p>Our service is not intended for individuals under the age of 18. We do not knowingly collect personal information from children under 18.</p>
+
+                <h3>Age Verification</h3>
+                <ul>
+                    <li>Account registration requires confirmation of being 18 or older</li>
+                    <li>We may request age verification for suspicious accounts</li>
+                    <li>Parental consent is required for users under 18</li>
+                    <li>Educational content includes age-appropriate disclaimers</li>
+                </ul>
+
+                <h3>Parental Rights</h3>
+                <p>If a parent or guardian becomes aware that their child has provided personal information without permission, please contact us immediately. We will:</p>
+                <ul>
+                    <li>Verify the parental relationship</li>
+                    <li>Delete the child's account and information</li>
+                    <li>Provide confirmation of deletion</li>
+                    <li>Implement additional safeguards if needed</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Trading Education Warning</h4>
+                    <p>Trading and financial education involves complex concepts and substantial risks that may not be suitable for minors. Adult supervision is strongly recommended.</p>
+                </div>
+            </div>
+
+            <div class="section" id="international">
+                <h2><i class="fas fa-globe"></i> 10. International Users</h2>
+                
+                <p>We serve users globally and comply with applicable data protection laws in different jurisdictions.</p>
+
+                <h3>Data Transfers</h3>
+                <p>Your information may be transferred to and processed in countries other than your own. We ensure adequate protection through:</p>
+                <ul>
+                    <li>Standard Contractual Clauses (SCCs) for EU data transfers</li>
+                    <li>Adequacy decisions where available</li>
+                    <li>Certification schemes and codes of conduct</li>
+                    <li>Additional safeguards for high-risk countries</li>
+                </ul>
+
+                <h3>Regional Compliance</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Region</th>
+                            <th>Applicable Laws</th>
+                            <th>Additional Rights</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>European Union</td>
+                            <td>GDPR</td>
+                            <td>Data portability, right to be forgotten</td>
+                        </tr>
+                        <tr>
+                            <td>California, USA</td>
+                            <td>CCPA/CPRA</td>
+                            <td>Right to know, delete, opt-out of sale</td>
+                        </tr>
+                        <tr>
+                            <td>United Kingdom</td>
+                            <td>UK GDPR</td>
+                            <td>Similar to EU GDPR rights</td>
+                        </tr>
+                        <tr>
+                            <td>Canada</td>
+                            <td>PIPEDA</td>
+                            <td>Access, correction, withdrawal of consent</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Data Localization</h3>
+                <p>For certain jurisdictions with data localization requirements:</p>
+                <ul>
+                    <li>We maintain local data centers where required</li>
+                    <li>Personal data may be stored within the country/region</li>
+                    <li>Cross-border transfers are limited and protected</li>
+                    <li>Local legal representatives may be appointed</li>
+                </ul>
+            </div>
+
+            <div class="section" id="third-party">
+                <h2><i class="fas fa-link"></i> 11. Third-Party Services</h2>
+                
+                <p>Our platform may contain links to or integrate with third-party services. This Privacy Policy does not apply to those external services.</p>
+
+                <h3>Integrated Services</h3>
+                <ul>
+                    <li><strong>Payment Processors:</strong> Stripe, PayPal - have their own privacy policies</li>
+                    <li><strong>Social Media:</strong> Sharing buttons may track your activity</li>
+                    <li><strong>Analytics:</strong> Google Analytics with IP anonymization</li>
+                    <li><strong>Support Tools:</strong> Live chat and helpdesk services</li>
+                    <li><strong>Educational Tools:</strong> Video players and interactive content</li>
+                </ul>
+
+                <h3>Your Responsibility</h3>
+                <p>When using third-party services through our platform:</p>
+                <ul>
+                    <li>Review their privacy policies independently</li>
+                    <li>Understand what data they collect</li>
+                    <li>Configure privacy settings on their platforms</li>
+                    <li>Contact them directly for privacy concerns</li>
+                </ul>
+
+                <h3>Recommendations</h3>
+                <p>We recommend you:</p>
+                <ul>
+                    <li>Read privacy policies of all services you use</li>
+                    <li>Use strong, unique passwords for all accounts</li>
+                    <li>Enable two-factor authentication where available</li>
+                    <li>Regularly review connected app permissions</li>
+                </ul>
+            </div>
+
+            <div class="section" id="marketing">
+                <h2><i class="fas fa-envelope"></i> 12. Marketing Communications</h2>
+                
+                <p>We may send you marketing communications about our services, educational content, and special offers, but only with your consent.</p>
+
+                <h3>Types of Communications</h3>
+                <ul>
+                    <li><strong>Educational Newsletters:</strong> Trading tips, market insights, course updates</li>
+                    <li><strong>Promotional Emails:</strong> Special offers, discounts, new tier announcements</li>
+                    <li><strong>Product Updates:</strong> New features, platform improvements</li>
+                    <li><strong>Event Invitations:</strong> Webinars, live trading sessions</li>
+                </ul>
+
+                <h3>Consent and Opt-Out</h3>
+                <p>You can control marketing communications by:</p>
+                <ul>
+                    <li>Adjusting preferences in your account settings</li>
+                    <li>Clicking "unsubscribe" in any marketing email</li>
+                    <li>Contacting our support team</li>
+                    <li>Updating your communication preferences</li>
+                </ul>
+
+                <h3>Legitimate Interest</h3>
+                <p>We may send certain communications based on legitimate interest:</p>
+                <ul>
+                    <li>Service announcements and updates</li>
+                    <li>Security and account notifications</li>
+                    <li>Legal and compliance communications</li>
+                    <li>Course completion certificates and achievements</li>
+                </ul>
+
+                <div class="success-box">
+                    <h4><i class="fas fa-check-circle"></i> Easy Unsubscribe</h4>
+                    <p>You can opt out of marketing emails at any time with one click. This won't affect essential service communications like security alerts or billing notifications.</p>
+                </div>
+            </div>
+
+            <div class="section" id="changes">
+                <h2><i class="fas fa-edit"></i> 13. Changes to This Policy</h2>
+                
+                <p>We may update this Privacy Policy periodically to reflect changes in our practices, technology, or legal requirements.</p>
+
+                <h3>Notification Process</h3>
+                <p>When we make significant changes, we will:</p>
+                <ul>
+                    <li>Update the "Last Updated" date at the top of this policy</li>
+                    <li>Send email notifications to registered users</li>
+                    <li>Display a prominent notice on our website</li>
+                    <li>Provide a summary of key changes</li>
+                    <li>Allow time for review before changes take effect</li>
+                </ul>
+
+                <h3>Types of Changes</h3>
+                <ul>
+                    <li><strong>Minor Updates:</strong> Clarifications, contact information, formatting</li>
+                    <li><strong>Material Changes:</strong> New data uses, sharing practices, rights</li>
+                    <li><strong>Legal Updates:</strong> Compliance with new regulations</li>
+                    <li><strong>Service Changes:</strong> New features affecting privacy</li>
+                </ul>
+
+                <h3>Your Options</h3>
+                <p>If you don't agree with policy changes:</p>
+                <ul>
+                    <li>Contact us to discuss concerns</li>
+                    <li>Adjust your privacy settings</li>
+                    <li>Delete your account before changes take effect</li>
+                    <li>Exercise your data subject rights</li>
+                </ul>
+
+                <h3>Version History</h3>
+                <p>We maintain records of previous policy versions. You can request information about changes by contacting our privacy team.</p>
+            </div>
+
+            <div class="section" id="contact">
+                <h2><i class="fas fa-envelope"></i> 14. Contact Us</h2>
+                
+                <p>If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please don't hesitate to contact us.</p>
+
+                <div class="contact-info">
+                    <h3>Privacy Team</h3>
+                    <p>Our dedicated privacy team is here to help with all your data protection needs.</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>privacy@tradershelmetacademy.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope-open"></i>
+                            <span>support@tradershelmetacademy.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+234 (0) 123 456 7890</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Response within 3 business days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Data Protection Officer</h3>
+                <p>For complex privacy matters or regulatory inquiries:</p>
+                <ul>
+                    <li><strong>Email:</strong> dpo@tradershelmetacademy.com</li>
+                    <li><strong>Role:</strong> Independent privacy oversight and compliance</li>
+                    <li><strong>Response Time:</strong> Within 5 business days</li>
+                    <li><strong>Languages:</strong> English, Spanish, French</li>
+                </ul>
+
+                <h3>Mailing Address</h3>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <strong>Traders Helmet Academy</strong><br>
+                    Privacy Department<br>
+                    123 Trading Street<br>
+                    Lagos, Nigeria<br>
+                    ZIP Code: 100001
+                </div>
+
+                <div class="info-box">
+                    <h4><i class="fas fa-lightbulb"></i> Quick Response Tips</h4>
+                    <p>For faster assistance, please include:</p>
+                    <ul style="margin: 0.5rem 0;">
+                        <li>Your account email address</li>
+                        <li>Specific privacy concern or request</li>
+                        <li>Any relevant screenshots or documentation</li>
+                        <li>Preferred communication method</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="/" class="back-button">
+                <i class="fas fa-home"></i>
+                Return to Homepage
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Cookie preference toggles
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            if (!toggle.dataset.required) {
+                toggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    
+                    // In production, this would update actual cookie preferences
+                    const type = this.dataset.type;
+                    const enabled = this.classList.contains('active');
+                    
+                    console.log(`Cookie preference updated: ${type} = ${enabled}`);
+                    
+                    // You would integrate this with your actual cookie management system
+                    // updateCookiePreferences(type, enabled);
+                });
+            }
+        });
+
+        // Smooth scrolling for table of contents
+        document.querySelectorAll('.toc-list a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in TOC
+        function updateTOC() {
+            const sections = document.querySelectorAll('.section');
+            const tocLinks = document.querySelectorAll('.toc-list a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSection = section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                const href = link.getAttribute('href').substring(1);
+                if (href === currentSection) {
+                    link.style.color = 'var(--primary-blue-light)';
+                    link.style.fontWeight = '600';
+                } else {
+                    link.style.color = 'var(--text-secondary)';
+                    link.style.fontWeight = '400';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateTOC);
+        window.addEventListener('load', updateTOC);
+    </script>
+</body>
+</html>

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - Choose Your Trading Tier | Traders Helmet Academy</title>
+    <meta name="description" content="Choose the perfect trading plan for your needs. Professional signals, education, and support starting at just $29/month.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            --dark-border: #475569;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --warning: #f59e0b;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-platinum: linear-gradient(135deg, #e5e7eb 0%, #9ca3af 100%);
+            --gradient-diamond: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background-image: url('/assets/images/traders-helmet-logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 12px;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .login-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Billing Toggle */
+        .billing-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 3rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            max-width: 400px;
+            margin: 3rem auto;
+        }
+
+        .billing-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .billing-label.active {
+            color: var(--primary-blue-light);
+        }
+
+        .billing-toggle {
+            position: relative;
+            width: 70px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .billing-toggle.active {
+            background: var(--primary-blue-light);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 29px;
+            height: 29px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .billing-toggle.active .toggle-slider {
+            transform: translateX(35px);
+        }
+
+        .save-badge {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        /* Pricing Cards */
+        .pricing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .pricing-card {
+            background: var(--gradient-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary-blue-light);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 2rem;
+            border-radius: 0 0 12px 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .plan-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            color: white;
+        }
+
+        .plan-icon.gold { background: var(--gradient-gold); }
+        .plan-icon.platinum { background: var(--gradient-platinum); }
+        .plan-icon.diamond { background: var(--gradient-diamond); }
+
+        .plan-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .plan-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .price-display {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .price-period {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .price-yearly {
+            display: none;
+        }
+
+        .billing-toggle.active ~ .pricing-grid .price-monthly {
+            display: none;
+        }
+
+        .billing-toggle.active ~ .pricing-grid .price-yearly {
+            display: flex;
+        }
+
+        .savings-badge {
+            background: var(--success-light);
+            color: var(--success);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--success);
+        }
+
+        /* Features List */
+        .features-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .feature-unavailable {
+            opacity: 0.5;
+        }
+
+        .feature-unavailable .feature-icon {
+            background: var(--text-muted);
+        }
+
+        /* CTA Button */
+        .cta-button {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .cta-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--primary-blue-light);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+
+        .faq-item {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        .faq-answer-content {
+            padding: 0 2rem 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Guarantee Section */
+        .guarantee-section {
+            background: var(--success-light);
+            border: 2px solid var(--success);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .guarantee-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .guarantee-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--success);
+        }
+
+        .guarantee-text {
+            color: var(--success);
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+
+            .pricing-container {
+                padding: 0 1rem 2rem;
+            }
+
+            .faq-question {
+                padding: 1rem 1.5rem;
+            }
+
+            .faq-answer-content {
+                padding: 0 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="brand-header">
+                <div class="logo-icon"></div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/signals" class="nav-link">Signals</a>
+                <a href="/education" class="nav-link">Education</a>
+                <a href="/pricing" class="nav-link">Pricing</a>
+                <a href="/login.html" class="login-btn">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">Choose Your Trading Tier</h1>
+        <p class="hero-subtitle">
+            Join thousands of successful traders with our professional signals, 
+            expert education, and 24/7 support. Start with any plan and upgrade anytime.
+        </p>
+
+        <!-- Billing Toggle -->
+        <div class="billing-section">
+            <span class="billing-label active" id="monthlyLabel">Monthly</span>
+            <div class="billing-toggle" id="billingToggle">
+                <div class="toggle-slider"></div>
+            </div>
+            <span class="billing-label" id="yearlyLabel">
+                Yearly <span class="save-badge">Save 20%</span>
+            </span>
+        </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="pricing-container">
+        <div class="pricing-grid">
+            <!-- Gold Plan -->
+            <div class="pricing-card">
+                <div class="card-header">
+                    <div class="plan-icon gold">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 class="plan-name">Gold</h3>
+                    <p class="plan-description">Perfect for beginners starting their trading journey</p>
+                </div>
+
+                <div class="price-section">
+                    <div class="price-display price-monthly">
+                        <span class="price-amount">$29</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-display price-yearly">
+                        <span class="price-amount">$280</span>
+                        <span class="price-period">/year</span>
+                        <span class="savings-badge">Save $68</span>
+                    </div>
+                </div>
+
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Up to 50 signals per month</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Basic market analysis</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Mobile app access</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Email notifications</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Basic educational resources</span>
+                    </li>
+                    <li class="feature-item feature-unavailable">
+                        <div class="feature-icon"><i class="fas fa-times"></i></div>
+                        <span>Live chat support</span>
+                    </li>
+                    <li class="feature-item feature-unavailable">
+                        <div class="feature-icon"><i class="fas fa-times"></i></div>
+                        <span>Advanced analytics</span>
+                    </li>
+                    <li class="feature-item feature-unavailable">
+                        <div class="feature-icon"><i class="fas fa-times"></i></div>
+                        <span>1-on-1 coaching</span>
+                    </li>
+                </ul>
+
+                <a href="/pages/payment/checkout.html?plan=gold" class="cta-button cta-secondary">
+                    Start with Gold
+                </a>
+            </div>
+
+            <!-- Platinum Plan -->
+            <div class="pricing-card popular">
+                <div class="card-header">
+                    <div class="plan-icon platinum">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="plan-name">Platinum</h3>
+                    <p class="plan-description">Advanced tools for serious traders</p>
+                </div>
+
+                <div class="price-section">
+                    <div class="price-display price-monthly">
+                        <span class="price-amount">$59</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-display price-yearly">
+                        <span class="price-amount">$568</span>
+                        <span class="price-period">/year</span>
+                        <span class="savings-badge">Save $140</span>
+                    </div>
+                </div>
+
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Up to 200 signals per month</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Advanced market analysis</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Priority mobile notifications</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Live chat support</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Advanced educational content</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Risk management tools</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Weekly market webinars</span>
+                    </li>
+                    <li class="feature-item feature-unavailable">
+                        <div class="feature-icon"><i class="fas fa-times"></i></div>
+                        <span>1-on-1 coaching sessions</span>
+                    </li>
+                </ul>
+
+                <a href="/pages/payment/checkout.html?plan=platinum" class="cta-button cta-primary">
+                    Upgrade to Platinum
+                </a>
+            </div>
+
+            <!-- Diamond Plan -->
+            <div class="pricing-card">
+                <div class="card-header">
+                    <div class="plan-icon diamond">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="plan-name">Diamond</h3>
+                    <p class="plan-description">VIP experience for professional traders</p>
+                </div>
+
+                <div class="price-section">
+                    <div class="price-display price-monthly">
+                        <span class="price-amount">$99</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-display price-yearly">
+                        <span class="price-amount">$950</span>
+                        <span class="price-period">/year</span>
+                        <span class="savings-badge">Save $238</span>
+                    </div>
+                </div>
+
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Unlimited premium signals</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Real-time market insights</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Instant push notifications</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Priority 24/7 support</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Exclusive VIP content</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Advanced analytics dashboard</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Monthly 1-on-1 coaching</span>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>VIP community access</span>
+                    </li>
+                </ul>
+
+                <a href="/pages/payment/checkout.html?plan=diamond" class="cta-button cta-primary">
+                    Go Diamond VIP
+                </a>
+            </div>
+        </div>
+
+        <!-- Guarantee Section -->
+        <div class="guarantee-section">
+            <div class="guarantee-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="guarantee-title">30-Day Money Back Guarantee</h3>
+            <p class="guarantee-text">
+                Try any plan risk-free. If you're not completely satisfied within 30 days, 
+                we'll refund every penny. No questions asked.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can I upgrade or downgrade my plan anytime?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes! You can upgrade or downgrade your plan at any time. When you upgrade, you'll be charged the prorated difference immediately. When you downgrade, the change takes effect at your next billing cycle.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What's included in the trading signals?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Each signal includes entry point, stop loss, take profit levels, risk assessment, and detailed market analysis. Higher tier plans include more signals and additional context.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Do you offer a free trial?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        We offer a 30-day money-back guarantee instead of a free trial. This allows you to experience the full service and get refunded if you're not satisfied.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What payment methods do you accept?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. All payments are processed securely through Stripe.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Is there a setup fee or hidden costs?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        No setup fees, no hidden costs. The price you see is exactly what you pay. Cancel anytime without penalties.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        class PricingPage {
+            constructor() {
+                this.isYearly = false;
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                // Billing toggle
+                const billingToggle = document.getElementById('billingToggle');
+                billingToggle.addEventListener('click', () => {
+                    this.toggleBilling();
+                });
+
+                // FAQ interactions
+                document.querySelectorAll('.faq-question').forEach(question => {
+                    question.addEventListener('click', () => {
+                        const faqItem = question.parentElement;
+                        this.toggleFaq(faqItem);
+                    });
+                });
+
+                // Plan selection tracking
+                document.querySelectorAll('.cta-button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const plan = this.extractPlanFromUrl(button.href);
+                        this.trackPlanSelection(plan);
+                    });
+                });
+            }
+
+            toggleBilling() {
+                this.isYearly = !this.isYearly;
+                
+                const toggle = document.getElementById('billingToggle');
+                const monthlyLabel = document.getElementById('monthlyLabel');
+                const yearlyLabel = document.getElementById('yearlyLabel');
+
+                toggle.classList.toggle('active', this.isYearly);
+                monthlyLabel.classList.toggle('active', !this.isYearly);
+                yearlyLabel.classList.toggle('active', this.isYearly);
+
+                // Animate the price change
+                this.animatePriceChange();
+            }
+
+            animatePriceChange() {
+                const priceElements = document.querySelectorAll('.price-amount');
+                priceElements.forEach(element => {
+                    element.style.transform = 'scale(1.1)';
+                    element.style.color = 'var(--primary-blue-light)';
+                    
+                    setTimeout(() => {
+                        element.style.transform = 'scale(1)';
+                        element.style.color = '';
+                    }, 300);
+                });
+            }
+
+            toggleFaq(faqItem) {
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all other FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Toggle current item
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            }
+
+            extractPlanFromUrl(url) {
+                const urlParams = new URLSearchParams(url.split('?')[1]);
+                return urlParams.get('plan');
+            }
+
+            trackPlanSelection(plan) {
+                // Analytics tracking
+                console.log(`Plan selected: ${plan}`);
+                
+                // You can integrate with analytics services here
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'plan_selection', {
+                        'plan_type': plan,
+                        'billing_cycle': this.isYearly ? 'yearly' : 'monthly'
+                    });
+                }
+            }
+        }
+
+        // Initialize pricing page
+        document.addEventListener('DOMContentLoaded', () => {
+            new PricingPage();
+            
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe pricing cards
+            document.querySelectorAll('.pricing-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

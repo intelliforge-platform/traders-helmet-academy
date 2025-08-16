@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Diagnostic Test</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            margin: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success { background: #1a4f1a; color: #4ade80; }
+        .error { background: #4f1a1a; color: #f87171; }
+        .warning { background: #4f4f1a; color: #fbbf24; }
+        .info { background: #1a1a4f; color: #60a5fa; }
+        .test-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-btn:hover {
+            background: #2563eb;
+        }
+        .test-btn:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+        }
+        pre {
+            background: #111;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+        .log {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .timestamp {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Firebase Diagnostic Test</h1>
+        <p>This page will help identify why Firebase isn't initializing properly.</p>
+        
+        <div class="status info">
+            <strong>Step 1:</strong> Load your config.js file
+        </div>
+        
+        <!-- Config Test -->
+        <div id="configTest">
+            <h3>📋 Configuration Check</h3>
+            <div id="configResult" class="status warning">Checking configuration...</div>
+            <pre id="configData">Loading...</pre>
+        </div>
+        
+        <!-- Firebase Test -->
+        <div id="firebaseTest">
+            <h3>🔥 Firebase Initialization Test</h3>
+            <div id="firebaseResult" class="status warning">Waiting for config...</div>
+            <button class="test-btn" id="testFirebaseBtn" onclick="testFirebaseInit()" disabled>
+                Test Firebase Initialization
+            </button>
+        </div>
+        
+        <!-- Auth Test -->
+        <div id="authTest">
+            <h3>🔐 Authentication Test</h3>
+            <div id="authResult" class="status warning">Waiting for Firebase...</div>
+            <input type="email" id="testEmail" placeholder="test@example.com" style="padding: 8px; margin: 5px;">
+            <input type="password" id="testPassword" placeholder="test123456" style="padding: 8px; margin: 5px;">
+            <br>
+            <button class="test-btn" id="testRegisterBtn" onclick="testRegistration()" disabled>
+                Test Registration
+            </button>
+            <button class="test-btn" id="testLoginBtn" onclick="testLogin()" disabled>
+                Test Login
+            </button>
+        </div>
+        
+        <!-- Log Output -->
+        <div>
+            <h3>📝 Debug Log</h3>
+            <div id="debugLog" class="log">
+                <div class="timestamp">[Loading diagnostic...]</div>
+            </div>
+            <button class="test-btn" onclick="clearLog()">Clear Log</button>
+        </div>
+    </div>
+
+    <!-- Load your config -->
+    <script src="/assets/js/config.js"></script>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword
+        } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+
+        // Global variables for testing
+        window.firebaseApp = null;
+        window.firebaseAuth = null;
+        window.testCreateUser = null;
+        window.testSignIn = null;
+
+        // Logging function
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDiv = document.getElementById('debugLog');
+            const typeColors = {
+                'info': '#60a5fa',
+                'success': '#4ade80', 
+                'error': '#f87171',
+                'warning': '#fbbf24'
+            };
+            
+            logDiv.innerHTML += `
+                <div style="margin: 2px 0;">
+                    <span class="timestamp">[${timestamp}]</span> 
+                    <span style="color: ${typeColors[type] || '#60a5fa'}">${message}</span>
+                </div>
+            `;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // Step 1: Check configuration
+        function checkConfig() {
+            log('🔍 Checking configuration...', 'info');
+            
+            const configResult = document.getElementById('configResult');
+            const configData = document.getElementById('configData');
+            
+            if (!window.THA_CONFIG) {
+                configResult.className = 'status error';
+                configResult.innerHTML = '❌ <strong>Config Error:</strong> THA_CONFIG not found. Check if config.js is loading properly.';
+                configData.textContent = 'window.THA_CONFIG = undefined';
+                log('❌ THA_CONFIG not found - config.js not loading', 'error');
+                return false;
+            }
+            
+            if (!window.THA_CONFIG.firebase) {
+                configResult.className = 'status error';
+                configResult.innerHTML = '❌ <strong>Config Error:</strong> Firebase configuration missing from THA_CONFIG.';
+                configData.textContent = JSON.stringify(window.THA_CONFIG, null, 2);
+                log('❌ Firebase config missing from THA_CONFIG', 'error');
+                return false;
+            }
+            
+            const firebaseConfig = window.THA_CONFIG.firebase;
+            
+            // Check for placeholder values
+            const placeholders = [
+                'REPLACE',
+                'YOUR-',
+                'YOUR_',
+                'AIzaSyC-REPLACE-WITH-YOUR-ACTUAL-API-KEY'
+            ];
+            
+            const hasPlaceholders = Object.values(firebaseConfig).some(value => 
+                typeof value === 'string' && placeholders.some(placeholder => 
+                    value.includes(placeholder)
+                )
+            );
+            
+            if (hasPlaceholders) {
+                configResult.className = 'status error';
+                configResult.innerHTML = '❌ <strong>Config Error:</strong> Firebase config contains placeholder values. Update with your actual Firebase credentials.';
+                configData.textContent = JSON.stringify(firebaseConfig, null, 2);
+                log('❌ Firebase config has placeholder values', 'error');
+                return false;
+            }
+            
+            // Validate required fields
+            const required = ['apiKey', 'authDomain', 'projectId'];
+            const missing = required.filter(field => !firebaseConfig[field]);
+            
+            if (missing.length > 0) {
+                configResult.className = 'status error';
+                configResult.innerHTML = `❌ <strong>Config Error:</strong> Missing required fields: ${missing.join(', ')}`;
+                configData.textContent = JSON.stringify(firebaseConfig, null, 2);
+                log(`❌ Missing required Firebase config fields: ${missing.join(', ')}`, 'error');
+                return false;
+            }
+            
+            // Config looks good
+            configResult.className = 'status success';
+            configResult.innerHTML = '✅ <strong>Config OK:</strong> Firebase configuration found and validated.';
+            configData.textContent = JSON.stringify(firebaseConfig, null, 2);
+            log('✅ Firebase configuration validated successfully', 'success');
+            
+            // Enable Firebase test
+            document.getElementById('testFirebaseBtn').disabled = false;
+            document.getElementById('firebaseResult').innerHTML = '⏳ <strong>Ready:</strong> Click button to test Firebase initialization.';
+            
+            return true;
+        }
+
+        // Step 2: Test Firebase initialization
+        window.testFirebaseInit = function() {
+            log('🔥 Testing Firebase initialization...', 'info');
+            
+            const firebaseResult = document.getElementById('firebaseResult');
+            
+            try {
+                const app = initializeApp(window.THA_CONFIG.firebase);
+                const auth = getAuth(app);
+                
+                // Store globally for testing
+                window.firebaseApp = app;
+                window.firebaseAuth = auth;
+                
+                // Store auth functions
+                window.testCreateUser = createUserWithEmailAndPassword;
+                window.testSignIn = signInWithEmailAndPassword;
+                
+                firebaseResult.className = 'status success';
+                firebaseResult.innerHTML = '✅ <strong>Firebase OK:</strong> Firebase initialized successfully.';
+                log('✅ Firebase initialized successfully', 'success');
+                log(`📱 App name: ${app.name}`, 'info');
+                log(`🔐 Auth instance created`, 'info');
+                
+                // Enable auth tests
+                document.getElementById('testRegisterBtn').disabled = false;
+                document.getElementById('testLoginBtn').disabled = false;
+                document.getElementById('authResult').innerHTML = '⏳ <strong>Ready:</strong> Enter test credentials and try authentication.';
+                
+                return true;
+                
+            } catch (error) {
+                firebaseResult.className = 'status error';
+                firebaseResult.innerHTML = `❌ <strong>Firebase Error:</strong> ${error.message}`;
+                log(`❌ Firebase initialization failed: ${error.message}`, 'error');
+                log(`📋 Error code: ${error.code}`, 'error');
+                log(`📋 Full error: ${JSON.stringify(error, null, 2)}`, 'error');
+                return false;
+            }
+        };
+
+        // Step 3: Test registration
+        window.testRegistration = async function() {
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+            
+            if (!email || !password) {
+                log('❌ Please enter test email and password', 'error');
+                return;
+            }
+            
+            if (!window.firebaseAuth || !window.testCreateUser) {
+                log('❌ Firebase not initialized. Run Firebase test first.', 'error');
+                return;
+            }
+            
+            log(`🔐 Testing registration with ${email}...`, 'info');
+            
+            try {
+                const userCredential = await window.testCreateUser(window.firebaseAuth, email, password);
+                const user = userCredential.user;
+                
+                document.getElementById('authResult').className = 'status success';
+                document.getElementById('authResult').innerHTML = '✅ <strong>Registration OK:</strong> Test user created successfully.';
+                log(`✅ Registration successful! User ID: ${user.uid}`, 'success');
+                log(`📧 Email: ${user.email}`, 'info');
+                log(`📧 Email verified: ${user.emailVerified}`, 'info');
+                
+            } catch (error) {
+                document.getElementById('authResult').className = 'status error';
+                document.getElementById('authResult').innerHTML = `❌ <strong>Registration Error:</strong> ${error.message}`;
+                log(`❌ Registration failed: ${error.message}`, 'error');
+                log(`📋 Error code: ${error.code}`, 'error');
+                
+                // Common error explanations
+                if (error.code === 'auth/email-already-in-use') {
+                    log('💡 This email is already registered. Try logging in instead.', 'warning');
+                } else if (error.code === 'auth/weak-password') {
+                    log('💡 Password too weak. Try a longer password.', 'warning');
+                }
+            }
+        };
+
+        // Step 4: Test login
+        window.testLogin = async function() {
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+            
+            if (!email || !password) {
+                log('❌ Please enter test email and password', 'error');
+                return;
+            }
+            
+            if (!window.firebaseAuth || !window.testSignIn) {
+                log('❌ Firebase not initialized. Run Firebase test first.', 'error');
+                return;
+            }
+            
+            log(`🔑 Testing login with ${email}...`, 'info');
+            
+            try {
+                const userCredential = await window.testSignIn(window.firebaseAuth, email, password);
+                const user = userCredential.user;
+                
+                document.getElementById('authResult').className = 'status success';
+                document.getElementById('authResult').innerHTML = '✅ <strong>Login OK:</strong> Authentication successful.';
+                log(`✅ Login successful! User ID: ${user.uid}`, 'success');
+                log(`📧 Email: ${user.email}`, 'info');
+                log(`📧 Email verified: ${user.emailVerified}`, 'info');
+                
+            } catch (error) {
+                document.getElementById('authResult').className = 'status error';
+                document.getElementById('authResult').innerHTML = `❌ <strong>Login Error:</strong> ${error.message}`;
+                log(`❌ Login failed: ${error.message}`, 'error');
+                log(`📋 Error code: ${error.code}`, 'error');
+                
+                // Common error explanations
+                if (error.code === 'auth/user-not-found') {
+                    log('💡 User not found. Try registering first.', 'warning');
+                } else if (error.code === 'auth/wrong-password') {
+                    log('💡 Wrong password. Check your credentials.', 'warning');
+                }
+            }
+        };
+
+        // Clear log function
+        window.clearLog = function() {
+            document.getElementById('debugLog').innerHTML = '<div class="timestamp">[Log cleared]</div>';
+        };
+
+        // Auto-run config check when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                checkConfig();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
