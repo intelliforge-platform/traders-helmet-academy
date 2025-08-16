@@ -1,0 +1,248 @@
+{
+  "name": "Traders Helmet Academy",
+  "short_name": "THA",
+  "description": "Your Gateway to Trading Excellence - Professional trading signals and education platform",
+  "version": "1.0.0",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1e3c72",
+  "background_color": "#1e3c72",
+  "lang": "en-US",
+  "dir": "ltr",
+  
+  "categories": [
+    "finance",
+    "education",
+    "business",
+    "trading",
+    "investment"
+  ],
+  
+  "icons": [
+    {
+      "src": "/assets/images/icon-48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/images/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your trading dashboard",
+      "url": "/dashboard/",
+      "icons": [
+        {
+          "src": "/assets/images/shortcut-dashboard.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Trading Signals",
+      "short_name": "Signals",
+      "description": "Browse trading signals",
+      "url": "/signals/",
+      "icons": [
+        {
+          "src": "/assets/images/shortcut-signals.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Market Data",
+      "short_name": "Market",
+      "description": "View live market data",
+      "url": "/market/",
+      "icons": [
+        {
+          "src": "/assets/images/shortcut-market.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Chat Support",
+      "short_name": "Chat",
+      "description": "Get support via chat",
+      "url": "/chat/",
+      "icons": [
+        {
+          "src": "/assets/images/shortcut-chat.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  
+  "screenshots": [
+    {
+      "src": "/assets/images/screenshot-dashboard-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Trading Dashboard - Desktop View"
+    },
+    {
+      "src": "/assets/images/screenshot-signals-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Trading Signals - Desktop View"
+    },
+    {
+      "src": "/assets/images/screenshot-dashboard-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Trading Dashboard - Mobile View"
+    },
+    {
+      "src": "/assets/images/screenshot-signals-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Trading Signals - Mobile View"
+    }
+  ],
+  
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.tradershelmet.academy",
+      "id": "com.tradershelmet.academy"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/traders-helmet-academy/id123456789",
+      "id": "123456789"
+    }
+  ],
+  
+  "prefer_related_applications": false,
+  
+  "share_target": {
+    "action": "/share/",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": ["image/*", "application/pdf"]
+        }
+      ]
+    }
+  },
+  
+  "protocol_handlers": [
+    {
+      "protocol": "web+tradershelmet",
+      "url": "/handle-protocol/?url=%s"
+    }
+  ],
+  
+  "file_handlers": [
+    {
+      "action": "/handle-file/",
+      "accept": {
+        "application/json": [".json"],
+        "text/csv": [".csv"],
+        "application/pdf": [".pdf"]
+      }
+    }
+  ],
+  
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  
+  "display_override": [
+    "window-controls-overlay",
+    "minimal-ui",
+    "standalone",
+    "browser"
+  ],
+  
+  "handle_links": "preferred",
+  
+  "id": "traders-helmet-academy",
+  
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7"
+}

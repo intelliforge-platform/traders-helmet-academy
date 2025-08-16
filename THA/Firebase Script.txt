@@ -1,0 +1,41 @@
+
+"Payment & Subscription Management System" returned the following error;
+Error running artifact
+An error occurred while trying to run the generated artifact.
+
+Unexpected token, expected ";" (788:31)
+
+
+About IntelliForge - Complete Information Hub" returned the following artifact error;
+Artifact failed to load
+The generated artifact uses libraries we don’t support:
+
+{ Image as ImageIcon } from "lucide-react"
+
+
+
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
+    authDomain: "traders-helmet-academy.firebaseapp.com",
+    projectId: "traders-helmet-academy",
+    storageBucket: "traders-helmet-academy.firebasestorage.app",
+    messagingSenderId: "789631387729",
+    appId: "1:789631387729:web:d1f176bcc091ec40c75070",
+    measurementId: "G-QBB3Z50V5H"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+

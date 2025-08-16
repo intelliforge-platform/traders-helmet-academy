@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traders Helmet Academy - Forex Trading</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        body {
+            background: linear-gradient(135deg, #0a1a3a 0%, #f5f5dc 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-text {
+            color: #f5f5dc;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .logo-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border: 4px solid #f5f5dc;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            padding: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(245, 245, 220, 0.7);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .tagline {
+            color: #f5f5dc;
+            margin: 30px 0;
+            font-size: 1.5rem;
+            font-style: italic;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .tagline::before, .tagline::after {
+            content: "";
+            display: inline-block;
+            width: 30px;
+            height: 2px;
+            background: #f5f5dc;
+            margin: 0 10px;
+            vertical-align: middle;
+        }
+
+        .loading-bar {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(245, 245, 220, 0.3);
+            border-radius: 2px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0;
+            background-color: #f5f5dc;
+            border-radius: 2px;
+            animation: loading 3s ease-in-out forwards;
+        }
+
+        @keyframes loading {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .welcome-text {
+                font-size: 1.5rem;
+            }
+            
+            .logo-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container animate__animated animate__fadeIn">
+        <h1 class="welcome-text animate__animated animate__fadeInDown">Welcome to Traders Helmet Academy</h1>
+        
+        <a href="https://tradershelmetacademy.com/home" class="logo-container animate__animated animate__zoomIn">
+            <!-- Replace with your actual logo -->
+            <img src="IMG-20250519-WA0072.jpg" alt="Traders Helmet Academy Logo" class="logo-img">
+        </a>
+        
+        <p class="tagline animate__animated animate__fadeInUp">...learn and trade like a pro</p>
+        
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect to home page when clicking anywhere (optional)
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.querySelector('.logo-container').addEventListener('click', function() {
+                    window.location.href = 'https://tradershelmetacademy.com/home';
+                });
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
