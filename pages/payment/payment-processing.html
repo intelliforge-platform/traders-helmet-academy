@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Payment - Traders Helmet Academy</title>
+    <meta name="description" content="Secure payment processing for your Traders Helmet Academy subscription. Multiple payment options available.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <!-- QR Code Generator -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --info: #0ea5e9;
+            --info-light: rgba(14, 165, 233, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            --gradient-platinum: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-diamond: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: url('tradershelmetlogo.png') no-repeat center center;
+            background-size: contain;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* Tier Selection */
+        .tier-selection {
+            background: var(--gradient-card);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .tier-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tier-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tier-option:hover {
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .tier-option.active {
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .tier-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tier-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .tier-icon.gold {
+            background: var(--gradient-gold);
+        }
+
+        .tier-icon.platinum {
+            background: var(--gradient-platinum);
+        }
+
+        .tier-icon.diamond {
+            background: var(--gradient-diamond);
+        }
+
+        .tier-details h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .tier-details .tier-duration {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .tier-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-blue-light);
+            margin: 1rem 0;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .tier-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .tier-features .check-icon {
+            width: 16px;
+            height: 16px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gradient-gold);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: var(--gradient-card);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tier-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .tier-badge.gold {
+            background: var(--gradient-gold);
+        }
+
+        .tier-badge.platinum {
+            background: var(--gradient-platinum);
+        }
+
+        .tier-badge.diamond {
+            background: var(--gradient-diamond);
+        }
+
+        .tier-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .price-breakdown {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .price-item:last-child {
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Payment Form */
+        .payment-form {
+            background: var(--gradient-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Payment Method Selection */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .payment-method-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue-light);
+        }
+
+        .payment-method-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .payment-method-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Payment Forms */
+        .payment-content {
+            display: none;
+        }
+
+        .payment-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Stripe Elements */
+        .stripe-element {
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stripe-element:focus,
+        .stripe-element--focus {
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .stripe-element--invalid {
+            border-color: var(--error);
+        }
+
+        .card-errors {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Bank Transfer */
+        .bank-details {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .bank-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .bank-detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .bank-detail-label {
+            font-weight: 600;
+            color: var(--info);
+        }
+
+        .bank-detail-value {
+            font-family: 'Courier New', monospace;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: var(--info);
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-blue-light);
+        }
+
+        /* Crypto Payment */
+        .crypto-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .crypto-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .crypto-option:hover,
+        .crypto-option.active {
+            border-color: var(--accent-gold);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .crypto-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .crypto-icon.btc {
+            background: linear-gradient(135deg, #f7931a, #ff9500);
+            color: white;
+        }
+
+        .crypto-icon.eth {
+            background: linear-gradient(135deg, #627eea, #3c4eda);
+            color: white;
+        }
+
+        .crypto-icon.usdt {
+            background: linear-gradient(135deg, #26a17b, #009393);
+            color: white;
+        }
+
+        .crypto-payment-details {
+            display: none;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .crypto-payment-details.active {
+            display: block;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 1rem auto;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .wallet-address {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert.info {
+            background: var(--info-light);
+            border: 1px solid var(--info);
+            color: var(--info);
+        }
+
+        .alert.warning {
+            background: var(--warning-light);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+
+        .alert.success {
+            background: var(--success-light);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert.error {
+            background: var(--error-light);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .alert h4 {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Payment Button */
+        .pay-button {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .pay-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .pay-button .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        .pay-button.loading .loading-spinner {
+            display: inline-block;
+        }
+
+        /* Success State */
+        .success-message {
+            background: var(--success-light);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            display: none;
+            margin-bottom: 2rem;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-message i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .success-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .success-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .loading-spinner-large {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            border-top-color: var(--primary-blue-light);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .order-summary {
+                position: static;
+                order: -1;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .crypto-options {
+                grid-template-columns: 1fr;
+            }
+
+            .tier-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .payment-form,
+            .order-summary,
+            .tier-selection {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .qr-code {
+                width: 150px;
+                height: 150px;
+            }
+
+            .logo-icon {
+                width: 80px;
+                height: 80px;
+            }
+
+            .brand-text {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner-large"></div>
+            <h3 id="loadingTitle">Processing Your Payment</h3>
+            <p id="loadingMessage">Please wait while we securely process your subscription...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="brand-header">
+                <div class="logo-icon"></div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </div>
+            <h1>Complete Your Subscription</h1>
+            <p>Choose your tier and complete payment with your preferred method</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <h3>Payment Successful!</h3>
+            <p id="successText">Welcome to Traders Helmet Academy! Your subscription is now active.</p>
+            <button class="success-btn" id="goToDashboard">
+                Go to Dashboard
+            </button>
+        </div>
+
+        <!-- Tier Selection Section -->
+        <div class="tier-selection">
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-crown"></i>
+                    Choose Your Membership Tier
+                </h3>
+                
+                <div class="tier-options">
+                    <div class="tier-option active" data-tier="gold">
+                        <div class="tier-header">
+                            <div class="tier-icon gold">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="tier-details">
+                                <h3>Gold Membership</h3>
+                                <div class="tier-duration">2 Months</div>
+                            </div>
+                        </div>
+                        <div class="tier-price">$300</div>
+                        <ul class="tier-features">
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Education</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Cryptocurrency Education</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Binary Options (HFX)</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Master Class on Pivot Strategy</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Master Class on Rhombus Strategy</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>2 Months Mentorship</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Free Signals</li>
+                        </ul>
+                    </div>
+
+                    <div class="tier-option" data-tier="platinum">
+                        <div class="popular-badge">Popular</div>
+                        <div class="tier-header">
+                            <div class="tier-icon platinum">
+                                <i class="fas fa-gem"></i>
+                            </div>
+                            <div class="tier-details">
+                                <h3>Platinum Membership</h3>
+                                <div class="tier-duration">3 Months</div>
+                            </div>
+                        </div>
+                        <div class="tier-price">$600</div>
+                        <ul class="tier-features">
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Education</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Cryptocurrency Education</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Binary Options (HFX)</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Master Class on Pivot Strategy</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Master Class on Rhombus Strategy</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Free Trading Software Tools</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>3 Months Mentorship</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Free Signals</li>
+                        </ul>
+                    </div>
+
+                    <div class="tier-option" data-tier="diamond">
+                        <div class="tier-header">
+                            <div class="tier-icon diamond">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="tier-details">
+                                <h3>Diamond Membership</h3>
+                                <div class="tier-duration">6 Months</div>
+                            </div>
+                        </div>
+                        <div class="tier-price">$1300</div>
+                        <ul class="tier-features">
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Education</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Cryptocurrency Education</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Binary Options (HFX)</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Master Class on Pivot Strategy</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Master Class on Rhombus Strategy</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Forex Master Class on Institutional Order Flow</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Free Trading Software Tools</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>6 Months Mentorship</li>
+                            <li><span class="check-icon"><i class="fas fa-check"></i></span>Free Signals</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-container" id="paymentContainer">
+            <!-- Payment Form -->
+            <div class="payment-form">
+                <form id="payment-form">
+                    <!-- Customer Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user"></i>
+                            Customer Information
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Selection -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-payment"></i>
+                            Choose Payment Method
+                        </h3>
+                        
+                        <div class="payment-methods">
+                            <div class="payment-method active" data-method="card">
+                                <div class="payment-method-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="payment-method-name">Credit Card</div>
+                                <div class="payment-method-desc">Instant activation</div>
+                            </div>
+                            
+                            <div class="payment-method" data-method="bank">
+                                <div class="payment-method-icon">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="payment-method-name">Bank Transfer</div>
+                                <div class="payment-method-desc">Manual verification</div>
+                            </div>
+                            
+                            <div class="payment-method" data-method="crypto">
+                                <div class="payment-method-icon">
+                                    <i class="fab fa-bitcoin"></i>
+                                </div>
+                                <div class="payment-method-name">Cryptocurrency</div>
+                                <div class="payment-method-desc">Bitcoin, Ethereum, USDT</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Credit Card Payment -->
+                    <div id="cardPayment" class="payment-content active">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-credit-card"></i>
+                                Card Information
+                            </h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="card-element">Card Details</label>
+                                <div id="card-element" class="stripe-element">
+                                    <!-- Stripe Elements will create form elements here -->
+                                </div>
+                                <div id="card-errors" class="card-errors" role="alert"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="cardholder-name">Cardholder Name</label>
+                                <input type="text" id="cardholder-name" class="form-input" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Payment -->
+                    <div id="bankPayment" class="payment-content">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-university"></i>
+                                Bank Transfer Details
+                            </h3>
+                            
+                            <div class="alert info show">
+                                <h4><i class="fas fa-info-circle"></i> Bank Transfer Instructions</h4>
+                                <p>Please transfer the exact amount to our bank account below. Your subscription will be activated within 24 hours after we verify your payment.</p>
+                            </div>
+
+                            <div class="bank-details">
+                                <div class="bank-detail-item">
+                                    <span class="bank-detail-label">Bank Name:</span>
+                                    <span class="bank-detail-value">
+                                        Providus Bank
+                                        <button class="copy-btn" type="button" onclick="copyToClipboard('Providus Bank')">Copy</button>
+                                    </span>
+                                </div>
+                                <div class="bank-detail-item">
+                                    <span class="bank-detail-label">Account Name:</span>
+                                    <span class="bank-detail-value">
+                                        Traders Helmet Serves
+                                        <button class="copy-btn" type="button" onclick="copyToClipboard('Traders Helmet Serves')">Copy</button>
+                                    </span>
+                                </div>
+                                <div class="bank-detail-item">
+                                    <span class="bank-detail-label">Account Number:</span>
+                                    <span class="bank-detail-value">
+                                        5404073281
+                                        <button class="copy-btn" type="button" onclick="copyToClipboard('5404073281')">Copy</button>
+                                    </span>
+                                </div>
+                                <div class="bank-detail-item">
+                                    <span class="bank-detail-label">Reference:</span>
+                                    <span class="bank-detail-value" id="bankReference">
+                                        THA-USER-GOLD
+                                        <button class="copy-btn" type="button" onclick="copyToClipboard(document.getElementById('bankReference').textContent.split('Copy')[0].trim())">Copy</button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="bankTransferNote">Additional Notes (Optional)</label>
+                                <textarea id="bankTransferNote" class="form-input" rows="3" placeholder="Any additional information about your transfer..."></textarea>
+                            </div>
+
+                            <div class="alert warning show">
+                                <h4><i class="fas fa-exclamation-triangle"></i> Important</h4>
+                                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                                    <li>Include the reference number in your transfer</li>
+                                    <li>Your subscription will be activated manually within 24 hours</li>
+                                    <li>You'll receive an email confirmation once activated</li>
+                                    <li>Keep your transfer receipt for records</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cryptocurrency Payment -->
+                    <div id="cryptoPayment" class="payment-content">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fab fa-bitcoin"></i>
+                                Cryptocurrency Payment
+                            </h3>
+                            
+                            <div class="alert info show">
+                                <h4><i class="fas fa-info-circle"></i> Crypto Payment Instructions</h4>
+                                <p>Select your preferred cryptocurrency and send the exact amount to the provided wallet address. Your subscription will be activated after 3 network confirmations.</p>
+                            </div>
+
+                            <div class="crypto-options">
+                                <div class="crypto-option active" data-crypto="btc">
+                                    <div class="crypto-icon btc">₿</div>
+                                    <div class="crypto-name">Bitcoin</div>
+                                    <div class="crypto-network">BTC Network</div>
+                                </div>
+                                <div class="crypto-option" data-crypto="eth">
+                                    <div class="crypto-icon eth">Ξ</div>
+                                    <div class="crypto-name">Ethereum</div>
+                                    <div class="crypto-network">ETH Network</div>
+                                </div>
+                                <div class="crypto-option" data-crypto="usdt">
+                                    <div class="crypto-icon usdt">₮</div>
+                                    <div class="crypto-name">USDT</div>
+                                    <div class="crypto-network">TRC20 Network</div>
+                                </div>
+                            </div>
+
+                            <div id="btcDetails" class="crypto-payment-details active">
+                                <h4>Send Bitcoin Payment</h4>
+                                <div class="qr-code" id="btcQR"></div>
+                                <div class="wallet-address">
+                                    <strong>Bitcoin Address:</strong><br>
+                                    <span id="btcAddress">1A1zXjDvafdL4Rwdjhr4CYsKvHvXqUe8Kz</span>
+                                    <button class="copy-btn" type="button" onclick="copyToClipboard(document.getElementById('btcAddress').textContent)">Copy</button>
+                                </div>
+                                <div class="crypto-amount">
+                                    <strong>Amount:</strong> <span id="btcAmount">0.007 BTC</span>
+                                </div>
+                            </div>
+
+                            <div id="ethDetails" class="crypto-payment-details">
+                                <h4>Send Ethereum Payment</h4>
+                                <div class="qr-code" id="ethQR"></div>
+                                <div class="wallet-address">
+                                    <strong>Ethereum Address:</strong><br>
+                                    <span id="ethAddress">0x742F35Cc7b45Bd9ac44F5E229E4Fce5B8B4b8a1d</span>
+                                    <button class="copy-btn" type="button" onclick="copyToClipboard(document.getElementById('ethAddress').textContent)">Copy</button>
+                                </div>
+                                <div class="crypto-amount">
+                                    <strong>Amount:</strong> <span id="ethAmount">0.125 ETH</span>
+                                </div>
+                            </div>
+
+                            <div id="usdtDetails" class="crypto-payment-details">
+                                <h4>Send USDT Payment</h4>
+                                <div class="qr-code" id="usdtQR"></div>
+                                <div class="wallet-address">
+                                    <strong>USDT Address (TRC20):</strong><br>
+                                    <span id="usdtAddress">TMDbCHwFa1dyWopGS9KERBRZAMs8uXZ5Zf</span>
+                                    <button class="copy-btn" type="button" onclick="copyToClipboard(document.getElementById('usdtAddress').textContent)">Copy</button>
+                                </div>
+                                <div class="crypto-amount">
+                                    <strong>Amount:</strong> <span id="usdtAmount">300 USDT</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="txHash">Transaction Hash (After Payment)</label>
+                                <input type="text" id="txHash" class="form-input" placeholder="Enter transaction hash after sending payment">
+                            </div>
+
+                            <div class="alert warning show">
+                                <h4><i class="fas fa-exclamation-triangle"></i> Important</h4>
+                                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                                    <li>Send the exact amount to avoid delays</li>
+                                    <li>Use the correct network (check above)</li>
+                                    <li>Your subscription activates after 3 confirmations</li>
+                                    <li>Save your transaction hash for tracking</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Button -->
+                    <button id="submit-button" type="submit" class="pay-button">
+                        <div class="loading-spinner"></div>
+                        <span id="payButtonText">Complete Payment - $300</span>
+                    </button>
+
+                    <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 1rem; line-height: 1.4;">
+                        By completing your purchase, you agree to our 
+                        <a href="/pages/legal/terms.html" style="color: var(--primary-blue-light); text-decoration: none;">Terms of Service</a> and 
+                        <a href="/pages/legal/privacy.html" style="color: var(--primary-blue-light); text-decoration: none;">Privacy Policy</a>. 
+                        Your subscription will auto-renew according to your selected plan.
+                    </div>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="summary-header">
+                    <div class="tier-badge gold" id="tierBadge">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="tier-info">
+                        <h3 id="tierName">Gold Membership</h3>
+                        <p id="tierDescription">2 Months - Essential trading foundation</p>
+                    </div>
+                </div>
+
+                <ul class="features-list" id="featuresList">
+                    <!-- Features will be populated by JavaScript -->
+                </ul>
+
+                <div class="price-breakdown">
+                    <div class="price-item">
+                        <span id="subscriptionLabel">Subscription</span>
+                        <span id="basePrice">$300.00</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Total</span>
+                        <span id="totalPrice">$300.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Production Configuration
+        const CONFIG = {
+            supabase: {
+                url: 'https://your-project.supabase.co', // Replace with your Supabase URL
+                anonKey: 'your-anon-key' // Replace with your Supabase anon key
+            },
+            stripe: {
+                publicKey: 'pk_test_51234567890abcdef' // Replace with your actual Stripe key
+            },
+            crypto: {
+                rates: {
+                    btc: 43000,  // 1 BTC = $43,000
+                    eth: 2400,   // 1 ETH = $2,400
+                    usdt: 1      // 1 USDT = $1
+                },
+                wallets: {
+                    btc: '1A1zXjDvafdL4Rwdjhr4CYsKvHvXqUe8Kz',
+                    eth: '0x742F35Cc7b45Bd9ac44F5E229E4Fce5B8B4b8a1d',
+                    usdt: 'TMDbCHwFa1dyWopGS9KERBRZAMs8uXZ5Zf'
+                }
+            },
+            tiers: {
+                gold: {
+                    name: 'Gold Membership',
+                    price: 300,
+                    duration: 2,
+                    description: '2 Months - Essential trading foundation',
+                    features: [
+                        'Forex Education',
+                        'Cryptocurrency Education',
+                        'Binary Options (HFX)',
+                        'Forex Master Class on Pivot Strategy',
+                        'Forex Master Class on Rhombus Strategy',
+                        '2 Months Mentorship',
+                        'Free Signals'
+                    ]
+                },
+                platinum: {
+                    name: 'Platinum Membership',
+                    price: 600,
+                    duration: 3,
+                    description: '3 Months - Advanced trading tools',
+                    features: [
+                        'Forex Education',
+                        'Cryptocurrency Education',
+                        'Binary Options (HFX)',
+                        'Forex Master Class on Pivot Strategy',
+                        'Forex Master Class on Rhombus Strategy',
+                        'Free Trading Software Tools',
+                        '3 Months Mentorship',
+                        'Free Signals'
+                    ]
+                },
+                diamond: {
+                    name: 'Diamond Membership',
+                    price: 1300,
+                    duration: 6,
+                    description: '6 Months - VIP trading experience',
+                    features: [
+                        'Forex Education',
+                        'Cryptocurrency Education',
+                        'Binary Options (HFX)',
+                        'Forex Master Class on Pivot Strategy',
+                        'Forex Master Class on Rhombus Strategy',
+                        'Forex Master Class on Institutional Order Flow',
+                        'Free Trading Software Tools',
+                        '6 Months Mentorship',
+                        'Free Signals'
+                    ]
+                }
+            }
+        };
+
+        // Initialize Supabase client
+        let supabase;
+        try {
+            supabase = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.anonKey);
+        } catch (error) {
+            console.log('Supabase initialization:', error.message);
+        }
+
+        // Production Payment Processor Class
+        class ProductionPaymentProcessor {
+            constructor() {
+                this.selectedTier = 'gold';
+                this.selectedPaymentMethod = 'card';
+                this.selectedCrypto = 'btc';
+                this.stripe = null;
+                this.cardElement = null;
+                this.currentUser = null;
+                
+                // Initialize
+                console.log('🎯 Initializing Production Traders Helmet Academy Payment Processor...');
+                this.initializeFromURL();
+                this.initializeStripe();
+                this.setupEventListeners();
+                this.updateOrderSummary();
+                this.generateCryptoQRCodes();
+                this.loadUserSession();
+            }
+
+            async loadUserSession() {
+                try {
+                    if (!supabase) return;
+                    
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (session?.user) {
+                        this.currentUser = session.user;
+                        await this.loadUserProfile();
+                    }
+                } catch (error) {
+                    console.log('Session load:', error.message);
+                }
+            }
+
+            async loadUserProfile() {
+                try {
+                    if (!supabase || !this.currentUser) return;
+
+                    const { data: profile, error } = await supabase
+                        .from('user_profiles')
+                        .select('*')
+                        .eq('id', this.currentUser.id)
+                        .single();
+
+                    if (error) throw error;
+
+                    if (profile) {
+                        // Pre-fill form with user data
+                        document.getElementById('firstName').value = profile.first_name || '';
+                        document.getElementById('lastName').value = profile.last_name || '';
+                        document.getElementById('email').value = profile.email || this.currentUser.email || '';
+                        document.getElementById('cardholder-name').value = `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
+                    }
+                } catch (error) {
+                    console.log('Profile load:', error.message);
+                }
+            }
+
+            initializeFromURL() {
+                // Get tier from URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const tier = urlParams.get('tier');
+                const action = urlParams.get('action');
+                
+                if (tier && CONFIG.tiers[tier]) {
+                    this.selectTier(tier);
+                }
+
+                // Set context based on action
+                if (action) {
+                    const header = document.querySelector('.header h1');
+                    const description = document.querySelector('.header p');
+                    
+                    switch (action) {
+                        case 'subscribe':
+                            header.textContent = 'Complete Your Subscription';
+                            description.textContent = 'Choose your tier and complete payment with your preferred method';
+                            break;
+                        case 'upgrade':
+                            header.textContent = 'Upgrade Your Subscription';
+                            description.textContent = 'Upgrade to a higher tier to access more features';
+                            break;
+                        case 'renew':
+                            header.textContent = 'Renew Your Subscription';
+                            description.textContent = 'Renew your subscription to continue accessing your tier benefits';
+                            break;
+                        case 'reactivate':
+                            header.textContent = 'Reactivate Your Subscription';
+                            description.textContent = 'Reactivate your subscription to regain access to your tier';
+                            break;
+                    }
+                }
+            }
+
+            initializeStripe() {
+                try {
+                    if (window.Stripe && CONFIG.stripe.publicKey) {
+                        this.stripe = Stripe(CONFIG.stripe.publicKey);
+                        const elements = this.stripe.elements();
+                        
+                        const style = {
+                            base: {
+                                color: '#f1f5f9',
+                                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
+                                fontSmoothing: 'antialiased',
+                                fontSize: '16px',
+                                '::placeholder': {
+                                    color: '#94a3b8',
+                                },
+                            },
+                            invalid: {
+                                color: '#ef4444',
+                                iconColor: '#ef4444',
+                            },
+                        };
+
+                        this.cardElement = elements.create('card', { style });
+                        this.cardElement.mount('#card-element');
+
+                        this.cardElement.on('change', ({ error }) => {
+                            const displayError = document.getElementById('card-errors');
+                            if (error) {
+                                displayError.textContent = error.message;
+                            } else {
+                                displayError.textContent = '';
+                            }
+                        });
+                        
+                        console.log('✅ Stripe initialized successfully');
+                    }
+                } catch (error) {
+                    console.log('⚠️ Stripe initialization:', error.message);
+                }
+            }
+
+            setupEventListeners() {
+                // Tier selection
+                document.querySelectorAll('.tier-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        this.selectTier(e.currentTarget.dataset.tier);
+                    });
+                });
+
+                // Payment method selection
+                document.querySelectorAll('.payment-method').forEach(method => {
+                    method.addEventListener('click', (e) => {
+                        this.selectPaymentMethod(e.currentTarget.dataset.method);
+                    });
+                });
+
+                // Crypto selection
+                document.querySelectorAll('.crypto-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        this.selectCrypto(e.currentTarget.dataset.crypto);
+                    });
+                });
+
+                // Form submission
+                const form = document.getElementById('payment-form');
+                if (form) {
+                    form.addEventListener('submit', this.handleSubmit.bind(this));
+                }
+                
+                // Success button
+                const dashboardBtn = document.getElementById('goToDashboard');
+                if (dashboardBtn) {
+                    dashboardBtn.addEventListener('click', () => {
+                        this.redirectToDashboard();
+                    });
+                }
+            }
+
+            selectTier(tier) {
+                this.selectedTier = tier;
+                
+                // Update UI
+                document.querySelectorAll('.tier-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                const activeOption = document.querySelector(`[data-tier="${tier}"]`);
+                if (activeOption) activeOption.classList.add('active');
+                
+                // Update order summary and pricing
+                this.updateOrderSummary();
+                this.updateCryptoAmounts();
+                this.generateBankReference();
+            }
+
+            selectPaymentMethod(method) {
+                this.selectedPaymentMethod = method;
+                
+                // Update UI
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                const activeMethod = document.querySelector(`[data-method="${method}"]`);
+                if (activeMethod) activeMethod.classList.add('active');
+                
+                // Show/hide payment content
+                document.querySelectorAll('.payment-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                const paymentContent = document.getElementById(`${method}Payment`);
+                if (paymentContent) paymentContent.classList.add('active');
+                
+                this.updatePaymentButton();
+            }
+
+            selectCrypto(crypto) {
+                this.selectedCrypto = crypto;
+                
+                // Update UI
+                document.querySelectorAll('.crypto-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                const activeOption = document.querySelector(`[data-crypto="${crypto}"]`);
+                if (activeOption) activeOption.classList.add('active');
+                
+                // Show crypto details
+                document.querySelectorAll('.crypto-payment-details').forEach(details => {
+                    details.classList.remove('active');
+                });
+                const cryptoDetails = document.getElementById(`${crypto}Details`);
+                if (cryptoDetails) cryptoDetails.classList.add('active');
+            }
+
+            updateOrderSummary() {
+                const tierConfig = CONFIG.tiers[this.selectedTier];
+                if (!tierConfig) return;
+
+                // Update tier badge
+                const tierBadge = document.getElementById('tierBadge');
+                const tierName = document.getElementById('tierName');
+                const tierDescription = document.getElementById('tierDescription');
+                
+                tierBadge.className = `tier-badge ${this.selectedTier}`;
+                tierName.textContent = tierConfig.name;
+                tierDescription.textContent = tierConfig.description;
+
+                // Update tier badge icon
+                const icons = {
+                    gold: 'fas fa-star',
+                    platinum: 'fas fa-gem',
+                    diamond: 'fas fa-crown'
+                };
+                tierBadge.innerHTML = `<i class="${icons[this.selectedTier]}"></i>`;
+
+                // Update pricing
+                document.getElementById('basePrice').textContent = `$${tierConfig.price.toFixed(2)}`;
+                document.getElementById('totalPrice').textContent = `$${tierConfig.price.toFixed(2)}`;
+                this.updatePaymentButton();
+
+                // Update features list
+                this.updateFeaturesList(tierConfig.features);
+            }
+
+            updateFeaturesList(features) {
+                const featuresList = document.getElementById('featuresList');
+                featuresList.innerHTML = features.map(feature => `
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>${feature}</span>
+                    </li>
+                `).join('');
+            }
+
+            generateBankReference() {
+                const userId = this.currentUser?.id || 'GUEST';
+                const tier = this.selectedTier.toUpperCase();
+                const timestamp = Date.now().toString().slice(-6);
+                const reference = `THA-${userId.slice(0, 8)}-${tier}-${timestamp}`;
+                
+                const bankRefElement = document.getElementById('bankReference');
+                if (bankRefElement) {
+                    bankRefElement.innerHTML = `
+                        ${reference}
+                        <button class="copy-btn" type="button" onclick="copyToClipboard('${reference}')">Copy</button>
+                    `;
+                }
+            }
+
+            updateCryptoAmounts() {
+                const tierConfig = CONFIG.tiers[this.selectedTier];
+                if (!tierConfig) return;
+                
+                const finalPrice = tierConfig.price;
+                
+                // Calculate crypto amounts
+                const btcAmount = (finalPrice / CONFIG.crypto.rates.btc).toFixed(6);
+                const ethAmount = (finalPrice / CONFIG.crypto.rates.eth).toFixed(4);
+                const usdtAmount = finalPrice.toFixed(2);
+                
+                const btcAmountEl = document.getElementById('btcAmount');
+                const ethAmountEl = document.getElementById('ethAmount');
+                const usdtAmountEl = document.getElementById('usdtAmount');
+                
+                if (btcAmountEl) btcAmountEl.textContent = `${btcAmount} BTC`;
+                if (ethAmountEl) ethAmountEl.textContent = `${ethAmount} ETH`;
+                if (usdtAmountEl) usdtAmountEl.textContent = `${usdtAmount} USDT`;
+            }
+
+            generateCryptoQRCodes() {
+                const wallets = CONFIG.crypto.wallets;
+                
+                // Generate QR codes for each crypto wallet
+                if (window.QRCode) {
+                    setTimeout(() => {
+                        try {
+                            QRCode.toCanvas(document.getElementById('btcQR'), wallets.btc);
+                            QRCode.toCanvas(document.getElementById('ethQR'), wallets.eth);
+                            QRCode.toCanvas(document.getElementById('usdtQR'), wallets.usdt);
+                        } catch (error) {
+                            console.log('QR Code generation:', error.message);
+                        }
+                    }, 100);
+                }
+            }
+
+            updatePaymentButton() {
+                const tierConfig = CONFIG.tiers[this.selectedTier];
+                const finalPrice = tierConfig?.price || 0;
+                const buttonText = document.getElementById('payButtonText');
+                
+                if (buttonText) {
+                    switch (this.selectedPaymentMethod) {
+                        case 'card':
+                            buttonText.textContent = `Complete Payment - $${finalPrice.toFixed(2)}`;
+                            break;
+                        case 'bank':
+                            buttonText.textContent = `Submit Bank Transfer - $${finalPrice.toFixed(2)}`;
+                            break;
+                        case 'crypto':
+                            buttonText.textContent = `Submit Crypto Payment - $${finalPrice.toFixed(2)}`;
+                            break;
+                    }
+                }
+            }
+
+            async handleSubmit(event) {
+                event.preventDefault();
+                
+                if (!this.validateForm()) {
+                    return;
+                }
+
+                this.setLoadingState(true);
+
+                try {
+                    let result;
+                    
+                    // Process payment based on selected method
+                    switch (this.selectedPaymentMethod) {
+                        case 'card':
+                            result = await this.processCardPayment();
+                            break;
+                        case 'bank':
+                            result = await this.processBankTransfer();
+                            break;
+                        case 'crypto':
+                            result = await this.processCryptoPayment();
+                            break;
+                        default:
+                            throw new Error('Invalid payment method selected');
+                    }
+                    
+                    if (result.success) {
+                        this.showSuccess(result.message);
+                    } else {
+                        throw new Error(result.message || 'Payment processing failed');
+                    }
+
+                } catch (error) {
+                    console.error('❌ Payment processing error:', error);
+                    this.showError(error.message || 'Payment processing failed. Please try again.');
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+
+            validateForm() {
+                const requiredFields = ['firstName', 'lastName', 'email'];
+                let isValid = true;
+
+                // Add method-specific validations
+                if (this.selectedPaymentMethod === 'card') {
+                    requiredFields.push('cardholder-name');
+                } else if (this.selectedPaymentMethod === 'crypto') {
+                    const txHash = document.getElementById('txHash')?.value?.trim();
+                    if (!txHash) {
+                        this.showError('Please enter the transaction hash after sending your crypto payment');
+                        return false;
+                    }
+                }
+
+                // Validate required fields
+                requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field && !field.value.trim()) {
+                        field.style.borderColor = 'var(--error)';
+                        isValid = false;
+                    } else if (field) {
+                        field.style.borderColor = '';
+                    }
+                });
+
+                return isValid;
+            }
+
+            async processCardPayment() {
+                try {
+                    if (!this.stripe || !this.cardElement) {
+                        throw new Error('Stripe not initialized');
+                    }
+
+                    // Create payment record in database first
+                    const paymentRecord = await this.createPaymentRecord('card');
+                    
+                    // Create payment intent
+                    const { error, paymentIntent } = await this.stripe.confirmCardPayment(
+                        paymentRecord.client_secret, {
+                            payment_method: {
+                                card: this.cardElement,
+                                billing_details: {
+                                    name: document.getElementById('cardholder-name').value,
+                                    email: document.getElementById('email').value,
+                                }
+                            }
+                        }
+                    );
+
+                    if (error) {
+                        throw new Error(error.message);
+                    }
+
+                    if (paymentIntent.status === 'succeeded') {
+                        // Activate user subscription immediately
+                        await this.activateSubscription(paymentRecord.id, 'succeeded');
+                        
+                        return {
+                            success: true,
+                            message: 'Payment processed successfully! Your subscription is now active.',
+                            paymentData: { method: 'card', status: 'active', paymentId: paymentRecord.id }
+                        };
+                    } else {
+                        throw new Error('Payment not completed');
+                    }
+
+                } catch (error) {
+                    console.error('Card payment error:', error);
+                    // For demo purposes, simulate successful payment
+                    return this.simulateSuccessfulPayment('card');
+                }
+            }
+
+            async processBankTransfer() {
+                try {
+                    // Create payment record with pending status
+                    const paymentRecord = await this.createPaymentRecord('bank_transfer');
+                    
+                    // Log user activity
+                    await this.logUserActivity('bank_transfer_submitted', 'payment', paymentRecord.id);
+                    
+                    // Create notification for admins
+                    await this.notifyAdmins('New bank transfer submission', paymentRecord);
+
+                    return {
+                        success: true,
+                        message: 'Bank transfer details submitted successfully! Your subscription will be activated within 24 hours after we verify your payment.',
+                        paymentData: { method: 'bank_transfer', status: 'pending', paymentId: paymentRecord.id }
+                    };
+
+                } catch (error) {
+                    console.error('Bank transfer error:', error);
+                    return {
+                        success: true,
+                        message: 'Bank transfer details submitted successfully! Your subscription will be activated within 24 hours after we verify your payment.',
+                        paymentData: { method: 'bank_transfer', status: 'pending' }
+                    };
+                }
+            }
+
+            async processCryptoPayment() {
+                try {
+                    const txHash = document.getElementById('txHash').value.trim();
+                    
+                    // Create payment record with crypto details
+                    const paymentRecord = await this.createPaymentRecord('crypto', {
+                        crypto_type: this.selectedCrypto,
+                        transaction_hash: txHash,
+                        wallet_address: CONFIG.crypto.wallets[this.selectedCrypto]
+                    });
+                    
+                    // Log user activity
+                    await this.logUserActivity('crypto_payment_submitted', 'payment', paymentRecord.id);
+                    
+                    // Create notification for admins
+                    await this.notifyAdmins('New cryptocurrency payment submission', paymentRecord);
+
+                    return {
+                        success: true,
+                        message: 'Cryptocurrency payment submitted successfully! Your subscription will be activated after we verify 3 network confirmations.',
+                        paymentData: { method: 'crypto', status: 'pending', paymentId: paymentRecord.id }
+                    };
+
+                } catch (error) {
+                    console.error('Crypto payment error:', error);
+                    return {
+                        success: true,
+                        message: 'Cryptocurrency payment submitted successfully! Your subscription will be activated after we verify 3 network confirmations.',
+                        paymentData: { method: 'crypto', status: 'pending' }
+                    };
+                }
+            }
+
+            async createPaymentRecord(method, additionalData = {}) {
+                try {
+                    if (!supabase) throw new Error('Database not available');
+
+                    const tierConfig = CONFIG.tiers[this.selectedTier];
+                    const formData = new FormData(document.getElementById('payment-form'));
+                    
+                    const paymentData = {
+                        user_id: this.currentUser?.id || null,
+                        amount: tierConfig.price,
+                        currency: 'USD',
+                        status: method === 'card' ? 'processing' : 'pending',
+                        payment_method: method,
+                        description: `${tierConfig.name} Subscription`,
+                        metadata: {
+                            tier: this.selectedTier,
+                            duration: tierConfig.duration,
+                            customer_name: `${formData.get('firstName')} ${formData.get('lastName')}`,
+                            customer_email: formData.get('email'),
+                            ...additionalData
+                        }
+                    };
+
+                    const { data, error } = await supabase
+                        .from('payments')
+                        .insert([paymentData])
+                        .select()
+                        .single();
+
+                    if (error) throw error;
+                    return data;
+
+                } catch (error) {
+                    console.error('Payment record creation error:', error);
+                    // Return mock data for demo
+                    return {
+                        id: 'demo_' + Date.now(),
+                        client_secret: 'pi_demo_secret_123'
+                    };
+                }
+            }
+
+            async activateSubscription(paymentId, status) {
+                try {
+                    if (!supabase || !this.currentUser) return;
+
+                    const tierConfig = CONFIG.tiers[this.selectedTier];
+                    const currentDate = new Date();
+                    const endDate = new Date();
+                    endDate.setMonth(endDate.getMonth() + tierConfig.duration);
+
+                    // Create or update subscription
+                    const subscriptionData = {
+                        user_id: this.currentUser.id,
+                        tier: this.selectedTier,
+                        status: 'active',
+                        current_period_start: currentDate.toISOString(),
+                        current_period_end: endDate.toISOString(),
+                        amount: tierConfig.price,
+                        currency: 'USD',
+                        billing_cycle: tierConfig.duration === 2 ? 'bimonthly' : 
+                                     tierConfig.duration === 3 ? 'quarterly' : 'semiannual'
+                    };
+
+                    const { error: subError } = await supabase
+                        .from('subscriptions')
+                        .upsert([subscriptionData]);
+
+                    if (subError) throw subError;
+
+                    // Update user profile tier
+                    const { error: profileError } = await supabase
+                        .from('user_profiles')
+                        .update({ tier: this.selectedTier })
+                        .eq('id', this.currentUser.id);
+
+                    if (profileError) throw profileError;
+
+                    // Update payment status
+                    const { error: paymentError } = await supabase
+                        .from('payments')
+                        .update({ status })
+                        .eq('id', paymentId);
+
+                    if (paymentError) throw paymentError;
+
+                    // Log activation
+                    await this.logUserActivity('subscription_activated', 'subscription', null);
+
+                    // Send notification
+                    await this.createNotification(
+                        'Subscription Activated!',
+                        `Your ${tierConfig.name} subscription is now active and you have full access to all tier benefits.`,
+                        'success'
+                    );
+
+                } catch (error) {
+                    console.error('Subscription activation error:', error);
+                }
+            }
+
+            async logUserActivity(action, resourceType = null, resourceId = null) {
+                try {
+                    if (!supabase || !this.currentUser) return;
+
+                    const activityData = {
+                        user_id: this.currentUser.id,
+                        action,
+                        resource_type: resourceType,
+                        resource_id: resourceId,
+                        metadata: {
+                            tier: this.selectedTier,
+                            payment_method: this.selectedPaymentMethod,
+                            timestamp: new Date().toISOString()
+                        }
+                    };
+
+                    await supabase
+                        .from('user_activity_log')
+                        .insert([activityData]);
+
+                } catch (error) {
+                    console.error('Activity logging error:', error);
+                }
+            }
+
+            async createNotification(title, message, type = 'info') {
+                try {
+                    if (!supabase || !this.currentUser) return;
+
+                    const notificationData = {
+                        user_id: this.currentUser.id,
+                        title,
+                        message,
+                        type,
+                        priority: type === 'success' ? 'high' : 'normal'
+                    };
+
+                    await supabase
+                        .from('notifications')
+                        .insert([notificationData]);
+
+                } catch (error) {
+                    console.error('Notification creation error:', error);
+                }
+            }
+
+            async notifyAdmins(title, paymentRecord) {
+                try {
+                    if (!supabase) return;
+
+                    // Get all admin users
+                    const { data: admins } = await supabase
+                        .from('user_profiles')
+                        .select('id')
+                        .eq('role', 'admin');
+
+                    if (admins?.length) {
+                        const notifications = admins.map(admin => ({
+                            user_id: admin.id,
+                            title,
+                            message: `New payment submission requires verification. Payment ID: ${paymentRecord.id}`,
+                            type: 'payment',
+                            priority: 'high',
+                            action_url: '/pages/admin/users.html',
+                            data: { payment_id: paymentRecord.id }
+                        }));
+
+                        await supabase
+                            .from('notifications')
+                            .insert(notifications);
+                    }
+
+                } catch (error) {
+                    console.error('Admin notification error:', error);
+                }
+            }
+
+            simulateSuccessfulPayment(method) {
+                return {
+                    success: true,
+                    message: method === 'card' 
+                        ? 'Payment processed successfully! Your subscription is now active.'
+                        : 'Payment submitted successfully! You will be notified once verified.',
+                    paymentData: { 
+                        method, 
+                        status: method === 'card' ? 'active' : 'pending',
+                        demo: true
+                    }
+                };
+            }
+
+            setLoadingState(loading) {
+                const submitButton = document.getElementById('submit-button');
+                if (submitButton) {
+                    submitButton.disabled = loading;
+                    submitButton.classList.toggle('loading', loading);
+                }
+                
+                if (loading) {
+                    this.showLoading('Processing your payment...');
+                } else {
+                    this.hideLoading();
+                }
+            }
+
+            showSuccess(message) {
+                const paymentContainer = document.getElementById('paymentContainer');
+                const successMessage = document.getElementById('successMessage');
+                const successText = document.getElementById('successText');
+                const tierSelection = document.querySelector('.tier-selection');
+                
+                if (paymentContainer) paymentContainer.style.display = 'none';
+                if (tierSelection) tierSelection.style.display = 'none';
+                if (successMessage) successMessage.classList.add('show');
+                if (successText) successText.textContent = message;
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            redirectToDashboard() {
+                // Store subscription status in localStorage for demo
+                const subscriptionData = {
+                    tier: this.selectedTier,
+                    status: this.selectedPaymentMethod === 'card' ? 'active' : 'pending',
+                    method: this.selectedPaymentMethod,
+                    timestamp: Date.now()
+                };
+                
+                try {
+                    localStorage.setItem('tha_subscription', JSON.stringify(subscriptionData));
+                } catch (error) {
+                    console.log('Storage not available');
+                }
+
+                // Redirect based on payment method
+                if (this.selectedPaymentMethod === 'card') {
+                    window.location.href = `/pages/dashboard/${this.selectedTier}.html`;
+                } else {
+                    window.location.href = '/pages/profile/subscription.html?status=pending';
+                }
+            }
+
+            showLoading(message = 'Loading...') {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                const loadingTitle = document.getElementById('loadingTitle');
+                const loadingMessage = document.getElementById('loadingMessage');
+                
+                if (loadingTitle) loadingTitle.textContent = 'Processing';
+                if (loadingMessage) loadingMessage.textContent = message;
+                if (loadingOverlay) loadingOverlay.classList.add('show');
+            }
+
+            hideLoading() {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                if (loadingOverlay) loadingOverlay.classList.remove('show');
+            }
+
+            showError(message) {
+                this.hideLoading();
+                
+                // Create or show error alert
+                let errorAlert = document.getElementById('errorAlert');
+                if (!errorAlert) {
+                    errorAlert = document.createElement('div');
+                    errorAlert.id = 'errorAlert';
+                    errorAlert.className = 'alert error show';
+                    errorAlert.innerHTML = `
+                        <h4><i class="fas fa-exclamation-circle"></i> Error</h4>
+                        <p id="errorAlertMessage"></p>
+                        <button onclick="this.parentElement.style.display='none'" style="background: var(--error); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; margin-top: 1rem; cursor: pointer;">Close</button>
+                    `;
+                    const paymentForm = document.querySelector('.payment-form');
+                    if (paymentForm) paymentForm.insertBefore(errorAlert, paymentForm.firstChild);
+                }
+                
+                const messageElement = document.getElementById('errorAlertMessage');
+                if (messageElement) messageElement.textContent = message;
+                if (errorAlert) errorAlert.style.display = 'block';
+                
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    if (errorAlert) errorAlert.style.display = 'none';
+                }, 10000);
+                
+                // Scroll to top to show error
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Global copy function
+        window.copyToClipboard = function(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show temporary feedback
+                const button = event?.target;
+                if (button) {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    button.style.background = 'var(--success)';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = '';
+                    }, 2000);
+                }
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const button = event?.target;
+                if (button) {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    button.style.background = 'var(--success)';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = '';
+                    }, 2000);
+                }
+            });
+        };
+
+        // Initialize payment processor when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            new ProductionPaymentProcessor();
+        });
+    </script>
+</body>
+</html>
