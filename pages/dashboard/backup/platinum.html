@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platinum Dashboard - Traders Helmet Academy</title>
+    <meta name="description" content="Platinum tier trading dashboard with advanced signals, analytics, and premium features.">
+    
+    <!-- CSS Files -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-custom.css" rel="stylesheet">
+    <link href="/assets/css/dashboard.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --tier-primary: #8b5cf6;
+            --tier-secondary: #7c3aed;
+            --tier-light: rgba(139, 92, 246, 0.1);
+            --tier-gradient: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #f1f5f9;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: #1e293b;
+            border-right: 1px solid #475569;
+            padding: 2rem 0;
+            position: fixed;
+            width: 280px;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid #475569;
+            margin-bottom: 2rem;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--tier-gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .brand-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--tier-primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--tier-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-details h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .tier-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: var(--tier-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: var(--tier-primary);
+            background: var(--tier-light);
+        }
+
+        .nav-link.active {
+            color: var(--tier-primary);
+            background: var(--tier-light);
+            border-left: 3px solid var(--tier-primary);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            max-width: calc(100vw - 280px);
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-title h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, var(--tier-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-title p {
+            color: #cbd5e1;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            color: var(--tier-primary);
+            border-color: var(--tier-primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--tier-gradient);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            background: var(--tier-primary);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #10b981;
+        }
+
+        .premium-features {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title i {
+            color: var(--tier-primary);
+        }
+
+        .card-action {
+            color: var(--tier-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .card-action:hover {
+            color: var(--tier-secondary);
+        }
+
+        .signals-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .signal-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border-left: 4px solid #10b981;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .signal-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+        }
+
+        .signal-card.sell {
+            border-left-color: #ef4444;
+        }
+
+        .signal-card.premium::after {
+            content: 'PREMIUM';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--tier-gradient);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .signal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .signal-pair {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .signal-type {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .signal-buy {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .signal-sell {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .signal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .signal-detail {
+            text-align: center;
+        }
+
+        .signal-detail-label {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .signal-detail-value {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+
+        .signal-analysis {
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        .premium-badge {
+            background: var(--tier-gradient);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                max-width: 100vw;
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .premium-features {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--tier-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body data-tier="platinum">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <h5>Loading Platinum Dashboard...</h5>
+            <p>Please wait while we load your premium data.</p>
+        </div>
+    </div>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-header">
+                    <div class="logo-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="brand-text">Traders Helmet</div>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">PM</div>
+                    <div class="user-details">
+                        <h4 id="userName">Platinum Member</h4>
+                        <span class="tier-badge">
+                            <i class="fas fa-gem"></i>
+                            Platinum
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <ul>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="fas fa-tachometer-alt nav-icon"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/pages/signals/index.html" class="nav-link">
+                            <i class="fas fa-signal nav-icon"></i>
+                            <span>Premium Signals</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/pages/signals/crypto.html" class="nav-link">
+                            <i class="fab fa-bitcoin nav-icon"></i>
+                            <span>Crypto Signals</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-chart-area nav-icon"></i>
+                            <span>Advanced Charts</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-shield-alt nav-icon"></i>
+                            <span>Risk Management</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-video nav-icon"></i>
+                            <span>Weekly Webinars</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-graduation-cap nav-icon"></i>
+                            <span>Education</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/pages/profile/settings.html" class="nav-link">
+                            <i class="fas fa-user nav-icon"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/pages/profile/subscription.html" class="nav-link">
+                            <i class="fas fa-crown nav-icon"></i>
+                            <span>Subscription</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="logout-btn">
+                            <i class="fas fa-sign-out-alt nav-icon"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="header-title">
+                    <h1>Platinum Dashboard</h1>
+                    <p>Advanced trading tools and premium insights</p>
+                </div>
+                <div class="header-actions">
+                    <button class="notification-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationCount">5</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Monthly Signals</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-signal"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="signalUsage">147/200</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        <span id="signalsRemaining">53 premium signals remaining</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Success Rate</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="successRate">91%</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+7% this week</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Monthly Profit</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="monthlyProfit">$3,247</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+28% vs last month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Risk Score</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="riskScore">7.2/10</div>
+                    <div class="stat-change">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Optimal risk level</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Features -->
+            <div class="premium-features">
+                <!-- Advanced Signals -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-signal"></i>
+                            Premium Signals
+                        </h3>
+                        <span class="premium-badge">
+                            <i class="fas fa-star"></i>
+                            PLATINUM
+                        </span>
+                    </div>
+                    <div class="signals-list" id="signalsList">
+                        <!-- Signals will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Risk Management & Support -->
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-shield-alt"></i>
+                                Risk Management
+                            </h3>
+                        </div>
+                        <div style="text-align: center; color: #cbd5e1;">
+                            <div style="background: var(--tier-light); padding: 2rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <div style="width: 60px; height: 60px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem; font-weight: 700;">7.2</div>
+                                <h4 style="color: #10b981; margin-bottom: 0.5rem;">Low Risk</h4>
+                                <p style="font-size: 0.9rem;">Your portfolio risk is well managed</p>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="font-size: 0.9rem;">Risk Allocation</span>
+                                <span style="color: #f1f5f9; font-weight: 600;">72%</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px;">
+                                <div style="width: 72%; height: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-comments"></i>
+                                Live Support
+                            </h3>
+                        </div>
+                        <div style="text-align: center; color: #cbd5e1;">
+                            <div style="background: var(--tier-light); padding: 2rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <i class="fas fa-headset" style="font-size: 2rem; color: var(--tier-primary); margin-bottom: 1rem;"></i>
+                                <h4 style="color: #f1f5f9; margin-bottom: 0.5rem;">Priority Support</h4>
+                                <p style="font-size: 0.9rem;">Get instant help from our trading experts</p>
+                            </div>
+                            <button id="liveChatBtn" style="
+                                background: var(--tier-gradient);
+                                color: white;
+                                border: none;
+                                padding: 0.75rem 1.5rem;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                width: 100%;
+                            ">Start Live Chat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Performance Analytics
+                    </h3>
+                    <select id="chartPeriod" style="background: rgba(255,255,255,0.1); border: 1px solid #475569; border-radius: 6px; padding: 0.5rem; color: #f1f5f9;">
+                        <option value="30d">Last 30 days</option>
+                        <option value="90d">Last 90 days</option>
+                        <option value="6m">Last 6 months</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
+    
+    <!-- JavaScript Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Load config first
+        const script1 = document.createElement('script');
+        script1.src = '/assets/js/config.js';
+        document.head.appendChild(script1);
+
+        script1.onload = function() {
+            // Initialize Firebase
+            const app = initializeApp(window.THA_CONFIG.firebase);
+            const auth = getAuth(app);
+
+            // Initialize Supabase
+            const supabase = window.supabase.createClient(
+                window.THA_CONFIG.database.supabase.url,
+                window.THA_CONFIG.database.supabase.anonKey
+            );
+
+            class PlatinumDashboard {
+                constructor() {
+                    this.signalLimit = 200;
+                    this.currentSignals = 147;
+                    this.tier = 'platinum';
+                    this.auth = auth;
+                    this.supabase = supabase;
+                    this.userProfile = null;
+                    this.chart = null;
+                    
+                    this.init();
+                }
+
+                init() {
+                    this.showLoading();
+                    
+                    // Check authentication
+                    onAuthStateChanged(this.auth, (user) => {
+                        if (user) {
+                            this.handleAuthenticatedUser(user);
+                        } else {
+                            this.redirectToLogin();
+                        }
+                    });
+
+                    this.setupEventListeners();
+                }
+
+                async handleAuthenticatedUser(user) {
+                    try {
+                        console.log('✅ User authenticated in Platinum Dashboard:', user.email);
+
+                        // Check if user should be on Platinum tier
+                        await this.verifyTierAccess(user.uid);
+                        
+                        // Load user profile
+                        await this.loadUserProfile(user);
+                        
+                        // Load dashboard data
+                        await this.loadDashboardData();
+                        
+                        // Create performance chart
+                        this.createPerformanceChart();
+                        
+                        this.hideLoading();
+
+                    } catch (error) {
+                        console.error('❌ Error handling authenticated user:', error);
+                        this.showError('Failed to load dashboard data');
+                    }
+                }
+
+                async verifyTierAccess(userId) {
+                    try {
+                        // Get user profile and check tier
+                        const { data: profile, error } = await this.supabase
+                            .from('user_profiles')
+                            .select(`
+                                tier,
+                                subscriptions:user_subscriptions(
+                                    tier,
+                                    status,
+                                    current_period_end
+                                )
+                            `)
+                            .eq('id', userId)
+                            .single();
+
+                        if (error) {
+                            console.error('❌ Error fetching user tier:', error);
+                            return;
+                        }
+
+                        // Determine actual tier
+                        let actualTier = profile.tier || 'gold';
+                        
+                        if (profile.subscriptions && profile.subscriptions.length > 0) {
+                            const activeSubscription = profile.subscriptions.find(sub => 
+                                sub.status === 'active' && 
+                                new Date(sub.current_period_end) > new Date()
+                            );
+                            
+                            if (activeSubscription) {
+                                actualTier = activeSubscription.tier;
+                            }
+                        }
+
+                        // Redirect to correct dashboard if needed
+                        if (actualTier !== 'platinum') {
+                            console.log(`🔄 User has ${actualTier} tier, redirecting...`);
+                            window.location.href = `/pages/dashboard/${actualTier}.html`;
+                            return;
+                        }
+
+                        console.log('✅ User verified for Platinum tier');
+
+                    } catch (error) {
+                        console.error('❌ Error verifying tier access:', error);
+                    }
+                }
+
+                async loadUserProfile(user) {
+                    try {
+                        // Try to get from sessionStorage first
+                        const cachedProfile = sessionStorage.getItem('tha_user_profile');
+                        if (cachedProfile) {
+                            this.userProfile = JSON.parse(cachedProfile);
+                        } else {
+                            // Fetch from database
+                            const { data, error } = await this.supabase
+                                .from('user_profiles')
+                                .select('*')
+                                .eq('id', user.uid)
+                                .single();
+
+                            if (error) {
+                                throw error;
+                            }
+
+                            this.userProfile = data;
+                        }
+
+                        this.updateUserInterface();
+
+                    } catch (error) {
+                        console.error('❌ Error loading user profile:', error);
+                        // Use basic user info
+                        this.userProfile = {
+                            email: user.email,
+                            first_name: user.displayName?.split(' ')[0] || 'Platinum',
+                            last_name: user.displayName?.split(' ').slice(1).join(' ') || 'Member',
+                            tier: 'platinum'
+                        };
+                        this.updateUserInterface();
+                    }
+                }
+
+                updateUserInterface() {
+                    const userName = document.getElementById('userName');
+                    const userAvatar = document.getElementById('userAvatar');
+
+                    if (this.userProfile) {
+                        const displayName = `${this.userProfile.first_name || 'Platinum'} ${this.userProfile.last_name || 'Member'}`;
+                        userName.textContent = displayName;
+                        userAvatar.textContent = this.getInitials(displayName);
+                    }
+                }
+
+                getInitials(name) {
+                    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+                }
+
+                async loadDashboardData() {
+                    try {
+                        // Load signals count for this user
+                        await this.loadSignalsUsage();
+                        
+                        // Load recent premium signals
+                        await this.loadPremiumSignals();
+                        
+                        console.log('✅ Platinum dashboard data loaded successfully');
+
+                    } catch (error) {
+                        console.error('❌ Error loading dashboard data:', error);
+                    }
+                }
+
+                async loadSignalsUsage() {
+                    try {
+                        // Simulate signal usage tracking
+                        this.currentSignals = Math.floor(Math.random() * 50) + 120; // Simulate 120-170 signals used
+                        
+                        const remaining = this.signalLimit - this.currentSignals;
+                        
+                        document.getElementById('signalUsage').textContent = `${this.currentSignals}/${this.signalLimit}`;
+                        document.getElementById('signalsRemaining').textContent = `${remaining} premium signals remaining`;
+
+                    } catch (error) {
+                        console.error('❌ Error loading signals usage:', error);
+                    }
+                }
+
+                async loadPremiumSignals() {
+                    try {
+                        // Load premium signals accessible to Platinum tier
+                        const { data: signals, error } = await this.supabase
+                            .from('trading_signals')
+                            .select('*')
+                            .contains('tier_access', ['platinum'])
+                            .eq('status', 'active')
+                            .order('created_at', { ascending: false })
+                            .limit(3);
+
+                        if (error) {
+                            console.error('❌ Error fetching premium signals:', error);
+                            this.loadMockPremiumSignals(); // Fallback to mock data
+                            return;
+                        }
+
+                        if (signals && signals.length > 0) {
+                            this.renderPremiumSignals(signals);
+                        } else {
+                            this.loadMockPremiumSignals();
+                        }
+
+                    } catch (error) {
+                        console.error('❌ Error loading premium signals:', error);
+                        this.loadMockPremiumSignals();
+                    }
+                }
+
+                loadMockPremiumSignals() {
+                    const mockSignals = [
+                        {
+                            id: 1,
+                            symbol: 'EUR/USD',
+                            action: 'buy',
+                            entry_price: 1.0875,
+                            stop_loss: 1.0825,
+                            take_profit: 1.0925,
+                            confidence_level: 87,
+                            status: 'active',
+                            analysis: 'Strong bullish momentum supported by fundamental drivers. ECB dovish stance vs Fed hawkish sentiment creates favorable conditions.'
+                        },
+                        {
+                            id: 2,
+                            symbol: 'BTC/USD',
+                            action: 'sell',
+                            entry_price: 42350,
+                            stop_loss: 43200,
+                            take_profit: 40800,
+                            confidence_level: 79,
+                            status: 'active',
+                            analysis: 'Bitcoin showing signs of exhaustion at resistance. RSI divergence suggests potential correction to support levels.'
+                        }
+                    ];
+
+                    this.renderPremiumSignals(mockSignals);
+                }
+
+                renderPremiumSignals(signals) {
+                    const signalsList = document.getElementById('signalsList');
+                    
+                    signalsList.innerHTML = signals.map(signal => `
+                        <div class="signal-card ${signal.action} premium">
+                            <div class="signal-header">
+                                <span class="signal-pair">${signal.symbol}</span>
+                                <span class="signal-type signal-${signal.action}">${signal.action.toUpperCase()}</span>
+                            </div>
+                            <div class="signal-details">
+                                <div class="signal-detail">
+                                    <div class="signal-detail-label">Entry</div>
+                                    <div class="signal-detail-value">${signal.entry_price}</div>
+                                </div>
+                                <div class="signal-detail">
+                                    <div class="signal-detail-label">Stop Loss</div>
+                                    <div class="signal-detail-value">${signal.stop_loss}</div>
+                                </div>
+                                <div class="signal-detail">
+                                    <div class="signal-detail-label">Take Profit</div>
+                                    <div class="signal-detail-value">${signal.take_profit}</div>
+                                </div>
+                                <div class="signal-detail">
+                                    <div class="signal-detail-label">Confidence</div>
+                                    <div class="signal-detail-value">${signal.confidence_level || 85}%</div>
+                                </div>
+                            </div>
+                            ${signal.analysis ? `
+                                <div class="signal-analysis">
+                                    <strong>Analysis:</strong> ${signal.analysis}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('');
+                }
+
+                createPerformanceChart() {
+                    const ctx = document.getElementById('performanceChart');
+                    if (!ctx) return;
+                    
+                    this.chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                            datasets: [{
+                                label: 'Portfolio Value',
+                                data: [15000, 16200, 15800, 18247],
+                                borderColor: '#8b5cf6',
+                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            }, {
+                                label: 'Signals Performance',
+                                data: [12000, 13500, 13200, 15000],
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                borderWidth: 2,
+                                fill: false,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#cbd5e1'
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    },
+                                    ticks: {
+                                        color: '#94a3b8'
+                                    }
+                                },
+                                y: {
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    },
+                                    ticks: {
+                                        color: '#94a3b8',
+                                        callback: function(value) {
+                                            return '$' + value.toLocaleString();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                setupEventListeners() {
+                    // Mobile menu toggle
+                    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                    const sidebar = document.getElementById('sidebar');
+                    
+                    if (mobileMenuBtn) {
+                        mobileMenuBtn.addEventListener('click', () => {
+                            sidebar.classList.toggle('open');
+                        });
+                    }
+
+                    // Notification button
+                    document.getElementById('notificationBtn').addEventListener('click', () => {
+                        this.showNotifications();
+                    });
+
+                    // Live chat button
+                    document.getElementById('liveChatBtn').addEventListener('click', () => {
+                        this.startLiveChat();
+                    });
+
+                    // Chart period selector
+                    document.getElementById('chartPeriod').addEventListener('change', (e) => {
+                        this.updateChart(e.target.value);
+                    });
+
+                    // Logout button
+                    document.getElementById('logout-btn').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.logout();
+                    });
+
+                    // Close sidebar on mobile when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (window.innerWidth <= 768 && 
+                            !sidebar.contains(e.target) && 
+                            !e.target.closest('.mobile-menu-btn')) {
+                            sidebar.classList.remove('open');
+                        }
+                    });
+                }
+
+                async logout() {
+                    try {
+                        await signOut(this.auth);
+                        sessionStorage.clear();
+                        window.location.href = '/login.html';
+                    } catch (error) {
+                        console.error('❌ Error logging out:', error);
+                        alert('Error logging out. Please try again.');
+                    }
+                }
+
+                showNotifications() {
+                    const notifications = [
+                        'New premium signal: EUR/USD BUY',
+                        'Weekly webinar starts in 2 hours',
+                        'Risk analysis update available',
+                        'New crypto signals added',
+                        'Monthly performance report ready'
+                    ];
+                    
+                    alert('Premium Notifications:\n' + notifications.map((n, i) => `${i+1}. ${n}`).join('\n'));
+                }
+
+                startLiveChat() {
+                    alert('Starting live chat with premium support...\n\nFeatures:\n• Priority queue\n• Expert traders available\n• Screen sharing support\n• Trading strategy consultation');
+                }
+
+                updateChart(period) {
+                    if (!this.chart) return;
+                    
+                    const data = {
+                        '30d': {
+                            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                            data: [15000, 16200, 15800, 18247]
+                        },
+                        '90d': {
+                            labels: ['Month 1', 'Month 2', 'Month 3'],
+                            data: [12000, 15000, 18247]
+                        },
+                        '6m': {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                            data: [8000, 10000, 12000, 15000, 16500, 18247]
+                        }
+                    };
+
+                    this.chart.data.labels = data[period].labels;
+                    this.chart.data.datasets[0].data = data[period].data;
+                    this.chart.update();
+                }
+
+                redirectToLogin() {
+                    sessionStorage.clear();
+                    window.location.href = '/login.html';
+                }
+
+                showLoading() {
+                    document.getElementById('loading-overlay').style.display = 'flex';
+                }
+
+                hideLoading() {
+                    document.getElementById('loading-overlay').style.display = 'none';
+                }
+
+                showError(message) {
+                    this.hideLoading();
+                    alert(`Error: ${message}`);
+                }
+            }
+
+            // Initialize Platinum Dashboard
+            new PlatinumDashboard();
+        };
+    </script>
+</body>
+</html>
