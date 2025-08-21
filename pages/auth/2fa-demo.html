@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Factor Authentication - Traders Helmet Academy</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --color-primary: #3b82f6;
+            --color-primary-dark: #2563eb;
+            --color-primary-light: rgba(59, 130, 246, 0.1);
+            --color-surface: #1f2937;
+            --color-background: #111827;
+            --color-text-primary: #f9fafb;
+            --color-text-secondary: #d1d5db;
+            --color-text-muted: #9ca3af;
+            --color-border: #374151;
+            --color-success: #10b981;
+            --color-success-dark: #059669;
+            --color-success-light: rgba(16, 185, 129, 0.1);
+            --color-warning: #f59e0b;
+            --color-warning-dark: #d97706;
+            --color-warning-light: rgba(245, 158, 11, 0.1);
+            --color-danger: #ef4444;
+            --color-danger-dark: #dc2626;
+            --color-danger-light: rgba(239, 68, 68, 0.1);
+        }
+
+        body {
+            background: var(--color-background);
+            color: var(--color-text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .demo-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .demo-card h2 {
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .status-card {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .btn-custom {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0.5rem;
+        }
+
+        .btn-custom:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-danger-custom {
+            background: var(--color-danger);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0.5rem;
+        }
+
+        .btn-danger-custom:hover {
+            background: var(--color-danger-dark);
+            transform: translateY(-1px);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: var(--color-background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+        }
+
+        .feature-item h4 {
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .code-example {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-example code {
+            color: #e6edf3;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+
+        .notification.info {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--color-primary);
+            color: var(--color-text-primary);
+        }
+
+        .notification.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--color-success);
+            color: var(--color-text-primary);
+        }
+
+        .notification.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: var(--color-warning);
+            color: var(--color-text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="mb-3">
+                <i class="fas fa-shield-alt text-primary"></i>
+                Two-Factor Authentication Demo
+            </h1>
+            <p class="lead text-secondary">
+                Secure your Traders Helmet Academy account with 2FA
+            </p>
+        </div>
+
+        <!-- Current Status -->
+        <div class="demo-card">
+            <h2><i class="fas fa-info-circle"></i> Current 2FA Status</h2>
+            <div class="status-card">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4>Two-Factor Authentication</h4>
+                        <p class="mb-2">
+                            Status: <span class="two-factor-status disabled">Disabled</span>
+                        </p>
+                        <p class="text-secondary mb-0">
+                            Secure your account with an additional layer of protection using your mobile device.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn-custom enable-2fa-btn">
+                            <i class="fas fa-lock-open"></i> Enable 2FA
+                        </button>
+                        <button class="btn-danger-custom disable-2fa-btn" style="display: none;">
+                            <i class="fas fa-lock"></i> Disable 2FA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Overview -->
+        <div class="demo-card">
+            <h2><i class="fas fa-star"></i> 2FA Features</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4><i class="fas fa-qrcode"></i> QR Code Setup</h4>
+                    <p>Easy setup with any authenticator app using QR code scanning.</p>
+                </div>
+                <div class="feature-item">
+                    <h4><i class="fas fa-key"></i> Backup Codes</h4>
+                    <p>Generated backup codes for account recovery when needed.</p>
+                </div>
+                <div class="feature-item">
+                    <h4><i class="fas fa-mobile-alt"></i> TOTP Support</h4>
+                    <p>Works with Google Authenticator, Authy, and other TOTP apps.</p>
+                </div>
+                <div class="feature-item">
+                    <h4><i class="fas fa-history"></i> Time-based</h4>
+                    <p>30-second time windows with tolerance for clock drift.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Functions -->
+        <div class="demo-card">
+            <h2><i class="fas fa-cogs"></i> Test Functions</h2>
+            <p>These buttons demonstrate various 2FA functionalities:</p>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn-custom w-100 mb-2" onclick="testGenerateSecret()">
+                        <i class="fas fa-plus"></i> Generate New Secret
+                    </button>
+                    <button class="btn-custom w-100 mb-2" onclick="testVerifyCode()">
+                        <i class="fas fa-check"></i> Test Code Verification
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn-custom w-100 mb-2 regenerate-backup-codes-btn">
+                        <i class="fas fa-sync"></i> Regenerate Backup Codes
+                    </button>
+                    <button class="btn-custom w-100 mb-2" onclick="showStatus()">
+                        <i class="fas fa-info"></i> Show 2FA Status
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Examples -->
+        <div class="demo-card">
+            <h2><i class="fas fa-code"></i> Integration Examples</h2>
+            
+            <h4>Basic Setup</h4>
+            <div class="code-example">
+                <code>
+// Initialize 2FA for a user<br>
+const setupData = await TwoFactorAuth.generateSecret();<br>
+console.log('QR Code URL:', setupData.qrCodeUrl);<br>
+console.log('Manual Entry:', setupData.manualEntryKey);
+                </code>
+            </div>
+
+            <h4>Verify User Setup</h4>
+            <div class="code-example">
+                <code>
+// Verify and enable 2FA<br>
+const result = await TwoFactorAuth.enable2FA('123456');<br>
+if (result.success) {<br>
+&nbsp;&nbsp;console.log('2FA enabled!', result.backupCodes);<br>
+}
+                </code>
+            </div>
+
+            <h4>Verify Login Code</h4>
+            <div class="code-example">
+                <code>
+// Verify 2FA code during login<br>
+const verification = await TwoFactorAuth.verify2FACode('123456');<br>
+if (verification.success) {<br>
+&nbsp;&nbsp;// Allow user to proceed<br>
+}
+                </code>
+            </div>
+        </div>
+
+        <!-- Notifications Area -->
+        <div id="notifications-area"></div>
+
+        <!-- Documentation -->
+        <div class="demo-card">
+            <h2><i class="fas fa-book"></i> Documentation</h2>
+            <div class="notification info">
+                <h5><i class="fas fa-info-circle"></i> Important Notes</h5>
+                <ul class="mb-0">
+                    <li>2FA secrets are encrypted before storing in the database</li>
+                    <li>Backup codes are single-use and automatically marked as used</li>
+                    <li>The system supports a 1-step time window tolerance for clock drift</li>
+                    <li>All 2FA activities are logged for security auditing</li>
+                </ul>
+            </div>
+
+            <div class="notification warning">
+                <h5><i class="fas fa-exclamation-triangle"></i> Security Considerations</h5>
+                <ul class="mb-0">
+                    <li>Always use HTTPS in production environments</li>
+                    <li>Store 2FA secrets securely with proper encryption</li>
+                    <li>Implement rate limiting for 2FA verification attempts</li>
+                    <li>Provide clear backup and recovery procedures</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Required Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Mock THGlobal for demo -->
+    <script>
+        // Mock global state for demo purposes
+        window.THGlobal = {
+            state: {
+                user: {
+                    id: 'demo-user-id',
+                    email: 'demo@tradershelmet.com'
+                },
+                userProfile: {
+                    first_name: 'Demo',
+                    last_name: 'User'
+                }
+            }
+        };
+
+        // Mock Supabase for demo
+        window.supabase = {
+            from: (table) => ({
+                select: () => ({ 
+                    eq: () => ({ 
+                        single: async () => ({ 
+                            data: { two_factor_enabled: false }, 
+                            error: null 
+                        }) 
+                    }) 
+                }),
+                update: () => ({ 
+                    eq: async () => ({ error: null }) 
+                }),
+                insert: async () => ({ error: null })
+            })
+        };
+
+        // Mock THNotifications
+        window.THNotifications = {
+            show: (message, type = 'info', options = {}) => {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <strong>${type.charAt(0).toUpperCase() + type.slice(1)}:</strong> ${message}
+                `;
+                
+                const area = document.getElementById('notifications-area');
+                area.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, options.duration || 5000);
+            }
+        };
+    </script>
+
+    <!-- Include 2FA System (In real implementation, these would be separate files) -->
+    <script>
+        // Simplified 2FA implementation for demo
+        class TwoFactorAuthDemo {
+            constructor() {
+                this.isEnabled = false;
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                document.addEventListener('click', (e) => {
+                    if (e.target.matches('.enable-2fa-btn')) {
+                        this.show2FASetupModal();
+                    }
+                    if (e.target.matches('.disable-2fa-btn')) {
+                        this.disable2FA();
+                    }
+                });
+            }
+
+            async show2FASetupModal() {
+                // Mock QR code URL
+                const qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth://totp/Traders%20Helmet%20Academy:demo@tradershelmet.com?secret=JBSWY3DPEHPK3PXP&issuer=Traders%20Helmet%20Academy';
+                
+                const modal = document.createElement('div');
+                modal.className = 'two-factor-modal';
+                modal.innerHTML = `
+                    <div class="modal-backdrop">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Set Up Two-Factor Authentication</h3>
+                                <button class="modal-close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="setup-steps">
+                                    <div class="step active" data-step="1">
+                                        <h4>Step 1: Scan QR Code</h4>
+                                        <p>Use your authenticator app to scan this QR code:</p>
+                                        <div class="qr-code-container">
+                                            <img src="${qrCodeUrl}" alt="2FA QR Code" />
+                                        </div>
+                                        <div class="manual-entry">
+                                            <p>Or enter this code manually:</p>
+                                            <code class="secret-code">JBSW Y3DP EHPK 3PXP</code>
+                                            <button class="copy-secret-btn">Copy</button>
+                                        </div>
+                                        <button class="next-step-btn">Next</button>
+                                    </div>
+                                    
+                                    <div class="step" data-step="2">
+                                        <h4>Step 2: Verify Setup</h4>
+                                        <p>Enter the 6-digit code from your authenticator app:</p>
+                                        <input type="text" id="verification-code" class="two-factor-code-input" placeholder="000000" maxlength="6" />
+                                        <button class="verify-setup-btn">Verify & Enable</button>
+                                    </div>
+                                    
+                                    <div class="step" data-step="3">
+                                        <h4>Setup Complete!</h4>
+                                        <p>Two-factor authentication has been enabled. Here are your backup codes:</p>
+                                        <div class="backup-codes-container">
+                                            <div class="backup-codes" id="backup-codes-list">
+                                                <div class="backup-code">A1B2C3D4</div>
+                                                <div class="backup-code">E5F6G7H8</div>
+                                                <div class="backup-code">I9J0K1L2</div>
+                                                <div class="backup-code">M3N4O5P6</div>
+                                                <div class="backup-code">Q7R8S9T0</div>
+                                                <div class="backup-code">U1V2W3X4</div>
+                                            </div>
+                                            <button class="download-codes-btn">Download Codes</button>
+                                        </div>
+                                        <button class="finish-setup-btn">Finish</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+                this.setupModalEvents(modal);
+            }
+
+            setupModalEvents(modal) {
+                // Close modal
+                modal.querySelector('.modal-close').addEventListener('click', () => {
+                    modal.remove();
+                });
+
+                // Next step
+                modal.querySelector('.next-step-btn').addEventListener('click', () => {
+                    this.showModalStep(modal, 2);
+                });
+
+                // Verify setup
+                modal.querySelector('.verify-setup-btn').addEventListener('click', () => {
+                    const code = modal.querySelector('#verification-code').value;
+                    if (code.length === 6) {
+                        this.showModalStep(modal, 3);
+                        this.isEnabled = true;
+                        this.update2FAUI();
+                        THNotifications.show('2FA setup simulation completed!', 'success');
+                    } else {
+                        THNotifications.show('Please enter a 6-digit code', 'warning');
+                    }
+                });
+
+                // Finish setup
+                modal.querySelector('.finish-setup-btn').addEventListener('click', () => {
+                    modal.remove();
+                    THNotifications.show('Two-factor authentication enabled successfully!', 'success');
+                });
+            }
+
+            showModalStep(modal, step) {
+                modal.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+                modal.querySelector(`[data-step="${step}"]`).classList.add('active');
+            }
+
+            disable2FA() {
+                this.isEnabled = false;
+                this.update2FAUI();
+                THNotifications.show('Two-factor authentication disabled', 'info');
+            }
+
+            update2FAUI() {
+                const statusEl = document.querySelector('.two-factor-status');
+                const enableBtn = document.querySelector('.enable-2fa-btn');
+                const disableBtn = document.querySelector('.disable-2fa-btn');
+
+                if (this.isEnabled) {
+                    statusEl.textContent = 'Enabled';
+                    statusEl.className = 'two-factor-status enabled';
+                    enableBtn.style.display = 'none';
+                    disableBtn.style.display = 'inline-block';
+                } else {
+                    statusEl.textContent = 'Disabled';
+                    statusEl.className = 'two-factor-status disabled';
+                    enableBtn.style.display = 'inline-block';
+                    disableBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize demo
+        const TwoFactorAuth = new TwoFactorAuthDemo();
+
+        // Test functions
+        function testGenerateSecret() {
+            THNotifications.show('Secret generated: JBSWY3DPEHPK3PXP', 'info');
+        }
+
+        function testVerifyCode() {
+            const code = prompt('Enter a 6-digit code to test:');
+            if (code && code.length === 6) {
+                THNotifications.show(`Code ${code} verification simulated!`, 'success');
+            } else {
+                THNotifications.show('Invalid code format', 'warning');
+            }
+        }
+
+        function showStatus() {
+            const status = TwoFactorAuth.isEnabled ? 'Enabled' : 'Disabled';
+            THNotifications.show(`2FA Status: ${status}`, 'info');
+        }
+    </script>
+
+    <!-- Include 2FA CSS -->
+    <style>
+        /* Add the complete 2FA CSS here or link to external file */
+        .two-factor-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .two-factor-modal .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .two-factor-modal .modal-content {
+            position: relative;
+            background: var(--color-surface);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideInUp 0.3s ease-out;
+            border: 1px solid var(--color-border);
+        }
+
+        .two-factor-modal .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 32px 16px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .two-factor-modal .modal-body {
+            padding: 24px 32px 32px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .qr-code-container {
+            display: flex;
+            justify-content: center;
+            margin: 24px 0;
+            padding: 20px;
+            background: var(--color-background);
+            border: 2px dashed var(--color-border);
+            border-radius: 12px;
+        }
+
+        .manual-entry {
+            margin: 24px 0;
+            padding: 20px;
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+        }
+
+        .secret-code {
+            display: block;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 8px 0;
+            word-break: break-all;
+            letter-spacing: 0.5px;
+            color: var(--color-text-primary);
+        }
+
+        .two-factor-code-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 0.5em;
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            margin: 16px 0 24px;
+        }
+
+        .backup-codes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 16px 0 24px;
+            padding: 20px;
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+        }
+
+        .backup-code {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            text-align: center;
+            letter-spacing: 1px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-btn, .verify-setup-btn, .finish-setup-btn, .copy-secret-btn, .download-codes-btn {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 8px 4px;
+        }
+
+        .next-step-btn:hover, .verify-setup-btn:hover, .finish-setup-btn:hover, 
+        .copy-secret-btn:hover, .download-codes-btn:hover {
+            background: var(--color-primary-dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+        }
+
+        .two-factor-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .two-factor-status.enabled {
+            background: var(--color-success-light);
+            color: var(--color-success);
+        }
+
+        .two-factor-status.disabled {
+            background: var(--color-warning-light);
+            color: var(--color-warning);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</body>
+</html>
