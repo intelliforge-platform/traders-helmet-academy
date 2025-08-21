@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Traders Helmet Academy</title>
+    <meta name="description" content="Admin control panel for Traders Helmet Academy - Monitor users, manage subscriptions, and oversee platform operations">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Admin Theme Colors */
+            --primary-admin: #dc2626;
+            --primary-admin-dark: #b91c1c;
+            --primary-admin-light: #ef4444;
+            --accent-orange: #f97316;
+            --accent-yellow: #eab308;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --pending: #8b5cf6;
+            --pending-light: rgba(139, 92, 246, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--gradient-card);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+            position: fixed;
+            width: 280px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .brand-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-admin-light);
+        }
+
+        .admin-badge {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--primary-admin-light);
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            width: 20px;
+            font-size: 1.1rem;
+        }
+
+        .nav-badge {
+            background: var(--primary-admin);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            width: calc(100% - 280px);
+        }
+
+        /* Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .quick-action-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+            color: white;
+        }
+
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(220, 38, 38, 0.2);
+            color: var(--primary-admin-light);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-title {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .stat-icon.users {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.pending {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--pending);
+        }
+
+        .stat-icon.revenue {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-icon.signals {
+            background: rgba(14, 165, 233, 0.1);
+            color: #0ea5e9;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--error);
+        }
+
+        .stat-change.neutral {
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Widgets */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .widget {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .widget-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .widget-action {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--primary-admin-light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .widget-action:hover {
+            background: var(--primary-admin);
+            color: white;
+        }
+
+        /* Recent Activity */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.user {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .activity-icon.payment {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .activity-icon.system {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--primary-admin-light);
+        }
+
+        .activity-content h4 {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-content p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .activity-time {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .quick-action {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .quick-action:hover {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: var(--primary-admin);
+            transform: translateY(-2px);
+            color: var(--text-primary);
+        }
+
+        .quick-action-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .quick-action h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-action p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* System Health */
+        .system-health {
+            grid-column: 1 / -1;
+        }
+
+        .health-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .health-indicator {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .health-status {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .health-status.healthy {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .health-status.warning {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .health-status.critical {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .health-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .health-value {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .widgets-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1000;
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .widget {
+                padding: 1.5rem;
+            }
+
+            .health-indicators {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card,
+        .widget {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* Alert Notifications */
+        .alert-banner {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid var(--primary-admin);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alert-banner.hidden {
+            display: none;
+        }
+
+        .alert-icon {
+            color: var(--primary-admin-light);
+            font-size: 1.2rem;
+        }
+
+        .alert-content h4 {
+            color: var(--primary-admin-light);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .alert-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .alert-actions {
+            margin-left: auto;
+        }
+
+        .alert-btn {
+            background: var(--primary-admin);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .alert-btn:hover {
+            background: var(--primary-admin-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="brand-text">THA Admin</div>
+                </div>
+                <div class="admin-badge">
+                    <i class="fas fa-crown"></i> System Administrator
+                </div>
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="fas fa-chart-line nav-icon"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/pages/admin/users.html" class="nav-link">
+                            <i class="fas fa-users nav-icon"></i>
+                            <span>User Management</span>
+                            <span class="nav-badge" id="pendingUsersBadge">4</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-broadcast-tower nav-icon"></i>
+                            <span>Trading Signals</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-credit-card nav-icon"></i>
+                            <span>Payments</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-chart-bar nav-icon"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-headset nav-icon"></i>
+                            <span>Support Tickets</span>
+                            <span class="nav-badge">2</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-cog nav-icon"></i>
+                            <span>System Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-database nav-icon"></i>
+                            <span>Database</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-sign-out-alt nav-icon"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="welcome-section">
+                    <h1>Admin Control Panel</h1>
+                    <p>Monitor platform operations and manage user subscriptions</p>
+                </div>
+                <div class="header-actions">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="/pages/admin/users.html" class="quick-action-btn">
+                        <i class="fas fa-users"></i>
+                        Manage Users
+                    </a>
+                    <button class="refresh-btn" onclick="refreshDashboard()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Alert Banner -->
+            <div class="alert-banner" id="alertBanner">
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="alert-content">
+                    <h4>Pending Activations</h4>
+                    <p>4 users awaiting manual activation for bank transfer and crypto payments</p>
+                </div>
+                <div class="alert-actions">
+                    <button class="alert-btn" onclick="window.location.href='/pages/admin/users.html'">
+                        Review Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Total Users</span>
+                        <div class="stat-icon users">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" data-animate="247">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+23 this month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Pending Activations</span>
+                        <div class="stat-icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" data-animate="4">0</div>
+                    <div class="stat-change neutral">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Requires attention</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Monthly Revenue</span>
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" data-animate="18500">$0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+15.3% from last month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Active Signals</span>
+                        <div class="stat-icon signals">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" data-animate="42">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+8 this week</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Widgets Grid -->
+            <section class="widgets-grid">
+                <!-- Recent Activity -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title">
+                            <i class="fas fa-clock"></i>
+                            Recent Activity
+                        </h3>
+                        <button class="widget-action" onclick="viewAllActivity()">View All</button>
+                    </div>
+
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <div class="activity-icon user">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>New User Registration</h4>
+                                <p>sarah.wilson@email.com registered for Platinum tier</p>
+                                <div class="activity-time">2 minutes ago</div>
+                            </div>
+                        </li>
+
+                        <li class="activity-item">
+                            <div class="activity-icon payment">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Payment Received</h4>
+                                <p>Bank transfer verification pending - $600</p>
+                                <div class="activity-time">15 minutes ago</div>
+                            </div>
+                        </li>
+
+                        <li class="activity-item">
+                            <div class="activity-icon user">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>User Activated</h4>
+                                <p>mike.johnson@email.com - Diamond tier activated</p>
+                                <div class="activity-time">1 hour ago</div>
+                            </div>
+                        </li>
+
+                        <li class="activity-item">
+                            <div class="activity-icon system">
+                                <i class="fas fa-broadcast-tower"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Trading Signal Published</h4>
+                                <p>EUR/USD bullish signal sent to all tiers</p>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </li>
+
+                        <li class="activity-item">
+                            <div class="activity-icon payment">
+                                <i class="fab fa-bitcoin"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Crypto Payment Detected</h4>
+                                <p>Bitcoin payment confirmation pending - 0.007 BTC</p>
+                                <div class="activity-time">3 hours ago</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title">
+                            <i class="fas fa-bolt"></i>
+                            Quick Actions
+                        </h3>
+                    </div>
+
+                    <div class="quick-actions">
+                        <a href="/pages/admin/users.html" class="quick-action">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <h4>Activate Users</h4>
+                            <p>Review and activate pending subscriptions</p>
+                        </a>
+
+                        <a href="#" class="quick-action" onclick="createSignal()">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-broadcast-tower"></i>
+                            </div>
+                            <h4>Create Signal</h4>
+                            <p>Publish new trading signal</p>
+                        </a>
+
+                        <a href="#" class="quick-action" onclick="viewPayments()">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <h4>View Payments</h4>
+                            <p>Check payment transactions</p>
+                        </a>
+
+                        <a href="#" class="quick-action" onclick="generateReport()">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h4>Generate Report</h4>
+                            <p>Create analytics report</p>
+                        </a>
+
+                        <a href="#" class="quick-action" onclick="systemSettings()">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <h4>System Settings</h4>
+                            <p>Configure platform settings</p>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Health -->
+            <section class="widget system-health">
+                <div class="widget-header">
+                    <h3 class="widget-title">
+                        <i class="fas fa-heart"></i>
+                        System Health
+                    </h3>
+                    <button class="widget-action" onclick="viewSystemLogs()">View Logs</button>
+                </div>
+
+                <div class="health-indicators">
+                    <div class="health-indicator">
+                        <div class="health-status healthy">
+                            99%
+                        </div>
+                        <div class="health-label">Server Uptime</div>
+                        <div class="health-value">Last 30 days</div>
+                    </div>
+
+                    <div class="health-indicator">
+                        <div class="health-status healthy">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="health-label">Database</div>
+                        <div class="health-value">All systems operational</div>
+                    </div>
+
+                    <div class="health-indicator">
+                        <div class="health-status warning">
+                            12ms
+                        </div>
+                        <div class="health-label">Response Time</div>
+                        <div class="health-value">Slightly elevated</div>
+                    </div>
+
+                    <div class="health-indicator">
+                        <div class="health-status healthy">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="health-label">Security</div>
+                        <div class="health-value">No threats detected</div>
+                    </div>
+
+                    <div class="health-indicator">
+                        <div class="health-status healthy">
+                            2.1GB
+                        </div>
+                        <div class="health-label">Storage Used</div>
+                        <div class="health-value">of 100GB available</div>
+                    </div>
+
+                    <div class="health-indicator">
+                        <div class="health-status healthy">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div class="health-label">API Status</div>
+                        <div class="health-value">All endpoints responding</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Admin Dashboard Management System
+        class AdminDashboard {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.animateStats();
+                this.setupEventListeners();
+                this.updateRealTimeData();
+                this.checkPendingActivations();
+                console.log('🛡️ Admin Dashboard initialized successfully');
+            }
+
+            animateStats() {
+                // Animate stat values
+                const statValues = document.querySelectorAll('.stat-value[data-animate]');
+                
+                statValues.forEach(stat => {
+                    const targetValue = parseInt(stat.getAttribute('data-animate'));
+                    const isMonetary = stat.textContent.includes('$');
+                    let currentValue = 0;
+                    const increment = targetValue / 50; // 50 steps for smoother animation
+                    
+                    const timer = setInterval(() => {
+                        currentValue += increment;
+                        
+                        if (currentValue >= targetValue) {
+                            currentValue = targetValue;
+                            clearInterval(timer);
+                        }
+                        
+                        if (isMonetary) {
+                            stat.textContent = `$${Math.floor(currentValue).toLocaleString()}`;
+                        } else {
+                            stat.textContent = Math.floor(currentValue);
+                        }
+                    }, 30);
+                });
+            }
+
+            setupEventListeners() {
+                // Navigation links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        if (link.getAttribute('href') === '#') {
+                            e.preventDefault();
+                            this.handleNavigation(link);
+                        }
+                    });
+                });
+
+                // Quick actions
+                document.querySelectorAll('.quick-action').forEach(action => {
+                    if (action.getAttribute('href') === '#') {
+                        action.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            this.handleQuickAction(action);
+                        });
+                    }
+                });
+            }
+
+            handleNavigation(activeLink) {
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                activeLink.classList.add('active');
+                
+                // Get the section name
+                const sectionName = activeLink.querySelector('span').textContent;
+                this.showComingSoon(sectionName);
+            }
+
+            handleQuickAction(action) {
+                const actionText = action.querySelector('h4').textContent;
+                this.showComingSoon(actionText);
+            }
+
+            updateRealTimeData() {
+                // Simulate real-time updates
+                setInterval(() => {
+                    this.updateActivityFeed();
+                }, 60000); // Update every minute
+            }
+
+            updateActivityFeed() {
+                // Simulate new activity items
+                const activityList = document.querySelector('.activity-list');
+                const newActivity = this.createActivityItem();
+                
+                // Add new item to top
+                activityList.insertBefore(newActivity, activityList.firstChild);
+                
+                // Remove last item if more than 5
+                const items = activityList.querySelectorAll('.activity-item');
+                if (items.length > 5) {
+                    items[items.length - 1].remove();
+                }
+            }
+
+            createActivityItem() {
+                const activities = [
+                    { type: 'user', icon: 'fas fa-user-plus', title: 'New User Registration', desc: 'New user signed up for Gold tier' },
+                    { type: 'payment', icon: 'fas fa-credit-card', title: 'Payment Received', desc: 'Card payment processed successfully' },
+                    { type: 'system', icon: 'fas fa-broadcast-tower', title: 'Signal Published', desc: 'New crypto signal sent' }
+                ];
+                
+                const activity = activities[Math.floor(Math.random() * activities.length)];
+                const li = document.createElement('li');
+                li.className = 'activity-item';
+                li.innerHTML = `
+                    <div class="activity-icon ${activity.type}">
+                        <i class="${activity.icon}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4>${activity.title}</h4>
+                        <p>${activity.desc}</p>
+                        <div class="activity-time">Just now</div>
+                    </div>
+                `;
+                
+                return li;
+            }
+
+            checkPendingActivations() {
+                // Check for pending activations and update badge
+                const pendingCount = 4; // This would come from your API
+                const badge = document.getElementById('pendingUsersBadge');
+                if (badge && pendingCount > 0) {
+                    badge.textContent = pendingCount;
+                }
+                
+                // Show/hide alert banner based on pending count
+                const alertBanner = document.getElementById('alertBanner');
+                if (pendingCount === 0) {
+                    alertBanner.classList.add('hidden');
+                }
+            }
+
+            refreshDashboard() {
+                console.log('🔄 Refreshing admin dashboard...');
+                
+                // Show loading state briefly
+                const refreshBtn = document.querySelector('.refresh-btn');
+                const originalIcon = refreshBtn.innerHTML;
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                
+                // Simulate refresh
+                setTimeout(() => {
+                    refreshBtn.innerHTML = originalIcon;
+                    this.animateStats();
+                    this.updateActivityFeed();
+                    this.showSuccessMessage('Dashboard refreshed successfully!');
+                }, 1500);
+            }
+
+            showComingSoon(feature) {
+                alert(`🚀 ${feature} feature is coming soon!\n\nWe're working hard to bring you comprehensive admin tools.`);
+            }
+
+            showSuccessMessage(message) {
+                // Create temporary success toast
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--success);
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                `;
+                toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            }
+        }
+
+        // Global functions for button interactions
+        window.refreshDashboard = function() {
+            if (window.adminDashboard) {
+                window.adminDashboard.refreshDashboard();
+            }
+        };
+
+        window.toggleSidebar = function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        };
+
+        window.viewAllActivity = function() {
+            alert('📊 Activity Log\n\nShowing comprehensive activity history...');
+        };
+
+        window.createSignal = function() {
+            alert('📡 Create Trading Signal\n\nRedirecting to signal creation panel...');
+        };
+
+        window.viewPayments = function() {
+            alert('💳 Payment Management\n\nShowing payment transactions and history...');
+        };
+
+        window.generateReport = function() {
+            alert('📈 Analytics Report\n\nGenerating comprehensive platform analytics...');
+        };
+
+        window.systemSettings = function() {
+            alert('⚙️ System Settings\n\nAccessing platform configuration panel...');
+        };
+
+        window.viewSystemLogs = function() {
+            alert('📋 System Logs\n\nShowing detailed system monitoring and logs...');
+        };
+
+        // Initialize dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.adminDashboard = new AdminDashboard();
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 968) {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Add interactive effects
+        document.addEventListener('DOMContentLoaded', () => {
+            // Stat cards hover effect
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Widget hover effects
+            const widgets = document.querySelectorAll('.widget');
+            widgets.forEach(widget => {
+                widget.addEventListener('mouseenter', () => {
+                    widget.style.transform = 'translateY(-5px)';
+                });
+                
+                widget.addEventListener('mouseleave', () => {
+                    widget.style.transform = 'translateY(0)';
+                });
+            });
+        });
+
+        console.log('🛡️ Traders Helmet Academy Admin Dashboard Loaded Successfully!');
+    </script>
+</body>
+</html>

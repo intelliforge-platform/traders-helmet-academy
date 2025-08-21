@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Traders Helmet Academy</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Config -->
+    <script src="/assets/js/config.js"></script>
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-steel: #4682b4;
+            --primary-steel-dark: #2f5f8f;
+            --primary-steel-light: #6ba6cd;
+            --steel-blue-bg: #36454f;
+            --accent-gold: #ffd700;
+            --success: #32cd32;
+            --warning: #ffa500;
+            --error: #dc143c;
+            --dark-bg: #1a1a2e;
+            --dark-surface: #16213e;
+            --dark-card: #0f3460;
+            --text-primary: #ffffff;
+            --text-secondary: #e6e6fa;
+            --text-muted: #b0c4de;
+            --steel-gradient: linear-gradient(135deg, #36454f 0%, #4682b4 50%, #708090 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--steel-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            border: 1px solid rgba(70, 130, 180, 0.3);
+            backdrop-filter: blur(20px);
+            text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: url('/tradershelmetlogo.png') no-repeat center center;
+            background-size: contain;
+            margin: 0 auto 2rem;
+            border-radius: 12px;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-steel-light);
+        }
+
+        .login-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .admin-badge {
+            background: var(--error);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(70, 130, 180, 0.3);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-steel-light);
+            background: rgba(70, 130, 180, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-steel);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-steel-dark);
+            transform: translateY(-2px);
+        }
+
+        .login-btn:disabled {
+            background: rgba(70, 130, 180, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        .login-btn.loading .loading-spinner {
+            display: inline-block;
+        }
+
+        .error-message {
+            background: rgba(220, 20, 60, 0.1);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            color: var(--error);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .back-link {
+            color: var(--primary-steel-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1rem;
+            }
+
+            .login-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo"></div>
+            
+            <h1 class="login-title">Admin Login</h1>
+            <p class="login-subtitle">Traders Helmet Academy</p>
+            
+            <div class="admin-badge">
+                <i class="fas fa-shield-alt"></i>
+                Administrative Access
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Admin Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="admin@tradershelmetacademy.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Admin Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your admin password" required>
+                </div>
+                
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <div class="loading-spinner"></div>
+                    <span>Access Admin Dashboard</span>
+                </button>
+            </form>
+            
+            <a href="/pages/auth/login.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to User Login
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Admin login functionality
+        document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtn.classList.add('loading');
+            errorMessage.style.display = 'none';
+            
+            try {
+                // Sign in with Firebase
+                console.log('🔐 Attempting admin login for:', email);
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                console.log('✅ Firebase auth successful');
+                
+                // Get user token with custom claims
+                const tokenResult = await user.getIdTokenResult();
+                console.log('🔍 Checking admin claims...');
+                
+                // Check if user has admin role
+                if (tokenResult.claims.role !== 'admin') {
+                    throw new Error('This account does not have admin privileges');
+                }
+                
+                console.log('✅ Admin privileges confirmed');
+                
+                // Sync with Supabase
+                const supabaseProfile = await syncUserWithSupabase(user);
+                if (!supabaseProfile || supabaseProfile.role !== 'admin') {
+                    throw new Error('Admin profile not found in database');
+                }
+                
+                console.log('✅ Admin profile verified in database');
+                
+                // Log admin login
+                await logUserActivity('admin_login', 'authentication', null, {
+                    admin_email: email,
+                    login_timestamp: new Date().toISOString()
+                });
+                
+                console.log('🎉 Admin login successful, redirecting...');
+                
+                // Redirect to admin dashboard
+                window.location.href = '/pages/admin/dashboard.html';
+                
+            } catch (error) {
+                console.error('❌ Admin login failed:', error);
+                
+                // Show error message
+                errorMessage.textContent = getErrorMessage(error.code || error.message);
+                errorMessage.style.display = 'block';
+                
+                // Reset button
+                loginBtn.disabled = false;
+                loginBtn.classList.remove('loading');
+            }
+        });
+
+        // Get user-friendly error message
+        function getErrorMessage(errorCode) {
+            const errorMessages = {
+                'auth/user-not-found': 'Admin account not found',
+                'auth/wrong-password': 'Invalid admin password',
+                'auth/invalid-email': 'Invalid email format',
+                'auth/too-many-requests': 'Too many failed attempts. Try again later.',
+                'auth/network-request-failed': 'Network error. Check your connection.',
+                'auth/user-disabled': 'This admin account has been disabled'
+            };
+            
+            return errorMessages[errorCode] || 'Admin login failed. Please check your credentials.';
+        }
+
+        // Auto-fill for testing (remove in production)
+        if (window.location.hostname === 'localhost') {
+            document.getElementById('email').value = 'admin@tradershelmetacademy.com';
+            // Don't auto-fill password for security
+        }
+    </script>
+</body>
+</html>
