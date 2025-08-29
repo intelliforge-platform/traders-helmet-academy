@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Subscription - Traders Helmet Academy</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --secondary-purple: #7c3aed;
+            --accent-gold: #f59e0b;
+            --background-dark: #0f172a;
+            --background-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-purple) 100%);
+            --gradient-card: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .auth-notice {
+            background: var(--warning-light);
+            border: 1px solid var(--warning);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .auth-notice h3 {
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-notice p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .subscription-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .subscription-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .subscription-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .subscription-card.popular {
+            border: 2px solid var(--accent-gold);
+            transform: scale(1.05);
+        }
+
+        .subscription-card.popular::before {
+            content: '🏆 MOST POPULAR';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-gold);
+            color: var(--background-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .tier-price {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tier-price .amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .tier-price .period {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .tier-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tier-features li::before {
+            content: '✅';
+            color: var(--success);
+        }
+
+        .select-tier-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .select-tier-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .select-tier-btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid var(--text-muted);
+            border-top: 3px solid var(--primary-blue-light);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: var(--error-light);
+            border: 1px solid var(--error);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .error-message h3 {
+            color: var(--error);
+            margin-bottom: 0.5rem;
+        }
+
+        .features-comparison {
+            background: var(--background-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .features-comparison h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .debug-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .subscription-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subscription-card.popular {
+                transform: scale(1);
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Choose Your Trading Journey</h1>
+            <p>Select the perfect subscription tier to unlock your trading potential with Traders Helmet Academy.</p>
+        </div>
+
+        <!-- Debug Information -->
+        <div id="debugInfo"></div>
+
+        <!-- Authentication Notice (shown for non-authenticated users) -->
+        <div id="authNotice" class="auth-notice" style="display: none;">
+            <h3><i class="fas fa-lock"></i> Authentication Required</h3>
+            <p>Please create an account or sign in to access our subscription plans and start your trading journey.</p>
+            <div class="auth-buttons">
+                <a href="/pages/auth/register.html" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </a>
+                <a href="/pages/auth/login.html" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </a>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Loading subscription plans...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-message" style="display: none;">
+            <h3><i class="fas fa-exclamation-triangle"></i> Unable to Load Subscription Data</h3>
+            <p id="errorMessage">We're experiencing technical difficulties. Please try again later.</p>
+            <button onclick="window.location.reload()" class="btn btn-primary">
+                <i class="fas fa-refresh"></i> Retry
+            </button>
+        </div>
+
+        <!-- Subscription Plans -->
+        <div id="subscriptionContent" style="display: none;">
+            <div class="subscription-grid">
+                <!-- Gold Tier -->
+                <div class="subscription-card" data-tier="gold">
+                    <div class="tier-name">Gold Membership</div>
+                    <div class="tier-price">
+                        <div class="amount">$300</div>
+                        <div class="period">monthly</div>
+                    </div>
+                    <ul class="tier-features">
+                        <li>Basic Trading Signals</li>
+                        <li>Weekly Market Analysis</li>
+                        <li>Community Access</li>
+                        <li>Educational Resources</li>
+                        <li>Email Support</li>
+                    </ul>
+                    <button class="select-tier-btn" onclick="selectTier('gold')">
+                        Get Started with Gold
+                    </button>
+                </div>
+
+                <!-- Platinum Tier (Popular) -->
+                <div class="subscription-card popular" data-tier="platinum">
+                    <div class="tier-name">Platinum Membership</div>
+                    <div class="tier-price">
+                        <div class="amount">$600</div>
+                        <div class="period">monthly</div>
+                    </div>
+                    <ul class="tier-features">
+                        <li>Premium Trading Signals</li>
+                        <li>Daily Market Analysis</li>
+                        <li>1-on-1 Mentoring Sessions</li>
+                        <li>Advanced Trading Tools</li>
+                        <li>Priority Support</li>
+                        <li>Risk Management Guidance</li>
+                    </ul>
+                    <button class="select-tier-btn" onclick="selectTier('platinum')">
+                        Choose Platinum
+                    </button>
+                </div>
+
+                <!-- Diamond Tier -->
+                <div class="subscription-card" data-tier="diamond">
+                    <div class="tier-name">Diamond Membership</div>
+                    <div class="tier-price">
+                        <div class="amount">$1,300</div>
+                        <div class="period">monthly</div>
+                    </div>
+                    <ul class="tier-features">
+                        <li>VIP Trading Signals</li>
+                        <li>Real-time Market Updates</li>
+                        <li>Weekly 1-on-1 Coaching</li>
+                        <li>Custom Trading Strategies</li>
+                        <li>24/7 Priority Support</li>
+                        <li>Portfolio Management</li>
+                        <li>Exclusive Webinars</li>
+                    </ul>
+                    <button class="select-tier-btn" onclick="selectTier('diamond')">
+                        Go Diamond Elite
+                    </button>
+                </div>
+            </div>
+
+            <!-- Features Comparison -->
+            <div class="features-comparison">
+                <h3>Compare All Features</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Gold</th>
+                            <th>Platinum</th>
+                            <th>Diamond</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Trading Signals</td>
+                            <td>Basic</td>
+                            <td>Premium</td>
+                            <td>VIP</td>
+                        </tr>
+                        <tr>
+                            <td>Market Analysis</td>
+                            <td>Weekly</td>
+                            <td>Daily</td>
+                            <td>Real-time</td>
+                        </tr>
+                        <tr>
+                            <td>Mentoring</td>
+                            <td>❌</td>
+                            <td>Monthly</td>
+                            <td>Weekly</td>
+                        </tr>
+                        <tr>
+                            <td>Support Level</td>
+                            <td>Email</td>
+                            <td>Priority</td>
+                            <td>24/7 VIP</td>
+                        </tr>
+                        <tr>
+                            <td>Custom Strategies</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                            <td>✅</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDK Configuration -->
+    <script src="/assets/js/sdk-config.js"></script>
+
+    <script>
+        class SubscriptionManager {
+            constructor() {
+                this.currentUser = null;
+                this.isAuthenticated = false;
+                this.subscriptionData = null;
+                
+                this.init();
+            }
+
+            async init() {
+                console.log('🔄 Initializing Subscription Manager...');
+                
+                // Wait for SDKs to be ready
+                if (window.SDK_DEBUG && (window.SDK_DEBUG.firebase || window.SDK_DEBUG.supabase)) {
+                    this.handleSDKReady();
+                } else {
+                    window.addEventListener('sdksReady', () => this.handleSDKReady());
+                }
+            }
+
+            async handleSDKReady() {
+                console.log('✅ SDKs ready, checking authentication...');
+                
+                try {
+                    await this.checkAuthentication();
+                    await this.loadSubscriptionData();
+                } catch (error) {
+                    console.error('❌ Initialization error:', error);
+                    this.showError('Failed to initialize page. Please refresh and try again.');
+                }
+            }
+
+            async checkAuthentication() {
+                try {
+                    // Check Firebase auth
+                    if (window.firebaseAuth && window.firebaseAuth.getCurrentUser) {
+                        this.currentUser = window.firebaseAuth.getCurrentUser();
+                        this.isAuthenticated = !!this.currentUser;
+                    }
+
+                    // If not authenticated via Firebase, check Supabase
+                    if (!this.isAuthenticated && window.supabase) {
+                        const { data: { user } } = await window.supabase.auth.getUser();
+                        this.currentUser = user;
+                        this.isAuthenticated = !!user;
+                    }
+
+                    console.log('🔐 Authentication status:', this.isAuthenticated ? 'Authenticated' : 'Not authenticated');
+                    
+                    if (!this.isAuthenticated) {
+                        this.showAuthNotice();
+                        return;
+                    }
+
+                    this.hideAuthNotice();
+                } catch (error) {
+                    console.error('Authentication check error:', error);
+                    this.showAuthNotice();
+                }
+            }
+
+            async loadSubscriptionData() {
+                try {
+                    console.log('📦 Loading subscription data...');
+                    
+                    // Simulate loading subscription plans (in real app, this would fetch from database)
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    this.subscriptionData = {
+                        plans: [
+                            {
+                                id: 'gold',
+                                name: 'Gold Membership',
+                                price: 300,
+                                features: ['Basic Trading Signals', 'Weekly Market Analysis', 'Community Access']
+                            },
+                            {
+                                id: 'platinum',
+                                name: 'Platinum Membership',
+                                price: 600,
+                                features: ['Premium Trading Signals', 'Daily Market Analysis', '1-on-1 Mentoring']
+                            },
+                            {
+                                id: 'diamond',
+                                name: 'Diamond Membership',
+                                price: 1300,
+                                features: ['VIP Trading Signals', 'Real-time Updates', 'Weekly Coaching']
+                            }
+                        ]
+                    };
+
+                    console.log('✅ Subscription data loaded successfully');
+                    this.showSubscriptionContent();
+                    
+                } catch (error) {
+                    console.error('❌ Error loading subscription data:', error);
+                    this.showError('Failed to load subscription plans. Please try again.');
+                }
+            }
+
+            showAuthNotice() {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('errorState').style.display = 'none';
+                document.getElementById('subscriptionContent').style.display = 'none';
+                document.getElementById('authNotice').style.display = 'block';
+            }
+
+            hideAuthNotice() {
+                document.getElementById('authNotice').style.display = 'none';
+            }
+
+            showSubscriptionContent() {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('errorState').style.display = 'none';
+                document.getElementById('authNotice').style.display = 'none';
+                document.getElementById('subscriptionContent').style.display = 'block';
+            }
+
+            showError(message) {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('subscriptionContent').style.display = 'none';
+                document.getElementById('authNotice').style.display = 'none';
+                document.getElementById('errorMessage').textContent = message;
+                document.getElementById('errorState').style.display = 'block';
+            }
+        }
+
+        // Global function for tier selection
+        function selectTier(tierName) {
+            console.log('🎯 Selected tier:', tierName);
+            
+            if (!window.subscriptionManager || !window.subscriptionManager.isAuthenticated) {
+                alert('Please sign in first to select a subscription plan.');
+                window.location.href = '/pages/auth/login.html?redirect=subscription';
+                return;
+            }
+
+            // Redirect to payment processing
+            window.location.href = `/payment-processing.html?tier=${tierName}&action=subscribe`;
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.subscriptionManager = new SubscriptionManager();
+        });
+    </script>
+</body>
+</html>

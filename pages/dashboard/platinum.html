@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platinum Dashboard - Traders Helmet Academy</title>
+    <meta name="description" content="Platinum tier dashboard with advanced trading tools and premium signals.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Core CSS Files -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-custom.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --info: #0ea5e9;
+            --info-light: rgba(14, 165, 233, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --gradient-platinum: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-premium: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient-card);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .brand-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tier-badge {
+            background: var(--gradient-platinum);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-platinum);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .priority-indicator {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .subscription-status {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid #8b5cf6;
+            color: #8b5cf6;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-tab.active {
+            background: var(--gradient-platinum);
+            color: white;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .nav-tab.premium::after {
+            content: '★';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            color: #fbbf24;
+            font-size: 0.8rem;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-platinum);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .dashboard-card.premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 40px 40px 0;
+            border-color: transparent #8b5cf6 transparent transparent;
+        }
+
+        .dashboard-card.premium::after {
+            content: '★';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-platinum);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 8px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: var(--gradient-platinum);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #8b5cf6;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .tool-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .tool-status {
+            padding: 0.25rem 0.75rem;
+            background: var(--success-light);
+            color: var(--success);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .launch-tool-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--gradient-platinum);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .launch-tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Signals Section */
+        .signals-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .signal-card {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .signal-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .signal-card.premium {
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: linear-gradient(145deg, #1e293b 0%, #334155 100%), 
+                        linear-gradient(45deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%);
+        }
+
+        .signal-premium-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--gradient-platinum);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .signal-pair {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .signal-action {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .signal-action.buy {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .signal-action.sell {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .signal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .signal-detail {
+            text-align: center;
+        }
+
+        .signal-detail-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .signal-detail-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .signal-confidence {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid #8b5cf6;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .confidence-meter {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--gradient-platinum);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Education Section */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .course-card.premium {
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .course-image {
+            height: 150px;
+            background: var(--gradient-platinum);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            position: relative;
+        }
+
+        .course-premium-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fbbf24;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .course-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-duration {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .course-level {
+            padding: 0.25rem 0.75rem;
+            background: var(--gradient-platinum);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .start-course-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .start-course-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .start-course-btn.premium {
+            background: var(--gradient-platinum);
+        }
+
+        .start-course-btn.premium:hover {
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .start-course-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #8b5cf6;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: var(--error);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .dashboard-grid,
+            .education-grid,
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .signal-details {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="modal-overlay show" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center;">
+        <div style="text-align: center; color: var(--text-primary);">
+            <div class="spinner" style="width: 40px; height: 40px; margin-bottom: 1rem;"></div>
+            <p>Loading your Platinum dashboard...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </div>
+            
+            <div class="user-info">
+                <div class="priority-indicator">Priority Support</div>
+                <div class="subscription-status" id="subscriptionStatus">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                </div>
+                <div class="tier-badge">
+                    <i class="fas fa-gem"></i>
+                    Platinum Member
+                </div>
+                <div class="user-avatar" id="userAvatar">U</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">Welcome to Platinum Dashboard</h1>
+            <p class="welcome-subtitle" id="welcomeMessage">Access advanced trading tools, premium signals, and priority support. Accelerate your trading journey with 3 months of intensive mentorship!</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="overview" onclick="switchTab('overview')">
+                <i class="fas fa-tachometer-alt"></i> Overview
+            </button>
+            <button class="nav-tab" data-tab="education" onclick="switchTab('education')">
+                <i class="fas fa-graduation-cap"></i> Education
+            </button>
+            <button class="nav-tab premium" data-tab="tools" onclick="switchTab('tools')">
+                <i class="fas fa-tools"></i> Trading Tools
+            </button>
+            <button class="nav-tab premium" data-tab="signals" onclick="switchTab('signals')">
+                <i class="fas fa-chart-line"></i> Premium Signals
+            </button>
+            <button class="nav-tab" data-tab="mentorship" onclick="switchTab('mentorship')">
+                <i class="fas fa-user-tie"></i> Mentorship
+            </button>
+            <button class="nav-tab premium" data-tab="support" onclick="switchTab('support')">
+                <i class="fas fa-headset"></i> Priority Support
+            </button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="dashboard-grid">
+                <!-- Progress Card -->
+                <div class="dashboard-card premium">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="card-title">Advanced Progress</div>
+                    </div>
+                    <div class="card-content">
+                        <p>Track your comprehensive learning journey and trading development</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="coursesCompleted">-</div>
+                                <div class="stat-label">Courses</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="daysLeft">-</div>
+                                <div class="stat-label">Days Left</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="overallGrade">-</div>
+                                <div class="stat-label">Grade</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trading Performance -->
+                <div class="dashboard-card premium">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="card-title">Premium Performance</div>
+                    </div>
+                    <div class="card-content">
+                        <p>Your advanced trading signals performance this month</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="signalsReceived">-</div>
+                                <div class="stat-label">Signals</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="successRate">-</div>
+                                <div class="stat-label">Success</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalPips">-</div>
+                                <div class="stat-label">Pips</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="roi">-</div>
+                                <div class="stat-label">ROI</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools Access -->
+                <div class="dashboard-card premium" style="background: linear-gradient(145deg, #1e293b 0%, #334155 100%), linear-gradient(45deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%); border: 1px solid rgba(139, 92, 246, 0.3);">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="card-title">Premium Tools</div>
+                    </div>
+                    <div class="card-content">
+                        <p>Access exclusive trading software and analytical tools</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="availableTools">-</div>
+                                <div class="stat-label">Tools</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">24/7</div>
+                                <div class="stat-label">Access</div>
+                            </div>
+                        </div>
+                        <button class="start-course-btn premium" style="margin-top: 1rem;" onclick="openTools()">
+                            <i class="fas fa-rocket"></i> Launch Tools
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Next Session -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="card-title">Upcoming Premium Session</div>
+                    </div>
+                    <div class="card-content" id="nextSessionContent">
+                        <div style="text-align: center; padding: 1rem;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading session info...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Tab -->
+        <div id="education" class="tab-content">
+            <div class="education-grid" id="educationGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading your premium courses...
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Tools Tab -->
+        <div id="tools" class="tab-content">
+            <div class="tools-grid" id="toolsGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading premium trading tools...
+                </div>
+            </div>
+        </div>
+
+        <!-- Premium Signals Tab -->
+        <div id="signals" class="tab-content">
+            <div class="signals-grid" id="signalsGrid">
+                <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading premium trading signals...
+                </div>
+            </div>
+        </div>
+
+        <!-- Mentorship Tab -->
+        <div id="mentorship" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="dashboard-card premium" style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: var(--gradient-platinum); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; margin: 0 auto 1rem;"><i class="fas fa-user-tie"></i></div>
+                    <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);" id="mentorName">Loading...</div>
+                    <div style="color: #8b5cf6; margin-bottom: 1rem;" id="mentorTitle">Premium Mentor</div>
+                    <div id="mentorDescription" style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        Loading mentor information...
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="monthsLeft">-</div>
+                            <div class="stat-label">Months Left</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="sessionsRemaining">-</div>
+                            <div class="stat-label">Sessions</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="mentorRating">-</div>
+                            <div class="stat-label">Rating</div>
+                        </div>
+                    </div>
+                    
+                    <button style="padding: 1rem 2rem; background: var(--gradient-platinum); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 1rem;" onclick="contactMentor()">
+                        <i class="fas fa-comment"></i> Contact Mentor
+                    </button>
+                </div>
+
+                <!-- Premium Sessions -->
+                <div class="dashboard-card premium">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="card-title">Premium Sessions</div>
+                    </div>
+                    <div class="card-content" id="premiumSessions">
+                        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                            <i class="fas fa-spinner fa-spin"></i> Loading sessions...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Tracking -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="card-title">Premium Progress</div>
+                    </div>
+                    <div class="card-content">
+                        <p>Advanced mentorship milestones and achievements</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="mentorshipProgress" style="width: 0%;"></div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="completedSessions">-</div>
+                                <div class="stat-label">Completed</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="mentorshipGrade">-</div>
+                                <div class="stat-label">Grade</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Priority Support Tab -->
+        <div id="support" class="tab-content">
+            <div class="dashboard-grid" id="supportGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Loading priority support options...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- JavaScript -->
+    <script src="/assets/js/config.js"></script>
+    <script src="/assets/js/supabase.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    
+    <script>
+        class ProductionPlatinumDashboard {
+            constructor() {
+                this.supabase = null;
+                this.currentUser = null;
+                this.userSubscription = null;
+                this.dashboardData = {};
+                this.currentTab = 'overview';
+                this.init();
+            }
+
+            async init() {
+                try {
+                    console.log('💎 Initializing Production Platinum Dashboard...');
+                    
+                    // Initialize Supabase
+                    await this.initializeSupabase();
+                    
+                    // Check authentication and tier access
+                    await this.checkAuthentication();
+                    
+                    // Load user dashboard data
+                    await this.loadDashboardData();
+                    
+                    // Setup real-time subscriptions
+                    this.setupRealTimeUpdates();
+                    
+                    // Hide loading screen
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    
+                    console.log('✅ Platinum Dashboard initialized successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to initialize Platinum dashboard:', error);
+                    this.showToast('Failed to load dashboard. Please refresh the page.', 'error');
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }
+            }
+
+            async initializeSupabase() {
+                if (typeof window.supabaseClient !== 'undefined') {
+                    this.supabase = window.supabaseClient;
+                } else {
+                    // Fallback initialization
+                    const { createClient } = supabase;
+                    this.supabase = createClient(
+                        THA_CONFIG.supabase.url,
+                        THA_CONFIG.supabase.anonKey
+                    );
+                }
+            }
+
+            async checkAuthentication() {
+                const { data: { user }, error } = await this.supabase.auth.getUser();
+                
+                if (error || !user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                // Get user profile and subscription
+                const { data: profile, error: profileError } = await this.supabase
+                    .from('user_profiles')
+                    .select(`
+                        *,
+                        user_subscriptions(*)
+                    `)
+                    .eq('id', user.id)
+                    .single();
+
+                if (profileError || !profile) {
+                    console.error('Error fetching profile:', profileError);
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                // Check if user has Platinum access or higher
+                const subscription = profile.user_subscriptions?.[0];
+                const hasPlatinumAccess = this.checkTierAccess(profile.tier, subscription?.tier);
+                
+                if (!hasPlatinumAccess) {
+                    alert('Platinum tier subscription required to access this dashboard.');
+                    window.location.href = '/pages/payment/subscribe.html';
+                    return;
+                }
+
+                this.currentUser = { ...user, ...profile };
+                this.userSubscription = subscription;
+                
+                // Update UI with user info
+                this.updateUserInfo();
+            }
+
+            checkTierAccess(userTier, subscriptionTier) {
+                const tierHierarchy = ['gold', 'platinum', 'diamond'];
+                const effectiveTier = subscriptionTier || userTier || 'none';
+                const tierIndex = tierHierarchy.indexOf(effectiveTier);
+                return tierIndex >= 1; // Platinum or higher
+            }
+
+            updateUserInfo() {
+                // Update user avatar
+                const avatar = document.getElementById('userAvatar');
+                const firstName = this.currentUser.first_name || '';
+                const lastName = this.currentUser.last_name || '';
+                avatar.textContent = ((firstName.charAt(0) || '') + (lastName.charAt(0) || '')).toUpperCase() || 'U';
+                
+                // Update welcome message
+                const welcomeMsg = document.getElementById('welcomeMessage');
+                if (firstName) {
+                    welcomeMsg.textContent = `Welcome back, ${firstName}! Access advanced trading tools, premium signals, and priority support.`;
+                }
+                
+                // Update subscription status
+                this.updateSubscriptionStatus();
+            }
+
+            updateSubscriptionStatus() {
+                const statusElement = document.getElementById('subscriptionStatus');
+                
+                if (this.userSubscription && this.userSubscription.status === 'active') {
+                    const endDate = new Date(this.userSubscription.current_period_end);
+                    const daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysLeft > 0) {
+                        statusElement.innerHTML = `<i class="fas fa-clock"></i> ${daysLeft} days remaining`;
+                        statusElement.style.background = 'rgba(139, 92, 246, 0.1)';
+                        statusElement.style.color = '#8b5cf6';
+                    } else {
+                        statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Subscription expired';
+                        statusElement.style.background = 'rgba(239, 68, 68, 0.1)';
+                        statusElement.style.color = 'var(--error)';
+                    }
+                } else {
+                    statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Subscription inactive';
+                    statusElement.style.background = 'rgba(239, 68, 68, 0.1)';
+                    statusElement.style.color = 'var(--error)';
+                }
+            }
+
+            async loadDashboardData() {
+                await Promise.all([
+                    this.loadUserProgress(),
+                    this.loadTradingPerformance(),
+                    this.loadEducationData(),
+                    this.loadTradingTools(),
+                    this.loadPremiumSignals(),
+                    this.loadMentorshipData(),
+                    this.loadSupportOptions()
+                ]);
+            }
+
+            async loadUserProgress() {
+                try {
+                    // Calculate subscription days left
+                    if (this.userSubscription && this.userSubscription.current_period_end) {
+                        const endDate = new Date(this.userSubscription.current_period_end);
+                        const daysLeft = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
+                        document.getElementById('daysLeft').textContent = daysLeft;
+                    } else {
+                        document.getElementById('daysLeft').textContent = '0';
+                    }
+
+                    // Get course completion data
+                    const { data: courseProgress } = await this.supabase
+                        .from('user_course_progress')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id);
+
+                    const totalCourses = 9; // Platinum tier has 9 courses (all Gold + 4 premium)
+                    const completedCourses = courseProgress?.filter(cp => cp.completed).length || 0;
+                    const progressPercentage = (completedCourses / totalCourses) * 100;
+
+                    document.getElementById('coursesCompleted').textContent = `${completedCourses}/${totalCourses}`;
+                    document.getElementById('progressFill').style.width = `${progressPercentage}%`;
+                    document.getElementById('overallGrade').textContent = completedCourses >= 7 ? 'A+' : completedCourses >= 5 ? 'A' : 'B+';
+
+                } catch (error) {
+                    console.error('Error loading user progress:', error);
+                    document.getElementById('coursesCompleted').textContent = '0/9';
+                    document.getElementById('daysLeft').textContent = '0';
+                }
+            }
+
+            async loadTradingPerformance() {
+                try {
+                    // Get user's signal interactions this month
+                    const thisMonth = new Date();
+                    thisMonth.setDate(1);
+                    
+                    const { data: signalViews } = await this.supabase
+                        .from('signal_views')
+                        .select(`
+                            *,
+                            trading_signals(*)
+                        `)
+                        .eq('user_id', this.currentUser.id)
+                        .gte('viewed_at', thisMonth.toISOString());
+
+                    const signalsReceived = signalViews?.length || 0;
+                    
+                    // Calculate success rate from closed signals
+                    const closedSignals = signalViews?.filter(sv => 
+                        sv.trading_signals?.status === 'closed' && 
+                        sv.trading_signals?.result
+                    ) || [];
+                    
+                    const successfulSignals = closedSignals.filter(sv => 
+                        sv.trading_signals?.result === 'profit'
+                    ).length;
+                    
+                    const successRate = closedSignals.length > 0 ? 
+                        Math.round((successfulSignals / closedSignals.length) * 100) : 0;
+                    
+                    // Calculate total pips
+                    const totalPips = closedSignals.reduce((sum, sv) => {
+                        return sum + (sv.trading_signals?.pips_gained || 0);
+                    }, 0);
+
+                    // Calculate ROI (mock calculation)
+                    const roi = closedSignals.length > 0 ? 
+                        Math.round((totalPips / closedSignals.length) * 0.5) : 0;
+
+                    document.getElementById('signalsReceived').textContent = signalsReceived;
+                    document.getElementById('successRate').textContent = `${successRate}%`;
+                    document.getElementById('totalPips').textContent = `+${Math.round(totalPips)}`;
+                    document.getElementById('roi').textContent = `+${roi}%`;
+
+                } catch (error) {
+                    console.error('Error loading trading performance:', error);
+                    document.getElementById('signalsReceived').textContent = '0';
+                    document.getElementById('successRate').textContent = '0%';
+                    document.getElementById('totalPips').textContent = '+0';
+                    document.getElementById('roi').textContent = '+0%';
+                }
+            }
+
+            async loadEducationData() {
+                try {
+                    const platinumCourses = [
+                        // All Gold courses
+                        {
+                            id: 'forex-fundamentals',
+                            title: 'Forex Education Fundamentals',
+                            description: 'Master the basics of trading, market analysis, and risk management principles.',
+                            icon: 'fas fa-graduation-cap',
+                            duration: '4 hours',
+                            level: 'Beginner',
+                            isPremium: false
+                        },
+                        {
+                            id: 'crypto-education',
+                            title: 'Cryptocurrency Education',
+                            description: 'Learn about blockchain, crypto trading strategies, and digital asset analysis.',
+                            icon: 'fab fa-bitcoin',
+                            duration: '6 hours',
+                            level: 'Intermediate',
+                            isPremium: false
+                        },
+                        {
+                            id: 'binary-options',
+                            title: 'Binary Options (HFX)',
+                            description: 'High-frequency trading strategies and binary options market analysis.',
+                            icon: 'fas fa-chart-bar',
+                            duration: '3 hours',
+                            level: 'Advanced',
+                            isPremium: false
+                        },
+                        {
+                            id: 'pivot-strategy',
+                            title: 'Forex Pivot Strategy',
+                            description: 'Master pivot points for precise entry and exit strategies.',
+                            icon: 'fas fa-compass',
+                            duration: '5 hours',
+                            level: 'Intermediate',
+                            isPremium: false
+                        },
+                        {
+                            id: 'rhombus-strategy',
+                            title: 'Forex Rhombus Strategy',
+                            description: 'Advanced geometric pattern recognition for superior market timing.',
+                            icon: 'fas fa-shapes',
+                            duration: '4 hours',
+                            level: 'Advanced',
+                            isPremium: false
+                        },
+                        // Premium Platinum courses
+                        {
+                            id: 'advanced-technical-analysis',
+                            title: 'Advanced Technical Analysis',
+                            description: 'Master complex chart patterns, advanced indicators, and institutional-level analysis techniques.',
+                            icon: 'fas fa-chart-line',
+                            duration: '8 hours',
+                            level: 'Advanced',
+                            isPremium: true
+                        },
+                        {
+                            id: 'algorithmic-trading',
+                            title: 'Algorithmic Trading Strategies',
+                            description: 'Build automated trading systems and understand quantitative analysis methods.',
+                            icon: 'fas fa-robot',
+                            duration: '10 hours',
+                            level: 'Expert',
+                            isPremium: true
+                        },
+                        {
+                            id: 'psychology-risk-management',
+                            title: 'Psychology & Risk Management',
+                            description: 'Master the mental game of trading and advanced position sizing techniques.',
+                            icon: 'fas fa-brain',
+                            duration: '6 hours',
+                            level: 'Advanced',
+                            isPremium: true
+                        },
+                        {
+                            id: 'market-microstructure',
+                            title: 'Market Microstructure',
+                            description: 'Understand order flow, market making, and institutional trading patterns.',
+                            icon: 'fas fa-globe',
+                            duration: '7 hours',
+                            level: 'Expert',
+                            isPremium: true
+                        }
+                    ];
+
+                    // Get user's course progress
+                    const { data: courseProgress } = await this.supabase
+                        .from('user_course_progress')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id);
+
+                    const progressMap = {};
+                    courseProgress?.forEach(cp => {
+                        progressMap[cp.course_id] = cp;
+                    });
+
+                    const educationGrid = document.getElementById('educationGrid');
+                    educationGrid.innerHTML = platinumCourses.map(course => {
+                        const progress = progressMap[course.id];
+                        const progressPercentage = progress?.progress_percentage || 0;
+                        const isCompleted = progress?.completed || false;
+
+                        return `
+                            <div class="course-card ${course.isPremium ? 'premium' : ''}">
+                                <div class="course-image">
+                                    ${course.isPremium ? '<div class="course-premium-overlay">★ PREMIUM</div>' : ''}
+                                    <i class="${course.icon}"></i>
+                                </div>
+                                <div class="course-content">
+                                    <h3 class="course-title">${course.title}</h3>
+                                    <p class="course-description">${course.description}</p>
+                                    <div class="course-meta">
+                                        <div class="course-duration">
+                                            <i class="fas fa-clock"></i>
+                                            <span>${course.duration}</span>
+                                        </div>
+                                        <div class="course-level">${isCompleted ? 'Completed' : course.level}</div>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${progressPercentage}%;"></div>
+                                    </div>
+                                    <button class="start-course-btn ${course.isPremium ? 'premium' : ''}" onclick="startCourse('${course.id}')" ${isCompleted ? 'disabled' : ''}>
+                                        ${isCompleted ? 'Course Completed' : (progressPercentage > 0 ? 'Continue Course' : 'Start Course')}
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                } catch (error) {
+                    console.error('Error loading education data:', error);
+                    document.getElementById('educationGrid').innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
+                            Failed to load courses. Please refresh the page.
+                        </div>
+                    `;
+                }
+            }
+
+            async loadTradingTools() {
+                try {
+                    const premiumTools = [
+                        {
+                            id: 'tradingview-pro',
+                            title: 'TradingView Pro',
+                            description: 'Professional charting platform with advanced indicators and real-time data.',
+                            status: 'Active',
+                            stats: [
+                                { label: 'Indicators', value: '500+' },
+                                { label: 'Data', value: '24/7' }
+                            ]
+                        },
+                        {
+                            id: 'risk-calculator-pro',
+                            title: 'Risk Calculator Pro',
+                            description: 'Advanced position sizing and risk management calculator with portfolio analytics.',
+                            status: 'Active',
+                            stats: [
+                                { label: 'Calculations', value: '∞' },
+                                { label: 'Updates', value: 'Real-time' }
+                            ]
+                        },
+                        {
+                            id: 'economic-calendar-plus',
+                            title: 'Economic Calendar+',
+                            description: 'Enhanced economic calendar with impact predictions and trade recommendations.',
+                            status: 'Active',
+                            stats: [
+                                { label: 'Countries', value: '200+' },
+                                { label: 'Predictions', value: 'AI' }
+                            ]
+                        },
+                        {
+                            id: 'signal-screener',
+                            title: 'Signal Screener',
+                            description: 'Automated signal detection and filtering system with custom alerts.',
+                            status: 'Active',
+                            stats: [
+                                { label: 'Instruments', value: '1000+' },
+                                { label: 'Alerts', value: 'Custom' }
+                            ]
+                        },
+                        {
+                            id: 'portfolio-tracker',
+                            title: 'Portfolio Tracker',
+                            description: 'Comprehensive portfolio management with performance analytics and reporting.',
+                            status: 'Active',
+                            stats: [
+                                { label: 'Tracking', value: 'Real-time' },
+                                { label: 'Reports', value: 'Analytics' }
+                            ]
+                        }
+                    ];
+
+                    document.getElementById('availableTools').textContent = premiumTools.length;
+
+                    const toolsGrid = document.getElementById('toolsGrid');
+                    toolsGrid.innerHTML = premiumTools.map(tool => `
+                        <div class="tool-card" style="background: linear-gradient(145deg, #1e293b 0%, #334155 100%), linear-gradient(45deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%); border: 1px solid rgba(139, 92, 246, 0.3);">
+                            <div class="tool-header">
+                                <div class="tool-title">${tool.title}</div>
+                                <div class="tool-status">${tool.status}</div>
+                            </div>
+                            <div class="card-content">
+                                <p>${tool.description}</p>
+                                <div class="stats-grid">
+                                    ${tool.stats.map(stat => `
+                                        <div class="stat-item">
+                                            <div class="stat-value">${stat.value}</div>
+                                            <div class="stat-label">${stat.label}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <button class="launch-tool-btn" onclick="launchTool('${tool.id}')">
+                                    <i class="fas fa-rocket"></i> Launch ${tool.title.split(' ')[0]}
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+
+                } catch (error) {
+                    console.error('Error loading trading tools:', error);
+                    document.getElementById('toolsGrid').innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
+                            Failed to load trading tools. Please refresh the page.
+                        </div>
+                    `;
+                }
+            }
+
+            async loadPremiumSignals() {
+                try {
+                    // Get premium signals for Platinum tier
+                    const { data: signals, error } = await this.supabase
+                        .from('trading_signals')
+                        .select('*')
+                        .eq('status', 'active')
+                        .contains('tier_access', ['platinum'])
+                        .order('created_at', { ascending: false })
+                        .limit(5);
+
+                    if (error) throw error;
+
+                    const signalsGrid = document.getElementById('signalsGrid');
+                    
+                    if (!signals || signals.length === 0) {
+                        signalsGrid.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-chart-line"></i>
+                                <h3>No Premium Signals</h3>
+                                <p>New premium trading signals will appear here when available.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    signalsGrid.innerHTML = signals.map(signal => {
+                        const confidence = signal.confidence || Math.floor(Math.random() * 20) + 80; // Mock confidence for demo
+                        
+                        return `
+                            <div class="signal-card premium">
+                                <div class="signal-premium-badge">PREMIUM</div>
+                                <div class="signal-header">
+                                    <div class="signal-pair">${signal.symbol}</div>
+                                    <div class="signal-action ${signal.action}">${signal.action.toUpperCase()}</div>
+                                </div>
+                                <div class="signal-details">
+                                    <div class="signal-detail">
+                                        <div class="signal-detail-label">Entry</div>
+                                        <div class="signal-detail-value">${signal.entry_price || 'Market'}</div>
+                                    </div>
+                                    <div class="signal-detail">
+                                        <div class="signal-detail-label">Stop Loss</div>
+                                        <div class="signal-detail-value">${signal.stop_loss || 'N/A'}</div>
+                                    </div>
+                                    <div class="signal-detail">
+                                        <div class="signal-detail-label">Take Profit</div>
+                                        <div class="signal-detail-value">${signal.take_profit || 'N/A'}</div>
+                                    </div>
+                                    <div class="signal-detail">
+                                        <div class="signal-detail-label">Risk/Reward</div>
+                                        <div class="signal-detail-value">1:${Math.round(Math.random() * 2 + 1.5)}</div>
+                                    </div>
+                                </div>
+                                <div class="signal-confidence">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 0.8rem; color: var(--text-muted);">Confidence Level</span>
+                                        <span style="font-weight: 600; color: #8b5cf6;">${confidence}%</span>
+                                    </div>
+                                    <div class="confidence-meter">
+                                        <div class="confidence-fill" style="width: ${confidence}%;"></div>
+                                    </div>
+                                </div>
+                                ${signal.description ? `
+                                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">
+                                        <strong>Advanced Analysis:</strong> ${signal.description}
+                                    </p>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('');
+
+                    // Log signal views
+                    for (const signal of signals) {
+                        await this.logSignalView(signal.id);
+                    }
+
+                } catch (error) {
+                    console.error('Error loading premium signals:', error);
+                    document.getElementById('signalsGrid').innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: var(--error);">
+                            Failed to load premium signals. Please refresh the page.
+                        </div>
+                    `;
+                }
+            }
+
+            async logSignalView(signalId) {
+                try {
+                    // Check if already viewed
+                    const { data: existingView } = await this.supabase
+                        .from('signal_views')
+                        .select('id')
+                        .eq('user_id', this.currentUser.id)
+                        .eq('signal_id', signalId)
+                        .single();
+
+                    if (!existingView) {
+                        await this.supabase
+                            .from('signal_views')
+                            .insert({
+                                user_id: this.currentUser.id,
+                                signal_id: signalId
+                            });
+                    }
+                } catch (error) {
+                    // Signal view logging is non-critical
+                    console.debug('Signal view logging error:', error);
+                }
+            }
+
+            async loadMentorshipData() {
+                try {
+                    // Load Platinum mentor info
+                    const mentorInfo = {
+                        name: 'Dr. Sarah Wilson',
+                        title: 'Senior Premium Mentor',
+                        description: '15+ years of institutional trading experience with specialization in quantitative analysis and advanced market microstructure. Expert in algorithmic trading strategies.',
+                        rating: '4.9'
+                    };
+
+                    document.getElementById('mentorName').textContent = mentorInfo.name;
+                    document.getElementById('mentorTitle').textContent = mentorInfo.title;
+                    document.getElementById('mentorDescription').textContent = mentorInfo.description;
+                    document.getElementById('mentorRating').textContent = mentorInfo.rating;
+
+                    // Calculate mentorship progress
+                    if (this.userSubscription) {
+                        const startDate = new Date(this.userSubscription.current_period_start || this.userSubscription.created_at);
+                        const endDate = new Date(this.userSubscription.current_period_end);
+                        const now = new Date();
+                        
+                        const totalDuration = endDate - startDate;
+                        const elapsed = now - startDate;
+                        const progressPercentage = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+                        
+                        const monthsLeft = Math.max(0, Math.ceil((endDate - now) / (1000 * 60 * 60 * 24 * 30)));
+                        
+                        document.getElementById('monthsLeft').textContent = monthsLeft;
+                        document.getElementById('mentorshipProgress').style.width = `${progressPercentage}%`;
+                    }
+
+                    // Mock session data for Platinum tier
+                    const totalSessions = 12; // Platinum tier gets 12 sessions over 3 months
+                    const completedSessions = Math.floor(Math.random() * 8) + 2; // Mock data
+                    const sessionsRemaining = totalSessions - completedSessions;
+                    
+                    document.getElementById('sessionsRemaining').textContent = sessionsRemaining;
+                    document.getElementById('completedSessions').textContent = `${completedSessions}/${totalSessions}`;
+                    document.getElementById('mentorshipGrade').textContent = 'A+';
+
+                    // Load premium sessions
+                    const premiumSessions = [
+                        {
+                            title: 'Advanced Options Strategies',
+                            date: 'Today, 3:00 PM EST',
+                            duration: '120 min'
+                        },
+                        {
+                            title: 'Algorithmic Trading Workshop',
+                            date: 'Thursday, 2:00 PM EST',
+                            duration: '90 min'
+                        },
+                        {
+                            title: 'Portfolio Optimization',
+                            date: 'Friday, 11:00 AM EST',
+                            duration: '60 min'
+                        }
+                    ];
+
+                    const nextSessionContent = document.getElementById('nextSessionContent');
+                    const premiumSessionsContent = document.getElementById('premiumSessions');
+
+                    if (premiumSessions.length > 0) {
+                        const nextSession = premiumSessions[0];
+                        nextSessionContent.innerHTML = `
+                            <p><strong>${nextSession.title}</strong></p>
+                            <p>${nextSession.date}</p>
+                            <p>Duration: ${nextSession.duration}</p>
+                            <p style="color: #8b5cf6; font-weight: 600;">Premium Only Session</p>
+                            <button class="start-course-btn premium" style="margin-top: 1rem;" onclick="joinSession()">
+                                <i class="fas fa-video"></i> Join Session
+                            </button>
+                        `;
+
+                        premiumSessionsContent.innerHTML = premiumSessions.map(session => `
+                            <div style="margin-bottom: 1rem;">
+                                <strong>${session.title}</strong><br>
+                                <small style="color: var(--text-muted);">${session.date} (${session.duration})</small>
+                            </div>
+                        `).join('') + `
+                            <button class="start-course-btn premium" onclick="scheduleSession()">
+                                <i class="fas fa-calendar-plus"></i> Schedule 1-on-1
+                            </button>
+                        `;
+                    }
+
+                } catch (error) {
+                    console.error('Error loading mentorship data:', error);
+                }
+            }
+
+            async loadSupportOptions() {
+                try {
+                    const supportOptions = [
+                        {
+                            title: '24/7 Priority Support',
+                            description: 'Get instant access to our premium support team with guaranteed response time under 30 minutes.',
+                            icon: 'fas fa-headset',
+                            badge: 'VIP Access',
+                            action: 'Start Chat'
+                        },
+                        {
+                            title: 'Direct Phone Support',
+                            description: 'Direct phone line to our senior trading advisors for urgent market situations and trading emergencies.',
+                            icon: 'fas fa-phone',
+                            badge: 'Platinum Only',
+                            action: 'Call Now'
+                        },
+                        {
+                            title: 'Personal Account Manager',
+                            description: 'Your dedicated account manager for subscription management, upgrade assistance, and personalized recommendations.',
+                            icon: 'fas fa-user-tie',
+                            badge: 'Dedicated',
+                            action: 'Contact Manager'
+                        }
+                    ];
+
+                    const supportGrid = document.getElementById('supportGrid');
+                    supportGrid.innerHTML = supportOptions.map(option => `
+                        <div class="dashboard-card premium" style="text-align: center; background: linear-gradient(145deg, #1e293b 0%, #334155 100%), linear-gradient(45deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%); border: 1px solid rgba(139, 92, 246, 0.3);">
+                            <div style="width: 60px; height: 60px; background: var(--gradient-platinum); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; margin: 0 auto 1.5rem;">
+                                <i class="${option.icon}"></i>
+                            </div>
+                            <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);">${option.title}</div>
+                            <div style="background: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600; margin-bottom: 1.5rem; display: inline-block;">${option.badge}</div>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${option.description}</p>
+                            <button style="padding: 1rem 2rem; background: var(--gradient-platinum); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onclick="openSupport('${option.title}')">
+                                <i class="${option.icon}"></i> ${option.action}
+                            </button>
+                        </div>
+                    `).join('');
+
+                } catch (error) {
+                    console.error('Error loading support options:', error);
+                    document.getElementById('supportGrid').innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
+                            Failed to load support options. Please refresh the page.
+                        </div>
+                    `;
+                }
+            }
+
+            setupRealTimeUpdates() {
+                // Subscribe to real-time changes
+                this.supabase
+                    .channel('platinum-dashboard')
+                    .on('postgres_changes', 
+                        { event: '*', schema: 'public', table: 'trading_signals' },
+                        () => this.loadPremiumSignals()
+                    )
+                    .on('postgres_changes', 
+                        { event: '*', schema: 'public', table: 'user_subscriptions' },
+                        (payload) => {
+                            if (payload.new?.user_id === this.currentUser.id) {
+                                this.userSubscription = payload.new;
+                                this.updateSubscriptionStatus();
+                                this.loadUserProgress();
+                            }
+                        }
+                    )
+                    .subscribe();
+            }
+
+            showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = `toast ${type} show`;
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Global functions
+        let platinumDashboard;
+
+        window.switchTab = function(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked tab
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+
+            platinumDashboard.currentTab = tabName;
+        };
+
+        window.startCourse = function(courseId) {
+            platinumDashboard.showToast(`Starting premium course: ${courseId}`, 'success');
+            // In production, this would navigate to the actual course content
+            console.log('Starting course:', courseId);
+        };
+
+        window.launchTool = function(toolId) {
+            platinumDashboard.showToast(`Launching premium tool: ${toolId}`, 'success');
+            // In production, this would open the actual trading tool
+            console.log('Launching tool:', toolId);
+        };
+
+        window.openTools = function() {
+            switchTab('tools');
+        };
+
+        window.contactMentor = function() {
+            platinumDashboard.showToast('Opening premium mentor contact...', 'success');
+            // In production, this would open a chat or contact form
+        };
+
+        window.joinSession = function() {
+            platinumDashboard.showToast('Joining premium session...', 'success');
+            // In production, this would join the actual video session
+        };
+
+        window.scheduleSession = function() {
+            platinumDashboard.showToast('Opening premium session scheduler...', 'success');
+            // In production, this would open a scheduling interface
+        };
+
+        window.openSupport = function(supportType) {
+            platinumDashboard.showToast(`Opening ${supportType}...`, 'success');
+            // In production, this would open the appropriate support channel
+        };
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            platinumDashboard = new ProductionPlatinumDashboard();
+        });
+
+        console.log('💎 Production Platinum Dashboard Script Loaded');
+    </script>
+</body>
+</html>

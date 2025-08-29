@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Management - Traders Helmet Academy</title>
+    <meta name="description" content="Manage your subscription, upgrade tiers, and view billing history.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Core CSS Files -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-custom.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --info: #0ea5e9;
+            --info-light: rgba(14, 165, 233, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            --gradient-platinum: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-diamond: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient-card);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .brand-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary-blue-light);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Current Subscription */
+        .current-subscription {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .current-subscription::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .subscription-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .subscription-info h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tier-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tier-badge.gold {
+            background: var(--gradient-gold);
+            color: white;
+        }
+
+        .tier-badge.platinum {
+            background: var(--gradient-platinum);
+            color: white;
+        }
+
+        .tier-badge.diamond {
+            background: var(--gradient-diamond);
+            color: white;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.active {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-badge.inactive {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .status-badge.expired {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .subscription-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .detail-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .detail-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Action Buttons */
+        .subscription-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .action-btn.danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .action-btn.danger:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        /* Upgrade Options */
+        .upgrade-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .upgrade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .upgrade-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upgrade-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .upgrade-card.recommended::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-gold);
+        }
+
+        .upgrade-card.current {
+            border: 2px solid var(--success);
+            background: linear-gradient(145deg, #1e293b 0%, #334155 100%), 
+                        linear-gradient(45deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%);
+        }
+
+        .upgrade-card.disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .tier-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tier-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .tier-icon.gold {
+            background: var(--gradient-gold);
+        }
+
+        .tier-icon.platinum {
+            background: var(--gradient-platinum);
+        }
+
+        .tier-icon.diamond {
+            background: var(--gradient-diamond);
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tier-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-blue-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-period {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .tier-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .feature-icon {
+            color: var(--success);
+            font-size: 0.8rem;
+        }
+
+        .upgrade-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .upgrade-btn.current {
+            background: var(--success);
+            cursor: default;
+        }
+
+        .upgrade-btn.downgrade {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Billing History */
+        .billing-section {
+            margin-bottom: 3rem;
+        }
+
+        .billing-table-container {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+        }
+
+        .billing-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .billing-table th,
+        .billing-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .billing-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .billing-table td {
+            color: var(--text-primary);
+        }
+
+        .payment-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .payment-status.succeeded {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .payment-status.pending {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .payment-status.failed {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .download-link {
+            color: var(--primary-blue-light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-content {
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: var(--error);
+        }
+
+        .toast.warning {
+            background: var(--warning);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .subscription-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .subscription-details {
+                grid-template-columns: 1fr;
+            }
+
+            .subscription-actions {
+                flex-direction: column;
+            }
+
+            .upgrade-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="modal-overlay show">
+        <div style="text-align: center; color: var(--text-primary);">
+            <div class="spinner" style="width: 40px; height: 40px; margin-bottom: 1rem;"></div>
+            <p>Loading your subscription details...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="/pages/dashboard/index.html" class="nav-link">Dashboard</a>
+                <a href="/pages/profile/settings.html" class="nav-link">Settings</a>
+                <a href="#" class="nav-link active">Subscription</a>
+                <a href="/pages/profile/billing.html" class="nav-link">Billing</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Subscription Management</h1>
+            <p class="page-subtitle">Manage your subscription, upgrade your tier, and view billing history</p>
+        </div>
+
+        <!-- Current Subscription -->
+        <section class="current-subscription" id="currentSubscription">
+            <div style="text-align: center; padding: 2rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                Loading subscription details...
+            </div>
+        </section>
+
+        <!-- Upgrade Options -->
+        <section class="upgrade-section">
+            <h2 class="section-title">Available Tiers</h2>
+            <div class="upgrade-grid">
+                <!-- Gold Tier -->
+                <div class="upgrade-card" id="goldCard">
+                    <div class="tier-header">
+                        <div class="tier-icon gold">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="tier-name">Gold</div>
+                        <div class="tier-price">$300</div>
+                        <div class="tier-period">2 Months</div>
+                    </div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check feature-icon"></i> Forex & Crypto Education</li>
+                        <li><i class="fas fa-check feature-icon"></i> Binary Options (HFX)</li>
+                        <li><i class="fas fa-check feature-icon"></i> Pivot & Rhombus Strategies</li>
+                        <li><i class="fas fa-check feature-icon"></i> 2 Months Mentorship</li>
+                        <li><i class="fas fa-check feature-icon"></i> Free Trading Signals</li>
+                    </ul>
+                    <button class="upgrade-btn" onclick="selectTier('gold')" id="goldBtn">
+                        Select Gold
+                    </button>
+                </div>
+
+                <!-- Platinum Tier -->
+                <div class="upgrade-card recommended" id="platinumCard">
+                    <div class="tier-header">
+                        <div class="tier-icon platinum">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <div class="tier-name">Platinum</div>
+                        <div class="tier-price">$600</div>
+                        <div class="tier-period">3 Months</div>
+                    </div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check feature-icon"></i> Everything in Gold</li>
+                        <li><i class="fas fa-check feature-icon"></i> Free Trading Software Tools</li>
+                        <li><i class="fas fa-check feature-icon"></i> 3 Months Mentorship</li>
+                        <li><i class="fas fa-check feature-icon"></i> Priority Email Support</li>
+                        <li><i class="fas fa-check feature-icon"></i> Advanced Trading Signals</li>
+                    </ul>
+                    <button class="upgrade-btn" onclick="selectTier('platinum')" id="platinumBtn">
+                        Select Platinum
+                    </button>
+                </div>
+
+                <!-- Diamond Tier -->
+                <div class="upgrade-card" id="diamondCard">
+                    <div class="tier-header">
+                        <div class="tier-icon diamond">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="tier-name">Diamond</div>
+                        <div class="tier-price">$1,300</div>
+                        <div class="tier-period">6 Months</div>
+                    </div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check feature-icon"></i> Everything in Platinum</li>
+                        <li><i class="fas fa-check feature-icon"></i> Institutional Order Flow</li>
+                        <li><i class="fas fa-check feature-icon"></i> 6 Months Mentorship</li>
+                        <li><i class="fas fa-check feature-icon"></i> Personal Trading Coach</li>
+                        <li><i class="fas fa-check feature-icon"></i> VIP Community Access</li>
+                        <li><i class="fas fa-check feature-icon"></i> 24/7 Priority Support</li>
+                    </ul>
+                    <button class="upgrade-btn" onclick="selectTier('diamond')" id="diamondBtn">
+                        Select Diamond
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Billing History -->
+        <section class="billing-section">
+            <h2 class="section-title">Billing History</h2>
+            <div class="billing-table-container">
+                <table class="billing-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody id="billingTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                                <i class="fas fa-spinner fa-spin"></i> Loading billing history...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirmationModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Confirm Action</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-content" id="modalContent">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn primary" onclick="confirmAction()" id="confirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- JavaScript -->
+    <script src="/assets/js/config.js"></script>
+    <script src="/assets/js/supabase.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    
+    <script>
+        class ProductionSubscriptionManager {
+            constructor() {
+                this.supabase = null;
+                this.currentUser = null;
+                this.currentSubscription = null;
+                this.selectedTier = null;
+                this.init();
+            }
+
+            async init() {
+                try {
+                    console.log('💳 Initializing Production Subscription Manager...');
+                    
+                    // Initialize Supabase
+                    await this.initializeSupabase();
+                    
+                    // Check authentication
+                    await this.checkAuthentication();
+                    
+                    // Load subscription data
+                    await this.loadSubscriptionData();
+                    
+                    // Load billing history
+                    await this.loadBillingHistory();
+                    
+                    // Hide loading screen
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    
+                    console.log('✅ Subscription Manager initialized successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to initialize subscription manager:', error);
+                    this.showToast('Failed to load subscription data. Please refresh the page.', 'error');
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }
+            }
+
+            async initializeSupabase() {
+                if (typeof window.supabaseClient !== 'undefined') {
+                    this.supabase = window.supabaseClient;
+                } else {
+                    // Fallback initialization
+                    const { createClient } = supabase;
+                    this.supabase = createClient(
+                        THA_CONFIG.supabase.url,
+                        THA_CONFIG.supabase.anonKey
+                    );
+                }
+            }
+
+            async checkAuthentication() {
+                const { data: { user }, error } = await this.supabase.auth.getUser();
+                
+                if (error || !user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                // Get user profile
+                const { data: profile, error: profileError } = await this.supabase
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+
+                if (profileError || !profile) {
+                    console.error('Error fetching profile:', profileError);
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                this.currentUser = { ...user, ...profile };
+            }
+
+            async loadSubscriptionData() {
+                try {
+                    // Get current subscription
+                    const { data: subscription, error } = await this.supabase
+                        .from('user_subscriptions')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id)
+                        .order('created_at', { ascending: false })
+                        .limit(1)
+                        .single();
+
+                    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+                        throw error;
+                    }
+
+                    this.currentSubscription = subscription;
+                    this.renderCurrentSubscription();
+                    this.updateTierButtons();
+
+                } catch (error) {
+                    console.error('Error loading subscription:', error);
+                    this.renderNoSubscription();
+                }
+            }
+
+            renderCurrentSubscription() {
+                const container = document.getElementById('currentSubscription');
+                
+                if (!this.currentSubscription) {
+                    this.renderNoSubscription();
+                    return;
+                }
+
+                const sub = this.currentSubscription;
+                const tierInfo = this.getTierInfo(sub.tier);
+                const isActive = sub.status === 'active';
+                const endDate = new Date(sub.current_period_end);
+                const daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24));
+                const isExpired = daysLeft <= 0;
+
+                container.innerHTML = `
+                    <div class="subscription-header">
+                        <div class="subscription-info">
+                            <h2>Current Subscription</h2>
+                            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                                <span class="tier-badge ${sub.tier}">${tierInfo.name} Tier</span>
+                                <span class="status-badge ${isActive && !isExpired ? 'active' : isExpired ? 'expired' : 'inactive'}">
+                                    ${isActive && !isExpired ? 'Active' : isExpired ? 'Expired' : 'Inactive'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subscription-details">
+                        <div class="detail-item">
+                            <div class="detail-value">$${tierInfo.price.toLocaleString()}</div>
+                            <div class="detail-label">Total Paid</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">${Math.max(0, daysLeft)}</div>
+                            <div class="detail-label">${daysLeft > 1 ? 'Days Remaining' : daysLeft === 1 ? 'Day Remaining' : 'Days Expired'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">${endDate.toLocaleDateString()}</div>
+                            <div class="detail-label">${isExpired ? 'Expired On' : 'Expires On'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">${new Date(sub.created_at).toLocaleDateString()}</div>
+                            <div class="detail-label">Started On</div>
+                        </div>
+                    </div>
+
+                    <div class="subscription-actions">
+                        ${isActive && !isExpired ? `
+                            <button class="action-btn primary" onclick="subscriptionManager.showRenewModal()">
+                                <i class="fas fa-sync-alt"></i> Renew Subscription
+                            </button>
+                            <button class="action-btn secondary" onclick="subscriptionManager.showUpgradeOptions()">
+                                <i class="fas fa-arrow-up"></i> Upgrade Tier
+                            </button>
+                            <button class="action-btn danger" onclick="subscriptionManager.showCancelModal()">
+                                <i class="fas fa-times"></i> Cancel Subscription
+                            </button>
+                        ` : `
+                            <button class="action-btn primary" onclick="subscriptionManager.showReactivateModal()">
+                                <i class="fas fa-refresh"></i> Reactivate Subscription
+                            </button>
+                            <button class="action-btn secondary" onclick="subscriptionManager.showUpgradeOptions()">
+                                <i class="fas fa-star"></i> Upgrade Plan
+                            </button>
+                        `}
+                    </div>
+                `;
+            }
+
+            renderNoSubscription() {
+                const container = document.getElementById('currentSubscription');
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem;">
+                        <div style="width: 80px; height: 80px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; font-size: 2rem; color: var(--primary-blue-light);">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h2 style="margin-bottom: 1rem; color: var(--text-primary);">No Active Subscription</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                            Start your trading journey today! Choose a subscription plan that fits your goals and unlock access to our comprehensive trading education.
+                        </p>
+                        <button class="action-btn primary" onclick="subscriptionManager.showUpgradeOptions()">
+                            <i class="fas fa-rocket"></i> Choose Your Plan
+                        </button>
+                    </div>
+                `;
+            }
+
+            updateTierButtons() {
+                const currentTier = this.currentSubscription?.tier || 'none';
+                const tierHierarchy = ['gold', 'platinum', 'diamond'];
+                const currentIndex = tierHierarchy.indexOf(currentTier);
+
+                tierHierarchy.forEach((tier, index) => {
+                    const card = document.getElementById(`${tier}Card`);
+                    const btn = document.getElementById(`${tier}Btn`);
+                    
+                    if (tier === currentTier && this.currentSubscription?.status === 'active') {
+                        // Current tier
+                        card.classList.add('current');
+                        btn.textContent = 'Current Plan';
+                        btn.classList.add('current');
+                        btn.disabled = true;
+                    } else if (index < currentIndex && this.currentSubscription?.status === 'active') {
+                        // Lower tier
+                        card.classList.add('disabled');
+                        btn.textContent = 'Downgrade';
+                        btn.classList.add('downgrade');
+                    } else {
+                        // Higher tier or no current subscription
+                        card.classList.remove('current', 'disabled');
+                        btn.classList.remove('current', 'downgrade');
+                        btn.disabled = false;
+                        btn.textContent = index > currentIndex || !this.currentSubscription ? 'Upgrade' : 'Select';
+                    }
+                });
+            }
+
+            async loadBillingHistory() {
+                try {
+                    const { data: payments, error } = await this.supabase
+                        .from('payments')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id)
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+
+                    const tbody = document.getElementById('billingTableBody');
+                    
+                    if (!payments || payments.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                                    <i class="fas fa-receipt"></i><br>
+                                    No billing history available
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    tbody.innerHTML = payments.map(payment => {
+                        const date = new Date(payment.created_at).toLocaleDateString();
+                        const amount = `$${payment.amount.toLocaleString()}`;
+                        
+                        return `
+                            <tr>
+                                <td>${date}</td>
+                                <td>${payment.description || 'Subscription Payment'}</td>
+                                <td>${amount}</td>
+                                <td>
+                                    <span class="payment-status ${payment.status}">
+                                        ${payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
+                                    </span>
+                                </td>
+                                <td>
+                                    ${payment.receipt_url ? 
+                                        `<a href="${payment.receipt_url}" target="_blank" class="download-link">
+                                            <i class="fas fa-download"></i> Download
+                                        </a>` : 
+                                        '<span style="color: var(--text-muted);">N/A</span>'
+                                    }
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+
+                } catch (error) {
+                    console.error('Error loading billing history:', error);
+                    const tbody = document.getElementById('billingTableBody');
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem; color: var(--error);">
+                                Failed to load billing history
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+
+            // Modal Functions
+            showRenewModal() {
+                const tierInfo = this.getTierInfo(this.currentSubscription.tier);
+                this.showModal(
+                    'Renew Subscription',
+                    `Renew your ${tierInfo.name} subscription for another ${tierInfo.duration}?<br><br><strong>Amount: $${tierInfo.price}</strong>`,
+                    () => this.renewSubscription()
+                );
+            }
+
+            showUpgradeOptions() {
+                // Scroll to upgrade section
+                document.querySelector('.upgrade-section').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+                this.showToast('Choose your new tier below', 'info');
+            }
+
+            showCancelModal() {
+                this.showModal(
+                    'Cancel Subscription',
+                    'Are you sure you want to cancel your subscription? You will lose access to all premium features.',
+                    () => this.cancelSubscription(),
+                    'danger'
+                );
+            }
+
+            showReactivateModal() {
+                const tierInfo = this.getTierInfo(this.currentSubscription.tier);
+                this.showModal(
+                    'Reactivate Subscription',
+                    `Reactivate your ${tierInfo.name} subscription?<br><br><strong>Amount: $${tierInfo.price}</strong>`,
+                    () => this.reactivateSubscription()
+                );
+            }
+
+            showModal(title, content, onConfirm, type = 'primary') {
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalContent').innerHTML = content;
+                document.getElementById('confirmBtn').className = `modal-btn ${type}`;
+                document.getElementById('confirmationModal').classList.add('show');
+                
+                this.pendingAction = onConfirm;
+            }
+
+            closeModal() {
+                document.getElementById('confirmationModal').classList.remove('show');
+                this.pendingAction = null;
+            }
+
+            confirmAction() {
+                if (this.pendingAction) {
+                    this.pendingAction();
+                }
+                this.closeModal();
+            }
+
+            // Subscription Actions
+            async selectTier(tier) {
+                if (this.currentSubscription?.tier === tier && this.currentSubscription?.status === 'active') {
+                    return; // Already have this tier
+                }
+
+                this.selectedTier = tier;
+                const tierInfo = this.getTierInfo(tier);
+                
+                if (this.currentSubscription?.status === 'active') {
+                    // Upgrade/Downgrade
+                    this.showModal(
+                        `${this.isUpgrade(tier) ? 'Upgrade' : 'Change'} to ${tierInfo.name}`,
+                        `${this.isUpgrade(tier) ? 'Upgrade' : 'Change'} your subscription to ${tierInfo.name} tier?<br><br><strong>New Amount: $${tierInfo.price}</strong><br><small>Changes will take effect immediately.</small>`,
+                        () => this.processUpgrade(tier)
+                    );
+                } else {
+                    // New subscription
+                    this.showModal(
+                        `Subscribe to ${tierInfo.name}`,
+                        `Start your ${tierInfo.name} subscription?<br><br><strong>Amount: $${tierInfo.price}</strong><br><strong>Duration: ${tierInfo.duration}</strong>`,
+                        () => this.processNewSubscription(tier)
+                    );
+                }
+            }
+
+            async renewSubscription() {
+                try {
+                    this.showToast('Processing renewal...', 'info');
+                    
+                    // Redirect to payment processing
+                    window.location.href = `/pages/payment/payment-processing.html?action=renew&tier=${this.currentSubscription.tier}`;
+                    
+                } catch (error) {
+                    console.error('Error renewing subscription:', error);
+                    this.showToast('Failed to process renewal. Please try again.', 'error');
+                }
+            }
+
+            async processUpgrade(newTier) {
+                try {
+                    this.showToast('Processing upgrade...', 'info');
+                    
+                    // Redirect to payment processing
+                    window.location.href = `/pages/payment/payment-processing.html?action=upgrade&tier=${newTier}&current=${this.currentSubscription.tier}`;
+                    
+                } catch (error) {
+                    console.error('Error processing upgrade:', error);
+                    this.showToast('Failed to process upgrade. Please try again.', 'error');
+                }
+            }
+
+            async processNewSubscription(tier) {
+                try {
+                    this.showToast('Redirecting to payment...', 'info');
+                    
+                    // Redirect to payment processing
+                    window.location.href = `/pages/payment/payment-processing.html?action=subscribe&tier=${tier}`;
+                    
+                } catch (error) {
+                    console.error('Error processing new subscription:', error);
+                    this.showToast('Failed to process subscription. Please try again.', 'error');
+                }
+            }
+
+            async cancelSubscription() {
+                try {
+                    this.showToast('Cancelling subscription...', 'warning');
+                    
+                    // Update subscription status
+                    const { error } = await this.supabase
+                        .from('user_subscriptions')
+                        .update({ 
+                            status: 'cancelled',
+                            cancel_at_period_end: true,
+                            cancelled_at: new Date().toISOString(),
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', this.currentSubscription.id);
+
+                    if (error) throw error;
+
+                    // Log activity
+                    await this.supabase
+                        .from('user_activity_log')
+                        .insert({
+                            user_id: this.currentUser.id,
+                            action: 'subscription_cancelled',
+                            resource_type: 'subscription',
+                            resource_id: this.currentSubscription.id,
+                            metadata: { 
+                                tier: this.currentSubscription.tier,
+                                reason: 'user_request'
+                            }
+                        });
+
+                    this.showToast('Subscription cancelled successfully', 'success');
+                    await this.loadSubscriptionData();
+                    
+                } catch (error) {
+                    console.error('Error cancelling subscription:', error);
+                    this.showToast('Failed to cancel subscription. Please contact support.', 'error');
+                }
+            }
+
+            async reactivateSubscription() {
+                try {
+                    this.showToast('Processing reactivation...', 'info');
+                    
+                    // Redirect to payment processing for reactivation
+                    window.location.href = `/pages/payment/payment-processing.html?action=reactivate&tier=${this.currentSubscription.tier}`;
+                    
+                } catch (error) {
+                    console.error('Error reactivating subscription:', error);
+                    this.showToast('Failed to process reactivation. Please try again.', 'error');
+                }
+            }
+
+            // Utility Functions
+            getTierInfo(tier) {
+                const tiers = {
+                    gold: { name: 'Gold', price: 300, duration: '2 months' },
+                    platinum: { name: 'Platinum', price: 600, duration: '3 months' },
+                    diamond: { name: 'Diamond', price: 1300, duration: '6 months' }
+                };
+                return tiers[tier] || { name: 'Unknown', price: 0, duration: '0 months' };
+            }
+
+            isUpgrade(newTier) {
+                const hierarchy = ['gold', 'platinum', 'diamond'];
+                const currentIndex = hierarchy.indexOf(this.currentSubscription?.tier);
+                const newIndex = hierarchy.indexOf(newTier);
+                return newIndex > currentIndex;
+            }
+
+            showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = `toast ${type} show`;
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Global functions
+        let subscriptionManager;
+
+        window.selectTier = function(tier) {
+            if (subscriptionManager) {
+                subscriptionManager.selectTier(tier);
+            }
+        };
+
+        window.closeModal = function() {
+            if (subscriptionManager) {
+                subscriptionManager.closeModal();
+            }
+        };
+
+        window.confirmAction = function() {
+            if (subscriptionManager) {
+                subscriptionManager.confirmAction();
+            }
+        };
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            subscriptionManager = new ProductionSubscriptionManager();
+        });
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        });
+
+        console.log('💳 Production Subscription Management System Loaded');
+    </script>
+</body>
+</html>

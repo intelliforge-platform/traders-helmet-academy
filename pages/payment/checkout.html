@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Plan - Traders Helmet Academy</title>
+    <meta name="description" content="Choose your trading tier and start receiving professional signals today. Secure payment with 30-day money-back guarantee.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            --dark-border: #475569;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-platinum: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-diamond: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            padding: 1rem 0;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-details h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .user-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .main-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .pricing-period-toggle {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .period-option {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .period-option.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        /* Pricing Grid */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .pricing-card {
+            background: var(--gradient-card);
+            border: 2px solid transparent;
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .pricing-card.gold::before {
+            background: var(--gradient-gold);
+        }
+
+        .pricing-card.platinum::before {
+            background: var(--gradient-platinum);
+        }
+
+        .pricing-card.diamond::before {
+            background: var(--gradient-diamond);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary-blue-light);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .tier-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tier-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 1.5rem;
+        }
+
+        .tier-icon.gold { background: var(--gradient-gold); }
+        .tier-icon.platinum { background: var(--gradient-platinum); }
+        .tier-icon.diamond { background: var(--gradient-diamond); }
+
+        .tier-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tier-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-blue-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-period {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2.5rem;
+        }
+
+        .tier-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tier-features li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .select-btn {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .select-btn.gold {
+            background: var(--gradient-gold);
+            color: white;
+        }
+
+        .select-btn.platinum {
+            background: var(--gradient-platinum);
+            color: white;
+        }
+
+        .select-btn.diamond {
+            background: var(--gradient-diamond);
+            color: white;
+        }
+
+        .select-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .select-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Guarantee Section */
+        .guarantee-section {
+            text-align: center;
+            background: var(--success-light);
+            border: 1px solid var(--success);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .guarantee-section h3 {
+            color: var(--success);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .guarantee-section p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Loading States */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-content {
+            background: var(--dark-surface);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top-color: var(--primary-blue-light);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+
+            .pricing-card.popular:hover {
+                transform: translateY(-8px);
+            }
+
+            .main-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .pricing-card {
+                padding: 2rem;
+            }
+
+            .tier-price {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Success notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>Loading...</h3>
+            <p>Please wait while we prepare your subscription options.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="brand-header">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="brand-text">Traders Helmet Academy</div>
+            </div>
+            
+            <!-- User Info (populated by JS) -->
+            <div class="user-info" id="user-info" style="display: none;">
+                <div class="user-avatar" id="user-avatar">U</div>
+                <div class="user-details">
+                    <h4 id="user-name">Welcome, Trader!</h4>
+                    <p id="user-email">user@example.com</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="main-title">Choose Your Trading Plan</h1>
+            <p class="main-subtitle">
+                Select the perfect plan to accelerate your trading journey with professional signals, education, and mentorship.
+            </p>
+        </div>
+
+        <!-- Pricing Grid -->
+        <div class="pricing-grid">
+            <!-- Gold Plan -->
+            <div class="pricing-card gold" data-tier="gold">
+                <div class="tier-header">
+                    <div class="tier-icon gold">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="tier-name">Gold</h3>
+                    <p class="tier-description">Essential trading foundation</p>
+                    <div class="tier-price">$300</div>
+                    <div class="tier-period">per 2 months</div>
+                </div>
+                
+                <ul class="tier-features">
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Free Education</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Cryptocurrency Education</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Binary Options (HFX)</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Forex Master Class on Pivot Strategy</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Forex Master Class on Rhombus Strategy</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>2 Months Mentorship</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Free Signals</span>
+                    </li>
+                </ul>
+                
+                <button class="select-btn gold" data-tier="gold" data-price="300" data-duration="2">
+                    Choose Gold Plan
+                </button>
+            </div>
+
+            <!-- Platinum Plan -->
+            <div class="pricing-card platinum popular" data-tier="platinum">
+                <div class="popular-badge">Most Popular</div>
+                <div class="tier-header">
+                    <div class="tier-icon platinum">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="tier-name">Platinum</h3>
+                    <p class="tier-description">Advanced trading mastery</p>
+                    <div class="tier-price">$600</div>
+                    <div class="tier-period">per 3 months</div>
+                </div>
+                
+                <ul class="tier-features">
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Everything in Gold</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Free Trading Software Tools</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>3 Months Mentorship</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Priority Support</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Advanced Signals</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Risk Management Tools</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Weekly Webinars</span>
+                    </li>
+                </ul>
+                
+                <button class="select-btn platinum" data-tier="platinum" data-price="600" data-duration="3">
+                    Choose Platinum Plan
+                </button>
+            </div>
+
+            <!-- Diamond Plan -->
+            <div class="pricing-card diamond" data-tier="diamond">
+                <div class="tier-header">
+                    <div class="tier-icon diamond">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="tier-name">Diamond</h3>
+                    <p class="tier-description">VIP trading excellence</p>
+                    <div class="tier-price">$1300</div>
+                    <div class="tier-period">per 6 months</div>
+                </div>
+                
+                <ul class="tier-features">
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Everything in Platinum</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Forex Master Class on Institutional Order Flow</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>6 Months Mentorship</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Personal Trading Coach</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>VIP Community Access</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Unlimited Signals</span>
+                    </li>
+                    <li>
+                        <div class="feature-icon"><i class="fas fa-check"></i></div>
+                        <span>Custom Alerts</span>
+                    </li>
+                </ul>
+                
+                <button class="select-btn diamond" data-tier="diamond" data-price="1300" data-duration="6">
+                    Choose Diamond Plan
+                </button>
+            </div>
+        </div>
+
+        <!-- Money Back Guarantee -->
+        <div class="guarantee-section">
+            <h3><i class="fas fa-shield-alt"></i> 30-Day Money Back Guarantee</h3>
+            <p>We're confident you'll love our trading signals and education. If you're not completely satisfied within 30 days, we'll refund your payment - no questions asked.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Load config first
+        const script1 = document.createElement('script');
+        script1.src = '/assets/js/config.js';
+        document.head.appendChild(script1);
+
+        script1.onload = function() {
+            // Initialize Firebase
+            const app = initializeApp(window.THA_CONFIG.firebase);
+            const auth = getAuth(app);
+
+            class CheckoutManager {
+                constructor() {
+                    this.auth = auth;
+                    this.currentUser = null;
+                    this.selectedTier = null;
+                    
+                    this.planData = {
+                        gold: {
+                            name: 'Gold Membership',
+                            price: 300,
+                            duration: 2,
+                            period: 'months',
+                            description: 'Essential trading foundation with basic signals and education'
+                        },
+                        platinum: {
+                            name: 'Platinum Membership', 
+                            price: 600,
+                            duration: 3,
+                            period: 'months',
+                            description: 'Advanced trading tools with premium signals and mentorship'
+                        },
+                        diamond: {
+                            name: 'Diamond Membership',
+                            price: 1300,
+                            duration: 6,
+                            period: 'months',
+                            description: 'VIP experience with unlimited signals and personal coaching'
+                        }
+                    };
+
+                    this.init();
+                }
+
+                init() {
+                    console.log('🛒 Initializing Checkout Manager...');
+                    this.showLoading();
+                    
+                    // Check authentication
+                    onAuthStateChanged(this.auth, (user) => {
+                        if (user) {
+                            this.currentUser = user;
+                            this.handleAuthenticatedUser(user);
+                        } else {
+                            this.redirectToLogin();
+                        }
+                    });
+
+                    this.setupEventListeners();
+                }
+
+                handleAuthenticatedUser(user) {
+                    console.log('✅ User authenticated in checkout:', user.email);
+                    
+                    // Show user info
+                    this.displayUserInfo(user);
+                    
+                    // Check URL params for pre-selected plan
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const preselectedPlan = urlParams.get('plan');
+                    
+                    if (preselectedPlan && this.planData[preselectedPlan]) {
+                        this.highlightPlan(preselectedPlan);
+                    }
+                    
+                    this.hideLoading();
+                }
+
+                displayUserInfo(user) {
+                    const userInfo = document.getElementById('user-info');
+                    const userAvatar = document.getElementById('user-avatar');
+                    const userName = document.getElementById('user-name');
+                    const userEmail = document.getElementById('user-email');
+                    
+                    const displayName = user.displayName || 'Trader';
+                    const initials = this.getInitials(displayName);
+                    
+                    userAvatar.textContent = initials;
+                    userName.textContent = `Welcome, ${displayName}!`;
+                    userEmail.textContent = user.email;
+                    
+                    userInfo.style.display = 'flex';
+                }
+
+                getInitials(name) {
+                    return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                }
+
+                highlightPlan(planName) {
+                    const planCard = document.querySelector(`[data-tier="${planName}"]`);
+                    if (planCard) {
+                        planCard.style.borderColor = 'var(--primary-blue-light)';
+                        planCard.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.3)';
+                        planCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+
+                setupEventListeners() {
+                    // Plan selection buttons
+                    const selectButtons = document.querySelectorAll('.select-btn');
+                    
+                    selectButtons.forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const tier = button.getAttribute('data-tier');
+                            const price = button.getAttribute('data-price');
+                            const duration = button.getAttribute('data-duration');
+                            
+                            this.selectPlan(tier, price, duration);
+                        });
+                    });
+
+                    // Plan card clicking
+                    const planCards = document.querySelectorAll('.pricing-card');
+                    planCards.forEach(card => {
+                        card.addEventListener('click', (e) => {
+                            // Only trigger if not clicking the button
+                            if (!e.target.classList.contains('select-btn')) {
+                                const button = card.querySelector('.select-btn');
+                                button.click();
+                            }
+                        });
+                    });
+                }
+
+                selectPlan(tier, price, duration) {
+                    if (!this.currentUser) {
+                        this.showError('Please log in to select a plan.');
+                        return;
+                    }
+
+                    console.log(`📋 Plan selected: ${tier} - $${price} for ${duration} months`);
+                    
+                    this.selectedTier = {
+                        tier: tier,
+                        price: parseFloat(price),
+                        duration: parseInt(duration),
+                        ...this.planData[tier]
+                    };
+
+                    this.showLoading('Redirecting to secure payment...');
+                    
+                    // Store selection data
+                    sessionStorage.setItem('tha_selected_plan', JSON.stringify(this.selectedTier));
+                    sessionStorage.setItem('tha_user_info', JSON.stringify({
+                        uid: this.currentUser.uid,
+                        email: this.currentUser.email,
+                        displayName: this.currentUser.displayName || ''
+                    }));
+
+                    // Redirect to payment processing
+                    setTimeout(() => {
+                        window.location.href = `/pages/payment/payment-processing.html?tier=${tier}&price=${price}&duration=${duration}`;
+                    }, 1000);
+                }
+
+                showLoading(message = 'Loading...') {
+                    const overlay = document.getElementById('loading-overlay');
+                    const loadingText = overlay.querySelector('h3');
+                    if (loadingText) {
+                        loadingText.textContent = message;
+                    }
+                    overlay.classList.add('show');
+                }
+
+                hideLoading() {
+                    const overlay = document.getElementById('loading-overlay');
+                    overlay.classList.remove('show');
+                }
+
+                showError(message) {
+                    this.showNotification(message, 'error');
+                }
+
+                showSuccess(message) {
+                    this.showNotification(message, 'success');
+                }
+
+                showNotification(message, type) {
+                    const notification = document.createElement('div');
+                    notification.className = `notification ${type}`;
+                    notification.textContent = message;
+                    
+                    document.body.appendChild(notification);
+                    
+                    // Show notification
+                    setTimeout(() => notification.classList.add('show'), 100);
+                    
+                    // Hide and remove notification
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => notification.remove(), 300);
+                    }, 4000);
+                }
+
+                redirectToLogin() {
+                    this.showError('Please log in to select a subscription plan.');
+                    setTimeout(() => {
+                        window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    }, 2000);
+                }
+            }
+
+            // Initialize checkout manager
+            new CheckoutManager();
+        };
+    </script>
+</body>
+</html>

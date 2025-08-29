@@ -1,0 +1,697 @@
+/**
+ * TRADERS HELMET ACADEMY - TWO-FACTOR AUTHENTICATION STYLES
+ * Location: /assets/css/two-factor-auth.css
+ * 
+ * Complete styling for 2FA setup, verification, and management UI components
+ */
+
+/* =========================================
+   2FA MODAL STYLES
+   ========================================= */
+
+.two-factor-modal,
+.two-factor-verification-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.two-factor-modal .modal-backdrop,
+.two-factor-verification-modal .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.two-factor-modal .modal-content,
+.two-factor-verification-modal .modal-content {
+    position: relative;
+    background: var(--color-surface);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideInUp 0.3s ease-out;
+    border: 1px solid var(--color-border);
+}
+
+.two-factor-modal .modal-header,
+.two-factor-verification-modal .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px 16px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.two-factor-modal .modal-header h3,
+.two-factor-verification-modal .modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.two-factor-modal .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.two-factor-modal .modal-close:hover {
+    background: var(--color-danger-light);
+    color: var(--color-danger);
+}
+
+.two-factor-modal .modal-body,
+.two-factor-verification-modal .modal-body {
+    padding: 24px 32px 32px;
+}
+
+/* =========================================
+   SETUP STEPS STYLES
+   ========================================= */
+
+.setup-steps {
+    position: relative;
+}
+
+.step {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.step.active {
+    display: block;
+}
+
+.step h4 {
+    margin: 0 0 16px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.step p {
+    margin: 0 0 16px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+/* =========================================
+   QR CODE STYLES
+   ========================================= */
+
+.qr-code-container {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+    padding: 20px;
+    background: var(--color-background);
+    border: 2px dashed var(--color-border);
+    border-radius: 12px;
+}
+
+.qr-code-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================
+   MANUAL ENTRY STYLES
+   ========================================= */
+
+.manual-entry {
+    margin: 24px 0;
+    padding: 20px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+}
+
+.manual-entry p {
+    margin: 0 0 12px;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.secret-code {
+    display: block;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 8px 0;
+    word-break: break-all;
+    letter-spacing: 0.5px;
+    color: var(--color-text-primary);
+}
+
+.copy-secret-btn {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+.copy-secret-btn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   VERIFICATION INPUT STYLES
+   ========================================= */
+
+.two-factor-code-input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    letter-spacing: 0.5em;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    transition: all 0.2s ease;
+    margin: 16px 0 24px;
+}
+
+.two-factor-code-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.two-factor-code-input::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.7;
+}
+
+/* =========================================
+   BACKUP CODES STYLES
+   ========================================= */
+
+.backup-codes-container {
+    margin: 24px 0;
+}
+
+.backup-codes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 16px 0 24px;
+    padding: 20px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+}
+
+.backup-code {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    text-align: center;
+    letter-spacing: 1px;
+    color: var(--color-text-primary);
+    transition: all 0.2s ease;
+}
+
+.backup-code:hover {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary);
+}
+
+.download-codes-btn {
+    background: var(--color-success);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto;
+}
+
+.download-codes-btn:hover {
+    background: var(--color-success-dark);
+    transform: translateY(-1px);
+}
+
+.download-codes-btn::before {
+    content: '📥';
+    font-size: 1rem;
+}
+
+/* =========================================
+   BUTTON STYLES
+   ========================================= */
+
+.next-step-btn,
+.verify-setup-btn,
+.finish-setup-btn {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 16px;
+}
+
+.next-step-btn:hover,
+.verify-setup-btn:hover,
+.finish-setup-btn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.next-step-btn:disabled,
+.verify-setup-btn:disabled {
+    background: var(--color-text-muted);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* =========================================
+   VERIFICATION MODAL STYLES
+   ========================================= */
+
+.two-factor-verification-modal .modal-content {
+    max-width: 400px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.modal-actions .btn {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.modal-actions .btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+
+.modal-actions .btn-secondary:hover {
+    background: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+.modal-actions .btn-primary {
+    background: var(--color-primary);
+    color: white;
+}
+
+.modal-actions .btn-primary:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+.backup-code-option {
+    margin-top: 16px;
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+}
+
+.use-backup-code-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.use-backup-code-link:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+/* =========================================
+   2FA STATUS INDICATORS
+   ========================================= */
+
+.two-factor-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.two-factor-status.enabled {
+    background: var(--color-success-light);
+    color: var(--color-success-dark);
+}
+
+.two-factor-status.disabled {
+    background: var(--color-warning-light);
+    color: var(--color-warning-dark);
+}
+
+.two-factor-status.enabled::before {
+    content: '🔒';
+    font-size: 0.9rem;
+}
+
+.two-factor-status.disabled::before {
+    content: '🔓';
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   2FA TOGGLE BUTTONS
+   ========================================= */
+
+.two-factor-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid;
+    text-decoration: none;
+}
+
+.two-factor-toggle.btn-primary {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.two-factor-toggle.btn-primary:hover {
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+.two-factor-toggle.btn-outline-danger {
+    background: transparent;
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+.two-factor-toggle.btn-outline-danger:hover {
+    background: var(--color-danger);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   2FA SETTINGS SECTION
+   ========================================= */
+
+.two-factor-settings {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+}
+
+.two-factor-settings h3 {
+    margin: 0 0 16px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.two-factor-settings h3::before {
+    content: '🛡️';
+    font-size: 1.1rem;
+}
+
+.two-factor-settings p {
+    margin: 0 0 20px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.two-factor-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.two-factor-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.two-factor-option:hover {
+    border-color: var(--color-primary-light);
+    background: var(--color-primary-light);
+}
+
+.two-factor-option-info {
+    flex: 1;
+}
+
+.two-factor-option-info h4 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.two-factor-option-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+@media (max-width: 768px) {
+    .two-factor-modal .modal-content,
+    .two-factor-verification-modal .modal-content {
+        width: 95%;
+        margin: 0 auto;
+    }
+    
+    .two-factor-modal .modal-header,
+    .two-factor-verification-modal .modal-header,
+    .two-factor-modal .modal-body,
+    .two-factor-verification-modal .modal-body {
+        padding: 20px;
+    }
+    
+    .backup-codes {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .two-factor-option {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .two-factor-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .two-factor-code-input {
+        font-size: 1.25rem;
+        letter-spacing: 0.3em;
+        padding: 12px 16px;
+    }
+    
+    .backup-codes {
+        grid-template-columns: 1fr;
+    }
+    
+    .secret-code {
+        font-size: 0.8rem;
+        padding: 10px 12px;
+    }
+}
+
+/* =========================================
+   DARK MODE SUPPORT
+   ========================================= */
+
+[data-theme="dark"] .two-factor-modal .modal-content,
+[data-theme="dark"] .two-factor-verification-modal .modal-content {
+    background: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+}
+
+[data-theme="dark"] .qr-code-container,
+[data-theme="dark"] .manual-entry,
+[data-theme="dark"] .backup-codes-container .backup-codes {
+    background: var(--color-background-dark);
+    border-color: var(--color-border-dark);
+}
+
+[data-theme="dark"] .secret-code,
+[data-theme="dark"] .backup-code {
+    background: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+    color: var(--color-text-primary-dark);
+}
+
+[data-theme="dark"] .two-factor-code-input {
+    background: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+    color: var(--color-text-primary-dark);
+}
+
+[data-theme="dark"] .two-factor-settings {
+    background: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+}
+
+[data-theme="dark"] .two-factor-option {
+    background: var(--color-background-dark);
+    border-color: var(--color-border-dark);
+}
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.backup-code:hover {
+    animation: pulse 0.3s ease-in-out;
+}
+
+/* =========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ========================================= */
+
+.two-factor-modal .modal-content:focus,
+.two-factor-verification-modal .modal-content:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.two-factor-code-input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.copy-secret-btn:focus,
+.download-codes-btn:focus,
+.next-step-btn:focus,
+.verify-setup-btn:focus,
+.finish-setup-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .two-factor-modal .modal-content,
+    .two-factor-verification-modal .modal-content {
+        border: 2px solid var(--color-text-primary);
+    }
+    
+    .two-factor-code-input {
+        border: 2px solid var(--color-text-primary);
+    }
+}
