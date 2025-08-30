@@ -1,27 +1,40 @@
 {
   "version": 2,
   "name": "traders-helmet-academy",
-  "routes": [
+  "builds": [
     {
-      "src": "/",
-      "dest": "/index.html"
+      "src": "package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/server.js"
     },
     {
-      "src": "/subscription",
-      "dest": "/subscription.html"
+      "source": "/",
+      "destination": "/index.html"
     },
     {
-      "src": "/payment-processing",
-      "dest": "/payment-processing.html"
+      "source": "/subscription",
+      "destination": "/subscription.html"
     },
     {
-      "src": "/pages/(.*)",
-      "dest": "/pages/$1.html"
+      "source": "/payment-processing",
+      "destination": "/payment-processing.html"
     },
     {
-      "src": "/.*",
-      "dest": "/index.html",
-      "status": 404
+      "source": "/pages/(.*)",
+      "destination": "/pages/$1.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/admin/$1.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
@@ -39,8 +52,23 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
-  ]
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
