@@ -186,8 +186,8 @@ app.use('/api/payments', paymentLimiter, require('./api/payments/routes'));
 // Specific HTML page routes
 const htmlRoutes = [
     { path: '/', file: 'index.html' },
-    { path: '/subscription', file: 'subscription.html' },
-    { path: '/payment-processing', file: 'payment-processing.html' },
+    { path: '/subscription', file: 'pages/payment/subscription.html' },
+    { path: '/payment-processing', file: 'pages/payment/payment-processing.html' },
     { path: '/privacy-policy', file: 'privacy-policy.html' },
     { path: '/terms-of-service', file: 'terms-of-service.html' }
 ];

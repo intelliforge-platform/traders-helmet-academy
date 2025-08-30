@@ -1,12 +1,11 @@
 {
   "version": 2,
   "name": "traders-helmet-academy",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node"
+  "functions": {
+    "server.js": {
+      "maxDuration": 30
     }
-  ],
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -18,11 +17,11 @@
     },
     {
       "source": "/subscription",
-      "destination": "/subscription.html"
+      "destination": "/pages/payment/subscription.html"
     },
     {
-      "source": "/payment-processing",
-      "destination": "/payment-processing.html"
+      "source": "/payment-processing", 
+      "destination": "/pages/payment/payment-processing.html"
     },
     {
       "source": "/pages/(.*)",
