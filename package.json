@@ -2,15 +2,15 @@
   "name": "traders-helmet-academy",
   "version": "1.0.0",
   "description": "Professional trading education platform with multi-tier subscriptions, video courses, real-time signals, and comprehensive user management.",
-  "main": "server.js",
+  "main": "api/server.js",
   "private": true,
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node api/server.js",
+    "dev": "nodemon api/server.js",
     "build": "npm run build:css && npm run build:js",
     "build:css": "postcss assets/css/main.css -o dist/css/main.min.css",
     "build:js": "webpack --mode production",
