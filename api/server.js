@@ -81,47 +81,124 @@ app.get('/api/health', (req, res) => {
     res.status(200).json({ 
         status: 'OK', 
         timestamp: new Date().toISOString(),
-        service: 'Traders Helmet Academy API'
+        service: 'Traders Helmet Academy API',
+        environment: process.env.NODE_ENV || 'development'
     });
 });
 
-// API routes - Fixed relative paths
-try {
-    app.use('/api/auth', require('./auth/routes'));
-    console.log('✅ Auth routes loaded');
-} catch (error) {
-    console.error('❌ Failed to load auth routes:', error.message);
+// Environment check endpoint
+app.get('/api/env-check', (req, res) => {
+    const envStatus = {
+        NODE_ENV: !!process.env.NODE_ENV,
+        SUPABASE_URL: !!process.env.SUPABASE_URL,
+        SUPABASE_ANON_KEY: !!process.env.SUPABASE_ANON_KEY,
+        STRIPE_PUBLISHABLE_KEY: !!process.env.STRIPE_PUBLISHABLE_KEY,
+        JWT_SECRET: !!process.env.JWT_SECRET
+    };
+    
+    res.json({
+        message: 'Environment Variables Status',
+        status: envStatus,
+        allConfigured: Object.values(envStatus).every(Boolean)
+    });
+});
+
+// Graceful route loading with fallbacks
+function loadRoutesSafely() {
+    // Check for required environment variables
+    const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_ANON_KEY'];
+    const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+    
+    if (missingEnvVars.length > 0) {
+        console.warn('⚠️  Missing environment variables:', missingEnvVars.join(', '));
+        console.warn('⚠️  Loading routes with fallback handlers');
+        
+        // Create fallback routes that return helpful error messages
+        app.use('/api/auth', (req, res) => {
+            res.status(503).json({
+                error: 'Service temporarily unavailable',
+                message: 'Authentication service is not properly configured',
+                code: 'ENV_CONFIG_ERROR'
+            });
+        });
+        
+        app.use('/api/users', (req, res) => {
+            res.status(503).json({
+                error: 'Service temporarily unavailable',
+                message: 'User service is not properly configured',
+                code: 'ENV_CONFIG_ERROR'
+            });
+        });
+        
+        app.use('/api/payments', (req, res) => {
+            res.status(503).json({
+                error: 'Service temporarily unavailable',
+                message: 'Payment service is not properly configured',
+                code: 'ENV_CONFIG_ERROR'
+            });
+        });
+        
+        return;
+    }
+    
+    // Try to load actual routes if environment is configured
+    try {
+        app.use('/api/auth', require('./auth/routes'));
+        console.log('✅ Auth routes loaded');
+    } catch (error) {
+        console.error('❌ Failed to load auth routes:', error.message);
+        app.use('/api/auth', (req, res) => {
+            res.status(500).json({ error: 'Auth service temporarily unavailable' });
+        });
+    }
+
+    try {
+        app.use('/api/users', require('./users/routes'));
+        console.log('✅ User routes loaded');
+    } catch (error) {
+        console.error('❌ Failed to load user routes:', error.message);
+        app.use('/api/users', (req, res) => {
+            res.status(500).json({ error: 'User service temporarily unavailable' });
+        });
+    }
+
+    try {
+        app.use('/api/payments', require('./payments/routes'));
+        console.log('✅ Payment routes loaded');
+    } catch (error) {
+        console.error('❌ Failed to load payment routes:', error.message);
+        app.use('/api/payments', (req, res) => {
+            res.status(500).json({ error: 'Payment service temporarily unavailable' });
+        });
+    }
 }
 
-try {
-    app.use('/api/users', require('./users/routes'));
-    console.log('✅ User routes loaded');
-} catch (error) {
-    console.error('❌ Failed to load user routes:', error.message);
-}
-
-try {
-    app.use('/api/payment', require('./payment/routes'));
-    console.log('✅ Payment routes loaded');
-} catch (error) {
-    console.error('❌ Failed to load payment routes:', error.message);
-}
+// Load routes
+loadRoutesSafely();
 
 // API 404 handler - Must come after all API routes
 app.use('/api/*', (req, res) => {
     res.status(404).json({ 
         error: 'API endpoint not found',
         path: req.originalUrl,
-        method: req.method
+        method: req.method,
+        availableEndpoints: [
+            '/api/health',
+            '/api/env-check',
+            '/api/auth/*',
+            '/api/users/*',
+            '/api/payments/*'
+        ]
     });
 });
 
-// Root endpoint for testing
+// Root API endpoint
 app.get('/api', (req, res) => {
     res.json({ 
         message: 'Traders Helmet Academy API',
         version: '1.0.0',
-        status: 'running'
+        status: 'running',
+        timestamp: new Date().toISOString()
     });
 });
 
