@@ -11,9 +11,10 @@
   "scripts": {
     "start": "node api/server.js",
     "dev": "nodemon api/server.js",
-    "build": "npm run build:css && npm run build:js",
-    "build:css": "postcss assets/css/main.css -o dist/css/main.min.css",
-	"build:js": "webpack --mode production",
+    "build": "npm run build:html && npm run build:css && npm run build:js",
+	"build:html": "cp *.html public/ && cp -r pages public/ 2>/dev/null || true",
+	"build:css": "postcss assets/css/main.css -o public/css/main.min.css",
+	"build:js": "webpack --mode production --output-path public --entry ./assets/js/main.js"
     "watch": "webpack --mode development --watch",
     "test": "jest",
     "test:watch": "jest --watch",
