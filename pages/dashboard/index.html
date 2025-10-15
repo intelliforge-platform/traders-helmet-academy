@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Traders Helmet Academy</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --secondary-purple: #7c3aed;
+            --accent-gold: #f59e0b;
+            --background-dark: #0f172a;
+            --background-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-purple) 100%);
+            --gradient-card: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--background-card);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 1.5rem;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo h2 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-details span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--gradient-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.blue { background: var(--primary-blue-light); }
+        .stat-icon.purple { background: var(--secondary-purple); }
+        .stat-icon.gold { background: var(--accent-gold); }
+        .stat-icon.green { background: var(--success); }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--gradient-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .subscription-status {
+            background: var(--gradient-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .subscription-status.active {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .subscription-status.inactive {
+            border-color: var(--warning);
+            background: var(--warning-light);
+        }
+
+        .status-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .status-icon.active {
+            background: var(--success);
+        }
+
+        .status-icon.inactive {
+            background: var(--warning);
+        }
+
+        .subscription-tier {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subscription-tier.active {
+            color: var(--success);
+        }
+
+        .subscription-tier.inactive {
+            color: var(--warning);
+        }
+
+        .upgrade-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .upgrade-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upgrade-card:hover {
+            border-color: var(--primary-blue-light);
+            transform: translateY(-3px);
+        }
+
+        .upgrade-card.current {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .upgrade-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .upgrade-name {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-blue-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .activity-content h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .activity-content p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .quick-action {
+            background: var(--gradient-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-blue-light);
+        }
+
+        .quick-action i {
+            font-size: 2rem;
+            color: var(--primary-blue-light);
+            margin-bottom: 1rem;
+        }
+
+        .locked-content {
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .locked-content::after {
+            content: '🔒';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .upgrade-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Traders Helmet</h2>
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem;">Academy</p>
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#dashboard" class="nav-link active" data-tab="dashboard">
+                            <i class="fas fa-chart-pie"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#subscription" class="nav-link" data-tab="subscription">
+                            <i class="fas fa-crown"></i>
+                            Subscription
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#academy" class="nav-link" data-tab="academy">
+                            <i class="fas fa-graduation-cap"></i>
+                            Academy
+                            <span id="academyLock" style="margin-left: auto;">🔒</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#signals" class="nav-link" data-tab="signals">
+                            <i class="fas fa-signal"></i>
+                            Trading Signals
+                            <span id="signalsLock" style="margin-left: auto;">🔒</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#profile" class="nav-link" data-tab="profile">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#billing" class="nav-link" data-tab="billing">
+                            <i class="fas fa-credit-card"></i>
+                            Billing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#support" class="nav-link" data-tab="support">
+                            <i class="fas fa-headset"></i>
+                            Support
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <div>
+                    <h1 id="welcomeMessage">Welcome back!</h1>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <strong id="userName">Loading...</strong>
+                        <span id="userEmail">user@example.com</span>
+                    </div>
+                    <a href="#" class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboardTab" class="tab-content">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="memberSince">--</div>
+                        <div class="stat-label">Member Since</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon purple">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="currentTier">None</div>
+                        <div class="stat-label">Current Tier</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon gold">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="signalsReceived">0</div>
+                        <div class="stat-label">Signals Received</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon green">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="learningProgress">0%</div>
+                        <div class="stat-label">Learning Progress</div>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="content-grid">
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Activity</h3>
+                        </div>
+                        <div id="recentActivity">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>Account Created</h4>
+                                    <p>Welcome to Traders Helmet Academy!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Actions</h3>
+                        </div>
+                        <div class="quick-actions" style="grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0;">
+                            <a href="#subscription" class="quick-action" data-tab="subscription">
+                                <i class="fas fa-crown"></i>
+                                <h4>Upgrade Plan</h4>
+                                <p>Access premium features</p>
+                            </a>
+                            <a href="#profile" class="quick-action" data-tab="profile">
+                                <i class="fas fa-user-edit"></i>
+                                <h4>Edit Profile</h4>
+                                <p>Update your information</p>
+                            </a>
+                            <a href="#support" class="quick-action" data-tab="support">
+                                <i class="fas fa-headset"></i>
+                                <h4>Get Support</h4>
+                                <p>Contact our team</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscription Tab -->
+            <div id="subscriptionTab" class="tab-content" style="display: none;">
+                <!-- Current Subscription Status -->
+                <div id="subscriptionStatus" class="subscription-status inactive">
+                    <div class="status-icon inactive">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="subscription-tier inactive">No Active Subscription</div>
+                    <p style="color: var(--text-secondary);">Unlock premium trading features with a subscription</p>
+                </div>
+
+                <!-- Upgrade Options -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Choose Your Plan</h3>
+                        <p style="color: var(--text-muted); margin: 0;">Select the perfect plan for your trading journey</p>
+                    </div>
+                    
+                    <div class="upgrade-options">
+                        <div class="upgrade-card" data-tier="gold">
+                            <div class="upgrade-price">$300</div>
+                            <div class="upgrade-name">Gold Membership</div>
+                            <ul style="list-style: none; padding: 0; margin: 1rem 0; text-align: left; font-size: 0.9rem;">
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>Basic Trading Signals</li>
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>Weekly Market Analysis</li>
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>Community Access</li>
+                            </ul>
+                            <button class="btn btn-primary" onclick="selectPlan('gold')">Choose Gold</button>
+                        </div>
+
+                        <div class="upgrade-card" data-tier="platinum">
+                            <div class="upgrade-price">$600</div>
+                            <div class="upgrade-name">Platinum Membership</div>
+                            <ul style="list-style: none; padding: 0; margin: 1rem 0; text-align: left; font-size: 0.9rem;">
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>Premium Trading Signals</li>
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>Daily Market Analysis</li>
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>1-on-1 Mentoring</li>
+                            </ul>
+                            <button class="btn btn-primary" onclick="selectPlan('platinum')">Choose Platinum</button>
+                        </div>
+
+                        <div class="upgrade-card" data-tier="diamond">
+                            <div class="upgrade-price">$1,300</div>
+                            <div class="upgrade-name">Diamond Membership</div>
+                            <ul style="list-style: none; padding: 0; margin: 1rem 0; text-align: left; font-size: 0.9rem;">
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>VIP Trading Signals</li>
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>Real-time Updates</li>
+                                <li style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>Weekly 1-on-1 Coaching</li>
+                            </ul>
+                            <button class="btn btn-primary" onclick="selectPlan('diamond')">Choose Diamond</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academy Tab -->
+            <div id="academyTab" class="tab-content" style="display: none;">
+                <div id="academyContent" class="locked-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Trading Academy</h3>
+                            <p style="color: var(--text-muted); margin: 0;">Comprehensive trading education</p>
+                        </div>
+                        <p>Premium trading courses and educational content will be available here once you subscribe to a plan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signals Tab -->
+            <div id="signalsTab" class="tab-content" style="display: none;">
+                <div id="signalsContent" class="locked-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Trading Signals</h3>
+                            <p style="color: var(--text-muted); margin: 0;">Real-time trading recommendations</p>
+                        </div>
+                        <p>Live trading signals and market analysis will be available here once you subscribe to a plan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profileTab" class="tab-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Profile Settings</h3>
+                    </div>
+                    <form id="profileForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">First Name</label>
+                                <input type="text" id="profileFirstName" style="width: 100%; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-primary);">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Last Name</label>
+                                <input type="text" id="profileLastName" style="width: 100%; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-primary);">
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
+                            <input type="email" id="profileEmail" style="width: 100%; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-primary);" readonly>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Phone (Optional)</label>
+                            <input type="tel" id="profilePhone" style="width: 100%; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-primary);">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Billing Tab -->
+            <div id="billingTab" class="tab-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Billing History</h3>
+                    </div>
+                    <div id="billingHistory">
+                        <p style="color: var(--text-muted); text-align: center; padding: 2rem;">No billing history available yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Tab -->
+            <div id="supportTab" class="tab-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Contact Support</h3>
+                    </div>
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-headset" style="font-size: 3rem; color: var(--primary-blue-light); margin-bottom: 1rem;"></i>
+                        <h4>Need Help?</h4>
+                        <p style="color: var(--text-secondary); margin: 1rem 0;">Our support team is here to help you succeed.</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                            <a href="mailto:support@tradershelmetacademy.com" class="btn btn-primary">
+                                <i class="fas fa-envelope"></i>
+                                Email Support
+                            </a>
+                            <a href="#" class="btn btn-secondary">
+                                <i class="fas fa-comments"></i>
+                                Live Chat
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDK Configuration -->
+    <script src="/assets/js/sdk-config.js"></script>
+
+    <script>
+        class UserDashboard {
+            constructor() {
+                this.currentUser = null;
+                this.userProfile = null;
+                this.currentTab = 'dashboard';
+                
+                this.init();
+            }
+
+            async init() {
+                console.log('🔄 Initializing User Dashboard...');
+                
+                // Wait for SDKs
+                if (window.SDK_DEBUG && (window.SDK_DEBUG.firebase || window.SDK_DEBUG.supabase)) {
+                    this.handleSDKReady();
+                } else {
+                    window.addEventListener('sdksReady', () => this.handleSDKReady());
+                }
+
+                this.attachEventListeners();
+            }
+
+            async handleSDKReady() {
+                console.log('✅ SDKs ready for dashboard');
+                await this.checkAuthentication();
+            }
+
+            async checkAuthentication() {
+                try {
+                    // Check Firebase auth
+                    if (window.firebaseAuth && window.firebaseAuth.getCurrentUser) {
+                        this.currentUser = window.firebaseAuth.getCurrentUser();
+                    }
+
+                    // If not authenticated via Firebase, check Supabase
+                    if (!this.currentUser && window.supabase) {
+                        const { data: { user } } = await window.supabase.auth.getUser();
+                        this.currentUser = user;
+                    }
+
+                    if (!this.currentUser) {
+                        console.log('❌ User not authenticated, redirecting to login');
+                        window.location.href = '/pages/auth/login.html?redirect=dashboard';
+                        return;
+                    }
+
+                    console.log('✅ User authenticated:', this.currentUser.email);
+                    await this.loadUserProfile();
+                    this.updateUI();
+
+                } catch (error) {
+                    console.error('Authentication check error:', error);
+                    window.location.href = '/pages/auth/login.html?redirect=dashboard';
+                }
+            }
+
+            async loadUserProfile() {
+                try {
+                    if (!window.supabase) {
+                        console.warn('Database not available, using basic profile');
+                        this.userProfile = {
+                            first_name: this.currentUser.displayName?.split(' ')[0] || 'User',
+                            last_name: this.currentUser.displayName?.split(' ').slice(1).join(' ') || '',
+                            email: this.currentUser.email,
+                            subscription_tier: 'none',
+                            subscription_status: 'inactive',
+                            created_at: new Date().toISOString()
+                        };
+                        return;
+                    }
+
+                    const { data, error } = await window.supabase
+                        .from('user_profiles')
+                        .select('*')
+                        .eq('id', this.currentUser.uid || this.currentUser.id)
+                        .single();
+
+                    if (error) {
+                        console.warn('Profile not found, creating default:', error);
+                        this.userProfile = {
+                            first_name: this.currentUser.displayName?.split(' ')[0] || 'User',
+                            last_name: this.currentUser.displayName?.split(' ').slice(1).join(' ') || '',
+                            email: this.currentUser.email,
+                            subscription_tier: 'none',
+                            subscription_status: 'inactive',
+                            created_at: new Date().toISOString()
+                        };
+                    } else {
+                        this.userProfile = data;
+                        console.log('✅ User profile loaded:', data.subscription_tier);
+                    }
+
+                } catch (error) {
+                    console.error('Profile loading error:', error);
+                    this.userProfile = {
+                        first_name: 'User',
+                        last_name: '',
+                        email: this.currentUser?.email || 'user@example.com',
+                        subscription_tier: 'none',
+                        subscription_status: 'inactive'
+                    };
+                }
+            }
+
+            updateUI() {
+                // Update user info
+                const userName = document.getElementById('userName');
+                const userEmail = document.getElementById('userEmail');
+                const userAvatar = document.getElementById('userAvatar');
+                const welcomeMessage = document.getElementById('welcomeMessage');
+
+                const displayName = `${this.userProfile.first_name} ${this.userProfile.last_name}`.trim() || 'User';
+                
+                userName.textContent = displayName;
+                userEmail.textContent = this.userProfile.email;
+                userAvatar.textContent = this.userProfile.first_name?.[0]?.toUpperCase() || 'U';
+                welcomeMessage.textContent = `Welcome back, ${this.userProfile.first_name}!`;
+
+                // Update stats
+                document.getElementById('memberSince').textContent = this.formatDate(this.userProfile.created_at);
+                document.getElementById('currentTier').textContent = this.formatTier(this.userProfile.subscription_tier);
+
+                // Update subscription status
+                this.updateSubscriptionStatus();
+
+                // Update content access
+                this.updateContentAccess();
+
+                // Populate profile form
+                this.populateProfileForm();
+            }
+
+            updateSubscriptionStatus() {
+                const statusElement = document.getElementById('subscriptionStatus');
+                const statusIcon = statusElement.querySelector('.status-icon');
+                const statusText = statusElement.querySelector('.subscription-tier');
+                const statusDesc = statusElement.querySelector('p');
+
+                const isActive = this.userProfile.subscription_status === 'active';
+                const tier = this.userProfile.subscription_tier;
+
+                if (isActive && tier !== 'none') {
+                    statusElement.className = 'subscription-status active';
+                    statusIcon.className = 'status-icon active';
+                    statusIcon.innerHTML = '<i class="fas fa-crown"></i>';
+                    statusText.className = 'subscription-tier active';
+                    statusText.textContent = `${this.formatTier(tier)} Member`;
+                    statusDesc.textContent = 'Your subscription is active and all features are unlocked';
+
+                    // Update upgrade cards
+                    document.querySelectorAll('.upgrade-card').forEach(card => {
+                        if (card.dataset.tier === tier) {
+                            card.classList.add('current');
+                            const btn = card.querySelector('button');
+                            btn.textContent = 'Current Plan';
+                            btn.disabled = true;
+                        }
+                    });
+                } else {
+                    statusElement.className = 'subscription-status inactive';
+                    statusIcon.className = 'status-icon inactive';
+                    statusIcon.innerHTML = '<i class="fas fa-clock"></i>';
+                    statusText.className = 'subscription-tier inactive';
+                    statusText.textContent = 'No Active Subscription';
+                    statusDesc.textContent = 'Unlock premium trading features with a subscription';
+                }
+            }
+
+            updateContentAccess() {
+                const isSubscribed = this.userProfile.subscription_status === 'active' && 
+                                   this.userProfile.subscription_tier !== 'none';
+
+                // Update navigation locks
+                const academyLock = document.getElementById('academyLock');
+                const signalsLock = document.getElementById('signalsLock');
+                
+                if (isSubscribed) {
+                    academyLock.style.display = 'none';
+                    signalsLock.style.display = 'none';
+                    document.getElementById('academyContent').classList.remove('locked-content');
+                    document.getElementById('signalsContent').classList.remove('locked-content');
+                } else {
+                    academyLock.style.display = 'inline';
+                    signalsLock.style.display = 'inline';
+                    document.getElementById('academyContent').classList.add('locked-content');
+                    document.getElementById('signalsContent').classList.add('locked-content');
+                }
+            }
+
+            populateProfileForm() {
+                document.getElementById('profileFirstName').value = this.userProfile.first_name || '';
+                document.getElementById('profileLastName').value = this.userProfile.last_name || '';
+                document.getElementById('profileEmail').value = this.userProfile.email || '';
+                document.getElementById('profilePhone').value = this.userProfile.phone || '';
+            }
+
+            attachEventListeners() {
+                // Navigation tabs
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const tab = link.dataset.tab;
+                        if (tab) {
+                            this.switchTab(tab);
+                        }
+                    });
+                });
+
+                // Quick action links
+                document.querySelectorAll('.quick-action[data-tab]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const tab = link.dataset.tab;
+                        this.switchTab(tab);
+                    });
+                });
+
+                // Logout button
+                document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.logout();
+                });
+
+                // Profile form
+                document.getElementById('profileForm').addEventListener('submit', (e) => {
+                    this.handleProfileUpdate(e);
+                });
+            }
+
+            switchTab(tabName) {
+                // Update navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.toggle('active', link.dataset.tab === tabName);
+                });
+
+                // Update content
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.style.display = 'none';
+                });
+                
+                const targetTab = document.getElementById(tabName + 'Tab');
+                if (targetTab) {
+                    targetTab.style.display = 'block';
+                }
+
+                this.currentTab = tabName;
+                console.log('📱 Switched to tab:', tabName);
+            }
+
+            async logout() {
+                try {
+                    console.log('🔄 Logging out...');
+                    
+                    // Firebase logout
+                    if (window.firebaseAuth && window.firebaseAuth.signOut) {
+                        await window.firebaseAuth.signOut();
+                    }
+
+                    // Supabase logout
+                    if (window.supabase) {
+                        await window.supabase.auth.signOut();
+                    }
+
+                    console.log('✅ Logged out successfully');
+                    window.location.href = '/';
+
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    // Force redirect even if logout fails
+                    window.location.href = '/';
+                }
+            }
+
+            async handleProfileUpdate(e) {
+                e.preventDefault();
+                
+                try {
+                    const formData = new FormData(e.target);
+                    const profileData = {
+                        first_name: document.getElementById('profileFirstName').value,
+                        last_name: document.getElementById('profileLastName').value,
+                        phone: document.getElementById('profilePhone').value
+                    };
+
+                    console.log('🔄 Updating profile...');
+
+                    if (window.supabase) {
+                        const { error } = await window.supabase
+                            .from('user_profiles')
+                            .update(profileData)
+                            .eq('id', this.currentUser.uid || this.currentUser.id);
+
+                        if (error) {
+                            throw error;
+                        }
+                    }
+
+                    // Update local profile
+                    Object.assign(this.userProfile, profileData);
+                    this.updateUI();
+
+                    console.log('✅ Profile updated successfully');
+                    alert('Profile updated successfully!');
+
+                } catch (error) {
+                    console.error('Profile update error:', error);
+                    alert('Failed to update profile. Please try again.');
+                }
+            }
+
+            formatDate(dateString) {
+                if (!dateString) return '--';
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short' 
+                });
+            }
+
+            formatTier(tier) {
+                if (!tier || tier === 'none') return 'None';
+                return tier.charAt(0).toUpperCase() + tier.slice(1);
+            }
+        }
+
+        // Global function for plan selection
+        function selectPlan(tier) {
+            console.log('🎯 Selected plan:', tier);
+            window.location.href = `/payment-processing.html?tier=${tier}&action=subscribe`;
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            window.userDashboard = new UserDashboard();
+        });
+    </script>
+</body>
+</html>

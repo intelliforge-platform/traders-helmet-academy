@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traders Helmet Academy - Your Gateway to Trading Excellence</title>
+    <meta name="description" content="Master forex, crypto, and binary options trading with expert mentorship, proven strategies, and exclusive signals. Join thousands of successful traders.">
+    <meta name="keywords" content="forex trading, cryptocurrency education, binary options, trading signals, financial education, trading mentorship">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tradershelmetacademy.com/">
+    <meta property="og:title" content="Traders Helmet Academy - Your Gateway to Trading Excellence">
+    <meta property="og:description" content="Master forex, crypto, and binary options trading with expert mentorship, proven strategies, and exclusive signals.">
+    <meta property="og:image" content="https://tradershelmetacademy.com/assets/images/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://tradershelmetacademy.com/">
+    <meta property="twitter:title" content="Traders Helmet Academy - Your Gateway to Trading Excellence">
+    <meta property="twitter:description" content="Master forex, crypto, and binary options trading with expert mentorship, proven strategies, and exclusive signals.">
+    <meta property="twitter:image" content="https://tradershelmetacademy.com/assets/images/twitter-image.jpg">
+
+    <!-- SDK Configuration - CRITICAL FOR AUTHENTICATION -->
+    <script src="/assets/js/sdk-config.js"></script>
+
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette - Light Theme */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Light Theme Colors */
+            --light-bg: #ffffff;
+            --light-surface: #f8fafc;
+            --light-card: #ffffff;
+            --light-section: #f1f5f9;
+            
+            /* Text Colors */
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --info: #0ea5e9;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            --gradient-platinum: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-diamond: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+            
+            /* Shadow Colors */
+            --shadow-light: rgba(15, 23, 42, 0.08);
+            --shadow-medium: rgba(15, 23, 42, 0.12);
+            --shadow-heavy: rgba(15, 23, 42, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px var(--shadow-light);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: url('tradershelmetlogo.png') no-repeat center center;
+            background-size: contain;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid rgba(15, 23, 42, 0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .btn.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .btn.loading::after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(59,130,246,0.08)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trading-dashboard {
+            background: var(--light-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px var(--shadow-medium);
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .profit-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .chart-line {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .chart-points {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .chart-point {
+            width: 4px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            animation: chartGrow 2s ease-in-out infinite;
+        }
+
+        .chart-point:nth-child(1) { height: 30%; animation-delay: 0s; }
+        .chart-point:nth-child(2) { height: 60%; animation-delay: 0.2s; }
+        .chart-point:nth-child(3) { height: 45%; animation-delay: 0.4s; }
+        .chart-point:nth-child(4) { height: 80%; animation-delay: 0.6s; }
+        .chart-point:nth-child(5) { height: 65%; animation-delay: 0.8s; }
+        .chart-point:nth-child(6) { height: 90%; animation-delay: 1s; }
+
+        @keyframes chartGrow {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.2); }
+        }
+
+        .dashboard-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: var(--light-surface);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(15, 23, 42, 0.05);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: var(--light-section);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--light-card);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-light);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px var(--shadow-medium);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 6rem 0;
+            background: var(--light-bg);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: var(--light-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px var(--shadow-light);
+            border: 2px solid rgba(15, 23, 42, 0.08);
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px var(--shadow-medium);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent-gold);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-gold);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tier-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tier-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .tier-icon.gold {
+            background: var(--gradient-gold);
+        }
+
+        .tier-icon.platinum {
+            background: var(--gradient-platinum);
+        }
+
+        .tier-icon.diamond {
+            background: var(--gradient-diamond);
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tier-duration {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .tier-price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary-blue);
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .tier-price .currency {
+            font-size: 1.5rem;
+            vertical-align: top;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .tier-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .tier-features .check-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .tier-cta {
+            text-align: center;
+        }
+
+        .btn-tier {
+            width: 100%;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-tier.gold {
+            background: var(--gradient-gold);
+            color: white;
+        }
+
+        .btn-tier.platinum {
+            background: var(--gradient-platinum);
+            color: white;
+        }
+
+        .btn-tier.diamond {
+            background: var(--gradient-diamond);
+            color: white;
+        }
+
+        .btn-tier:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-medium);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 6rem 0;
+            background: var(--light-section);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: var(--light-card);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-light);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            position: relative;
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .author-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .quote-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--primary-blue);
+            opacity: 0.2;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            background: var(--gradient-hero);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-primary);
+            padding: 3rem 0 1rem;
+            border-top: 1px solid rgba(15, 23, 42, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-section p {
+            color: #cbd5e1;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-blue-light);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary-blue-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Auth Status Indicator */
+        .auth-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            z-index: 9999;
+            display: none;
+        }
+
+        .auth-status.show {
+            display: block;
+        }
+
+        .auth-status.authenticated {
+            background: var(--success);
+        }
+
+        .auth-status.unauthenticated {
+            background: var(--warning);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .features-grid,
+            .pricing-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .tier-price {
+                font-size: 2.5rem;
+            }
+
+            .cta-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            animation: loadingDot 1.5s ease-in-out infinite;
+        }
+
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes loadingDot {
+            0%, 60%, 100% { transform: scale(1); opacity: 0.7; }
+            30% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Accessibility */
+        body.keyboard-navigation .btn:focus,
+        body.keyboard-navigation .nav-link:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-contrast: high) {
+            :root {
+                --text-primary: #000000;
+                --text-secondary: #333333;
+                --primary-blue: #0000cc;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Status Indicator (for debugging) -->
+    <div id="authStatus" class="auth-status">
+        <span id="authStatusText">Checking authentication...</span>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon"></div>
+                <div class="logo-text">Traders Helmet Academy</div>
+            </a>
+            
+            <nav class="nav-menu" id="navMenu">
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+                <li><a href="/pages/signals/index.html" class="nav-link">Signals</a></li>
+                <li><a href="/pages/education/index.html" class="nav-link">Education</a></li>
+            </nav>
+
+            <div class="cta-buttons">
+                <button onclick="handleAuthenticatedAction('login')" class="btn btn-secondary" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </button>
+                <button onclick="handleEngagementAction('get-started')" class="btn btn-primary" id="getStartedBtn">
+                    <i class="fas fa-rocket"></i>
+                    <span>Get Started</span>
+                </button>
+            </div>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content" data-aos="fade-right">
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i>
+                    <span>Trusted by 10,000+ traders worldwide</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Master Trading.<br>
+                    Build Wealth.<br>
+                    <span style="color: var(--accent-gold);">Transform Your Future.</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Join the elite academy where beginners become profitable traders. Learn forex, crypto, and binary options with expert mentorship, proven strategies, and exclusive signals.
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="10000">0</span>
+                        <span class="stat-label">Active Students</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="89">0</span>
+                        <span class="stat-label">Success Rate %</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="24">0</span>
+                        <span class="stat-label">Countries Served</span>
+                    </div>
+                </div>
+
+                <div class="hero-cta">
+                    <button onclick="handleEngagementAction('start-journey')" class="btn btn-primary btn-large" id="startJourneyBtn">
+                        <i class="fas fa-rocket"></i>
+                        <span>Start Your Journey</span>
+                    </button>
+                    <a href="#features" class="btn btn-secondary btn-large">
+                        <i class="fas fa-play"></i>
+                        Learn More
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual" data-aos="fade-left">
+                <div class="trading-dashboard">
+                    <div class="dashboard-header">
+                        <h3 class="dashboard-title">Trading Dashboard</h3>
+                        <div class="profit-indicator">
+                            <i class="fas fa-trending-up"></i>
+                            <span>+24.7%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-placeholder">
+                        <div class="chart-points">
+                            <div class="chart-point"></div>
+                            <div class="chart-point"></div>
+                            <div class="chart-point"></div>
+                            <div class="chart-point"></div>
+                            <div class="chart-point"></div>
+                            <div class="chart-point"></div>
+                        </div>
+                        <div class="chart-line"></div>
+                    </div>
+
+                    <div class="dashboard-metrics">
+                        <div class="metric-card">
+                            <div class="metric-value">$12,450</div>
+                            <div class="metric-label">Portfolio Value</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">47</div>
+                            <div class="metric-label">Winning Trades</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">$2,890</div>
+                            <div class="metric-label">Monthly Profit</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">89%</div>
+                            <div class="metric-label">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Why Choose Traders Helmet Academy?</h2>
+                <p class="section-subtitle">
+                    We provide comprehensive training, expert mentorship, and cutting-edge tools to help you succeed in the financial markets.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="feature-title">Expert Education</h3>
+                    <p class="feature-description">
+                        Master forex, cryptocurrency, and binary options with our comprehensive courses designed by industry professionals.
+                    </p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Proven Strategies</h3>
+                    <p class="feature-description">
+                        Learn our exclusive Pivot and Rhombus strategies, plus institutional order flow techniques used by professional traders.
+                    </p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <h3 class="feature-title">Live Trading Signals</h3>
+                    <p class="feature-description">
+                        Receive real-time trading signals with entry points, stop losses, and take profits from our expert analysts.
+                    </p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Personal Mentorship</h3>
+                    <p class="feature-description">
+                        Get one-on-one guidance from experienced traders who will help you develop and refine your trading skills.
+                    </p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="feature-title">Premium Tools</h3>
+                    <p class="feature-description">
+                        Access professional trading software, advanced charting tools, and exclusive indicators to enhance your trading.
+                    </p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="feature-title">24/7 Support</h3>
+                    <p class="feature-description">
+                        Our dedicated support team is available around the clock to help you with any questions or technical issues.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Choose Your Path to Success</h2>
+                <p class="section-subtitle">
+                    Select the membership tier that best fits your trading goals and experience level.
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Gold Tier -->
+                <div class="pricing-card" data-aos="fade-up" data-aos-delay="100" onclick="handlePricingAction('gold')">
+                    <div class="tier-header">
+                        <div class="tier-icon gold">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="tier-name">Gold Membership</h3>
+                        <p class="tier-duration">2 Months Program</p>
+                    </div>
+
+                    <div class="tier-price">
+                        <span class="currency">$</span>300
+                    </div>
+
+                    <ul class="tier-features">
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Forex Education & Cryptocurrency Education
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Binary Options (HFX) Training
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Forex Master Class on Pivot Strategy
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Forex Master Class on Rhombus Strategy
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            2 Months Personal Mentorship
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Free Trading Signals
+                        </li>
+                    </ul>
+
+                    <div class="tier-cta">
+                        <button onclick="event.stopPropagation(); handlePricingAction('gold')" class="btn-tier gold">
+                            Get Started with Gold
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Platinum Tier -->
+                <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="200" onclick="handlePricingAction('platinum')">
+                    <div class="tier-header">
+                        <div class="tier-icon platinum">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3 class="tier-name">Platinum Membership</h3>
+                        <p class="tier-duration">3 Months Program</p>
+                    </div>
+
+                    <div class="tier-price">
+                        <span class="currency">$</span>600
+                    </div>
+
+                    <ul class="tier-features">
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Everything in Gold
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Free Trading Software Tools
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            3 Months Extended Mentorship
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Priority Support Access
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Advanced Trading Signals
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Weekly Live Trading Sessions
+                        </li>
+                    </ul>
+
+                    <div class="tier-cta">
+                        <button onclick="event.stopPropagation(); handlePricingAction('platinum')" class="btn-tier platinum">
+                            Get Started with Platinum
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Diamond Tier -->
+                <div class="pricing-card" data-aos="fade-up" data-aos-delay="300" onclick="handlePricingAction('diamond')">
+                    <div class="tier-header">
+                        <div class="tier-icon diamond">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h3 class="tier-name">Diamond Membership</h3>
+                        <p class="tier-duration">6 Months Program</p>
+                    </div>
+
+                    <div class="tier-price">
+                        <span class="currency">$</span>1300
+                    </div>
+
+                    <ul class="tier-features">
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Everything in Platinum
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Institutional Order Flow Master Class
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            6 Months VIP Mentorship
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Personal Trading Coach
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            Exclusive VIP Community Access
+                        </li>
+                        <li>
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            24/7 Priority Support
+                        </li>
+                    </ul>
+
+                    <div class="tier-cta">
+                        <button onclick="event.stopPropagation(); handlePricingAction('diamond')" class="btn-tier diamond">
+                            Get Started with Diamond
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">What Our Students Say</h2>
+                <p class="section-subtitle">
+                    Join thousands of successful traders who have transformed their lives with our academy.
+                </p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "Traders Helmet Academy completely changed my life. The mentorship and strategies taught here are invaluable. I went from losing money to consistent profits in just 3 months."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JM</div>
+                        <div class="author-info">
+                            <h4>James Martinez</h4>
+                            <p>Diamond Member, Spain</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "The education quality is outstanding. The Pivot and Rhombus strategies work incredibly well. I've made back my investment within the first month and continue to grow my account."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SA</div>
+                        <div class="author-info">
+                            <h4>Sarah Aniefiok</h4>
+                            <p>Platinum Member, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "As a beginner, I was overwhelmed by trading. The academy's structured approach and personal mentorship made everything clear. Now I trade confidently and profitably."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">DK</div>
+                        <div class="author-info">
+                            <h4>David Nkemakolam</h4>
+                            <p>Gold Member, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "The trading signals alone are worth the membership fee. Combined with the education and mentorship, this academy provides incredible value for money."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">LT</div>
+                        <div class="author-info">
+                            <h4>Lisa Thompson</h4>
+                            <p>Platinum Member, Canada</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "The institutional order flow course in the Diamond tier opened my eyes to how markets really work. The knowledge I gained here is priceless and transformed my trading."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <h4>Michael Roberts</h4>
+                            <p>Diamond Member, UK</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "The community aspect is amazing. Learning alongside other motivated traders and having access to experienced mentors creates the perfect learning environment."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PR</div>
+                        <div class="author-info">
+                            <h4>Priya Raj</h4>
+                            <p>Gold Member, India</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2 class="cta-title">Ready to Transform Your Trading?</h2>
+                <p class="cta-subtitle">
+                    Join thousands of successful traders who have already started their journey to financial freedom. Your trading success story starts here.
+                </p>
+                <div class="cta-buttons">
+                    <button onclick="handleEngagementAction('start-journey-today')" class="btn btn-primary btn-large" id="startJourneyTodayBtn">
+                        <i class="fas fa-rocket"></i>
+                        <span>Start Your Journey Today</span>
+                    </button>
+                    <button onclick="handleAuthenticatedAction('create-account')" class="btn btn-secondary btn-large" id="createAccountBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Create Free Account</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Traders Helmet Academy</h3>
+                    <p style="color: #cbd5e1; margin-bottom: 1rem;">
+                        Your gateway to trading excellence. Master the markets with expert guidance and proven strategies.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link" title="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#testimonials">Reviews</a></li>
+                        <li><a href="/pages/signals/index.html">Trading Signals</a></li>
+                        <li><a href="/pages/education/index.html">Education</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pages/support/help.html">Help Center</a></li>
+                        <li><a href="/pages/support/contact.html">Contact Us</a></li>
+                        <li><a href="/pages/support/faq.html">FAQ</a></li>
+                        <li><a href="/pages/support/tickets.html">Support Tickets</a></li>
+                        <li><a href="/pages/community/index.html">Community</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="/pages/legal/terms.html">Terms of Service</a></li>
+                        <li><a href="/pages/legal/privacy.html">Privacy Policy</a></li>
+                        <li><a href="/pages/legal/disclaimer.html">Risk Disclaimer</a></li>
+                        <li><a href="/pages/legal/refund.html">Refund Policy</a></li>
+                        <li><a href="/pages/legal/cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Traders Helmet Academy. All rights reserved.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                    <strong>Risk Warning:</strong> Trading involves substantial risk and may result in the loss of your invested capital.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // ===================================================
+        // HOMEPAGE AUTHENTICATION & USER FLOW MANAGEMENT
+        // ===================================================
+
+        class HomepageManager {
+            constructor() {
+                this.currentUser = null;
+                this.isAuthenticated = false;
+                this.authCheckComplete = false;
+                
+                this.init();
+            }
+
+            async init() {
+                console.log('🔄 Initializing Homepage Manager...');
+                
+                // Wait for SDKs to be ready
+                if (window.SDK_DEBUG && (window.SDK_DEBUG.firebase || window.SDK_DEBUG.supabase)) {
+                    this.handleSDKReady();
+                } else {
+                    window.addEventListener('sdksReady', () => this.handleSDKReady());
+                }
+
+                this.setupAnimations();
+                this.setupMobileMenu();
+                this.setupScrollEffects();
+            }
+
+            async handleSDKReady() {
+                console.log('✅ SDKs ready on homepage');
+                await this.checkAuthentication();
+                this.updateAuthStatus();
+            }
+
+            async checkAuthentication() {
+                try {
+                    console.log('🔐 Checking authentication status...');
+
+                    // Check Firebase auth
+                    if (window.firebaseAuth && window.firebaseAuth.getCurrentUser) {
+                        this.currentUser = window.firebaseAuth.getCurrentUser();
+                        this.isAuthenticated = !!this.currentUser;
+                    }
+
+                    // If not authenticated via Firebase, check Supabase
+                    if (!this.isAuthenticated && window.supabase) {
+                        const { data: { user } } = await window.supabase.auth.getUser();
+                        this.currentUser = user;
+                        this.isAuthenticated = !!user;
+                    }
+
+                    this.authCheckComplete = true;
+                    
+                    console.log('🔐 Authentication check complete:', {
+                        authenticated: this.isAuthenticated,
+                        user: this.currentUser?.email || 'None'
+                    });
+
+                    this.updateUIForAuthState();
+
+                } catch (error) {
+                    console.error('Authentication check error:', error);
+                    this.authCheckComplete = true;
+                    this.isAuthenticated = false;
+                    this.updateUIForAuthState();
+                }
+            }
+
+            updateUIForAuthState() {
+                // Update header buttons based on auth state
+                const loginBtn = document.getElementById('loginBtn');
+                const getStartedBtn = document.getElementById('getStartedBtn');
+
+                if (this.isAuthenticated) {
+                    // User is logged in
+                    loginBtn.innerHTML = '<i class="fas fa-tachometer-alt"></i><span>Dashboard</span>';
+                    loginBtn.onclick = () => window.location.href = '/pages/dashboard/';
+                    
+                    getStartedBtn.innerHTML = '<i class="fas fa-tachometer-alt"></i><span>Go to Dashboard</span>';
+                } else {
+                    // User is not logged in - keep original functionality
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Login</span>';
+                    getStartedBtn.innerHTML = '<i class="fas fa-rocket"></i><span>Get Started</span>';
+                }
+            }
+
+            updateAuthStatus() {
+                const statusElement = document.getElementById('authStatus');
+                const statusText = document.getElementById('authStatusText');
+                
+                if (this.authCheckComplete) {
+                    if (this.isAuthenticated) {
+                        statusElement.className = 'auth-status authenticated show';
+                        statusText.textContent = `Authenticated: ${this.currentUser.email}`;
+                    } else {
+                        statusElement.className = 'auth-status unauthenticated show';
+                        statusText.textContent = 'Not authenticated';
+                    }
+                    
+                    // Hide after 3 seconds
+                    setTimeout(() => {
+                        statusElement.classList.remove('show');
+                    }, 3000);
+                } else {
+                    statusElement.className = 'auth-status show';
+                    statusText.textContent = 'Checking authentication...';
+                }
+            }
+
+            setButtonLoading(buttonElement, loading = true) {
+                if (loading) {
+                    buttonElement.classList.add('loading');
+                    buttonElement.disabled = true;
+                } else {
+                    buttonElement.classList.remove('loading');
+                    buttonElement.disabled = false;
+                }
+            }
+
+            setupAnimations() {
+                // Initialize AOS (Animate On Scroll)
+                AOS.init({
+                    duration: 800,
+                    easing: 'ease-in-out',
+                    once: true,
+                    offset: 100
+                });
+
+                // Counter animation for hero stats
+                this.animateCounters();
+            }
+
+            animateCounters() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const counters = document.querySelectorAll('[data-count]');
+                            
+                            counters.forEach(counter => {
+                                const target = parseInt(counter.getAttribute('data-count'));
+                                const duration = 2000;
+                                const step = target / (duration / 16);
+                                let current = 0;
+                                
+                                const timer = setInterval(() => {
+                                    current += step;
+                                    if (current >= target) {
+                                        current = target;
+                                        clearInterval(timer);
+                                    }
+                                    
+                                    const formatted = Math.floor(current).toLocaleString();
+                                    counter.textContent = counter.getAttribute('data-count').includes('%') 
+                                        ? Math.floor(current) + '%' 
+                                        : formatted + (counter.getAttribute('data-count').includes('000') ? '+' : '');
+                                }, 16);
+                            });
+                            
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+
+                const heroStats = document.querySelector('.hero-stats');
+                if (heroStats) {
+                    observer.observe(heroStats);
+                }
+            }
+
+            setupMobileMenu() {
+                const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+                const navMenu = document.getElementById('navMenu');
+
+                mobileMenuToggle.addEventListener('click', () => {
+                    navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+                });
+            }
+
+            setupScrollEffects() {
+                const header = document.getElementById('header');
+                
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 100) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+
+                // Smooth scrolling for anchor links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+            }
+        }
+
+        // ===================================================
+        // GLOBAL FUNCTIONS FOR BUTTON ACTIONS
+        // ===================================================
+
+        // Handle engagement actions (Get Started, Start Journey, etc.)
+        function handleEngagementAction(actionType) {
+            console.log('🎯 Engagement action triggered:', actionType);
+            
+            const buttonElement = event.target.closest('button');
+            if (buttonElement) {
+                window.homepageManager.setButtonLoading(buttonElement, true);
+            }
+
+            // Wait for auth check to complete
+            if (!window.homepageManager.authCheckComplete) {
+                console.log('⏳ Waiting for auth check to complete...');
+                setTimeout(() => handleEngagementAction(actionType), 500);
+                return;
+            }
+
+            if (window.homepageManager.isAuthenticated) {
+                // User is authenticated - redirect to dashboard
+                console.log('✅ User authenticated, redirecting to dashboard');
+                window.location.href = '/pages/dashboard/';
+            } else {
+                // User not authenticated - redirect to registration
+                console.log('🔄 User not authenticated, redirecting to registration');
+                const redirectParam = encodeURIComponent('subscription');
+                window.location.href = `/pages/auth/register.html?redirect=${redirectParam}&source=${actionType}`;
+            }
+
+            if (buttonElement) {
+                window.homepageManager.setButtonLoading(buttonElement, false);
+            }
+        }
+
+        // Handle pricing card actions
+        function handlePricingAction(tier) {
+            console.log('💰 Pricing action triggered:', tier);
+            
+            const buttonElement = event.target.closest('button') || event.target.closest('.pricing-card');
+            if (buttonElement) {
+                window.homepageManager.setButtonLoading(buttonElement, true);
+            }
+
+            // Wait for auth check to complete
+            if (!window.homepageManager.authCheckComplete) {
+                console.log('⏳ Waiting for auth check to complete...');
+                setTimeout(() => handlePricingAction(tier), 500);
+                return;
+            }
+
+            if (window.homepageManager.isAuthenticated) {
+                // User is authenticated - go directly to payment processing
+                console.log('✅ User authenticated, redirecting to payment processing');
+                window.location.href = `/payment-processing.html?tier=${tier}&action=subscribe`;
+            } else {
+                // User not authenticated - redirect to registration first
+                console.log('🔄 User not authenticated, redirecting to registration');
+                const redirectParam = encodeURIComponent(`payment-${tier}`);
+                window.location.href = `/pages/auth/register.html?redirect=${redirectParam}&tier=${tier}`;
+            }
+
+            if (buttonElement) {
+                window.homepageManager.setButtonLoading(buttonElement, false);
+            }
+        }
+
+        // Handle authentication-specific actions (Login, Create Account)
+        function handleAuthenticatedAction(actionType) {
+            console.log('🔐 Auth action triggered:', actionType);
+            
+            const buttonElement = event.target.closest('button');
+            if (buttonElement) {
+                window.homepageManager.setButtonLoading(buttonElement, true);
+            }
+
+            switch (actionType) {
+                case 'login':
+                    if (window.homepageManager.isAuthenticated) {
+                        window.location.href = '/pages/dashboard/';
+                    } else {
+                        window.location.href = '/pages/auth/login.html?redirect=dashboard';
+                    }
+                    break;
+                    
+                case 'create-account':
+                    if (window.homepageManager.isAuthenticated) {
+                        window.location.href = '/pages/dashboard/';
+                    } else {
+                        window.location.href = '/pages/auth/register.html?redirect=dashboard';
+                    }
+                    break;
+                    
+                default:
+                    console.warn('Unknown auth action:', actionType);
+            }
+
+            if (buttonElement) {
+                window.homepageManager.setButtonLoading(buttonElement, false);
+            }
+        }
+
+        // ===================================================
+        // INITIALIZE EVERYTHING
+        // ===================================================
+
+        // Initialize homepage manager when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.homepageManager = new HomepageManager();
+        });
+
+        // Accessibility improvements
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-navigation');
+            }
+        });
+
+        document.addEventListener('mousedown', function() {
+            document.body.classList.remove('keyboard-navigation');
+        });
+
+        // Global error handling
+        window.addEventListener('error', function(e) {
+            console.log('Page error handled:', e.message);
+        });
+
+        console.log('🚀 Traders Helmet Academy Homepage Loaded Successfully!');
+    </script>
+</body>
+</html>

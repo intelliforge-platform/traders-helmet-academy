@@ -1,0 +1,63 @@
+[08:08:39.879] Running build in Washington, D.C., USA (East) – iad1
+[08:08:39.880] Build machine configuration: 2 cores, 8 GB
+[08:08:39.901] Cloning github.com/intelliforge-platform/traders-helmet-academy (Branch: main, Commit: 6f3d936)
+[08:08:40.049] Previous build caches not available
+[08:08:41.575] Cloning completed: 1.674s
+[08:08:42.028] Running "vercel build"
+[08:08:43.683] Vercel CLI 46.0.2
+[08:08:44.433] Warning: Detected "engines": { "node": ">=16.0.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: http://vercel.link/node-version
+[08:08:44.449] Installing dependencies...
+[08:08:48.495] npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+[08:08:49.583] npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+[08:08:50.172] npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+[08:08:50.346] npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+[08:08:50.419] npm warn deprecated superagent@8.1.2: Please upgrade to v9.0.0+ as we have fixed a public vulnerability with formidable dependency. Note that v9.0.0+ requires Node.js v14.18.0+. See https://github.com/ladjs/superagent/pull/1800 for insight. This project is supported and maintained by the team at Forward Email @ https://forwardemail.net
+[08:08:50.539] npm warn deprecated google-p12-pem@4.0.1: Package is no longer maintained
+[08:08:51.083] npm warn deprecated crypto@1.0.1: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
+[08:08:52.220] npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+[08:08:52.289] npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+[08:08:53.612] npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+[08:08:56.597] npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[08:09:03.717] 
+[08:09:03.718] added 1346 packages in 19s
+[08:09:03.718] 
+[08:09:03.718] 232 packages are looking for funding
+[08:09:03.719]   run `npm fund` for details
+[08:09:03.787] Running "npm run build"
+[08:09:03.900] 
+[08:09:03.901] > traders-helmet-academy@1.0.0 build
+[08:09:03.901] > npm run build:css && npm run build:js
+[08:09:03.901] 
+[08:09:04.015] 
+[08:09:04.017] > traders-helmet-academy@1.0.0 build:css
+[08:09:04.017] > postcss assets/css/main.css -o dist/css/main.min.css
+[08:09:04.017] 
+[08:09:04.355] 
+[08:09:04.355] > traders-helmet-academy@1.0.0 build:js
+[08:09:04.355] > webpack --mode production
+[08:09:04.355] 
+[08:09:04.869] Entrypoint main =
+[08:09:04.870] 
+[08:09:04.870] ERROR in main
+[08:09:04.870] Module not found: Error: Can't resolve './src' in '/vercel/path0'
+[08:09:04.870] resolve './src' in '/vercel/path0'
+[08:09:04.870]   using description file: /vercel/path0/package.json (relative path: .)
+[08:09:04.870]     Field 'browser' doesn't contain a valid alias configuration
+[08:09:04.871]     using description file: /vercel/path0/package.json (relative path: ./src)
+[08:09:04.871]       no extension
+[08:09:04.871]         Field 'browser' doesn't contain a valid alias configuration
+[08:09:04.871]         /vercel/path0/src doesn't exist
+[08:09:04.871]       .js
+[08:09:04.871]         Field 'browser' doesn't contain a valid alias configuration
+[08:09:04.871]         /vercel/path0/src.js doesn't exist
+[08:09:04.872]       .json
+[08:09:04.872]         Field 'browser' doesn't contain a valid alias configuration
+[08:09:04.872]         /vercel/path0/src.json doesn't exist
+[08:09:04.872]       .wasm
+[08:09:04.872]         Field 'browser' doesn't contain a valid alias configuration
+[08:09:04.872]         /vercel/path0/src.wasm doesn't exist
+[08:09:04.873]       as directory
+[08:09:04.873]         /vercel/path0/src doesn't exist
+[08:09:04.873] 
+[08:09:04.874] webpack 5.99.9 compiled with 1 error in 47 ms
+[08:09:04.893] Error: Command "npm run build" exited with 1

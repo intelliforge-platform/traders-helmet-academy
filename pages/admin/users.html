@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Admin Panel - Traders Helmet Academy</title>
+    <meta name="description" content="Production user management system for Traders Helmet Academy">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Core CSS Files -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-custom.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Admin Theme Colors */
+            --primary-admin: #dc2626;
+            --primary-admin-dark: #b91c1c;
+            --primary-admin-light: #ef4444;
+            --accent-orange: #f97316;
+            --accent-yellow: #eab308;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --pending: #8b5cf6;
+            --pending-light: rgba(139, 92, 246, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .admin-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .header-info h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-info p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(220, 38, 38, 0.2);
+            color: var(--primary-admin-light);
+        }
+
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(220, 38, 38, 0.2);
+            color: var(--primary-admin-light);
+        }
+
+        .refresh-btn.loading {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-title {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .stat-icon.pending {
+            background: var(--pending-light);
+            color: var(--pending);
+        }
+
+        .stat-icon.users {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .stat-icon.revenue {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-description {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            margin-bottom: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border-radius: 12px 12px 0 0;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--text-primary);
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-admin);
+        }
+
+        .tab-badge {
+            background: var(--primary-admin);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5rem;
+        }
+
+        /* Content Panels */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* User Table */
+        .users-table-container {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .table-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            color: var(--text-primary);
+            width: 300px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-admin);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            min-width: 800px;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .users-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .users-table td {
+            color: var(--text-primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .user-details h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-details p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pending {
+            background: var(--pending-light);
+            color: var(--pending);
+        }
+
+        .status-badge.active {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-badge.inactive {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .tier-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tier-badge.gold {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+        }
+
+        .tier-badge.platinum {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+
+        .tier-badge.diamond {
+            background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+            color: white;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .payment-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .payment-icon.card {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .payment-icon.bank {
+            background: var(--pending-light);
+            color: var(--pending);
+        }
+
+        .payment-icon.crypto {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.activate {
+            background: var(--success);
+            color: white;
+        }
+
+        .action-btn.activate:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .action-btn.deactivate {
+            background: var(--error);
+            color: white;
+        }
+
+        .action-btn.deactivate:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .action-btn.view {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .action-btn.view:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-content {
+            margin-bottom: 2rem;
+        }
+
+        .modal-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-value {
+            color: var(--text-primary);
+            font-size: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .modal-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: var(--error);
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary-admin);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .admin-container {
+                padding: 1rem;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .users-table-container {
+                padding: 1rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .users-table {
+                font-size: 0.8rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="modal-overlay show">
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <div class="admin-logo">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="header-info">
+                    <h1>User Management</h1>
+                    <p>Manage user subscriptions and manual activations</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="/pages/admin/dashboard.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <button class="refresh-btn" onclick="refreshData()" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Pending Activations</span>
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="pendingCount">-</div>
+                <div class="stat-description">Awaiting manual verification</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Active Users</span>
+                    <div class="stat-icon users">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="activeCount">-</div>
+                <div class="stat-description">Currently subscribed</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Today's Revenue</span>
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="revenueCount">$-</div>
+                <div class="stat-description">From all payment methods</div>
+            </div>
+        </section>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" data-tab="pending" onclick="switchTab('pending')">
+                    Pending Activations
+                    <span class="tab-badge" id="pendingBadge">-</span>
+                </button>
+                <button class="tab" data-tab="active" onclick="switchTab('active')">
+                    Active Users
+                    <span class="tab-badge" id="activeBadge">-</span>
+                </button>
+                <button class="tab" data-tab="all" onclick="switchTab('all')">
+                    All Users
+                    <span class="tab-badge" id="allBadge">-</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Pending Activations Tab -->
+        <div class="tab-content active" id="pending-tab">
+            <div class="users-table-container">
+                <div class="table-header">
+                    <h3 class="table-title">Pending Manual Activations</h3>
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="Search users..." id="searchPending" onkeyup="filterUsers('pending')">
+                    </div>
+                </div>
+
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Tier</th>
+                            <th>Payment Method</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingUsersTable">
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <i class="fas fa-spinner fa-spin"></i><br>
+                                Loading pending users...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Active Users Tab -->
+        <div class="tab-content" id="active-tab">
+            <div class="users-table-container">
+                <div class="table-header">
+                    <h3 class="table-title">Active Subscribers</h3>
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="Search users..." id="searchActive" onkeyup="filterUsers('active')">
+                    </div>
+                </div>
+
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Tier</th>
+                            <th>Status</th>
+                            <th>Expires</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activeUsersTable">
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i class="fas fa-spinner fa-spin"></i><br>
+                                Loading active users...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- All Users Tab -->
+        <div class="tab-content" id="all-tab">
+            <div class="users-table-container">
+                <div class="table-header">
+                    <h3 class="table-title">All Users</h3>
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="Search users..." id="searchAll" onkeyup="filterUsers('all')">
+                    </div>
+                </div>
+
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Tier</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allUsersTable">
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i class="fas fa-spinner fa-spin"></i><br>
+                                Loading all users...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activation Modal -->
+    <div class="modal-overlay" id="activationModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Activate User Subscription</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-field">
+                    <label class="modal-label">User</label>
+                    <div class="modal-value" id="modalUserName">-</div>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label">Subscription Tier</label>
+                    <div class="modal-value" id="modalUserTier">-</div>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label">Payment Method</label>
+                    <div class="modal-value" id="modalPaymentMethod">-</div>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label">Amount Paid</label>
+                    <div class="modal-value" id="modalAmount">-</div>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label">Payment Date</label>
+                    <div class="modal-value" id="modalPaymentDate">-</div>
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label">Transaction Reference</label>
+                    <div class="modal-value" id="modalTransactionRef">-</div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn primary" onclick="confirmActivation()" id="confirmActivationBtn">
+                    <i class="fas fa-check"></i> Activate Subscription
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- JavaScript -->
+    <script src="/assets/js/config.js"></script>
+    <script src="/assets/js/supabase.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    
+    <script>
+        class ProductionUserManagement {
+            constructor() {
+                this.supabase = null;
+                this.currentUser = null;
+                this.currentTab = 'pending';
+                this.selectedUser = null;
+                this.usersData = {
+                    pending: [],
+                    active: [],
+                    all: []
+                };
+                this.init();
+            }
+
+            async init() {
+                try {
+                    console.log('👥 Initializing Production User Management...');
+                    
+                    // Initialize Supabase
+                    await this.initializeSupabase();
+                    
+                    // Check authentication
+                    await this.checkAuthentication();
+                    
+                    // Load all user data
+                    await this.loadAllData();
+                    
+                    // Setup real-time subscriptions
+                    this.setupRealTimeUpdates();
+                    
+                    // Hide loading screen
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    
+                    console.log('✅ User Management initialized successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to initialize user management:', error);
+                    this.showToast('Failed to load user management system', 'error');
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }
+            }
+
+            async initializeSupabase() {
+                if (typeof window.supabaseClient !== 'undefined') {
+                    this.supabase = window.supabaseClient;
+                } else {
+                    // Fallback initialization
+                    const { createClient } = supabase;
+                    this.supabase = createClient(
+                        THA_CONFIG.supabase.url,
+                        THA_CONFIG.supabase.anonKey
+                    );
+                }
+            }
+
+            async checkAuthentication() {
+                const { data: { user }, error } = await this.supabase.auth.getUser();
+                
+                if (error || !user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                // Check if user is admin
+                const { data: profile } = await this.supabase
+                    .from('user_profiles')
+                    .select('role, first_name, last_name')
+                    .eq('id', user.id)
+                    .single();
+
+                if (!profile || profile.role !== 'admin') {
+                    alert('Access denied. Admin privileges required.');
+                    window.location.href = '/pages/dashboard/index.html';
+                    return;
+                }
+
+                this.currentUser = { ...user, ...profile };
+            }
+
+            async loadAllData() {
+                await Promise.all([
+                    this.loadPendingUsers(),
+                    this.loadActiveUsers(),
+                    this.loadAllUsers(),
+                    this.loadStats()
+                ]);
+            }
+
+            async loadPendingUsers() {
+                try {
+                    // Get users with pending payments or inactive subscriptions
+                    const { data: users, error } = await this.supabase
+                        .from('user_profiles')
+                        .select(`
+                            *,
+                            user_subscriptions!inner(*),
+                            payments(*)
+                        `)
+                        .or('status.eq.inactive,user_subscriptions.status.eq.inactive');
+
+                    if (error) throw error;
+
+                    this.usersData.pending = users || [];
+                    this.renderPendingUsers();
+                    
+                } catch (error) {
+                    console.error('Error loading pending users:', error);
+                    this.showError('Failed to load pending users');
+                }
+            }
+
+            async loadActiveUsers() {
+                try {
+                    const { data: users, error } = await this.supabase
+                        .from('user_profiles')
+                        .select(`
+                            *,
+                            user_subscriptions!inner(*)
+                        `)
+                        .eq('status', 'active')
+                        .eq('user_subscriptions.status', 'active');
+
+                    if (error) throw error;
+
+                    this.usersData.active = users || [];
+                    this.renderActiveUsers();
+                    
+                } catch (error) {
+                    console.error('Error loading active users:', error);
+                    this.showError('Failed to load active users');
+                }
+            }
+
+            async loadAllUsers() {
+                try {
+                    const { data: users, error } = await this.supabase
+                        .from('user_profiles')
+                        .select(`
+                            *,
+                            user_subscriptions(*)
+                        `)
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+
+                    this.usersData.all = users || [];
+                    this.renderAllUsers();
+                    
+                } catch (error) {
+                    console.error('Error loading all users:', error);
+                    this.showError('Failed to load all users');
+                }
+            }
+
+            async loadStats() {
+                try {
+                    // Count pending users
+                    const { count: pendingCount } = await this.supabase
+                        .from('user_profiles')
+                        .select('*', { count: 'exact', head: true })
+                        .or('status.eq.inactive,user_subscriptions.status.eq.inactive');
+
+                    // Count active users
+                    const { count: activeCount } = await this.supabase
+                        .from('user_profiles')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('status', 'active');
+
+                    // Count total users
+                    const { count: totalCount } = await this.supabase
+                        .from('user_profiles')
+                        .select('*', { count: 'exact', head: true });
+
+                    // Get today's revenue
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    const { data: todayPayments } = await this.supabase
+                        .from('payments')
+                        .select('amount')
+                        .eq('status', 'succeeded')
+                        .gte('created_at', today.toISOString());
+
+                    const todayRevenue = todayPayments?.reduce((sum, payment) => sum + (payment.amount || 0), 0) || 0;
+
+                    // Update UI
+                    document.getElementById('pendingCount').textContent = pendingCount || 0;
+                    document.getElementById('activeCount').textContent = activeCount || 0;
+                    document.getElementById('revenueCount').textContent = `$${todayRevenue.toLocaleString()}`;
+                    
+                    document.getElementById('pendingBadge').textContent = pendingCount || 0;
+                    document.getElementById('activeBadge').textContent = activeCount || 0;
+                    document.getElementById('allBadge').textContent = totalCount || 0;
+
+                } catch (error) {
+                    console.error('Error loading stats:', error);
+                }
+            }
+
+            renderPendingUsers() {
+                const tbody = document.getElementById('pendingUsersTable');
+                const users = this.usersData.pending;
+
+                if (!users || users.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <i class="fas fa-check-circle"></i><br>
+                                No pending activations
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = users.map(user => {
+                    const subscription = user.user_subscriptions?.[0];
+                    const payment = user.payments?.[0];
+                    const tierInfo = this.getTierInfo(subscription?.tier || user.tier);
+                    
+                    return `
+                        <tr data-user-id="${user.id}">
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">${this.getInitials(user.first_name, user.last_name)}</div>
+                                    <div class="user-details">
+                                        <h4>${user.first_name || ''} ${user.last_name || ''}</h4>
+                                        <p>${user.email}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="tier-badge ${subscription?.tier || user.tier}">${tierInfo.name}</span>
+                            </td>
+                            <td>
+                                <div class="payment-method">
+                                    <div class="payment-icon ${payment?.payment_method || 'bank'}">
+                                        <i class="fas fa-${this.getPaymentIcon(payment?.payment_method)}"></i>
+                                    </div>
+                                    ${this.getPaymentMethodName(payment?.payment_method)}
+                                </div>
+                            </td>
+                            <td>$${tierInfo.price.toLocaleString()}</td>
+                            <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn activate" onclick="userManager.activateUser('${user.id}')">
+                                        <i class="fas fa-check"></i> Activate
+                                    </button>
+                                    <button class="action-btn view" onclick="userManager.viewUser('${user.id}')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            renderActiveUsers() {
+                const tbody = document.getElementById('activeUsersTable');
+                const users = this.usersData.active;
+
+                if (!users || users.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i class="fas fa-users"></i><br>
+                                No active users
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = users.map(user => {
+                    const subscription = user.user_subscriptions?.[0];
+                    const tierInfo = this.getTierInfo(subscription?.tier || user.tier);
+                    
+                    return `
+                        <tr data-user-id="${user.id}">
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">${this.getInitials(user.first_name, user.last_name)}</div>
+                                    <div class="user-details">
+                                        <h4>${user.first_name || ''} ${user.last_name || ''}</h4>
+                                        <p>${user.email}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="tier-badge ${subscription?.tier || user.tier}">${tierInfo.name}</span>
+                            </td>
+                            <td>
+                                <span class="status-badge ${user.status}">${user.status.toUpperCase()}</span>
+                            </td>
+                            <td>${subscription?.current_period_end ? new Date(subscription.current_period_end).toLocaleDateString() : 'N/A'}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn deactivate" onclick="userManager.deactivateUser('${user.id}')">
+                                        <i class="fas fa-times"></i> Deactivate
+                                    </button>
+                                    <button class="action-btn view" onclick="userManager.viewUser('${user.id}')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            renderAllUsers() {
+                const tbody = document.getElementById('allUsersTable');
+                const users = this.usersData.all;
+
+                if (!users || users.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <i class="fas fa-users"></i><br>
+                                No users found
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = users.map(user => {
+                    const subscription = user.user_subscriptions?.[0];
+                    const tierInfo = this.getTierInfo(subscription?.tier || user.tier);
+                    
+                    return `
+                        <tr data-user-id="${user.id}">
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">${this.getInitials(user.first_name, user.last_name)}</div>
+                                    <div class="user-details">
+                                        <h4>${user.first_name || ''} ${user.last_name || ''}</h4>
+                                        <p>${user.email}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="tier-badge ${subscription?.tier || user.tier}">${tierInfo.name}</span>
+                            </td>
+                            <td>
+                                <span class="status-badge ${user.status}">${user.status.toUpperCase()}</span>
+                            </td>
+                            <td>${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    ${user.status === 'inactive' ? 
+                                        `<button class="action-btn activate" onclick="userManager.activateUser('${user.id}')">
+                                            <i class="fas fa-check"></i> Activate
+                                        </button>` :
+                                        `<button class="action-btn deactivate" onclick="userManager.deactivateUser('${user.id}')">
+                                            <i class="fas fa-times"></i> Deactivate
+                                        </button>`
+                                    }
+                                    <button class="action-btn view" onclick="userManager.viewUser('${user.id}')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            async activateUser(userId) {
+                const user = this.findUser(userId);
+                if (!user) return;
+
+                this.selectedUser = user;
+                this.showActivationModal(user);
+            }
+
+            showActivationModal(user) {
+                const subscription = user.user_subscriptions?.[0];
+                const payment = user.payments?.[0];
+                const tierInfo = this.getTierInfo(subscription?.tier || user.tier);
+                
+                document.getElementById('modalUserName').textContent = `${user.first_name || ''} ${user.last_name || ''} (${user.email})`;
+                document.getElementById('modalUserTier').textContent = tierInfo.name;
+                document.getElementById('modalPaymentMethod').textContent = this.getPaymentMethodName(payment?.payment_method);
+                document.getElementById('modalAmount').textContent = `$${tierInfo.price.toLocaleString()}`;
+                document.getElementById('modalPaymentDate').textContent = payment?.created_at ? new Date(payment.created_at).toLocaleDateString() : 'N/A';
+                document.getElementById('modalTransactionRef').textContent = payment?.stripe_payment_intent_id || 'Manual Payment';
+
+                document.getElementById('activationModal').classList.add('show');
+            }
+
+            async confirmActivation() {
+                if (!this.selectedUser) return;
+
+                const confirmBtn = document.getElementById('confirmActivationBtn');
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Activating...';
+
+                try {
+                    const userId = this.selectedUser.id;
+                    const subscription = this.selectedUser.user_subscriptions?.[0];
+                    const tier = subscription?.tier || this.selectedUser.tier;
+
+                    // Calculate subscription period
+                    const tierDurations = {
+                        gold: 2,
+                        platinum: 3,
+                        diamond: 6
+                    };
+                    
+                    const currentPeriodEnd = new Date();
+                    currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + tierDurations[tier]);
+
+                    // Update user profile
+                    const { error: profileError } = await this.supabase
+                        .from('user_profiles')
+                        .update({ 
+                            status: 'active',
+                            tier: tier,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', userId);
+
+                    if (profileError) throw profileError;
+
+                    // Update or create subscription
+                    if (subscription) {
+                        const { error: subError } = await this.supabase
+                            .from('user_subscriptions')
+                            .update({
+                                status: 'active',
+                                current_period_start: new Date().toISOString(),
+                                current_period_end: currentPeriodEnd.toISOString(),
+                                updated_at: new Date().toISOString()
+                            })
+                            .eq('user_id', userId);
+
+                        if (subError) throw subError;
+                    } else {
+                        // Create new subscription
+                        const { error: subError } = await this.supabase
+                            .from('user_subscriptions')
+                            .insert({
+                                user_id: userId,
+                                tier: tier,
+                                status: 'active',
+                                current_period_start: new Date().toISOString(),
+                                current_period_end: currentPeriodEnd.toISOString(),
+                                amount: this.getTierInfo(tier).price,
+                                currency: 'USD'
+                            });
+
+                        if (subError) throw subError;
+                    }
+
+                    // Log activity
+                    await this.supabase
+                        .from('user_activity_log')
+                        .insert({
+                            user_id: userId,
+                            action: 'user_activated',
+                            resource_type: 'user',
+                            resource_id: userId,
+                            metadata: { 
+                                activated_by: this.currentUser.id, 
+                                tier: tier,
+                                manual_activation: true
+                            }
+                        });
+
+                    // Send notification to user
+                    await this.supabase
+                        .from('notifications')
+                        .insert({
+                            user_id: userId,
+                            title: 'Account Activated!',
+                            message: `Your ${tier} subscription has been activated. Welcome to Traders Helmet Academy!`,
+                            type: 'success',
+                            priority: 'high'
+                        });
+
+                    // Refresh data
+                    await this.loadAllData();
+                    
+                    this.closeModal();
+                    this.showToast('User activated successfully!', 'success');
+
+                } catch (error) {
+                    console.error('Error activating user:', error);
+                    this.showToast('Failed to activate user. Please try again.', 'error');
+                } finally {
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = '<i class="fas fa-check"></i> Activate Subscription';
+                }
+            }
+
+            async deactivateUser(userId) {
+                if (!confirm('Are you sure you want to deactivate this user?')) return;
+
+                try {
+                    const userRow = document.querySelector(`[data-user-id="${userId}"]`);
+                    if (userRow) userRow.classList.add('loading');
+
+                    // Update user status
+                    const { error: profileError } = await this.supabase
+                        .from('user_profiles')
+                        .update({ 
+                            status: 'inactive',
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', userId);
+
+                    if (profileError) throw profileError;
+
+                    // Update subscription status
+                    const { error: subError } = await this.supabase
+                        .from('user_subscriptions')
+                        .update({
+                            status: 'inactive',
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('user_id', userId);
+
+                    // Log activity
+                    await this.supabase
+                        .from('user_activity_log')
+                        .insert({
+                            user_id: userId,
+                            action: 'user_deactivated',
+                            resource_type: 'user',
+                            resource_id: userId,
+                            metadata: { deactivated_by: this.currentUser.id }
+                        });
+
+                    // Refresh data
+                    await this.loadAllData();
+                    
+                    this.showToast('User deactivated successfully!', 'success');
+
+                } catch (error) {
+                    console.error('Error deactivating user:', error);
+                    this.showToast('Failed to deactivate user. Please try again.', 'error');
+                } finally {
+                    const userRow = document.querySelector(`[data-user-id="${userId}"]`);
+                    if (userRow) userRow.classList.remove('loading');
+                }
+            }
+
+            viewUser(userId) {
+                const user = this.findUser(userId);
+                if (user) {
+                    const subscription = user.user_subscriptions?.[0];
+                    const tierInfo = this.getTierInfo(subscription?.tier || user.tier);
+                    
+                    const details = `
+User Details:
+
+Name: ${user.first_name || ''} ${user.last_name || ''}
+Email: ${user.email}
+Tier: ${tierInfo.name}
+Status: ${user.status}
+Created: ${new Date(user.created_at).toLocaleDateString()}
+Last Login: ${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}
+${subscription ? `Subscription Expires: ${new Date(subscription.current_period_end).toLocaleDateString()}` : ''}
+                    `;
+                    
+                    alert(details);
+                }
+            }
+
+            setupRealTimeUpdates() {
+                // Subscribe to real-time changes
+                this.supabase
+                    .channel('user-management')
+                    .on('postgres_changes', 
+                        { event: '*', schema: 'public', table: 'user_profiles' },
+                        () => this.loadAllData()
+                    )
+                    .on('postgres_changes', 
+                        { event: '*', schema: 'public', table: 'user_subscriptions' },
+                        () => this.loadAllData()
+                    )
+                    .on('postgres_changes', 
+                        { event: '*', schema: 'public', table: 'payments' },
+                        () => this.loadStats()
+                    )
+                    .subscribe();
+            }
+
+            // Utility methods
+            getTierInfo(tier) {
+                const tiers = {
+                    gold: { name: 'Gold', price: 300 },
+                    platinum: { name: 'Platinum', price: 600 },
+                    diamond: { name: 'Diamond', price: 1300 }
+                };
+                return tiers[tier] || { name: 'Unknown', price: 0 };
+            }
+
+            getInitials(firstName, lastName) {
+                return ((firstName || '').charAt(0) + (lastName || '').charAt(0)).toUpperCase() || 'U';
+            }
+
+            getPaymentIcon(method) {
+                const icons = {
+                    card: 'credit-card',
+                    bank: 'university',
+                    crypto: 'bitcoin',
+                    stripe: 'credit-card'
+                };
+                return icons[method] || 'university';
+            }
+
+            getPaymentMethodName(method) {
+                const names = {
+                    card: 'Credit Card',
+                    bank: 'Bank Transfer',
+                    crypto: 'Cryptocurrency',
+                    stripe: 'Credit Card'
+                };
+                return names[method] || 'Bank Transfer';
+            }
+
+            findUser(userId) {
+                return [...this.usersData.pending, ...this.usersData.active, ...this.usersData.all]
+                    .find(u => u.id === userId);
+            }
+
+            closeModal() {
+                document.getElementById('activationModal').classList.remove('show');
+                this.selectedUser = null;
+            }
+
+            showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = `toast ${type} show`;
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            showError(message) {
+                this.showToast(message, 'error');
+            }
+
+            async refreshData() {
+                const refreshBtn = document.getElementById('refreshBtn');
+                refreshBtn.classList.add('loading');
+                
+                try {
+                    await this.loadAllData();
+                    this.showToast('Data refreshed successfully!', 'success');
+                } catch (error) {
+                    this.showToast('Failed to refresh data', 'error');
+                } finally {
+                    refreshBtn.classList.remove('loading');
+                }
+            }
+        }
+
+        // Global functions
+        let userManager;
+
+        window.switchTab = function(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked tab and corresponding content
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            userManager.currentTab = tabName;
+        };
+
+        window.filterUsers = function(tab) {
+            const searchInput = document.getElementById(`search${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+            const searchTerm = searchInput.value.toLowerCase();
+            const tableBody = document.getElementById(`${tab}UsersTable`);
+            const rows = tableBody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                if (row.querySelector('.empty-state')) return;
+                
+                const userText = row.textContent.toLowerCase();
+                if (userText.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        };
+
+        window.refreshData = function() {
+            if (userManager) {
+                userManager.refreshData();
+            }
+        };
+
+        window.closeModal = function() {
+            if (userManager) {
+                userManager.closeModal();
+            }
+        };
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            userManager = new ProductionUserManagement();
+        });
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        });
+
+        console.log('👥 Production User Management System Loaded');
+    </script>
+</body>
+</html>

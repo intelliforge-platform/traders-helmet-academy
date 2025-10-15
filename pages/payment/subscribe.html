@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Subscription - Traders Helmet Academy</title>
+    <meta name="description" content="Manage your Traders Helmet Academy subscription, billing, and account settings.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            --dark-border: #475569;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-platinum: linear-gradient(135deg, #e5e7eb 0%, #9ca3af 100%);
+            --gradient-diamond: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-info h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--dark-border);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-blue-light);
+            border-color: var(--primary-blue-light);
+            transform: translateX(-4px);
+        }
+
+        /* Grid Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title i {
+            color: var(--primary-blue-light);
+        }
+
+        /* Current Plan Section */
+        .current-plan {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .plan-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .plan-icon.gold { background: var(--gradient-gold); }
+        .plan-icon.platinum { background: var(--gradient-platinum); }
+        .plan-icon.diamond { background: var(--gradient-diamond); }
+
+        .plan-details h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .plan-details p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-cancelled {
+            background: var(--error-light);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .status-past-due {
+            background: var(--warning-light);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        /* Plan Options */
+        .plan-options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .plan-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .plan-option:hover {
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .plan-option.current {
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .option-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .option-details h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .option-price {
+            text-align: right;
+        }
+
+        .price-amount {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .price-period {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Billing History */
+        .billing-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .billing-table th,
+        .billing-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .billing-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .billing-table td {
+            color: var(--text-primary);
+        }
+
+        .invoice-link {
+            color: var(--primary-blue-light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .invoice-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: left;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-blue-light);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 2px solid var(--error);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Account Summary */
+        .account-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue-light);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            margin-bottom: 2rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .account-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .header-info h1 {
+                font-size: 2rem;
+            }
+
+            .current-plan {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .plan-option {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .option-price {
+                text-align: center;
+            }
+
+            .account-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .billing-table {
+                font-size: 0.9rem;
+            }
+
+            .billing-table th,
+            .billing-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-info">
+                <h1>Manage Subscription</h1>
+                <p>Control your trading membership and billing preferences</p>
+            </div>
+            <a href="/dashboard" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Current Plan -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-crown"></i>
+                        Current Plan
+                    </h2>
+
+                    <div class="current-plan">
+                        <div class="plan-icon platinum" id="currentPlanIcon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <div class="plan-details">
+                            <h3 id="currentPlanName">Platinum Membership</h3>
+                            <p id="currentPlanDescription">Advanced trading tools and insights</p>
+                            <div class="plan-status">
+                                <span class="status-badge status-active" id="planStatus">Active</span>
+                                <span class="text-muted">•</span>
+                                <span class="text-secondary" id="nextBillingDate">Next billing: March 15, 2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Available Plans</h3>
+                    <div class="plan-options">
+                        <div class="plan-option" data-plan="gold">
+                            <div class="option-info">
+                                <div class="option-icon gold">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="option-details">
+                                    <h4>Gold</h4>
+                                    <p>Essential trading signals</p>
+                                </div>
+                            </div>
+                            <div class="option-price">
+                                <div class="price-amount">$29</div>
+                                <div class="price-period">/month</div>
+                            </div>
+                        </div>
+
+                        <div class="plan-option current" data-plan="platinum">
+                            <div class="option-info">
+                                <div class="option-icon platinum">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <div class="option-details">
+                                    <h4>Platinum <span style="color: var(--primary-blue-light);">(Current)</span></h4>
+                                    <p>Advanced trading tools</p>
+                                </div>
+                            </div>
+                            <div class="option-price">
+                                <div class="price-amount">$59</div>
+                                <div class="price-period">/month</div>
+                            </div>
+                        </div>
+
+                        <div class="plan-option" data-plan="diamond">
+                            <div class="option-info">
+                                <div class="option-icon diamond">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                                <div class="option-details">
+                                    <h4>Diamond</h4>
+                                    <p>VIP trading experience</p>
+                                </div>
+                            </div>
+                            <div class="option-price">
+                                <div class="price-amount">$99</div>
+                                <div class="price-period">/month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing History -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-receipt"></i>
+                        Billing History
+                    </h2>
+
+                    <div style="overflow-x: auto;">
+                        <table class="billing-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Invoice</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Feb 15, 2025</td>
+                                    <td>Platinum Monthly</td>
+                                    <td>$59.00</td>
+                                    <td><span class="status-badge status-active">Paid</span></td>
+                                    <td><a href="#" class="invoice-link">Download</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Jan 15, 2025</td>
+                                    <td>Platinum Monthly</td>
+                                    <td>$59.00</td>
+                                    <td><span class="status-badge status-active">Paid</span></td>
+                                    <td><a href="#" class="invoice-link">Download</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Dec 15, 2024</td>
+                                    <td>Gold Monthly</td>
+                                    <td>$29.00</td>
+                                    <td><span class="status-badge status-active">Paid</span></td>
+                                    <td><a href="#" class="invoice-link">Download</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Account Summary -->
+                <div class="card">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Account Summary
+                    </h3>
+
+                    <div class="account-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">127</span>
+                            <span class="stat-label">Days Active</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">342</span>
+                            <span class="stat-label">Signals Received</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">87%</span>
+                            <span class="stat-label">Success Rate</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">$1,234</span>
+                            <span class="stat-label">Total Spent</span>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; padding: 1rem; background: var(--success-light); border-radius: 8px; border: 1px solid var(--success);">
+                        <p style="color: var(--success); font-weight: 600; margin-bottom: 0.5rem;">
+                            <i class="fas fa-shield-alt"></i> Protected by 30-day guarantee
+                        </p>
+                        <p style="color: var(--success); font-size: 0.9rem;">
+                            Full refund available until March 17, 2025
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h3 class="card-title">
+                        <i class="fas fa-bolt"></i>
+                        Quick Actions
+                    </h3>
+
+                    <div class="quick-actions">
+                        <button class="action-btn btn-primary" id="upgradeBtn">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Upgrade Plan</span>
+                        </button>
+
+                        <button class="action-btn btn-secondary" id="updatePaymentBtn">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Update Payment Method</span>
+                        </button>
+
+                        <button class="action-btn btn-secondary" id="pauseBtn">
+                            <i class="fas fa-pause"></i>
+                            <span>Pause Subscription</span>
+                        </button>
+
+                        <button class="action-btn btn-danger" id="cancelBtn">
+                            <i class="fas fa-times"></i>
+                            <span>Cancel Subscription</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Upgrade Modal -->
+    <div class="modal" id="upgradeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Upgrade Your Plan</h3>
+                <button class="close-btn" data-modal="upgradeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Upgrade to Diamond membership to unlock exclusive features:</p>
+                <ul style="margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary);">
+                    <li>Unlimited premium signals</li>
+                    <li>1-on-1 coaching sessions</li>
+                    <li>VIP community access</li>
+                    <li>Priority support</li>
+                </ul>
+                <p><strong>Price difference:</strong> $40/month (charged immediately)</p>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn btn-secondary" data-modal="upgradeModal">Cancel</button>
+                <button class="action-btn btn-primary" id="confirmUpgrade">Upgrade Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Modal -->
+    <div class="modal" id="cancelModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Cancel Subscription</h3>
+                <button class="close-btn" data-modal="cancelModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem;">We're sorry to see you go! Your subscription will remain active until your next billing date.</p>
+                <div style="background: var(--warning-light); border: 1px solid var(--warning); border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                    <p style="color: var(--warning); font-weight: 600;">What you'll lose:</p>
+                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--warning);">
+                        <li>Access to premium signals</li>
+                        <li>Educational resources</li>
+                        <li>Community support</li>
+                    </ul>
+                </div>
+                <p>Instead of canceling, would you like to:</p>
+                <div style="margin: 1rem 0;">
+                    <button class="action-btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;">
+                        <i class="fas fa-pause"></i> Pause for 30 days
+                    </button>
+                    <button class="action-btn btn-secondary" style="width: 100%;">
+                        <i class="fas fa-arrow-down"></i> Downgrade to Gold
+                    </button>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn btn-secondary" data-modal="cancelModal">Keep Subscription</button>
+                <button class="action-btn btn-danger" id="confirmCancel">Cancel Anyway</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SubscriptionManager {
+            constructor() {
+                this.currentPlan = 'platinum';
+                this.setupEventListeners();
+                this.loadUserData();
+            }
+
+            setupEventListeners() {
+                // Plan option clicks
+                document.querySelectorAll('.plan-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        const plan = option.dataset.plan;
+                        if (plan !== this.currentPlan) {
+                            this.handlePlanChange(plan);
+                        }
+                    });
+                });
+
+                // Quick action buttons
+                document.getElementById('upgradeBtn').addEventListener('click', () => {
+                    this.showModal('upgradeModal');
+                });
+
+                document.getElementById('updatePaymentBtn').addEventListener('click', () => {
+                    this.handleUpdatePayment();
+                });
+
+                document.getElementById('pauseBtn').addEventListener('click', () => {
+                    this.handlePauseSubscription();
+                });
+
+                document.getElementById('cancelBtn').addEventListener('click', () => {
+                    this.showModal('cancelModal');
+                });
+
+                // Modal controls
+                document.querySelectorAll('[data-modal]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const modalId = btn.dataset.modal;
+                        this.hideModal(modalId);
+                    });
+                });
+
+                // Confirm actions
+                document.getElementById('confirmUpgrade').addEventListener('click', () => {
+                    this.confirmUpgrade();
+                });
+
+                document.getElementById('confirmCancel').addEventListener('click', () => {
+                    this.confirmCancel();
+                });
+
+                // Close modals on backdrop click
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            this.hideModal(modal.id);
+                        }
+                    });
+                });
+            }
+
+            loadUserData() {
+                // Simulate loading user subscription data
+                const userData = {
+                    plan: 'platinum',
+                    status: 'active',
+                    nextBilling: '2025-03-15',
+                    daysActive: 127,
+                    signalsReceived: 342,
+                    successRate: 87,
+                    totalSpent: 1234
+                };
+
+                this.updateUI(userData);
+            }
+
+            updateUI(userData) {
+                // Update current plan display
+                const planNames = {
+                    gold: 'Gold Membership',
+                    platinum: 'Platinum Membership',
+                    diamond: 'Diamond Membership'
+                };
+
+                const planDescriptions = {
+                    gold: 'Essential trading signals',
+                    platinum: 'Advanced trading tools and insights',
+                    diamond: 'VIP trading experience'
+                };
+
+                const planIcons = {
+                    gold: 'fas fa-coins',
+                    platinum: 'fas fa-gem',
+                    diamond: 'fas fa-crown'
+                };
+
+                document.getElementById('currentPlanName').textContent = planNames[userData.plan];
+                document.getElementById('currentPlanDescription').textContent = planDescriptions[userData.plan];
+                
+                const iconElement = document.getElementById('currentPlanIcon');
+                iconElement.className = `plan-icon ${userData.plan}`;
+                iconElement.innerHTML = `<i class="${planIcons[userData.plan]}"></i>`;
+
+                // Update next billing date
+                const billingDate = new Date(userData.nextBilling);
+                document.getElementById('nextBillingDate').textContent = 
+                    `Next billing: ${billingDate.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })}`;
+
+                // Update current plan option
+                document.querySelectorAll('.plan-option').forEach(option => {
+                    option.classList.remove('current');
+                    const details = option.querySelector('.option-details h4');
+                    details.innerHTML = details.textContent.replace(' (Current)', '');
+                });
+
+                const currentOption = document.querySelector(`[data-plan="${userData.plan}"]`);
+                if (currentOption) {
+                    currentOption.classList.add('current');
+                    const details = currentOption.querySelector('.option-details h4');
+                    details.innerHTML += ' <span style="color: var(--primary-blue-light);">(Current)</span>';
+                }
+            }
+
+            handlePlanChange(newPlan) {
+                const currentPlanPrices = { gold: 29, platinum: 59, diamond: 99 };
+                const currentPrice = currentPlanPrices[this.currentPlan];
+                const newPrice = currentPlanPrices[newPlan];
+
+                if (newPrice > currentPrice) {
+                    // Upgrade
+                    this.showModal('upgradeModal');
+                } else {
+                    // Downgrade
+                    this.handleDowngrade(newPlan);
+                }
+            }
+
+            handleDowngrade(newPlan) {
+                const confirmation = confirm(`Are you sure you want to downgrade to ${newPlan.charAt(0).toUpperCase() + newPlan.slice(1)}? The change will take effect at your next billing cycle.`);
+                
+                if (confirmation) {
+                    this.showNotification(`Your plan will be downgraded to ${newPlan.charAt(0).toUpperCase() + newPlan.slice(1)} at the next billing cycle.`, 'success');
+                }
+            }
+
+            confirmUpgrade() {
+                this.hideModal('upgradeModal');
+                this.showNotification('Your plan has been upgraded successfully!', 'success');
+                
+                // Simulate plan update
+                setTimeout(() => {
+                    this.currentPlan = 'diamond';
+                    this.updateUI({
+                        plan: 'diamond',
+                        status: 'active',
+                        nextBilling: '2025-03-15',
+                        daysActive: 127,
+                        signalsReceived: 342,
+                        successRate: 87,
+                        totalSpent: 1234
+                    });
+                }, 1000);
+            }
+
+            confirmCancel() {
+                this.hideModal('cancelModal');
+                this.showNotification('Your subscription has been cancelled and will end at the next billing cycle.', 'warning');
+            }
+
+            handleUpdatePayment() {
+                this.showNotification('Redirecting to payment update...', 'info');
+                // In a real implementation, this would redirect to Stripe customer portal
+                setTimeout(() => {
+                    window.open('https://billing.stripe.com/session/xyz', '_blank');
+                }, 1000);
+            }
+
+            handlePauseSubscription() {
+                const confirmation = confirm('Are you sure you want to pause your subscription for 30 days? You can resume anytime.');
+                
+                if (confirmation) {
+                    this.showNotification('Your subscription has been paused for 30 days.', 'success');
+                }
+            }
+
+            showModal(modalId) {
+                const modal = document.getElementById(modalId);
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            hideModal(modalId) {
+                const modal = document.getElementById(modalId);
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--${type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'primary-blue'});
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    z-index: 1100;
+                    animation: slideIn 0.3s ease;
+                    max-width: 300px;
+                `;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 4000);
+            }
+        }
+
+        // Initialize subscription manager
+        document.addEventListener('DOMContentLoaded', () => {
+            new SubscriptionManager();
+        });
+
+        // Add slide-in animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

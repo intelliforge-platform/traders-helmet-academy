@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Portal - Traders Helmet Academy</title>
+    <meta name="description" content="Comprehensive trading education portal with courses, videos, and resources for forex, crypto, and binary options trading.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Video.js for enhanced video player -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.6.1/video-js.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.6.1/video.min.js"></script>
+    
+    <!-- PDF.js for PowerPoint presentations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
+    <style>
+        :root {
+            /* Steel Blue Theme Colors */
+            --primary-steel: #4682b4;
+            --primary-steel-dark: #2f5f8f;
+            --primary-steel-light: #6ba6cd;
+            --steel-blue-bg: #36454f;
+            --steel-accent: #708090;
+            
+            /* Supporting Colors */
+            --accent-gold: #ffd700;
+            --accent-orange: #ff8c00;
+            --success: #32cd32;
+            --warning: #ffa500;
+            --error: #dc143c;
+            --info: #1e90ff;
+            
+            /* Background Colors */
+            --dark-bg: #1a1a2e;
+            --dark-surface: #16213e;
+            --dark-card: #0f3460;
+            --steel-gradient: linear-gradient(135deg, #36454f 0%, #4682b4 50%, #708090 100%);
+            
+            /* Text Colors */
+            --text-primary: #ffffff;
+            --text-secondary: #e6e6fa;
+            --text-muted: #b0c4de;
+            
+            /* Component Colors */
+            --sidebar-bg: #2c3e50;
+            --content-bg: #34495e;
+            --card-bg: rgba(70, 130, 180, 0.1);
+            --border-color: rgba(70, 130, 180, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--steel-gradient);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Authentication Loading Screen */
+        .auth-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--steel-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .auth-loading .logo {
+            width: 120px;
+            height: 120px;
+            background: url('../../tradershelmetlogo.png') no-repeat center center;
+            background-size: contain;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .auth-loading .loading-text {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .auth-loading .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(70, 130, 180, 0.3);
+            border-top-color: var(--primary-steel);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Main Layout */
+        .education-container {
+            display: none;
+            min-height: 100vh;
+            grid-template-columns: 350px 1fr;
+            grid-template-rows: auto 1fr;
+            grid-template-areas: 
+                "header header"
+                "sidebar content";
+        }
+
+        .education-container.authenticated {
+            display: grid;
+        }
+
+        /* Header */
+        .education-header {
+            grid-area: header;
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            background: url('../../tradershelmetlogo.png') no-repeat center center;
+            background-size: contain;
+            border-radius: 8px;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-steel-light);
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: var(--primary-steel);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .tier-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tier-badge.gold {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1a1a1a;
+        }
+
+        .tier-badge.platinum {
+            background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+            color: #1a1a1a;
+        }
+
+        .tier-badge.diamond {
+            background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+            color: white;
+        }
+
+        .progress-overview {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: conic-gradient(var(--success) 0deg, var(--success) 75deg, rgba(255,255,255,0.2) 75deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            grid-area: sidebar;
+            background: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
+            overflow-y: auto;
+            height: calc(100vh - 80px);
+        }
+
+        .sidebar-content {
+            padding: 2rem 0;
+        }
+
+        .course-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            padding: 1rem 2rem;
+            background: rgba(70, 130, 180, 0.1);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--primary-steel-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .section-header:hover {
+            background: rgba(70, 130, 180, 0.2);
+        }
+
+        .section-header.active {
+            background: rgba(70, 130, 180, 0.3);
+        }
+
+        .section-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .lessons-list {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .lesson-item {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .lesson-item:hover {
+            background: rgba(70, 130, 180, 0.1);
+        }
+
+        .lesson-item.active {
+            background: rgba(70, 130, 180, 0.2);
+            border-left: 4px solid var(--primary-steel);
+        }
+
+        .lesson-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .lesson-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .lesson-status.completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .lesson-status.current {
+            background: var(--primary-steel);
+            color: white;
+        }
+
+        .lesson-status.locked {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+        }
+
+        .lesson-info {
+            flex: 1;
+        }
+
+        .lesson-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .lesson-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .lesson-duration {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .lesson-type {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            grid-area: content;
+            background: var(--content-bg);
+            overflow-y: auto;
+            height: calc(100vh - 80px);
+        }
+
+        .content-wrapper {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Lesson Content */
+        .lesson-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .lesson-content.active {
+            display: block;
+        }
+
+        .lesson-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .lesson-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-steel-light);
+        }
+
+        .lesson-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .lesson-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Video Player Section */
+        .video-section {
+            margin-bottom: 3rem;
+        }
+
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-player {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .video-js {
+            width: 100%;
+            height: 500px;
+        }
+
+        .video-js .vjs-tech {
+            pointer-events: none;
+        }
+
+        /* Disable right-click context menu */
+        .video-js video {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(70, 130, 180, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .play-button:hover {
+            background: var(--primary-steel);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Video Controls */
+        .video-controls {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .speed-control select {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .quality-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quality-control select {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        /* Subtitles Section */
+        .subtitles-section {
+            margin: 2rem 0;
+        }
+
+        .subtitles-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .subtitles-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--primary-steel);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+
+        .subtitle-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .subtitle-lang {
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .subtitle-lang:hover,
+        .subtitle-lang.active {
+            background: var(--primary-steel);
+            border-color: var(--primary-steel-light);
+        }
+
+        /* Content Sections */
+        .content-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary-steel-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Downloads Section */
+        .download-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .download-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .download-item:hover {
+            background: rgba(70, 130, 180, 0.1);
+            border-color: var(--primary-steel);
+        }
+
+        .download-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-steel);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .file-details h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .file-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .download-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .download-btn:hover {
+            background: #28a745;
+            transform: translateY(-2px);
+        }
+
+        /* PowerPoint Section */
+        .powerpoint-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .powerpoint-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .powerpoint-item:hover {
+            background: rgba(70, 130, 180, 0.1);
+            border-color: var(--primary-steel);
+        }
+
+        .ppt-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ppt-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #d24726, #f2593c);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .view-btn {
+            background: var(--info);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .view-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Lesson Navigation */
+        .lesson-navigation {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--primary-steel);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-steel-dark);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .complete-btn {
+            background: var(--success);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .complete-btn:hover {
+            background: #28a745;
+            transform: translateY(-2px);
+        }
+
+        .complete-btn:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+        }
+
+        /* PowerPoint Viewer Modal */
+        .ppt-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .ppt-modal.active {
+            display: flex;
+        }
+
+        .ppt-viewer {
+            width: 90%;
+            height: 90%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ppt-header {
+            background: var(--primary-steel);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .ppt-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .ppt-content {
+            height: calc(100% - 60px);
+            overflow: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .education-container {
+                grid-template-columns: 300px 1fr;
+            }
+
+            .content-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .education-container {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "header"
+                    "content";
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -350px;
+                top: 80px;
+                width: 350px;
+                height: calc(100vh - 80px);
+                z-index: 1000;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .education-header {
+                padding: 1rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                background: var(--primary-steel);
+                color: white;
+                border: none;
+                padding: 0.5rem;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .video-player {
+                height: 300px;
+            }
+
+            .video-js {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-wrapper {
+                padding: 1rem;
+            }
+
+            .lesson-content {
+                padding: 1rem;
+            }
+
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .lesson-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .video-player {
+                height: 250px;
+            }
+
+            .video-js {
+                height: 250px;
+            }
+
+            .play-button {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Security Styles */
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Disable screenshot on mobile */
+        @media (max-width: 768px) {
+            .video-container {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .loading .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(70, 130, 180, 0.3);
+            border-top-color: var(--primary-steel);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Loading Screen -->
+    <div class="auth-loading" id="authLoading">
+        <div class="logo"></div>
+        <div class="loading-text">Authenticating Access...</div>
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Main Education Portal -->
+    <div class="education-container" id="educationContainer">
+        <!-- Header -->
+        <header class="education-header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" style="display: none;">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-logo"></div>
+                <div>
+                    <div class="header-title">Education Portal</div>
+                    <div class="header-subtitle">Traders Helmet Academy</div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="progress-overview">
+                    <div class="progress-circle">21%</div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Overall Progress</div>
+                        <div style="font-size: 0.9rem; font-weight: 600;">3 of 14 courses</div>
+                    </div>
+                </div>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">JD</div>
+                    <div>
+                        <div style="font-size: 0.9rem; font-weight: 500;" id="userName">John Doe</div>
+                        <div class="tier-badge gold" id="userTier">Gold</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <!-- Course Section 1: Foundation -->
+                <div class="course-section">
+                    <div class="section-header" data-section="foundation">
+                        <div>
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Foundation Course</span>
+                        </div>
+                        <div class="section-progress">
+                            <span>3/5</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="lessons-list">
+                        <div class="lesson-item active" data-lesson="foundation-1">
+                            <div class="lesson-status completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Introduction to Trading</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>15 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-item" data-lesson="foundation-2">
+                            <div class="lesson-status completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Market Basics & Terminology</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>22 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-item" data-lesson="foundation-3">
+                            <div class="lesson-status current">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Risk Management Fundamentals</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>28 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-item locked" data-lesson="foundation-4">
+                            <div class="lesson-status locked">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Psychology of Trading</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>35 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-item locked" data-lesson="foundation-5">
+                            <div class="lesson-status locked">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Platform Navigation</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>18 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Section 2: Forex -->
+                <div class="course-section">
+                    <div class="section-header" data-section="forex">
+                        <div>
+                            <i class="fas fa-chart-line"></i>
+                            <span>Forex Trading</span>
+                        </div>
+                        <div class="section-progress">
+                            <span>0/6</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="lessons-list" style="display: none;">
+                        <div class="lesson-item locked" data-lesson="forex-1">
+                            <div class="lesson-status locked">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Forex Market Overview</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>25 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-item locked" data-lesson="forex-2">
+                            <div class="lesson-status locked">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Currency Pairs & Analysis</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>32 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-item locked" data-lesson="forex-3">
+                            <div class="lesson-status locked">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Pivot Strategy Deep Dive</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>45 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Section 3: Cryptocurrency -->
+                <div class="course-section">
+                    <div class="section-header" data-section="crypto">
+                        <div>
+                            <i class="fab fa-bitcoin"></i>
+                            <span>Cryptocurrency Trading</span>
+                        </div>
+                        <div class="section-progress">
+                            <span>0/5</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="lessons-list" style="display: none;">
+                        <div class="lesson-item locked" data-lesson="crypto-1">
+                            <div class="lesson-status locked">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="lesson-info">
+                                <div class="lesson-title">Blockchain & Crypto Fundamentals</div>
+                                <div class="lesson-meta">
+                                    <div class="lesson-duration">
+                                        <i class="fas fa-clock"></i>
+                                        <span>30 min</span>
+                                    </div>
+                                    <div class="lesson-type">
+                                        <i class="fas fa-play"></i>
+                                        <span>Video</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Foundation Lesson 3 Content -->
+                <div class="lesson-content active" id="lesson-foundation-3">
+                    <div class="lesson-header">
+                        <h1>Risk Management Fundamentals</h1>
+                        <p>Learn the essential principles of risk management that separate successful traders from those who lose money consistently.</p>
+                        
+                        <div class="lesson-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-clock"></i>
+                                <span>28 minutes</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-layer-group"></i>
+                                <span>Foundation Course</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-signal"></i>
+                                <span>Essential</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-download"></i>
+                                <span>3 Resources</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Section -->
+                    <div class="video-section">
+                        <div class="video-container no-select">
+                            <div class="video-player" id="videoPlayer">
+                                <div class="play-button" id="playButton">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="video-overlay"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="video-controls">
+                            <div class="speed-control">
+                                <label for="playbackSpeed">Speed:</label>
+                                <select id="playbackSpeed">
+                                    <option value="0.5">0.5x</option>
+                                    <option value="0.75">0.75x</option>
+                                    <option value="1" selected>1x</option>
+                                    <option value="1.25">1.25x</option>
+                                    <option value="1.5">1.5x</option>
+                                    <option value="2">2x</option>
+                                </select>
+                            </div>
+                            
+                            <div class="quality-control">
+                                <label for="videoQuality">Quality:</label>
+                                <select id="videoQuality">
+                                    <option value="480p">480p</option>
+                                    <option value="720p" selected>720p</option>
+                                    <option value="1080p">1080p</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subtitles Section -->
+                    <div class="subtitles-section">
+                        <div class="subtitles-header">
+                            <h3>
+                                <i class="fas fa-closed-captioning"></i>
+                                Subtitles
+                            </h3>
+                            <div class="subtitles-toggle">
+                                <span>Enable Subtitles</span>
+                                <div class="toggle-switch" id="subtitlesToggle"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="subtitle-options">
+                            <div class="subtitle-lang active" data-lang="en">
+                                <i class="fas fa-globe"></i>
+                                English
+                            </div>
+                            <div class="subtitle-lang" data-lang="es">
+                                <i class="fas fa-globe"></i>
+                                Spanish
+                            </div>
+                            <div class="subtitle-lang" data-lang="fr">
+                                <i class="fas fa-globe"></i>
+                                French
+                            </div>
+                            <div class="subtitle-lang" data-lang="zh">
+                                <i class="fas fa-globe"></i>
+                                Chinese
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Sections -->
+                    <div class="content-sections">
+                        <!-- Downloads Section -->
+                        <div class="content-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-download"></i>
+                                Downloadable Resources
+                            </h3>
+                            
+                            <div class="download-list">
+                                <div class="download-item">
+                                    <div class="download-info">
+                                        <div class="file-icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <h4>Risk Management Checklist</h4>
+                                            <div class="file-meta">PDF • 2.4 MB • Updated Nov 2024</div>
+                                        </div>
+                                    </div>
+                                    <button class="download-btn" onclick="downloadFile('risk-checklist.pdf')">
+                                        <i class="fas fa-download"></i>
+                                        Download
+                                    </button>
+                                </div>
+                                
+                                <div class="download-item">
+                                    <div class="download-info">
+                                        <div class="file-icon">
+                                            <i class="fas fa-file-excel"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <h4>Position Size Calculator</h4>
+                                            <div class="file-meta">XLSX • 1.8 MB • Updated Nov 2024</div>
+                                        </div>
+                                    </div>
+                                    <button class="download-btn" onclick="downloadFile('position-calculator.xlsx')">
+                                        <i class="fas fa-download"></i>
+                                        Download
+                                    </button>
+                                </div>
+                                
+                                <div class="download-item">
+                                    <div class="download-info">
+                                        <div class="file-icon">
+                                            <i class="fas fa-file-alt"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <h4>Trading Journal Template</h4>
+                                            <div class="file-meta">DOCX • 956 KB • Updated Nov 2024</div>
+                                        </div>
+                                    </div>
+                                    <button class="download-btn" onclick="downloadFile('trading-journal.docx')">
+                                        <i class="fas fa-download"></i>
+                                        Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PowerPoint Section -->
+                        <div class="content-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-presentation"></i>
+                                Presentations
+                            </h3>
+                            
+                            <div class="powerpoint-list">
+                                <div class="powerpoint-item">
+                                    <div class="ppt-info">
+                                        <div class="ppt-icon">
+                                            <i class="fas fa-file-powerpoint"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <h4>Risk Management Overview</h4>
+                                            <div class="file-meta">PowerPoint • 45 slides • 12.3 MB</div>
+                                        </div>
+                                    </div>
+                                    <button class="view-btn" onclick="viewPresentation('risk-management-overview.pptx')">
+                                        <i class="fas fa-eye"></i>
+                                        View
+                                    </button>
+                                </div>
+                                
+                                <div class="powerpoint-item">
+                                    <div class="ppt-info">
+                                        <div class="ppt-icon">
+                                            <i class="fas fa-file-powerpoint"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <h4>Position Sizing Strategies</h4>
+                                            <div class="file-meta">PowerPoint • 32 slides • 8.7 MB</div>
+                                        </div>
+                                    </div>
+                                    <button class="view-btn" onclick="viewPresentation('position-sizing.pptx')">
+                                        <i class="fas fa-eye"></i>
+                                        View
+                                    </button>
+                                </div>
+                                
+                                <div class="powerpoint-item">
+                                    <div class="ppt-info">
+                                        <div class="ppt-icon">
+                                            <i class="fas fa-file-powerpoint"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <h4>Common Risk Mistakes</h4>
+                                            <div class="file-meta">PowerPoint • 28 slides • 6.4 MB</div>
+                                        </div>
+                                    </div>
+                                    <button class="view-btn" onclick="viewPresentation('risk-mistakes.pptx')">
+                                        <i class="fas fa-eye"></i>
+                                        View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lesson Navigation -->
+                    <div class="lesson-navigation">
+                        <button class="nav-btn" id="prevLesson">
+                            <i class="fas fa-chevron-left"></i>
+                            Previous: Market Basics
+                        </button>
+                        
+                        <button class="complete-btn" id="completeLesson">
+                            <i class="fas fa-check-circle"></i>
+                            Mark as Complete
+                        </button>
+                        
+                        <button class="nav-btn" id="nextLesson" disabled>
+                            Next: Psychology of Trading
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- PowerPoint Viewer Modal -->
+    <div class="ppt-modal" id="pptModal">
+        <div class="ppt-viewer">
+            <div class="ppt-header">
+                <h3 id="pptTitle">Presentation Viewer</h3>
+                <button class="ppt-close" id="pptClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="ppt-content" id="pptContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading presentation...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let videoPlayer = null;
+        let lessonProgress = {};
+        let currentLesson = 'foundation-3';
+
+        // Authentication check
+        async function checkAuthentication() {
+            try {
+                // Simulate authentication check - replace with actual Supabase auth
+                const authData = localStorage.getItem('tha_auth');
+                if (!authData) {
+                    throw new Error('No authentication data');
+                }
+                
+                const user = JSON.parse(authData);
+                currentUser = user;
+                
+                // Load user progress
+                await loadUserProgress();
+                
+                // Show the education portal
+                document.getElementById('authLoading').style.display = 'none';
+                document.getElementById('educationContainer').classList.add('authenticated');
+                
+                // Initialize the portal
+                initializeEducationPortal();
+                
+            } catch (error) {
+                console.error('Authentication failed:', error);
+                // Redirect to login
+                setTimeout(() => {
+                    window.location.href = '/pages/auth/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                }, 2000);
+            }
+        }
+
+        // Load user progress from database
+        async function loadUserProgress() {
+            try {
+                // Simulate loading progress - replace with actual Supabase query
+                const savedProgress = localStorage.getItem('tha_lesson_progress');
+                if (savedProgress) {
+                    lessonProgress = JSON.parse(savedProgress);
+                } else {
+                    // Default progress
+                    lessonProgress = {
+                        'foundation-1': { completed: true, watchTime: 900 },
+                        'foundation-2': { completed: true, watchTime: 1320 },
+                        'foundation-3': { completed: false, watchTime: 0 }
+                    };
+                }
+                
+                // Update UI based on user data
+                updateUserInfo();
+                updateProgressDisplay();
+                
+            } catch (error) {
+                console.error('Failed to load user progress:', error);
+            }
+        }
+
+        // Update user information display
+        function updateUserInfo() {
+            const userTier = currentUser?.tier || 'gold';
+            const userName = currentUser?.name || 'John Doe';
+            
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userAvatar').textContent = userName.split(' ').map(n => n[0]).join('');
+            
+            const tierBadge = document.getElementById('userTier');
+            tierBadge.textContent = userTier.charAt(0).toUpperCase() + userTier.slice(1);
+            tierBadge.className = `tier-badge ${userTier}`;
+        }
+
+        // Update progress display
+        function updateProgressDisplay() {
+            const totalLessons = Object.keys(lessonProgress).length;
+            const completedLessons = Object.values(lessonProgress).filter(p => p.completed).length;
+            const progressPercent = Math.round((completedLessons / totalLessons) * 100);
+            
+            document.querySelector('.progress-circle').textContent = `${progressPercent}%`;
+            document.querySelector('.progress-circle').style.background = 
+                `conic-gradient(var(--success) 0deg, var(--success) ${progressPercent * 3.6}deg, rgba(255,255,255,0.2) ${progressPercent * 3.6}deg)`;
+        }
+
+        // Initialize the education portal
+        function initializeEducationPortal() {
+            setupVideoPlayer();
+            setupEventListeners();
+            setupSecurityMeasures();
+            loadCurrentLesson();
+        }
+
+        // Setup video player with security
+        function setupVideoPlayer() {
+            const videoContainer = document.getElementById('videoPlayer');
+            
+            // Create video element with security attributes
+            const video = document.createElement('video');
+            video.className = 'video-js vjs-default-skin no-select';
+            video.setAttribute('preload', 'auto');
+            video.setAttribute('controlsList', 'nodownload noremoteplayback');
+            video.setAttribute('disablePictureInPicture', '');
+            video.setAttribute('oncontextmenu', 'return false;');
+            video.style.pointerEvents = 'none';
+            
+            // Security: Disable right-click and selection
+            video.addEventListener('contextmenu', e => e.preventDefault());
+            video.addEventListener('selectstart', e => e.preventDefault());
+            video.addEventListener('dragstart', e => e.preventDefault());
+            
+            videoContainer.innerHTML = '';
+            videoContainer.appendChild(video);
+            
+            // Initialize Video.js with security options
+            videoPlayer = videojs(video, {
+                controls: true,
+                fluid: true,
+                responsive: true,
+                playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2],
+                plugins: {
+                    // Add any security plugins here
+                }
+            });
+
+            // Add custom security layer
+            const overlay = document.createElement('div');
+            overlay.className = 'video-overlay';
+            overlay.style.pointerEvents = 'none';
+            videoContainer.appendChild(overlay);
+
+            // Handle play button
+            document.getElementById('playButton').addEventListener('click', () => {
+                loadVideoContent();
+            });
+        }
+
+        // Load video content (simulate secure video loading)
+        function loadVideoContent() {
+            const playButton = document.getElementById('playButton');
+            playButton.style.display = 'none';
+            
+            // Simulate video source loading with security checks
+            const videoSources = {
+                'foundation-3': {
+                    src: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4', // Replace with your secure video URL
+                    type: 'video/mp4'
+                }
+            };
+            
+            const source = videoSources[currentLesson];
+            if (source) {
+                videoPlayer.src(source);
+                videoPlayer.ready(() => {
+                    videoPlayer.play();
+                    trackVideoProgress();
+                });
+            }
+        }
+
+        // Track video progress for completion
+        function trackVideoProgress() {
+            videoPlayer.on('timeupdate', () => {
+                const currentTime = videoPlayer.currentTime();
+                const duration = videoPlayer.duration();
+                
+                if (duration > 0) {
+                    const progress = (currentTime / duration) * 100;
+                    
+                    // Update lesson progress
+                    lessonProgress[currentLesson] = {
+                        ...lessonProgress[currentLesson],
+                        watchTime: currentTime,
+                        progress: progress
+                    };
+                    
+                    // Auto-complete if watched 90% or more
+                    if (progress >= 90 && !lessonProgress[currentLesson].completed) {
+                        enableCompleteButton();
+                    }
+                }
+            });
+
+            // Handle video end
+            videoPlayer.on('ended', () => {
+                if (!lessonProgress[currentLesson].completed) {
+                    enableCompleteButton();
+                }
+            });
+        }
+
+        // Enable the complete button
+        function enableCompleteButton() {
+            const completeBtn = document.getElementById('completeLesson');
+            completeBtn.disabled = false;
+            completeBtn.style.background = 'var(--success)';
+        }
+
+        // Setup all event listeners
+        function setupEventListeners() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                });
+            }
+
+            // Section headers (course expansion)
+            document.querySelectorAll('.section-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const lessonsList = header.nextElementSibling;
+                    const icon = header.querySelector('.fa-chevron-down');
+                    
+                    if (lessonsList.style.display === 'none') {
+                        lessonsList.style.display = 'block';
+                        icon.style.transform = 'rotate(180deg)';
+                        header.classList.add('active');
+                    } else {
+                        lessonsList.style.display = 'none';
+                        icon.style.transform = 'rotate(0deg)';
+                        header.classList.remove('active');
+                    }
+                });
+            });
+
+            // Lesson selection
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    if (!item.classList.contains('locked')) {
+                        selectLesson(item.dataset.lesson);
+                    }
+                });
+            });
+
+            // Complete lesson button
+            document.getElementById('completeLesson').addEventListener('click', completeCurrentLesson);
+
+            // Subtitles toggle
+            document.getElementById('subtitlesToggle').addEventListener('click', toggleSubtitles);
+
+            // Subtitle language selection
+            document.querySelectorAll('.subtitle-lang').forEach(lang => {
+                lang.addEventListener('click', () => selectSubtitleLanguage(lang.dataset.lang));
+            });
+
+            // Video controls
+            document.getElementById('playbackSpeed').addEventListener('change', changePlaybackSpeed);
+            document.getElementById('videoQuality').addEventListener('change', changeVideoQuality);
+
+            // PowerPoint modal
+            document.getElementById('pptClose').addEventListener('click', closePresentationModal);
+        }
+
+        // Setup security measures
+        function setupSecurityMeasures() {
+            // Disable right-click on video content
+            document.addEventListener('contextmenu', function(e) {
+                if (e.target.closest('.video-container')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // Disable keyboard shortcuts for screenshots
+            document.addEventListener('keydown', function(e) {
+                // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+                if (e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+                    (e.ctrlKey && e.keyCode === 85)) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Disable print screen
+                if (e.keyCode === 44) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // Disable text selection on sensitive areas
+            document.querySelectorAll('.video-container, .no-select').forEach(element => {
+                element.style.webkitUserSelect = 'none';
+                element.style.mozUserSelect = 'none';
+                element.style.msUserSelect = 'none';
+                element.style.userSelect = 'none';
+            });
+
+            // Add watermark overlay (optional)
+            addVideoWatermark();
+        }
+
+        // Add watermark to video
+        function addVideoWatermark() {
+            const watermark = document.createElement('div');
+            watermark.style.position = 'absolute';
+            watermark.style.bottom = '20px';
+            watermark.style.right = '20px';
+            watermark.style.color = 'rgba(255,255,255,0.7)';
+            watermark.style.fontSize = '14px';
+            watermark.style.fontWeight = 'bold';
+            watermark.style.zIndex = '1002';
+            watermark.style.pointerEvents = 'none';
+            watermark.textContent = currentUser?.email || 'Traders Helmet Academy';
+            
+            document.querySelector('.video-container').appendChild(watermark);
+        }
+
+        // Select a lesson
+        function selectLesson(lessonId) {
+            if (lessonProgress[lessonId] || lessonId === 'foundation-1') {
+                currentLesson = lessonId;
+                
+                // Update UI
+                document.querySelectorAll('.lesson-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelector(`[data-lesson="${lessonId}"]`).classList.add('active');
+                
+                // Load lesson content
+                loadCurrentLesson();
+            }
+        }
+
+        // Load current lesson content
+        function loadCurrentLesson() {
+            // Hide all lesson content
+            document.querySelectorAll('.lesson-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show current lesson content
+            const lessonContent = document.getElementById(`lesson-${currentLesson}`);
+            if (lessonContent) {
+                lessonContent.classList.add('active');
+            }
+            
+            // Reset video player
+            if (videoPlayer) {
+                videoPlayer.pause();
+                videoPlayer.currentTime(0);
+            }
+            
+            // Show play button
+            document.getElementById('playButton').style.display = 'flex';
+        }
+
+        // Complete current lesson
+        async function completeCurrentLesson() {
+            lessonProgress[currentLesson] = {
+                ...lessonProgress[currentLesson],
+                completed: true,
+                completedAt: new Date().toISOString()
+            };
+            
+            // Save progress
+            localStorage.setItem('tha_lesson_progress', JSON.stringify(lessonProgress));
+            
+            // Update UI
+            const lessonItem = document.querySelector(`[data-lesson="${currentLesson}"]`);
+            const statusIcon = lessonItem.querySelector('.lesson-status');
+            statusIcon.className = 'lesson-status completed';
+            statusIcon.innerHTML = '<i class="fas fa-check"></i>';
+            
+            // Unlock next lesson
+            unlockNextLesson();
+            
+            // Update progress display
+            updateProgressDisplay();
+            
+            // Enable next button
+            document.getElementById('nextLesson').disabled = false;
+        }
+
+        // Unlock next lesson
+        function unlockNextLesson() {
+            const lessons = ['foundation-1', 'foundation-2', 'foundation-3', 'foundation-4', 'foundation-5'];
+            const currentIndex = lessons.indexOf(currentLesson);
+            
+            if (currentIndex < lessons.length - 1) {
+                const nextLesson = lessons[currentIndex + 1];
+                const nextLessonItem = document.querySelector(`[data-lesson="${nextLesson}"]`);
+                
+                if (nextLessonItem) {
+                    nextLessonItem.classList.remove('locked');
+                    const statusIcon = nextLessonItem.querySelector('.lesson-status');
+                    statusIcon.className = 'lesson-status current';
+                    statusIcon.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            }
+        }
+
+        // Toggle subtitles
+        function toggleSubtitles() {
+            const toggle = document.getElementById('subtitlesToggle');
+            toggle.classList.toggle('active');
+            
+            if (videoPlayer) {
+                // Toggle subtitles in video player
+                const tracks = videoPlayer.textTracks();
+                if (tracks.length > 0) {
+                    tracks[0].mode = toggle.classList.contains('active') ? 'showing' : 'disabled';
+                }
+            }
+        }
+
+        // Select subtitle language
+        function selectSubtitleLanguage(language) {
+            document.querySelectorAll('.subtitle-lang').forEach(lang => {
+                lang.classList.remove('active');
+            });
+            document.querySelector(`[data-lang="${language}"]`).classList.add('active');
+            
+            // Update video player subtitles
+            if (videoPlayer) {
+                // Switch subtitle track based on language
+                console.log('Switching subtitles to:', language);
+            }
+        }
+
+        // Change playback speed
+        function changePlaybackSpeed() {
+            const speed = parseFloat(document.getElementById('playbackSpeed').value);
+            if (videoPlayer) {
+                videoPlayer.playbackRate(speed);
+            }
+        }
+
+        // Change video quality
+        function changeVideoQuality() {
+            const quality = document.getElementById('videoQuality').value;
+            if (videoPlayer) {
+                // Switch video quality
+                console.log('Switching to quality:', quality);
+            }
+        }
+
+        // Download file
+        function downloadFile(filename) {
+            // Simulate file download - replace with actual download logic
+            const link = document.createElement('a');
+            link.href = `/assets/downloads/${filename}`;
+            link.download = filename;
+            link.click();
+            
+            // Track download
+            console.log('Downloaded:', filename);
+        }
+
+        // View presentation
+        function viewPresentation(filename) {
+            const modal = document.getElementById('pptModal');
+            const title = document.getElementById('pptTitle');
+            const content = document.getElementById('pptContent');
+            
+            title.textContent = filename;
+            modal.classList.add('active');
+            
+            // Simulate loading presentation
+            content.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading ${filename}...
+                </div>
+            `;
+            
+            setTimeout(() => {
+                content.innerHTML = `
+                    <iframe src="/assets/presentations/${filename}" 
+                            width="100%" 
+                            height="100%" 
+                            frameborder="0">
+                    </iframe>
+                `;
+            }, 2000);
+        }
+
+        // Close presentation modal
+        function closePresentationModal() {
+            document.getElementById('pptModal').classList.remove('active');
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+        });
+
+        // Handle page visibility change (pause video when tab is hidden)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && videoPlayer) {
+                videoPlayer.pause();
+            }
+        });
+
+        // Responsive handling
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 968) {
+                document.getElementById('mobileMenuBtn').style.display = 'block';
+            } else {
+                document.getElementById('mobileMenuBtn').style.display = 'none';
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

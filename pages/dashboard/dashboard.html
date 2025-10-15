@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard Router - Traders Helmet Academy">
+    <meta name="keywords" content="dashboard, trading, forex, crypto, signals">
+    <meta name="author" content="Traders Helmet Academy">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+
+    <title>Dashboard - Traders Helmet Academy</title>
+
+    <!-- CSS Dependencies -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Core CSS Files -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-custom.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .router-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .router-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .router-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .router-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .router-message {
+            font-size: 1.1rem;
+            color: #718096;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .progress-bar-custom {
+            background: #f7fafc;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+            animation: loading 2s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { width: 20%; }
+            50% { width: 80%; }
+            100% { width: 20%; }
+        }
+
+        .status-message {
+            color: #4a5568;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .error-state {
+            display: none;
+        }
+
+        .error-state .router-icon {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            animation: none;
+        }
+
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .subscription-state {
+            display: none;
+        }
+
+        .subscription-state .router-icon {
+            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+            animation: none;
+        }
+
+        .user-info-display {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .user-info-display h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .user-info-display p {
+            color: #718096;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading State -->
+    <div id="loading-state" class="router-container">
+        <div class="router-card">
+            <div class="router-icon">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <h1 class="router-title">Checking Account Status</h1>
+            <p class="router-message">
+                Please wait while we check your account and subscription status...
+            </p>
+            <div class="progress-bar-custom">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="status-message" id="status-message">
+                Authenticating user...
+            </div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="router-container error-state">
+        <div class="router-card">
+            <div class="router-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h1 class="router-title">Access Denied</h1>
+            <p class="router-message" id="error-message">
+                Please log in to access your dashboard.
+            </p>
+            <div class="d-flex justify-content-center flex-wrap">
+                <a href="../auth/login.html" class="btn-custom">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+                <a href="../auth/register.html" class="btn-custom">
+                    <i class="fas fa-user-plus me-2"></i>Register
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- No Subscription State -->
+    <div id="subscription-state" class="router-container subscription-state">
+        <div class="router-card">
+            <div class="router-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h1 class="router-title">Choose Your Plan</h1>
+            <p class="router-message">
+                Welcome! To access your trading dashboard, please choose a subscription plan that fits your needs.
+            </p>
+            
+            <!-- User Info Display -->
+            <div class="user-info-display">
+                <h4>Welcome, <span id="user-display-name">New Trader</span>!</h4>
+                <p><i class="fas fa-envelope me-2"></i><span id="user-display-email">user@example.com</span></p>
+                <p><i class="fas fa-check-circle me-2" style="color: #10b981;"></i>Email verified</p>
+            </div>
+
+            <div class="d-flex justify-content-center flex-wrap">
+                <a href="/pages/payment/checkout.html?plan=gold" class="btn-custom">
+                    <i class="fas fa-star me-2"></i>Gold Plan - $300
+                </a>
+                <a href="/pages/payment/checkout.html?plan=platinum" class="btn-custom">
+                    <i class="fas fa-gem me-2"></i>Platinum Plan - $600
+                </a>
+            </div>
+            <div class="d-flex justify-content-center flex-wrap">
+                <a href="/pages/payment/checkout.html?plan=diamond" class="btn-custom">
+                    <i class="fas fa-crown me-2"></i>Diamond Plan - $1300
+                </a>
+                <a href="/pages/payment/pricing.html" class="btn-custom" style="background: transparent; color: #667eea; border: 2px solid #667eea;">
+                    <i class="fas fa-info-circle me-2"></i>Compare Plans
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Load config first
+        const script1 = document.createElement('script');
+        script1.src = '/assets/js/config.js';
+        document.head.appendChild(script1);
+
+        script1.onload = function() {
+            // Initialize Firebase
+            const app = initializeApp(window.THA_CONFIG.firebase);
+            const auth = getAuth(app);
+
+            // Initialize Supabase
+            const supabase = window.supabase.createClient(
+                window.THA_CONFIG.database.supabase.url,
+                window.THA_CONFIG.database.supabase.anonKey
+            );
+
+            class DashboardRouter {
+                constructor() {
+                    this.auth = auth;
+                    this.supabase = supabase;
+                    this.statusElement = document.getElementById('status-message');
+                    this.init();
+                }
+
+                init() {
+                    console.log('🚀 Initializing Dashboard Router...');
+                    this.updateStatus('Checking authentication...');
+                    
+                    // Listen for auth state changes
+                    onAuthStateChanged(this.auth, (user) => {
+                        if (user) {
+                            this.handleAuthenticatedUser(user);
+                        } else {
+                            this.handleUnauthenticatedUser();
+                        }
+                    });
+                }
+
+                async handleAuthenticatedUser(user) {
+                    try {
+                        console.log('✅ User authenticated:', user.email);
+                        this.updateStatus('Checking email verification...');
+
+                        // Check if email is verified
+                        if (!user.emailVerified) {
+                            console.log('⚠️ Email not verified, redirecting...');
+                            this.redirectToVerification();
+                            return;
+                        }
+
+                        this.updateStatus('Checking subscription status...');
+
+                        // Get user profile and subscription status
+                        const userProfile = await this.getUserProfile(user.uid);
+                        
+                        if (!userProfile) {
+                            // Create user profile for new user
+                            await this.createUserProfile(user);
+                            this.showSubscriptionSelection(user);
+                            return;
+                        }
+
+                        // Check subscription status
+                        const subscriptionStatus = await this.checkSubscriptionStatus(userProfile);
+                        
+                        if (subscriptionStatus.hasActiveSubscription) {
+                            // User has active subscription - route to dashboard
+                            this.updateStatus(`Redirecting to ${subscriptionStatus.tier} dashboard...`);
+                            await this.routeToTierDashboard(subscriptionStatus.tier, userProfile);
+                        } else {
+                            // No active subscription - show subscription selection
+                            this.showSubscriptionSelection(user, subscriptionStatus.hasExpired);
+                        }
+
+                    } catch (error) {
+                        console.error('❌ Error handling authenticated user:', error);
+                        this.showError('Failed to load account information. Please try again.');
+                    }
+                }
+
+                handleUnauthenticatedUser() {
+                    console.log('❌ User not authenticated');
+                    this.showError('Please log in to access your dashboard.');
+                }
+
+                async getUserProfile(userId) {
+                    try {
+                        const { data, error } = await this.supabase
+                            .from('user_profiles')
+                            .select(`
+                                *,
+                                subscriptions:user_subscriptions(
+                                    tier,
+                                    status,
+                                    current_period_start,
+                                    current_period_end,
+                                    created_at
+                                )
+                            `)
+                            .eq('id', userId)
+                            .single();
+
+                        if (error && error.code !== 'PGRST116') {
+                            throw error;
+                        }
+
+                        return data;
+                    } catch (error) {
+                        console.error('❌ Error fetching user profile:', error);
+                        return null;
+                    }
+                }
+
+                async createUserProfile(user) {
+                    try {
+                        console.log('📝 Creating new user profile...');
+                        
+                        const { data, error } = await this.supabase
+                            .from('user_profiles')
+                            .insert({
+                                id: user.uid,
+                                email: user.email,
+                                first_name: user.displayName?.split(' ')[0] || '',
+                                last_name: user.displayName?.split(' ').slice(1).join(' ') || '',
+                                tier: 'free', // Default to free until they subscribe
+                                email_verified: user.emailVerified,
+                                created_at: new Date().toISOString()
+                            })
+                            .select()
+                            .single();
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        console.log('✅ User profile created:', data);
+                        return data;
+
+                    } catch (error) {
+                        console.error('❌ Error creating user profile:', error);
+                        throw error;
+                    }
+                }
+
+                async checkSubscriptionStatus(userProfile) {
+                    try {
+                        console.log('📊 Checking subscription status for:', userProfile.email);
+                        
+                        if (!userProfile.subscriptions || userProfile.subscriptions.length === 0) {
+                            console.log('📋 No subscriptions found - new user');
+                            return {
+                                hasActiveSubscription: false,
+                                hasExpired: false,
+                                tier: null,
+                                message: 'No subscription found'
+                            };
+                        }
+
+                        // Find most recent subscription
+                        const subscriptions = userProfile.subscriptions.sort((a, b) => 
+                            new Date(b.created_at) - new Date(a.created_at)
+                        );
+                        
+                        const latestSubscription = subscriptions[0];
+                        const now = new Date();
+                        const endDate = new Date(latestSubscription.current_period_end);
+
+                        console.log('📅 Latest subscription:', latestSubscription);
+                        console.log('⏰ Current time:', now);
+                        console.log('📅 Subscription ends:', endDate);
+
+                        if (latestSubscription.status === 'active' && endDate > now) {
+                            console.log('✅ Active subscription found:', latestSubscription.tier);
+                            return {
+                                hasActiveSubscription: true,
+                                hasExpired: false,
+                                tier: latestSubscription.tier,
+                                subscription: latestSubscription
+                            };
+                        } else {
+                            console.log('⚠️ Subscription expired or inactive');
+                            return {
+                                hasActiveSubscription: false,
+                                hasExpired: true,
+                                tier: latestSubscription.tier,
+                                subscription: latestSubscription,
+                                message: 'Subscription expired'
+                            };
+                        }
+
+                    } catch (error) {
+                        console.error('❌ Error checking subscription status:', error);
+                        return {
+                            hasActiveSubscription: false,
+                            hasExpired: false,
+                            tier: null,
+                            error: error.message
+                        };
+                    }
+                }
+
+                showSubscriptionSelection(user, hasExpired = false) {
+                    console.log('🛒 Showing subscription selection page');
+                    
+                    // Update user display
+                    const displayName = user.displayName || user.email.split('@')[0];
+                    document.getElementById('user-display-name').textContent = displayName;
+                    document.getElementById('user-display-email').textContent = user.email;
+
+                    // Update title and message based on whether it's expired or new
+                    const titleElement = document.querySelector('#subscription-state .router-title');
+                    const messageElement = document.querySelector('#subscription-state .router-message');
+                    
+                    if (hasExpired) {
+                        titleElement.textContent = 'Renew Your Subscription';
+                        messageElement.textContent = 'Your subscription has expired. Please renew to continue accessing your trading dashboard.';
+                    } else {
+                        titleElement.textContent = 'Choose Your Plan';
+                        messageElement.textContent = 'Welcome! To access your trading dashboard, please choose a subscription plan that fits your needs.';
+                    }
+
+                    // Show subscription selection
+                    document.getElementById('loading-state').style.display = 'none';
+                    document.getElementById('error-state').style.display = 'none';
+                    document.getElementById('subscription-state').style.display = 'block';
+                }
+
+                async routeToTierDashboard(tier, userProfile) {
+                    try {
+                        // Map tier to dashboard URL
+                        const tierRoutes = {
+                            'gold': '/pages/dashboard/gold.html',
+                            'platinum': '/pages/dashboard/platinum.html',
+                            'diamond': '/pages/dashboard/diamond.html',
+                            'admin': '/pages/dashboard/diamond.html' // Admin gets diamond features
+                        };
+
+                        const dashboardUrl = tierRoutes[tier] || tierRoutes['gold'];
+                        
+                        console.log(`🎯 Routing to ${tier} dashboard: ${dashboardUrl}`);
+                        
+                        // Store user data for dashboard use
+                        sessionStorage.setItem('tha_user_profile', JSON.stringify(userProfile));
+                        sessionStorage.setItem('tha_user_tier', tier);
+                        sessionStorage.setItem('tha_dashboard_access_time', new Date().toISOString());
+                        
+                        // Show success message briefly before redirect
+                        this.updateStatus(`Welcome back! Accessing your ${tier.charAt(0).toUpperCase() + tier.slice(1)} dashboard...`);
+                        
+                        // Redirect after brief delay
+                        setTimeout(() => {
+                            window.location.href = dashboardUrl;
+                        }, 1500);
+
+                    } catch (error) {
+                        console.error('❌ Error routing to dashboard:', error);
+                        this.showError('Failed to access dashboard. Please try again.');
+                    }
+                }
+
+                redirectToVerification() {
+                    this.updateStatus('Email verification required...');
+                    setTimeout(() => {
+                        window.location.href = '/verify.html';
+                    }, 1500);
+                }
+
+                updateStatus(message) {
+                    this.statusElement.textContent = message;
+                    console.log('📝 Status:', message);
+                }
+
+                showError(message) {
+                    document.getElementById('loading-state').style.display = 'none';
+                    document.getElementById('subscription-state').style.display = 'none';
+                    document.getElementById('error-state').style.display = 'block';
+                    document.getElementById('error-message').textContent = message;
+                    console.error('❌ Error:', message);
+                }
+            }
+
+            // Initialize the router
+            new DashboardRouter();
+        };
+    </script>
+</body>
+</html>

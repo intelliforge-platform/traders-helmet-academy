@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - Traders Helmet Academy</title>
+    <meta name="description" content="Manage your account settings, preferences, and security options.">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-blue: #1e40af;
+            --primary-blue-dark: #1e3a8a;
+            --primary-blue-light: #3b82f6;
+            --accent-cream: #fef3c7;
+            --accent-gold: #f59e0b;
+            
+            /* Dark Theme Colors */
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-card: #334155;
+            --dark-border: #475569;
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-hero);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-info h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--dark-border);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-blue-light);
+            border-color: var(--primary-blue-light);
+            transform: translateX(-4px);
+        }
+
+        /* Layout */
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Settings Navigation */
+        .settings-nav {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .settings-nav h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.15);
+            border-left: 3px solid var(--primary-blue-light);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Settings Content */
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .settings-section {
+            display: none;
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--gradient-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title i {
+            color: var(--primary-blue-light);
+        }
+
+        /* Profile Section */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .profile-avatar {
+            position: relative;
+        }
+
+        .avatar-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary-blue-light);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload:hover {
+            background: var(--primary-blue);
+            transform: scale(1.1);
+        }
+
+        .profile-info h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .tier-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue-light);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        /* Toggle Switch */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toggle-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--primary-blue-light);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--primary-blue-light);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 2px solid var(--error);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Security Section */
+        .security-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .security-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .security-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .security-icon.success {
+            background: var(--success);
+        }
+
+        .security-icon.warning {
+            background: var(--warning);
+        }
+
+        .security-details h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .security-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-enabled {
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-disabled {
+            background: var(--error-light);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .settings-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .settings-nav {
+                position: static;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .header-info h1 {
+                font-size: 2rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .security-item {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-info">
+                <h1>Account Settings</h1>
+                <p>Manage your profile, security, and preferences</p>
+            </div>
+            <a href="/dashboard" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+
+        <!-- Settings Layout -->
+        <div class="settings-layout">
+            <!-- Settings Navigation -->
+            <div class="settings-nav">
+                <h3>Settings Menu</h3>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-section="profile">
+                            <i class="fas fa-user nav-icon"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="security">
+                            <i class="fas fa-shield-alt nav-icon"></i>
+                            <span>Security</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="notifications">
+                            <i class="fas fa-bell nav-icon"></i>
+                            <span>Notifications</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="preferences">
+                            <i class="fas fa-cog nav-icon"></i>
+                            <span>Preferences</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="billing">
+                            <i class="fas fa-credit-card nav-icon"></i>
+                            <span>Billing</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="danger">
+                            <i class="fas fa-exclamation-triangle nav-icon"></i>
+                            <span>Danger Zone</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="settings-content">
+                <!-- Profile Section -->
+                <div class="settings-section active" id="profile">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <i class="fas fa-user"></i>
+                            Profile Information
+                        </h2>
+
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <div class="avatar-image" id="avatarDisplay">JD</div>
+                                <button class="avatar-upload" id="avatarUploadBtn">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="profile-info">
+                                <h2 id="profileName">John Doe</h2>
+                                <p id="profileEmail">john.doe@example.com</p>
+                                <div class="tier-badge">
+                                    <i class="fas fa-gem"></i>
+                                    <span id="profileTier">Platinum Member</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="profileForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="firstName">First Name</label>
+                                    <input type="text" id="firstName" class="form-input" value="John" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="lastName">Last Name</label>
+                                    <input type="text" id="lastName" class="form-input" value="Doe" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="email">Email Address</label>
+                                    <input type="email" id="email" class="form-input" value="john.doe@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" class="form-input" placeholder="+1 (555) 123-4567">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="timezone">Timezone</label>
+                                    <select id="timezone" class="form-input form-select">
+                                        <option value="UTC">UTC</option>
+                                        <option value="America/New_York">Eastern Time</option>
+                                        <option value="America/Chicago">Central Time</option>
+                                        <option value="America/Denver">Mountain Time</option>
+                                        <option value="America/Los_Angeles">Pacific Time</option>
+                                        <option value="Europe/London">London</option>
+                                        <option value="Europe/Paris">Paris</option>
+                                        <option value="Asia/Tokyo">Tokyo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="bio">Bio</label>
+                                    <textarea id="bio" class="form-input" rows="3" placeholder="Tell us about yourself..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    Save Changes
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="cancelProfileBtn">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="settings-section" id="security">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <i class="fas fa-shield-alt"></i>
+                            Security Settings
+                        </h2>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon success">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Password</h4>
+                                    <p>Last updated 3 months ago</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" id="changePasswordBtn">
+                                Change Password
+                            </button>
+                        </div>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon warning">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Two-Factor Authentication</h4>
+                                    <p>Add an extra layer of security</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span class="status-badge status-disabled">Disabled</span>
+                                <button class="btn btn-primary" id="setup2FABtn">
+                                    Enable 2FA
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon success">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Email Verification</h4>
+                                    <p>Your email is verified</p>
+                                </div>
+                            </div>
+                            <span class="status-badge status-enabled">Verified</span>
+                        </div>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon success">
+                                    <i class="fas fa-history"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Login History</h4>
+                                    <p>View your recent login activity</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" id="viewLoginHistoryBtn">
+                                View History
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div class="settings-section" id="notifications">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </h2>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <h4>Trading Signals</h4>
+                                <p>Get notified when new signals are available</p>
+                            </div>
+                            <div class="toggle-switch active" data-setting="signals">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <h4>Market News</h4>
+                                <p>Receive important market updates and news</p>
+                            </div>
+                            <div class="toggle-switch active" data-setting="news">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <h4>Educational Content</h4>
+                                <p>Get notifications about new courses and tutorials</p>
+                            </div>
+                            <div class="toggle-switch" data-setting="education">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <h4>Account Updates</h4>
+                                <p>Security alerts and account changes</p>
+                            </div>
+                            <div class="toggle-switch active" data-setting="account">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div class="toggle-info">
+                                <h4>Marketing Emails</h4>
+                                <p>Special offers and promotional content</p>
+                            </div>
+                            <div class="toggle-switch" data-setting="marketing">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" id="saveNotificationsBtn">
+                                <i class="fas fa-save"></i>
+                                Save Preferences
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="settings-section" id="preferences">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <i class="fas fa-cog"></i>
+                            Trading Preferences
+                        </h2>
+
+                        <form id="preferencesForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="defaultPairs">Default Currency Pairs</label>
+                                    <select id="defaultPairs" class="form-input form-select" multiple>
+                                        <option value="EURUSD" selected>EUR/USD</option>
+                                        <option value="GBPUSD" selected>GBP/USD</option>
+                                        <option value="USDJPY">USD/JPY</option>
+                                        <option value="USDCHF">USD/CHF</option>
+                                        <option value="AUDUSD">AUD/USD</option>
+                                        <option value="USDCAD">USD/CAD</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="riskLevel">Risk Level</label>
+                                    <select id="riskLevel" class="form-input form-select">
+                                        <option value="low">Conservative</option>
+                                        <option value="medium" selected>Moderate</option>
+                                        <option value="high">Aggressive</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="tradingHours">Trading Hours</label>
+                                    <select id="tradingHours" class="form-input form-select">
+                                        <option value="london">London Session</option>
+                                        <option value="ny" selected>New York Session</option>
+                                        <option value="tokyo">Tokyo Session</option>
+                                        <option value="all">All Sessions</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="theme">Interface Theme</label>
+                                    <select id="theme" class="form-input form-select">
+                                        <option value="dark" selected>Dark</option>
+                                        <option value="light">Light</option>
+                                        <option value="auto">Auto</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    Save Preferences
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Billing Section -->
+                <div class="settings-section" id="billing">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <i class="fas fa-credit-card"></i>
+                            Billing Information
+                        </h2>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon success">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Payment Method</h4>
+                                    <p>**** **** **** 4242 (Expires 12/25)</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" id="updatePaymentBtn">
+                                Update Card
+                            </button>
+                        </div>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon success">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Billing History</h4>
+                                    <p>View your past invoices and payments</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" id="viewBillingBtn">
+                                View History
+                            </button>
+                        </div>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon success">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Subscription</h4>
+                                    <p>Platinum Plan - $59/month</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="manageSubscriptionBtn">
+                                Manage Plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Danger Zone Section -->
+                <div class="settings-section" id="danger">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Danger Zone
+                        </h2>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon warning">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Export Data</h4>
+                                    <p>Download all your account data</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" id="exportDataBtn">
+                                Export Data
+                            </button>
+                        </div>
+
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-icon warning">
+                                    <i class="fas fa-user-times"></i>
+                                </div>
+                                <div class="security-details">
+                                    <h4>Delete Account</h4>
+                                    <p>Permanently delete your account and all data</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-danger" id="deleteAccountBtn">
+                                Delete Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SettingsManager {
+            constructor() {
+                this.currentSection = 'profile';
+                this.settings = {
+                    notifications: {
+                        signals: true,
+                        news: true,
+                        education: false,
+                        account: true,
+                        marketing: false
+                    },
+                    preferences: {
+                        theme: 'dark',
+                        riskLevel: 'medium',
+                        tradingHours: 'ny',
+                        defaultPairs: ['EURUSD', 'GBPUSD']
+                    }
+                };
+                
+                this.setupEventListeners();
+                this.loadUserData();
+            }
+
+            setupEventListeners() {
+                // Navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = link.dataset.section;
+                        this.switchSection(section);
+                    });
+                });
+
+                // Profile form
+                document.getElementById('profileForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveProfile();
+                });
+
+                // Avatar upload
+                document.getElementById('avatarUploadBtn').addEventListener('click', () => {
+                    document.getElementById('avatarInput').click();
+                });
+
+                document.getElementById('avatarInput').addEventListener('change', (e) => {
+                    this.handleAvatarUpload(e);
+                });
+
+                // Toggle switches
+                document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        toggle.classList.toggle('active');
+                        const setting = toggle.dataset.setting;
+                        if (setting) {
+                            this.settings.notifications[setting] = toggle.classList.contains('active');
+                        }
+                    });
+                });
+
+                // Security buttons
+                document.getElementById('changePasswordBtn').addEventListener('click', () => {
+                    this.changePassword();
+                });
+
+                document.getElementById('setup2FABtn').addEventListener('click', () => {
+                    this.setup2FA();
+                });
+
+                document.getElementById('viewLoginHistoryBtn').addEventListener('click', () => {
+                    this.viewLoginHistory();
+                });
+
+                // Preferences form
+                document.getElementById('preferencesForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.savePreferences();
+                });
+
+                // Notification preferences
+                document.getElementById('saveNotificationsBtn').addEventListener('click', () => {
+                    this.saveNotificationPreferences();
+                });
+
+                // Billing buttons
+                document.getElementById('updatePaymentBtn').addEventListener('click', () => {
+                    this.updatePaymentMethod();
+                });
+
+                document.getElementById('viewBillingBtn').addEventListener('click', () => {
+                    this.viewBillingHistory();
+                });
+
+                document.getElementById('manageSubscriptionBtn').addEventListener('click', () => {
+                    window.location.href = '/subscription';
+                });
+
+                // Danger zone
+                document.getElementById('exportDataBtn').addEventListener('click', () => {
+                    this.exportData();
+                });
+
+                document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+                    this.deleteAccount();
+                });
+            }
+
+            switchSection(section) {
+                // Update navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                document.querySelector(`[data-section="${section}"]`).classList.add('active');
+
+                // Update content
+                document.querySelectorAll('.settings-section').forEach(sec => {
+                    sec.classList.remove('active');
+                });
+                document.getElementById(section).classList.add('active');
+
+                this.currentSection = section;
+            }
+
+            loadUserData() {
+                // Simulate loading user data
+                const userData = {
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    email: 'john.doe@example.com',
+                    phone: '+1 (555) 123-4567',
+                    timezone: 'America/New_York',
+                    bio: 'Passionate trader with 5 years of experience in forex markets.',
+                    tier: 'Platinum',
+                    avatar: null
+                };
+
+                // Update profile display
+                document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
+                document.getElementById('profileEmail').textContent = userData.email;
+                document.getElementById('profileTier').textContent = `${userData.tier} Member`;
+                document.getElementById('headerUserName').textContent = userData.firstName;
+
+                // Update form fields
+                document.getElementById('firstName').value = userData.firstName;
+                document.getElementById('lastName').value = userData.lastName;
+                document.getElementById('email').value = userData.email;
+                document.getElementById('phone').value = userData.phone;
+                document.getElementById('timezone').value = userData.timezone;
+                document.getElementById('bio').value = userData.bio;
+
+                // Update avatar
+                const avatarDisplay = document.getElementById('avatarDisplay');
+                if (userData.avatar) {
+                    avatarDisplay.style.backgroundImage = `url(${userData.avatar})`;
+                    avatarDisplay.style.backgroundSize = 'cover';
+                    avatarDisplay.textContent = '';
+                } else {
+                    avatarDisplay.textContent = userData.firstName.charAt(0) + userData.lastName.charAt(0);
+                }
+            }
+
+            handleAvatarUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const avatarDisplay = document.getElementById('avatarDisplay');
+                        avatarDisplay.style.backgroundImage = `url(${e.target.result})`;
+                        avatarDisplay.style.backgroundSize = 'cover';
+                        avatarDisplay.textContent = '';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            async saveProfile() {
+                try {
+                    const formData = new FormData(document.getElementById('profileForm'));
+                    const profileData = Object.fromEntries(formData);
+
+                    // Show loading state
+                    const submitBtn = document.querySelector('#profileForm button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                    submitBtn.disabled = true;
+
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+
+                    // Update display
+                    document.getElementById('profileName').textContent = `${profileData.firstName} ${profileData.lastName}`;
+                    document.getElementById('profileEmail').textContent = profileData.email;
+
+                    this.showNotification('Profile updated successfully!', 'success');
+
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+
+                } catch (error) {
+                    console.error('Error saving profile:', error);
+                    this.showNotification('Failed to update profile', 'error');
+                }
+            }
+
+            changePassword() {
+                const newPassword = prompt('Enter your new password:');
+                if (newPassword) {
+                    // In a real app, this would open a proper modal
+                    this.showNotification('Password changed successfully!', 'success');
+                }
+            }
+
+            setup2FA() {
+                this.showNotification('2FA setup initiated. Check your email for instructions.', 'success');
+                // In a real app, this would open the 2FA setup modal
+            }
+
+            viewLoginHistory() {
+                this.showNotification('Opening login history...', 'success');
+                // In a real app, this would show a modal with login history
+            }
+
+            savePreferences() {
+                const formData = new FormData(document.getElementById('preferencesForm'));
+                const preferences = Object.fromEntries(formData);
+                
+                this.settings.preferences = { ...this.settings.preferences, ...preferences };
+                this.showNotification('Preferences saved successfully!', 'success');
+            }
+
+            saveNotificationPreferences() {
+                this.showNotification('Notification preferences updated!', 'success');
+            }
+
+            updatePaymentMethod() {
+                this.showNotification('Redirecting to payment update...', 'success');
+                // In a real app, this would redirect to Stripe
+            }
+
+            viewBillingHistory() {
+                window.location.href = '/subscription';
+            }
+
+            exportData() {
+                if (confirm('This will generate a file with all your account data. Continue?')) {
+                    this.showNotification('Data export started. You will receive an email when ready.', 'success');
+                }
+            }
+
+            deleteAccount() {
+                const confirmation = prompt('Type "DELETE" to confirm account deletion:');
+                if (confirmation === 'DELETE') {
+                    this.showNotification('Account deletion initiated. You will receive a confirmation email.', 'error');
+                }
+            }
+
+            showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+
+                // Show notification
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+
+                // Hide notification
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+        }
+
+        // Initialize settings manager
+        document.addEventListener('DOMContentLoaded', () => {
+            new SettingsManager();
+        });
+    </script>
+</body>
+</html>
