@@ -1,3 +1,22 @@
 {
-  "version": 2
+  "version": 2,
+  "builds": [
+    {
+      "src": "**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/auth/login", "dest": "/pages/auth/login.html" },
+    { "src": "/auth/register", "dest": "/pages/auth/register.html" },
+    { "src": "/subscription", "dest": "/pages/payment/subscription.html" },
+    { "src": "/education", "dest": "/pages/education/index.html" },
+    { "src": "/signals", "dest": "/pages/signals/index.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
 }
