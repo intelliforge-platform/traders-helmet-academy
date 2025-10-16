@@ -5,7 +5,7 @@
  */
 
 // Import Firebase modules
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import { initializeApp } from '/assets/vendor/firebase/firebase-app.js';
 import { 
   getAuth, 
   createUserWithEmailAndPassword,
@@ -19,7 +19,7 @@ import {
   setPersistence,
   browserLocalPersistence,
   browserSessionPersistence
-} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+} from '/assets/vendor/firebase/firebase-app.js';
 
 // Firebase Authentication Service Class
 class FirebaseAuthService {
