@@ -17,12 +17,13 @@ const THA_CONFIG = {
 
   // 🔥 FIREBASE CONFIGURATION (Replace with your config from Firebase Console)
   firebase: {
-  apiKey: "AIzaSyC1234567890abcdefghijklmnopqrstuvwxyz", // ← Your actual key
-  authDomain: "traders-helmet-academy.firebaseapp.com", // ← Your actual domain
-  projectId: "traders-helmet-academy", // ← Your actual project ID
-  storageBucket: "traders-helmet-academy.appspot.com", // ← Your actual storage
-  messagingSenderId: "123456789012", // ← Your actual sender ID
-  appId: "1:123456789012:web:abcdef1234567890" // ← Your actual app ID
+   apiKey: "AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
+  authDomain: "traders-helmet-academy.firebaseapp.com",
+  projectId: "traders-helmet-academy",
+  storageBucket: "traders-helmet-academy.firebasestorage.app",
+  messagingSenderId: "789631387729",
+  appId: "1:789631387729:web:d1f176bcc091ec40c75070",
+  measurementId: "G-QBB3Z50V5H"
 },
   
   // 🗄️ DATABASE CONFIGURATION (Keep your existing database for data storage)
@@ -30,8 +31,8 @@ const THA_CONFIG = {
     // You can still use Supabase database or switch to Firestore later
     // For now, keep Supabase for data, just use Firebase for auth
     supabase: {
-      url: 'https://vjxnwqjlaxrvqctiphhb.supabase.co',
-      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqeG53cWpsYXhydnFjdGlwaGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NzQyNDMsImV4cCI6MjA2MzI1MDI0M30.6ScmaKneR4xi5pBG1Ulafx43-z8CM-M-j4FSyx5YfJg'
+      url: 'https://xhaohziyrlwminomymbm.supabase.co',
+      anonKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYW9oeml5cmx3bWlub215bWJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY4NDk3NjgsImV4cCI6MjA3MjQyNTc2OH0.JFKtL1jYMT-sWEZcsEV3ZPHWfTE74uYBRNg13v22vKM
     }
   },
   
