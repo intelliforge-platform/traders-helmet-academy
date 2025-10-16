@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Traders Helmet Academy - Create Your Account</title>
-    <meta name="description" content="Join thousands of successful traders. Create your free account and start receiving professional trading signals today.">
-    
-    <!-- Stylesheets -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Your Config File -->
-    <script src="/assets/js/config.js"></script>
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Traders Helmet Academy - Create Your Account</title>
+  <meta name="description" content="Join thousands of successful traders. Create your free account and start receiving professional trading signals today.">
+
+  <!-- Fonts & Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Load the Unified SDK Configuration -->
+  <script src="../../assets/js/sdk-config.js"></script>
+
     <style>
         :root {
             /* Color Palette */
@@ -652,6 +652,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="bg-elements">
         <div class="bg-circle"></div>
@@ -832,417 +833,156 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-        import { 
-            getAuth, 
-            createUserWithEmailAndPassword,
-            sendEmailVerification,
-            updateProfile,
-            GoogleAuthProvider,
-            signInWithPopup
-        } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+  <!-- ============================================= -->
+  <!-- 🧠 Registration Logic (uses sdk-config.js) -->
+  <!-- ============================================= -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("registrationForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const googleSignupBtn = document.getElementById("googleSignup");
+      const successMessage = document.getElementById("successMessage");
+      const successText = document.getElementById("successText");
+      const globalError = document.getElementById("globalError");
+      const globalErrorText = document.getElementById("globalErrorText");
 
-        // Global variables
-        let auth = null;
-        let googleProvider = null;
+      const setLoading = (state) => {
+        submitBtn.disabled = state;
+        submitBtn.classList.toggle("loading", state);
+        submitBtn.querySelector("span").textContent = state
+          ? "Creating Account..."
+          : "Create Account";
+      };
 
-        // Initialize Firebase when config is ready
-        function initializeFirebase() {
-            if (!window.THA_CONFIG?.firebase) {
-                console.error('❌ Firebase configuration not found');
-                return;
-            }
+      const showError = (msg) => {
+        globalErrorText.textContent = msg;
+        globalError.classList.add("show");
+      };
 
-            try {
-                const app = initializeApp(window.THA_CONFIG.firebase);
-                auth = getAuth(app);
-                googleProvider = new GoogleAuthProvider();
-                console.log('🔥 Firebase initialized successfully');
-            } catch (error) {
-                console.error('❌ Firebase initialization failed:', error);
-            }
+      const showSuccess = (msg) => {
+        successText.textContent = msg;
+        successMessage.classList.add("show");
+        form.style.display = "none";
+      };
+
+      // Wait for SDKs (Firebase + Supabase) to load
+      window.THA_Utils.waitForSDKs().then(async (sdkStatus) => {
+        console.log("✅ SDKs Ready:", sdkStatus);
+
+        const auth = window.THA_Utils.getFirebaseAuth();
+        const supabase = window.THA_Utils.getSupabase();
+
+        if (!auth) {
+          console.error("Firebase Auth unavailable");
+          showError("Firebase is not initialized. Please refresh and try again.");
+          return;
         }
 
-        // Wait for config to load
-        if (window.THA_CONFIG) {
-            initializeFirebase();
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(initializeFirebase, 100);
+        // Handle Email/Password Registration
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          globalError.classList.remove("show");
+
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          if (!data.email || !data.password || !data.firstName || !data.lastName) {
+            showError("Please fill in all required fields.");
+            return;
+          }
+
+          if (!document.getElementById("agreeTerms").checked) {
+            showError("Please agree to the Terms of Service and Privacy Policy.");
+            return;
+          }
+
+          setLoading(true);
+
+          try {
+            const userCredential = await auth.createUserWithEmailAndPassword(
+              data.email,
+              data.password
+            );
+
+            await userCredential.user.updateProfile({
+              displayName: `${data.firstName} ${data.lastName}`,
             });
-        }
 
-        // Make Firebase functions globally available
-        window.firebaseAuth = {
-            createUser: async (email, password, displayName) => {
-                if (!auth) throw new Error('Firebase not initialized');
-                
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                
-                if (displayName) {
-                    await updateProfile(userCredential.user, { displayName });
-                }
-                
-                await sendEmailVerification(userCredential.user);
-                
-                return userCredential;
-            },
-            signInWithGoogle: async () => {
-                if (!auth || !googleProvider) throw new Error('Firebase not initialized');
-                return await signInWithPopup(auth, googleProvider);
-            }
-        };
-    </script>
+            await userCredential.user.sendEmailVerification();
 
-    <script>
-        // Form validation and submission
-        class RegistrationForm {
-            constructor() {
-                this.form = document.getElementById('registrationForm');
-                this.submitBtn = document.getElementById('submitBtn');
-                this.setupEventListeners();
-                this.setupPasswordStrength();
-                this.setupPasswordToggles();
-                console.log('🔧 Firebase Registration Form initialized');
-            }
-
-            setupEventListeners() {
-                this.form.addEventListener('submit', this.handleSubmit.bind(this));
-                
-                // Real-time validation
-                const inputs = this.form.querySelectorAll('.form-input');
-                inputs.forEach(input => {
-                    input.addEventListener('blur', () => this.validateField(input));
-                    input.addEventListener('input', () => this.clearFieldError(input));
-                });
-
-                // Password confirmation validation
-                document.getElementById('confirmPassword').addEventListener('input', 
-                    this.validatePasswordConfirmation.bind(this));
-
-                // Social login
-                document.getElementById('googleSignup').addEventListener('click', 
-                    this.handleGoogleSignup.bind(this));
-            }
-
-            setupPasswordToggles() {
-                const toggles = document.querySelectorAll('.password-toggle');
-                toggles.forEach(toggle => {
-                    toggle.addEventListener('click', () => {
-                        const input = toggle.previousElementSibling;
-                        const icon = toggle.querySelector('i');
-                        
-                        if (input.type === 'password') {
-                            input.type = 'text';
-                            icon.classList.remove('fa-eye');
-                            icon.classList.add('fa-eye-slash');
-                        } else {
-                            input.type = 'password';
-                            icon.classList.remove('fa-eye-slash');
-                            icon.classList.add('fa-eye');
-                        }
-                    });
+            // Store user profile in Supabase
+            if (supabase) {
+              await supabase
+                .from("user_profiles")
+                .insert([
+                  {
+                    uid: userCredential.user.uid,
+                    email: userCredential.user.email,
+                    first_name: data.firstName,
+                    last_name: data.lastName,
+                    phone: data.phone || null,
+                    referral_code: data.referralCode || null,
+                    created_at: new Date().toISOString(),
+                  },
+                ])
+                .then(({ error }) => {
+                  if (error) console.warn("Supabase profile insert failed:", error);
                 });
             }
 
-            setupPasswordStrength() {
-                const passwordInput = document.getElementById('password');
-                const strengthIndicator = document.getElementById('passwordStrength');
+            showSuccess(
+              `Registration successful! We've sent a verification email to ${data.email}.`
+            );
 
-                passwordInput.addEventListener('input', () => {
-                    const password = passwordInput.value;
-                    const strength = this.calculatePasswordStrength(password);
-                    
-                    strengthIndicator.className = 'password-strength';
-                    if (password.length > 0) {
-                        strengthIndicator.classList.add(strength);
-                    }
-                });
-            }
-
-            calculatePasswordStrength(password) {
-                let score = 0;
-                
-                if (password.length >= 8) score++;
-                if (/[a-z]/.test(password)) score++;
-                if (/[A-Z]/.test(password)) score++;
-                if (/[0-9]/.test(password)) score++;
-                if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
-
-                if (score < 3) return 'weak';
-                if (score < 5) return 'medium';
-                return 'strong';
-            }
-
-            validateField(input) {
-                const value = input.value.trim();
-                const name = input.name;
-                let isValid = true;
-                let errorMessage = '';
-
-                switch (name) {
-                    case 'firstName':
-                    case 'lastName':
-                        if (!value) {
-                            errorMessage = 'This field is required';
-                            isValid = false;
-                        } else if (value.length < 2) {
-                            errorMessage = 'Must be at least 2 characters';
-                            isValid = false;
-                        }
-                        break;
-
-                    case 'email':
-                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        if (!value) {
-                            errorMessage = 'Email is required';
-                            isValid = false;
-                        } else if (!emailRegex.test(value)) {
-                            errorMessage = 'Please enter a valid email';
-                            isValid = false;
-                        }
-                        break;
-
-                    case 'phone':
-                        const phoneRegex = /^\+?[\d\s-()]+$/;
-                        if (value && !phoneRegex.test(value)) {
-                            errorMessage = 'Please enter a valid phone number';
-                            isValid = false;
-                        }
-                        break;
-
-                    case 'password':
-                        if (!value) {
-                            errorMessage = 'Password is required';
-                            isValid = false;
-                        } else if (value.length < 6) {
-                            errorMessage = 'Password must be at least 6 characters';
-                            isValid = false;
-                        } else if (this.calculatePasswordStrength(value) === 'weak') {
-                            errorMessage = 'Password is too weak';
-                            isValid = false;
-                        }
-                        break;
-
-                    case 'confirmPassword':
-                        const password = document.getElementById('password').value;
-                        if (!value) {
-                            errorMessage = 'Please confirm your password';
-                            isValid = false;
-                        } else if (value !== password) {
-                            errorMessage = 'Passwords do not match';
-                            isValid = false;
-                        }
-                        break;
-                }
-
-                this.showFieldError(input, errorMessage, !isValid);
-                return isValid;
-            }
-
-            validatePasswordConfirmation() {
-                const confirmPasswordInput = document.getElementById('confirmPassword');
-                this.validateField(confirmPasswordInput);
-            }
-
-            showFieldError(input, message, hasError) {
-                const errorElement = document.getElementById(input.name + 'Error');
-                if (errorElement) {
-                    errorElement.textContent = message;
-                    errorElement.classList.toggle('show', hasError);
-                }
-                
-                input.style.borderColor = hasError ? 'var(--error)' : '';
-            }
-
-            clearFieldError(input) {
-                const errorElement = document.getElementById(input.name + 'Error');
-                if (errorElement) {
-                    errorElement.classList.remove('show');
-                }
-                input.style.borderColor = '';
-            }
-
-            showSuccess(message) {
-                const successElement = document.getElementById('successMessage');
-                const successText = document.getElementById('successText');
-                successText.textContent = message;
-                successElement.classList.add('show');
-                
-                // Hide the form
-                this.form.style.display = 'none';
-            }
-
-            showGlobalError(message) {
-                const errorElement = document.getElementById('globalError');
-                const errorText = document.getElementById('globalErrorText');
-                errorText.textContent = message;
-                errorElement.classList.add('show');
-            }
-
-            hideGlobalError() {
-                const errorElement = document.getElementById('globalError');
-                errorElement.classList.remove('show');
-            }
-
-            async handleSubmit(e) {
-                e.preventDefault();
-                
-                this.hideGlobalError();
-                
-                // Validate all fields
-                const inputs = this.form.querySelectorAll('.form-input[required]');
-                let isFormValid = true;
-                
-                inputs.forEach(input => {
-                    if (!this.validateField(input)) {
-                        isFormValid = false;
-                    }
-                });
-
-                // Check terms agreement
-                const agreeTerms = document.getElementById('agreeTerms');
-                if (!agreeTerms.checked) {
-                    this.showGlobalError('Please agree to the Terms of Service and Privacy Policy');
-                    return;
-                }
-
-                if (!isFormValid) {
-                    this.showGlobalError('Please fix the errors above before submitting');
-                    return;
-                }
-
-                // Show loading state
-                this.setLoadingState(true);
-
-                try {
-                    // Collect form data
-                    const formData = new FormData(this.form);
-                    const userData = Object.fromEntries(formData.entries());
-
-                    console.log('🔄 Starting Firebase registration:', userData.email);
-
-                    // Call Firebase registration
-                    const result = await this.registerUser(userData);
-                    
-                    if (result.success) {
-                        console.log('✅ Registration successful:', result.user.uid);
-                        this.showSuccess(`Registration successful! We've sent a verification email to ${userData.email}. Please check your inbox and click the verification link to activate your account.`);
-                        
-                        // Redirect to verification page after delay
-                        setTimeout(() => {
-                            window.location.href = `/pages/auth/verify-email.html?email=${encodeURIComponent(userData.email)}`;
-                        }, 3000);
-                    } else {
-                        throw new Error(result.message || 'Registration failed');
-                    }
-                } catch (error) {
-                    console.error('❌ Registration error:', error);
-                    this.showGlobalError(error.message);
-                } finally {
-                    this.setLoadingState(false);
-                }
-            }
-
-            async registerUser(userData) {
-                try {
-                    const displayName = `${userData.firstName} ${userData.lastName}`.trim();
-                    
-                    const userCredential = await window.firebaseAuth.createUser(
-                        userData.email,
-                        userData.password,
-                        displayName
-                    );
-                    
-                    return {
-                        success: true,
-                        user: userCredential.user,
-                        message: 'Registration successful'
-                    };
-                } catch (error) {
-                    let message = 'Registration failed. Please try again.';
-                    
-                    switch (error.code) {
-                        case 'auth/email-already-in-use':
-                            message = 'This email address is already registered. Try signing in instead.';
-                            break;
-                        case 'auth/invalid-email':
-                            message = 'Please enter a valid email address.';
-                            break;
-                        case 'auth/weak-password':
-                            message = 'Password is too weak. Please choose a stronger password.';
-                            break;
-                        case 'auth/operation-not-allowed':
-                            message = 'Email registration is currently disabled. Please contact support.';
-                            break;
-                        case 'auth/network-request-failed':
-                            message = 'Network error. Please check your internet connection and try again.';
-                            break;
-                        default:
-                            message = error.message || 'An unexpected error occurred.';
-                    }
-                    
-                    return {
-                        success: false,
-                        message: message
-                    };
-                }
-            }
-
-            async handleGoogleSignup() {
-                try {
-                    console.log('🔄 Starting Google signup');
-                    this.hideGlobalError();
-                    
-                    const result = await window.firebaseAuth.signInWithGoogle();
-                    const user = result.user;
-                    
-                    console.log('✅ Google signup successful:', user.uid);
-                    this.showSuccess(`Welcome ${user.displayName}! Your account has been created successfully.`);
-                    
-                    // Redirect to dashboard
-                    setTimeout(() => {
-                        window.location.href = '/pages/dashboard/';
-                    }, 2000);
-                    
-                } catch (error) {
-                    console.error('❌ Google signup error:', error);
-                    
-                    let message = 'Google signup failed. Please try again.';
-                    
-                    switch (error.code) {
-                        case 'auth/popup-closed-by-user':
-                            message = 'Signup was cancelled. Please try again.';
-                            break;
-                        case 'auth/popup-blocked':
-                            message = 'Popup was blocked. Please allow popups and try again.';
-                            break;
-                        case 'auth/account-exists-with-different-credential':
-                            message = 'An account already exists with this email using a different sign-in method.';
-                            break;
-                        default:
-                            message = error.message || 'Google signup failed.';
-                    }
-                    
-                    this.showGlobalError(message);
-                }
-            }
-
-            setLoadingState(loading) {
-                this.submitBtn.disabled = loading;
-                this.submitBtn.classList.toggle('loading', loading);
-                
-                const buttonText = this.submitBtn.querySelector('span');
-                buttonText.textContent = loading ? 'Creating Account...' : 'Create Account';
-            }
-        }
-
-        // Initialize the registration form
-        document.addEventListener('DOMContentLoaded', () => {
-            new RegistrationForm();
+            setTimeout(() => {
+              window.location.href = `/pages/auth/verify-email.html?email=${encodeURIComponent(
+                data.email
+              )}`;
+            }, 3000);
+          } catch (error) {
+            console.error("❌ Registration failed:", error);
+            showError(error.message || "An unexpected error occurred.");
+          } finally {
+            setLoading(false);
+          }
         });
-    </script>
+
+        // Handle Google Sign-Up
+        googleSignupBtn.addEventListener("click", async () => {
+          try {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+
+            console.log("✅ Google Sign-up Success:", user.email);
+            showSuccess(`Welcome ${user.displayName}! Your account is ready.`);
+
+            // Store Google users in Supabase too
+            if (supabase) {
+              await supabase
+                .from("user_profiles")
+                .upsert([
+                  {
+                    uid: user.uid,
+                    email: user.email,
+                    first_name: user.displayName.split(" ")[0],
+                    last_name: user.displayName.split(" ")[1] || "",
+                    provider: "google",
+                    created_at: new Date().toISOString(),
+                  },
+                ]);
+            }
+
+            setTimeout(() => {
+              window.location.href = "/pages/dashboard/";
+            }, 2000);
+          } catch (error) {
+            console.error("❌ Google Sign-up Error:", error);
+            showError(error.message || "Google sign-up failed.");
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
