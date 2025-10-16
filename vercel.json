@@ -18,5 +18,28 @@
     { "src": "/education", "dest": "/pages/education/index.html" },
     { "src": "/signals", "dest": "/pages/signals/index.html" },
     { "src": "/(.*)", "dest": "/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://unpkg.com https://*.supabase.co; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.supabase.co; img-src 'self' data: https://*; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=()"
+        }
+      ]
+    }
   ]
 }
