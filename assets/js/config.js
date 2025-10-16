@@ -3,12 +3,11 @@
  * Updated with Firebase Authentication
  */
 
-const THA_CONFIG = {
+window.THA_CONFIG = {
   // Environment Settings
   environment: 'development', // 'development', 'staging', 'production'
   debug: true,
   
-<script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
@@ -489,3 +488,4 @@ const ConfigHelper = {
 if (typeof window !== 'undefined') {
   window.ConfigHelper = ConfigHelper;
 }
+
