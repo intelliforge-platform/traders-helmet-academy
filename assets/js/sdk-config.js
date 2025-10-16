@@ -9,12 +9,13 @@
     // Your NEW Firebase Configuration
     const CONFIG = {
         firebase: {
-            apiKey: "AIzaSyCDyE5mNCy6DWAfCfih17dk2g7XI-1_-O8",
-            authDomain: "thacadmey.firebaseapp.com",
-            projectId: "thacadmey",
-            storageBucket: "thacadmey.appspot.com",
-            messagingSenderId: "444072890604",
-            appId: "1:444072890604:web:YOUR_APP_ID"
+          apiKey: "AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
+          authDomain: "traders-helmet-academy.firebaseapp.com",
+          projectId: "traders-helmet-academy",
+          storageBucket: "traders-helmet-academy.firebasestorage.app",
+          messagingSenderId: "789631387729",
+          appId: "1:789631387729:web:d1f176bcc091ec40c75070",
+          measurementId: "G-QBB3Z50V5H"
         },
         supabase: {
             url: "https://xhaohziyrlwminomymbm.supabase.co",
@@ -144,4 +145,5 @@
     window.TRADERS_HELMET_CONFIG = CONFIG;
 
     console.log('✅ SDK Configuration Loaded');
+
 })();
