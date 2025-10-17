@@ -3,7 +3,7 @@
  * Updated with Firebase Authentication
  */
 
-const THA_CONFIG = {
+window.THA_CONFIG = {
   // Environment Settings
   environment: 'development', // 'development', 'staging', 'production'
   debug: true,
@@ -483,5 +483,6 @@ if (typeof window !== 'undefined') {
   window.ConfigHelper = ConfigHelper;
 
 }
+
 
 
