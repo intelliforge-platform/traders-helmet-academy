@@ -6,8 +6,12 @@
     <title>Traders Helmet Academy - Login</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Your Config File -->
-    <script src="/assets/js/config.js"></script>
+  <!-- ====================================================== -->
+  <!-- ✅ Unified SDK & Firebase Initialization               -->
+  <!-- ====================================================== -->
+  <script src="../../assets/js/config.js"></script>
+  <script type="module" src="../../assets/js/firebase-auth.js"></script>
+  <script src="../../assets/js/sdk-config.js"></script>
 
     <style>
         * {
@@ -751,73 +755,93 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-        import { 
-            getAuth, 
-            signInWithEmailAndPassword,
-            sendPasswordResetEmail,
-            sendEmailVerification,
-            onAuthStateChanged
-        } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+ <!-- ============================================= -->
+  <!-- 🧠 Registration Logic (Self-Hosted Firebase) -->
+  <!-- ============================================= -->
+  <script type="module">
+    import { initFirebase, FirebaseAuthService } from '../../assets/js/firebase-auth.js';
 
-        // Global variables
-        let auth = null;
-        let currentUser = null;
+    document.addEventListener("DOMContentLoaded", async () => {
+      const auth = initFirebase();
+      if (!auth) {
+        console.error("Firebase initialization failed. Please check THA_CONFIG.");
+        return;
+      }
 
-        // Initialize Firebase when config is ready
-        function initializeFirebase() {
-            if (!window.THA_CONFIG?.firebase) {
-                console.error('❌ Firebase configuration not found');
-                return;
-            }
+      const form = document.getElementById("registrationForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const googleSignupBtn = document.getElementById("googleSignup");
+      const successMessage = document.getElementById("successMessage");
+      const successText = document.getElementById("successText");
+      const globalError = document.getElementById("globalError");
+      const globalErrorText = document.getElementById("globalErrorText");
 
-            try {
-                const app = initializeApp(window.THA_CONFIG.firebase);
-                auth = getAuth(app);
-                console.log('🔥 Firebase initialized successfully');
+      const setLoading = (state) => {
+        submitBtn.disabled = state;
+        submitBtn.classList.toggle("loading", state);
+        submitBtn.querySelector("span").textContent = state
+          ? "Creating Account..."
+          : "Create Account";
+      };
 
-                // Listen for auth state changes
-                onAuthStateChanged(auth, (user) => {
-                    if (user && user.emailVerified) {
-                        console.log('🔄 User already logged in, redirecting...');
-                        window.location.href = '../payment/checkout.html';
-                    }
-                });
+      const showError = (msg) => {
+        globalErrorText.textContent = msg;
+        globalError.classList.add("show");
+      };
 
-            } catch (error) {
-                console.error('❌ Firebase initialization failed:', error);
-            }
+      const showSuccess = (msg) => {
+        successText.textContent = msg;
+        successMessage.classList.add("show");
+        form.style.display = "none";
+      };
+
+      // Handle Email Registration
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        globalError.classList.remove("show");
+
+        const data = Object.fromEntries(new FormData(form).entries());
+        if (!data.email || !data.password || !data.firstName || !data.lastName) {
+          showError("Please fill in all required fields.");
+          return;
         }
 
-        // Wait for config to load
-        if (window.THA_CONFIG) {
-            initializeFirebase();
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(initializeFirebase, 100);
-            });
+        if (!document.getElementById("agreeTerms").checked) {
+          showError("Please agree to the Terms of Service and Privacy Policy.");
+          return;
         }
 
-        // Make Firebase functions globally available
-        window.firebaseAuth = {
-            signIn: async (email, password) => {
-                if (!auth) throw new Error('Firebase not initialized');
-                return await signInWithEmailAndPassword(auth, email, password);
-            },
-            resetPassword: async (email) => {
-                if (!auth) throw new Error('Firebase not initialized');
-                return await sendPasswordResetEmail(auth, email);
-            },
-            resendVerification: async () => {
-                if (!auth || !currentUser) throw new Error('No user found');
-                return await sendEmailVerification(currentUser);
-            }
-        };
-    </script>
+        setLoading(true);
 
-    <script>
+        try {
+          const userCredential = await FirebaseAuthService.register(
+            auth,
+            data.email,
+            data.password,
+            `${data.firstName} ${data.lastName}`
+          );
+
+          showSuccess(`Registration successful! We've sent a verification email to ${data.email}.`);
+
+          setTimeout(() => {
+            window.location.href = `/pages/auth/verify-email.html?email=${encodeURIComponent(data.email)}`;
+          }, 3000);
+        } catch (error) {
+          console.error("❌ Registration failed:", error);
+          showError(error.message || "An unexpected error occurred.");
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      // Google Sign-Up (placeholder)
+      googleSignupBtn.addEventListener("click", () => {
+        alert("Google sign-up will be added once SDK-scoped OAuth is enabled.");
+      });
+    });
+  </script>
+
+	<script>
         // ===================================================
         // FIREBASE LOGIN INTEGRATION
         // ===================================================
@@ -1222,4 +1246,5 @@
         console.log('🔧 Traders Helmet Academy Firebase Login System Loaded Successfully!');
     </script>
 </body>
+
 </html>
