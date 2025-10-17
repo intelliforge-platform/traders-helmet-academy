@@ -4,7 +4,7 @@
  * Replaces Supabase authentication with Firebase
  */
 
-import { initializeApp } from '/assets/vendor/firebase/firebase-app.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -18,7 +18,7 @@ import {
   setPersistence,
   browserLocalPersistence,
   browserSessionPersistence
-} from '/assets/vendor/firebase/firebase-auth.js';
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 
 // Firebase Authentication Service Class
 class FirebaseAuthService {
@@ -598,3 +598,4 @@ window.supabaseToFirebaseAdapter = {
 };
 
 export { FirebaseAuthService, initializeFirebaseAuth };
+
