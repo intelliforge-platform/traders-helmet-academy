@@ -67,7 +67,7 @@ const THA_CONFIG = {
       price: 300,
       duration: '2 months',
       features: [
-        'Free Education',
+        'Forex Education',
         'Cryptocurrency Education',
         'Binary Options (HFX)',
         'Forex Master Class on Pivot Strategy',
@@ -90,7 +90,7 @@ const THA_CONFIG = {
       price: 600,
       duration: '3 months',
       features: [
-        'Free Education',
+        'Forex Education',
         'Cryptocurrency Education',
         'Binary Options (HFX)',
         'Forex Master Class on Pivot Strategy',
@@ -114,7 +114,7 @@ const THA_CONFIG = {
       price: 1300,
       duration: '6 months',
       features: [
-        'Free Education',
+        'Forex Education',
         'Cryptocurrency Education',
         'Binary Options (HFX)',
         'Forex Master Class on Pivot Strategy',
@@ -483,4 +483,5 @@ if (typeof window !== 'undefined') {
   window.ConfigHelper = ConfigHelper;
 
 }
+
 
