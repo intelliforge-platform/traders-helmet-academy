@@ -25,7 +25,7 @@ const THA_CONFIG = {
     // For now, keep Supabase for data, just use Firebase for auth
     supabase: {
       url: 'https://xhaohziyrlwminomymbm.supabase.co',
-      anonKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYW9oeml5cmx3bWlub215bWJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY4NDk3NjgsImV4cCI6MjA3MjQyNTc2OH0.JFKtL1jYMT-sWEZcsEV3ZPHWfTE74uYBRNg13v22vKM
+      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYW9oeml5cmx3bWlub215bWJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY4NDk3NjgsImV4cCI6MjA3MjQyNTc2OH0.JFKtL1jYMT-sWEZcsEV3ZPHWfTE74uYBRNg13v22vKM'
     }
   },
   
@@ -483,3 +483,4 @@ if (typeof window !== 'undefined') {
   window.ConfigHelper = ConfigHelper;
 
 }
+
