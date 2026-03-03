@@ -9,15 +9,18 @@ import { initFirebase, FirebaseAuthService } from './firebase-auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Registration Page Script Loaded');
-  const auth = initFirebase();
+  
+  // Initialize Firebase and get the auth service instance
+  const firebaseAuth = initFirebase();
 
-  if (!auth) {
+  if (!firebaseAuth) {
     console.error('❌ Firebase initialization failed – auth not available');
     return;
   }
 
   class RegistrationForm {
-    constructor() {
+    constructor(authService) {
+      this.authService = authService; // Store the auth service instance
       this.form = document.getElementById('registrationForm');
       this.submitBtn = document.getElementById('submitBtn');
       this.successMsg = document.getElementById('successMessage');
@@ -29,9 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupEventListeners() {
       this.form.addEventListener('submit', this.handleSubmit.bind(this));
-      document
-        .getElementById('googleSignup')
-        .addEventListener('click', this.handleGoogleSignup.bind(this));
+      
+      const googleBtn = document.getElementById('googleSignup');
+      if (googleBtn) {
+        googleBtn.addEventListener('click', this.handleGoogleSignup.bind(this));
+      }
 
       // Real-time validation
       const inputs = this.form.querySelectorAll('.form-input');
@@ -149,9 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
       this.hideGlobalError();
 
       // Validate required inputs
-      const requiredInputs = this.form.querySelectorAll(
-        '.form-input[required]'
-      );
+      const requiredInputs = this.form.querySelectorAll('.form-input[required]');
       let isValid = true;
       requiredInputs.forEach(input => {
         if (!this.validateField(input)) isValid = false;
@@ -159,9 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const agreeTerms = document.getElementById('agreeTerms');
       if (!agreeTerms.checked) {
-        this.showGlobalError(
-          'Please agree to the Terms of Service and Privacy Policy'
-        );
+        this.showGlobalError('Please agree to the Terms of Service and Privacy Policy');
         return;
       }
 
@@ -176,23 +177,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = Object.fromEntries(new FormData(this.form).entries());
         const displayName = `${data.firstName} ${data.lastName}`.trim();
 
-        const userCredential = await FirebaseAuthService.register(
-          auth,
+        // Use the instance method correctly
+        const result = await this.authService.register(
           data.email,
           data.password,
-          displayName
+          { firstName: data.firstName, lastName: data.lastName }
         );
 
-        this.showSuccess(
-          `Registration successful! A verification email has been sent to ${data.email}.`
-        );
-        console.log('✅ Registered user:', userCredential.user.uid);
+        if (result.success) {
+          this.showSuccess(
+            `Registration successful! A verification email has been sent to ${data.email}.`
+          );
+          console.log('✅ Registered user:', result.user.id);
 
-        setTimeout(() => {
-          window.location.href = `/pages/auth/verify-email.html?email=${encodeURIComponent(
-            data.email
-          )}`;
-        }, 3000);
+          setTimeout(() => {
+            window.location.href = `/pages/auth/verify-email.html?email=${encodeURIComponent(
+              data.email
+            )}`;
+          }, 3000);
+        } else {
+          this.showGlobalError(result.message || 'Registration failed.');
+        }
       } catch (error) {
         console.error('❌ Registration Error:', error);
         this.showGlobalError(error.message || 'Registration failed.');
@@ -204,11 +209,18 @@ document.addEventListener('DOMContentLoaded', () => {
     async handleGoogleSignup() {
       try {
         this.hideGlobalError();
-        const result = await FirebaseAuthService.signInWithGoogle(auth);
+        
+        // Check if signInWithGoogle exists (you'll need to add this to firebase-auth.js)
+        if (!this.authService.signInWithGoogle) {
+          this.showGlobalError('Google sign-up is coming soon! Please use email registration.');
+          return;
+        }
+        
+        const result = await this.authService.signInWithGoogle();
         const user = result.user;
         console.log('✅ Google signup successful:', user.uid);
         this.showSuccess(
-          `Welcome ${user.displayName}! Your account has been created successfully.`
+          `Welcome ${user.displayName || user.email}! Your account has been created successfully.`
         );
         setTimeout(() => {
           window.location.href = '/pages/dashboard/';
@@ -223,9 +235,12 @@ document.addEventListener('DOMContentLoaded', () => {
       this.submitBtn.disabled = isLoading;
       this.submitBtn.classList.toggle('loading', isLoading);
       const text = this.submitBtn.querySelector('span');
-      text.textContent = isLoading ? 'Creating Account...' : 'Create Account';
+      if (text) {
+        text.textContent = isLoading ? 'Creating Account...' : 'Create Account';
+      }
     }
   }
 
-  new RegistrationForm();
+  // Pass the auth service instance to the form
+  new RegistrationForm(firebaseAuth);
 });
