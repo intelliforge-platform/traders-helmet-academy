@@ -1,6 +1,6 @@
 /**
- * Updated Universal SDK Configuration for Traders Helmet Academy
- * Using NEW Firebase and Supabase credentials
+ * Refactored SDK Configuration for Traders Helmet Academy
+ * Using Firebase for Authentication only
  * File: /assets/js/sdk-config.js
  */
 
@@ -10,16 +10,16 @@ console.log('🚀 Loading THA SDK Configuration V2...');
 window.THA_CONFIG = {
     supabase: {
         url: 'https://xhaohziyrlwminomymbm.supabase.co',
-        key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYW9oeml5cmx3bWlub215bWJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY4NDk3NjgsImV4cCI6MjA3MjQyNTc2OH0.JFKtL1jYMT-sWEZcsEV3ZPHWfTE74uYBRNg13v22vKM'
+        key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYW9oeml5cmx3bWlub215bWJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjQ0MjksImV4cCI6MjA2ODI0MDQyOX0.kZhRd5kR0DniH2dG-El6bKyWjdTe3orkmUBR-iPyEwA'
     },
     firebase: {
-        apiKey: "AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
- 	authDomain: "traders-helmet-academy.firebaseapp.com",
-  	projectId: "traders-helmet-academy",
-  	storageBucket: "traders-helmet-academy.firebasestorage.app",
-  	messagingSenderId: "789631387729",
-  	appId: "1:789631387729:web:d1f176bcc091ec40c75070",
-  	measurementId: "G-QBB3Z50V5H"
+		  apiKey: "AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
+		  authDomain: "traders-helmet-academy.firebaseapp.com",
+		  projectId: "traders-helmet-academy",
+		  storageBucket: "traders-helmet-academy.firebasestorage.app",
+		  messagingSenderId: "789631387729",
+		  appId: "1:789631387729:web:d1f176bcc091ec40c75070",
+		  measurementId: "G-QBB3Z50V5H" // You need to update this!
     },
     admin: {
         email: 'admin@tradershelmetacademy.com',
@@ -29,10 +29,10 @@ window.THA_CONFIG = {
     
     // User flow configuration
     userFlow: {
-        anonymousAccess: ['/', '/about', '/contact'],
-        registeredUserAccess: ['/dashboard', '/subscription', '/profile'],
-        subscribedUserAccess: ['/academy', '/signals', '/premium'],
-        adminAccess: ['/admin']
+        anonymousAccess: ['/', '/about', '/contact', '/pages/auth/register.html', '/pages/auth/login.html'],
+        registeredUserAccess: ['/pages/dashboard', '/pages/subscription', '/pages/profile'],
+        subscribedUserAccess: ['/pages/academy', '/pages/signals', '/pages/premium'],
+        adminAccess: ['/pages/admin']
     }
 };
 
@@ -42,7 +42,8 @@ window.THA_SDK_STATUS = {
     supabase: false,
     loading: true,
     user: null,
-    userRole: 'anonymous'
+    userRole: 'anonymous',
+    error: null
 };
 
 // Enhanced SDK Loading Manager
@@ -52,13 +53,16 @@ class THA_SDKManager {
         this.maxAttempts = 3;
         this.listeners = [];
         this.authListeners = [];
+        this.initialized = false;
         this.init();
     }
 
     // Add listener for when SDKs are ready
     onReady(callback) {
+        if (typeof callback !== 'function') return;
+        
         if (!window.THA_SDK_STATUS.loading) {
-            callback(window.THA_SDK_STATUS);
+            try { callback(window.THA_SDK_STATUS); } catch (e) {}
         } else {
             this.listeners.push(callback);
         }
@@ -66,15 +70,16 @@ class THA_SDKManager {
 
     // Add listener for auth state changes
     onAuthStateChanged(callback) {
-        this.authListeners.push(callback);
+        if (typeof callback === 'function') {
+            this.authListeners.push(callback);
+        }
     }
 
     // Notify all listeners
     notifyListeners() {
+        const status = window.THA_SDK_STATUS;
         this.listeners.forEach(callback => {
-            try {
-                callback(window.THA_SDK_STATUS);
-            } catch (error) {
+            try { callback(status); } catch (error) {
                 console.error('SDK ready callback error:', error);
             }
         });
@@ -84,9 +89,7 @@ class THA_SDKManager {
     // Notify auth listeners
     notifyAuthListeners(user) {
         this.authListeners.forEach(callback => {
-            try {
-                callback(user);
-            } catch (error) {
+            try { callback(user); } catch (error) {
                 console.error('Auth callback error:', error);
             }
         });
@@ -97,16 +100,18 @@ class THA_SDKManager {
         console.log('🔧 THA SDK Manager V2 initializing...');
         
         try {
-            await Promise.all([
-                this.loadSupabase(),
-                this.loadFirebase()
-            ]);
+            // Load Firebase first (primary auth)
+            await this.loadFirebase();
+            
+            // Then load Supabase (optional data layer)
+            await this.loadSupabase();
             
             // Initialize auth state monitoring
             this.initAuthStateMonitoring();
             
         } catch (error) {
             console.error('SDK initialization error:', error);
+            window.THA_SDK_STATUS.error = error.message;
         } finally {
             window.THA_SDK_STATUS.loading = false;
             this.notifyListeners();
@@ -114,237 +119,184 @@ class THA_SDKManager {
         }
     }
 
-    // Load Firebase with enhanced error handling
+    // Load Firebase with proper error handling
     async loadFirebase() {
         console.log('🔄 Loading Firebase...');
 
-        // Method 1: Check if already loaded
+        // Check if Firebase Auth Service already loaded
+        if (window.FirebaseAuthService) {
+            window.THA_SDK_STATUS.firebase = true;
+            console.log('✅ Firebase already loaded via FirebaseAuthService');
+            return true;
+        }
+
+        // Try to load from our Firebase Auth module
+        try {
+            // Import the Firebase auth module dynamically
+            const module = await import('./firebase-auth.js');
+            
+            // Initialize Firebase
+            if (module.initializeFirebaseAuth) {
+                window.firebaseAuth = module.initializeFirebaseAuth(window.THA_CONFIG.firebase);
+                window.THA_SDK_STATUS.firebase = true;
+                console.log('✅ Firebase loaded from module');
+                return true;
+            }
+        } catch (error) {
+            console.warn('⚠️ Could not load Firebase module:', error);
+        }
+
+        // Fallback: Check if Firebase is in window
         if (typeof firebase !== 'undefined') {
             try {
                 if (!firebase.apps.length) {
                     firebase.initializeApp(window.THA_CONFIG.firebase);
                 }
                 window.THA_SDK_STATUS.firebase = true;
-                console.log('✅ Firebase ready (pre-loaded)');
-                return;
+                console.log('✅ Firebase ready (global)');
+                return true;
             } catch (error) {
-                console.log('⚠️ Firebase pre-loaded but init failed:', error);
+                console.warn('⚠️ Firebase global init failed:', error);
             }
         }
 
-        // Method 2: Dynamic loading with multiple CDNs
-        const cdnUrls = [
-            'https://www.gstatic.com/firebasejs/9.22.0',
-            'https://www.gstatic.com/firebasejs/10.7.1',
-            'https://cdn.jsdelivr.net/npm/firebase@9.22.0/compat'
-        ];
-
-        for (const baseUrl of cdnUrls) {
-            try {
-                console.log(`🔄 Trying Firebase CDN: ${baseUrl}`);
-                
-                await Promise.all([
-                    this.loadScript(`${baseUrl}/firebase-app-compat.js`),
-                    this.loadScript(`${baseUrl}/firebase-auth-compat.js`)
-                ]);
-
-                if (typeof firebase !== 'undefined') {
-                    if (!firebase.apps.length) {
-                        firebase.initializeApp(window.THA_CONFIG.firebase);
-                    }
-                    window.THA_SDK_STATUS.firebase = true;
-                    console.log('✅ Firebase ready (dynamic)');
-                    return;
-                }
-            } catch (error) {
-                console.log(`❌ Firebase CDN failed: ${baseUrl}`, error);
-                continue;
-            }
-        }
-
-        console.log('❌ All Firebase CDN attempts failed');
+        console.warn('⚠️ Firebase not available - authentication will be limited');
         window.THA_SDK_STATUS.firebase = false;
+        return false;
     }
 
-    // Load Supabase with enhanced error handling
+    // Load Supabase with error handling
     async loadSupabase() {
         console.log('🔄 Loading Supabase...');
 
-        // Method 1: Check if already loaded
+        // Check if Supabase already loaded
+        if (window.supabaseClient) {
+            window.THA_SDK_STATUS.supabase = true;
+            console.log('✅ Supabase client already exists');
+            return true;
+        }
+
+        // Check if Supabase SDK is available
         if (typeof window.supabase !== 'undefined') {
             try {
                 window.supabaseClient = window.supabase.createClient(
                     window.THA_CONFIG.supabase.url,
                     window.THA_CONFIG.supabase.key
                 );
-                
-                // Test connection
-                await window.supabaseClient.auth.getUser();
                 window.THA_SDK_STATUS.supabase = true;
-                console.log('✅ Supabase ready (pre-loaded)');
-                return;
+                console.log('✅ Supabase ready');
+                return true;
             } catch (error) {
-                console.log('⚠️ Supabase pre-loaded but connection failed:', error);
+                console.warn('⚠️ Supabase init failed:', error);
             }
         }
 
-        // Method 2: Dynamic loading with multiple CDNs
-        const cdnUrls = [
-            'https://unpkg.com/@supabase/supabase-js@2',
-            'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.50.0/dist/umd/supabase.js',
-            'https://cdn.skypack.dev/@supabase/supabase-js@2'
-        ];
-
-        for (const url of cdnUrls) {
-            try {
-                console.log(`🔄 Trying Supabase CDN: ${url}`);
-                await this.loadScript(url);
-                
-                if (typeof window.supabase !== 'undefined') {
-                    window.supabaseClient = window.supabase.createClient(
-                        window.THA_CONFIG.supabase.url,
-                        window.THA_CONFIG.supabase.key
-                    );
-                    
-                    // Test connection
-                    await window.supabaseClient.auth.getUser();
-                    window.THA_SDK_STATUS.supabase = true;
-                    console.log('✅ Supabase ready (dynamic)');
-                    return;
-                }
-            } catch (error) {
-                console.log(`❌ Supabase CDN failed: ${url}`, error);
-                continue;
-            }
-        }
-
-        // Method 3: Create manual client
-        console.log('🔄 Creating manual Supabase client...');
-        this.createManualSupabaseClient();
+        // Create fallback client
+        this.createFallbackSupabaseClient();
+        return window.THA_SDK_STATUS.supabase;
     }
 
-    // Manual Supabase client (enhanced for user management)
-    createManualSupabaseClient() {
+    // Create fallback Supabase client
+    createFallbackSupabaseClient() {
         window.supabaseClient = {
             auth: {
                 getUser: async () => {
-                    const user = localStorage.getItem('tha_user');
-                    return { data: { user: user ? JSON.parse(user) : null }, error: null };
+                    const user = window.THA_SDK_STATUS.user;
+                    return { data: { user }, error: null };
                 },
-                signUp: async (credentials) => this.manualSupabaseRequest('auth/v1/signup', 'POST', credentials),
-                signInWithPassword: async (credentials) => this.manualSupabaseRequest('auth/v1/token?grant_type=password', 'POST', credentials),
+                signUp: async () => ({ data: null, error: { message: 'Supabase not available' } }),
+                signInWithPassword: async () => ({ data: null, error: { message: 'Supabase not available' } }),
                 signOut: async () => {
-                    localStorage.removeItem('tha_user');
-                    window.THA_SDK_STATUS.user = null;
-                    window.THA_SDK_STATUS.userRole = 'anonymous';
+                    if (window.firebaseAuth) {
+                        await window.firebaseAuth.signOut();
+                    }
                     return { error: null };
                 }
             },
-            from: (table) => ({
-                select: (columns = '*') => ({
-                    eq: (column, value) => ({
-                        single: async () => this.manualSupabaseRequest(`rest/v1/${table}?${column}=eq.${encodeURIComponent(value)}&select=${columns}`, 'GET'),
-                        limit: (count) => ({
-                            order: (orderColumn, options = {}) => ({
-                                range: async (from, to) => this.manualSupabaseRequest(`rest/v1/${table}?select=${columns}&${column}=eq.${encodeURIComponent(value)}&limit=${count}&offset=${from}&order=${orderColumn}.${options.ascending ? 'asc' : 'desc'}`, 'GET')
+            from: () => ({
+                select: () => ({
+                    eq: () => ({
+                        single: async () => ({ data: null, error: null }),
+                        limit: () => ({
+                            order: () => ({
+                                range: async () => ({ data: [], error: null })
                             })
                         })
                     }),
-                    order: (orderColumn, options = {}) => ({
-                        limit: (count) => ({
-                            range: async (from, to) => this.manualSupabaseRequest(`rest/v1/${table}?select=${columns}&limit=${count}&offset=${from}&order=${orderColumn}.${options.ascending ? 'asc' : 'desc'}`, 'GET')
+                    order: () => ({
+                        limit: () => ({
+                            range: async () => ({ data: [], error: null })
                         })
                     })
                 }),
-                insert: async (data) => this.manualSupabaseRequest(`rest/v1/${table}`, 'POST', data),
-                update: (data) => ({
-                    eq: (column, value) => ({
-                        select: async () => this.manualSupabaseRequest(`rest/v1/${table}?${column}=eq.${encodeURIComponent(value)}`, 'PATCH', data)
+                insert: async () => ({ data: null, error: null }),
+                update: () => ({
+                    eq: () => ({
+                        select: async () => ({ data: null, error: null })
                     })
                 })
             })
         };
 
         window.THA_SDK_STATUS.supabase = true;
-        console.log('✅ Manual Supabase client ready');
-    }
-
-    // Manual Supabase requests (enhanced)
-    async manualSupabaseRequest(endpoint, method, data = null) {
-        try {
-            const url = `${window.THA_CONFIG.supabase.url}/${endpoint}`;
-            const options = {
-                method,
-                headers: {
-                    'apikey': window.THA_CONFIG.supabase.key,
-                    'Authorization': `Bearer ${window.THA_CONFIG.supabase.key}`,
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            if (data && (method === 'POST' || method === 'PATCH')) {
-                options.body = JSON.stringify(data);
-            }
-
-            const response = await fetch(url, options);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            
-            // Format response to match Supabase SDK
-            if (Array.isArray(result)) {
-                return { data: result, error: null };
-            } else {
-                return { data: result, error: null };
-            }
-        } catch (error) {
-            console.error('Manual Supabase request failed:', error);
-            return { data: null, error: error };
-        }
+        console.log('✅ Fallback Supabase client ready');
     }
 
     // Initialize auth state monitoring
     initAuthStateMonitoring() {
-        if (window.THA_SDK_STATUS.firebase && typeof firebase !== 'undefined') {
-            firebase.auth().onAuthStateChanged(async (user) => {
-                await this.handleAuthStateChange(user);
+        // Use FirebaseAuthService if available
+        if (window.firebaseAuth && typeof window.firebaseAuth.onAuthStateChange === 'function') {
+            window.firebaseAuth.onAuthStateChange((user) => {
+                this.handleAuthStateChange(user);
             });
+            console.log('📡 Using FirebaseAuthService for auth monitoring');
+        } 
+        // Fallback to legacy Firebase
+        else if (window.THA_SDK_STATUS.firebase && typeof firebase !== 'undefined' && firebase.auth) {
+            firebase.auth().onAuthStateChanged((user) => {
+                this.handleAuthStateChange(user);
+            });
+            console.log('📡 Using legacy Firebase for auth monitoring');
         }
-        
-        // Also check for stored user sessions
-        this.checkStoredSession();
+        // Fallback to session storage
+        else {
+            this.checkStoredSession();
+            console.log('📡 Using session storage for auth monitoring');
+        }
     }
 
     // Handle auth state changes
     async handleAuthStateChange(user) {
         if (user) {
-            // Get user profile from Supabase
-            const profile = await this.getUserProfile(user.email);
-            
+            // Convert Firebase user to our format
             const userData = {
                 uid: user.uid,
                 email: user.email,
-                displayName: user.displayName,
+                displayName: user.displayName || user.email?.split('@')[0],
                 emailVerified: user.emailVerified,
-                ...profile
+                photoURL: user.photoURL,
+                is_admin: user.email === window.THA_CONFIG.admin.email,
+                role: user.email === window.THA_CONFIG.admin.email ? 'admin' : 'registered',
+                subscription_status: 'inactive' // Default, update from your DB
             };
 
             window.THA_SDK_STATUS.user = userData;
             window.THA_SDK_STATUS.userRole = this.getUserRole(userData);
             
-            // Store in localStorage for session persistence
-            localStorage.setItem('tha_user', JSON.stringify(userData));
+            // Store in localStorage for persistence
+            try {
+                localStorage.setItem('tha_user', JSON.stringify(userData));
+            } catch (e) {}
             
             console.log('✅ User authenticated:', userData.email, 'Role:', window.THA_SDK_STATUS.userRole);
         } else {
             window.THA_SDK_STATUS.user = null;
             window.THA_SDK_STATUS.userRole = 'anonymous';
-            localStorage.removeItem('tha_user');
+            try {
+                localStorage.removeItem('tha_user');
+            } catch (e) {}
             
-            console.log('❌ User logged out');
+            console.log('👋 User logged out');
         }
         
         this.notifyAuthListeners(window.THA_SDK_STATUS.user);
@@ -352,35 +304,17 @@ class THA_SDKManager {
 
     // Check for stored session
     checkStoredSession() {
-        const storedUser = localStorage.getItem('tha_user');
-        if (storedUser) {
-            try {
+        try {
+            const storedUser = localStorage.getItem('tha_user');
+            if (storedUser) {
                 const userData = JSON.parse(storedUser);
                 window.THA_SDK_STATUS.user = userData;
                 window.THA_SDK_STATUS.userRole = this.getUserRole(userData);
                 console.log('✅ Restored user session:', userData.email);
-            } catch (error) {
-                console.error('Failed to restore session:', error);
-                localStorage.removeItem('tha_user');
             }
-        }
-    }
-
-    // Get user profile from Supabase
-    async getUserProfile(email) {
-        if (!window.supabaseClient) return {};
-        
-        try {
-            const { data, error } = await window.supabaseClient
-                .from('user_profiles')
-                .select('*')
-                .eq('email', email)
-                .single();
-            
-            return data || {};
         } catch (error) {
-            console.error('Failed to get user profile:', error);
-            return {};
+            console.error('Failed to restore session:', error);
+            try { localStorage.removeItem('tha_user'); } catch (e) {}
         }
     }
 
@@ -389,42 +323,12 @@ class THA_SDKManager {
         if (!userData) return 'anonymous';
         if (userData.is_admin || userData.role === 'admin') return 'admin';
         if (userData.subscription_status === 'active') return 'subscribed';
-        return 'registered';
-    }
-
-    // Load script dynamically
-    loadScript(src) {
-        return new Promise((resolve, reject) => {
-            if (document.querySelector(`script[src="${src}"]`)) {
-                resolve();
-                return;
-            }
-
-            const script = document.createElement('script');
-            script.src = src;
-            script.onload = resolve;
-            script.onerror = reject;
-            
-            const timeout = setTimeout(() => {
-                reject(new Error('Script load timeout'));
-            }, 10000);
-            
-            script.onload = () => {
-                clearTimeout(timeout);
-                resolve();
-            };
-            
-            script.onerror = () => {
-                clearTimeout(timeout);
-                reject(new Error('Script load failed'));
-            };
-
-            document.head.appendChild(script);
-        });
+        if (userData.emailVerified) return 'registered';
+        return 'anonymous';
     }
 }
 
-// Enhanced utility functions
+// Enhanced utility functions with SAFE access checks
 window.THA_Utils = {
     // Wait for SDKs to be ready
     waitForSDKs: () => {
@@ -437,75 +341,89 @@ window.THA_Utils = {
         });
     },
 
-    // Get Supabase client
-    getSupabase: () => {
-        return window.supabaseClient;
-    },
-
-    // Get Firebase auth
-    getFirebaseAuth: () => {
-        return typeof firebase !== 'undefined' ? firebase.auth() : null;
-    },
-
-    // Get current user
+    // Get current user (SAFE)
     getCurrentUser: () => {
-        return window.THA_SDK_STATUS.user;
+        return window.THA_SDK_STATUS?.user || null;
     },
 
-    // Get user role
+    // Get user role (SAFE)
     getUserRole: () => {
-        return window.THA_SDK_STATUS.userRole;
+        return window.THA_SDK_STATUS?.userRole || 'anonymous';
     },
 
-    // Check if user has access to route
+    // Check if user has access to route (FIXED - with null checks)
     hasAccess: (route) => {
-        const role = window.THA_SDK_STATUS.userRole;
+        // SAFE: Check if SDK status exists
+        if (!window.THA_SDK_STATUS) {
+            console.warn('SDK status not available');
+            return false;
+        }
+        
+        const role = window.THA_SDK_STATUS.userRole || 'anonymous';
+        
+        // SAFE: Check if config exists
+        if (!window.THA_CONFIG?.userFlow) {
+            console.warn('User flow config not available');
+            return role === 'admin'; // Only admins get access if config missing
+        }
+        
         const config = window.THA_CONFIG.userFlow;
         
+        // Admins have access to everything
+        if (role === 'admin') return true;
+        
+        // Check access based on role
         switch (role) {
-            case 'admin':
-                return true; // Admins have access to everything
             case 'subscribed':
-                return !config.adminAccess.includes(route);
+                // Subscribed users can access everything except admin
+                return !config.adminAccess?.includes(route);
             case 'registered':
-                return config.anonymousAccess.includes(route) || 
-                       config.registeredUserAccess.includes(route);
+                // Registered users can access anonymous + registered routes
+                return (config.anonymousAccess?.includes(route) || 
+                       config.registeredUserAccess?.includes(route)) || false;
             case 'anonymous':
-                return config.anonymousAccess.includes(route);
+                // Anonymous users can only access anonymous routes
+                return config.anonymousAccess?.includes(route) || false;
             default:
                 return false;
         }
     },
 
-    // Redirect based on user role
+    // Redirect based on user role (FIXED - with null checks)
     redirectBasedOnRole: (currentPath = window.location.pathname) => {
-        const role = window.THA_SDK_STATUS.userRole;
+        // SAFE: Check if SDK status exists
+        if (!window.THA_SDK_STATUS) {
+            console.warn('SDK status not available, cannot redirect');
+            return;
+        }
         
-        if (!window.THA_Utils.hasAccess(currentPath)) {
-            switch (role) {
-                case 'anonymous':
-                    window.location.href = '/pages/auth/register.html';
-                    break;
-                case 'registered':
-                    window.location.href = '/pages/dashboard/index.html';
-                    break;
-                case 'subscribed':
-                    window.location.href = '/pages/dashboard/index.html';
-                    break;
-                case 'admin':
-                    window.location.href = '/pages/admin/dashboard.html';
-                    break;
+        const role = window.THA_SDK_STATUS.userRole || 'anonymous';
+        
+        try {
+            if (!window.THA_Utils.hasAccess(currentPath)) {
+                switch (role) {
+                    case 'anonymous':
+                        if (!currentPath.includes('/auth/')) {
+                            window.location.href = '/pages/auth/register.html';
+                        }
+                        break;
+                    case 'registered':
+                        window.location.href = '/pages/dashboard/index.html';
+                        break;
+                    case 'subscribed':
+                        window.location.href = '/pages/dashboard/index.html';
+                        break;
+                    case 'admin':
+                        window.location.href = '/pages/admin/dashboard.html';
+                        break;
+                }
             }
+        } catch (error) {
+            console.error('Redirect error:', error);
         }
     },
 
-    // Check if user is admin
-    isAdmin: (email) => {
-        const user = window.THA_SDK_STATUS.user;
-        return user && (user.is_admin || user.role === 'admin');
-    },
-
-    // Simple authentication check
+    // Simple authentication check (for admin)
     simpleAuth: async (email, password) => {
         const { admin } = window.THA_CONFIG;
         
@@ -520,14 +438,16 @@ window.THA_Utils = {
         return { success: false, error: 'Invalid credentials' };
     },
 
-    // Listen for auth state changes
+    // Listen for auth state changes (SAFE)
     onAuthStateChanged: (callback) => {
-        window.THA_SDKManager.onAuthStateChanged(callback);
+        if (window.THA_SDKManager && typeof callback === 'function') {
+            window.THA_SDKManager.onAuthStateChanged(callback);
+        }
     },
 
     // Navigate to dashboard based on user role
     navigateToUserDashboard: () => {
-        const role = window.THA_SDK_STATUS.userRole;
+        const role = window.THA_Utils.getUserRole();
         
         switch (role) {
             case 'admin':
@@ -546,7 +466,46 @@ window.THA_Utils = {
 // Initialize SDK Manager
 window.THA_SDKManager = new THA_SDKManager();
 
-// Add enhanced CSS for loading states
+// Page protection system
+window.THA_PageProtection = {
+    init: () => {
+        // Check access on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                window.THA_Utils.redirectBasedOnRole();
+            }, 500); // Small delay to ensure SDK is ready
+        });
+        
+        // Monitor auth state changes
+        window.THA_Utils.onAuthStateChanged(() => {
+            window.THA_Utils.redirectBasedOnRole();
+        });
+    },
+    
+    // Show auth gate for protected content
+    showAuthGate: (message = 'Please login to access this content') => {
+        // Don't show if already on auth pages
+        if (window.location.pathname.includes('/auth/')) return;
+        
+        const gate = document.createElement('div');
+        gate.className = 'tha-auth-gate';
+        gate.innerHTML = `
+            <div class="tha-auth-message">
+                <h2>Authentication Required</h2>
+                <p>${message}</p>
+                <button onclick="window.location.href='/pages/auth/register.html'">
+                    Create Account
+                </button>
+                <button onclick="window.location.href='/pages/auth/login.html'" style="margin-left: 1rem;">
+                    Login
+                </button>
+            </div>
+        `;
+        document.body.appendChild(gate);
+    }
+};
+
+// Add CSS for loading states
 const style = document.createElement('style');
 style.textContent = `
     .tha-loading {
@@ -614,50 +573,18 @@ style.textContent = `
         border-radius: 5px;
         cursor: pointer;
         margin-top: 1rem;
+        margin-right: 0.5rem;
+    }
+    
+    .tha-auth-message button:last-child {
+        margin-right: 0;
     }
 `;
 document.head.appendChild(style);
 
-// Page protection system
-window.THA_PageProtection = {
-    init: () => {
-        // Check access on page load
-        window.addEventListener('load', () => {
-            window.THA_Utils.redirectBasedOnRole();
-        });
-        
-        // Monitor auth state changes
-        window.THA_Utils.onAuthStateChanged(() => {
-            window.THA_Utils.redirectBasedOnRole();
-        });
-    },
-    
-    // Show auth gate for protected content
-    showAuthGate: (message = 'Please login to access this content') => {
-        const gate = document.createElement('div');
-        gate.className = 'tha-auth-gate';
-        gate.innerHTML = `
-            <div class="tha-auth-message">
-                <h2>Authentication Required</h2>
-                <p>${message}</p>
-                <button onclick="window.location.href='/pages/auth/register.html'">
-                    Create Account
-                </button>
-                <button onclick="window.location.href='/pages/auth/login.html'" style="margin-left: 1rem;">
-                    Login
-                </button>
-            </div>
-        `;
-        document.body.appendChild(gate);
-    }
-};
-
-// Initialize page protection
-window.THA_PageProtection.init();
+// Initialize page protection after a short delay
+setTimeout(() => {
+    window.THA_PageProtection.init();
+}, 100);
 
 console.log('✅ Universal SDK Configuration V2 Loaded');
-
-// Export for modules if needed
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { THA_CONFIG: window.THA_CONFIG, THA_Utils: window.THA_Utils };
-}
