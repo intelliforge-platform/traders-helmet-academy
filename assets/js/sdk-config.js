@@ -13,13 +13,13 @@ window.THA_CONFIG = {
         key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYW9oeml5cmx3bWlub215bWJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjQ0MjksImV4cCI6MjA2ODI0MDQyOX0.kZhRd5kR0DniH2dG-El6bKyWjdTe3orkmUBR-iPyEwA'
     },
     firebase: {
-		  apiKey: "AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
-		  authDomain: "traders-helmet-academy.firebaseapp.com",
-		  projectId: "traders-helmet-academy",
-		  storageBucket: "traders-helmet-academy.firebasestorage.app",
-		  messagingSenderId: "789631387729",
-		  appId: "1:789631387729:web:d1f176bcc091ec40c75070",
-		  measurementId: "G-QBB3Z50V5H" // You need to update this!
+        apiKey: "AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
+        authDomain: "traders-helmet-academy.firebaseapp.com",
+        projectId: "traders-helmet-academy",
+        storageBucket: "traders-helmet-academy.firebasestorage.app",
+        messagingSenderId: "789631387729",
+        appId: "1:789631387729:web:d1f176bcc091ec40c75070",
+        measurementId: "G-QBB3Z50V5H"
     },
     admin: {
         email: 'admin@tradershelmetacademy.com',
@@ -29,12 +29,21 @@ window.THA_CONFIG = {
     
     // User flow configuration
     userFlow: {
-        anonymousAccess: ['/', '/about', '/contact', '/pages/auth/register.html', '/pages/auth/login.html'],
-        registeredUserAccess: ['/pages/dashboard', '/pages/subscription', '/pages/profile'],
-        subscribedUserAccess: ['/pages/academy', '/pages/signals', '/pages/premium'],
-        adminAccess: ['/pages/admin']
+        anonymousAccess: ['/', '/about', '/contact', '/pages/auth/register.html', '/pages/auth/login.html', '/pages/auth/forgot-password.html'],
+        registeredUserAccess: ['/pages/dashboard', '/pages/subscription', '/pages/profile', '/pages/settings'],
+        subscribedUserAccess: ['/pages/academy', '/pages/signals', '/pages/premium', '/pages/live-trading'],
+        adminAccess: ['/pages/admin', '/pages/admin/users', '/pages/admin/settings']
     }
 };
+
+// Log config for debugging
+console.log('📋 THA_CONFIG loaded:', {
+    hasConfig: true,
+    hasUserFlow: true,
+    userFlowKeys: Object.keys(window.THA_CONFIG.userFlow),
+    anonymousRoutes: window.THA_CONFIG.userFlow.anonymousAccess.length,
+    firebaseConfigured: !!window.THA_CONFIG.firebase.apiKey
+});
 
 // Global SDK status
 window.THA_SDK_STATUS = {
@@ -43,7 +52,8 @@ window.THA_SDK_STATUS = {
     loading: true,
     user: null,
     userRole: 'anonymous',
-    error: null
+    error: null,
+    initialized: false
 };
 
 // Enhanced SDK Loading Manager
@@ -114,8 +124,13 @@ class THA_SDKManager {
             window.THA_SDK_STATUS.error = error.message;
         } finally {
             window.THA_SDK_STATUS.loading = false;
+            window.THA_SDK_STATUS.initialized = true;
             this.notifyListeners();
-            console.log('✅ THA SDK Manager V2 ready:', window.THA_SDK_STATUS);
+            console.log('✅ THA SDK Manager V2 ready:', {
+                firebase: window.THA_SDK_STATUS.firebase,
+                supabase: window.THA_SDK_STATUS.supabase,
+                userRole: window.THA_SDK_STATUS.userRole
+            });
         }
     }
 
@@ -143,21 +158,7 @@ class THA_SDKManager {
                 return true;
             }
         } catch (error) {
-            console.warn('⚠️ Could not load Firebase module:', error);
-        }
-
-        // Fallback: Check if Firebase is in window
-        if (typeof firebase !== 'undefined') {
-            try {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(window.THA_CONFIG.firebase);
-                }
-                window.THA_SDK_STATUS.firebase = true;
-                console.log('✅ Firebase ready (global)');
-                return true;
-            } catch (error) {
-                console.warn('⚠️ Firebase global init failed:', error);
-            }
+            console.warn('⚠️ Could not load Firebase module:', error.message);
         }
 
         console.warn('⚠️ Firebase not available - authentication will be limited');
@@ -187,7 +188,7 @@ class THA_SDKManager {
                 console.log('✅ Supabase ready');
                 return true;
             } catch (error) {
-                console.warn('⚠️ Supabase init failed:', error);
+                console.warn('⚠️ Supabase init failed:', error.message);
             }
         }
 
@@ -251,13 +252,6 @@ class THA_SDKManager {
             });
             console.log('📡 Using FirebaseAuthService for auth monitoring');
         } 
-        // Fallback to legacy Firebase
-        else if (window.THA_SDK_STATUS.firebase && typeof firebase !== 'undefined' && firebase.auth) {
-            firebase.auth().onAuthStateChanged((user) => {
-                this.handleAuthStateChange(user);
-            });
-            console.log('📡 Using legacy Firebase for auth monitoring');
-        }
         // Fallback to session storage
         else {
             this.checkStoredSession();
@@ -351,7 +345,7 @@ window.THA_Utils = {
         return window.THA_SDK_STATUS?.userRole || 'anonymous';
     },
 
-    // Check if user has access to route (FIXED - with null checks)
+    // Check if user has access to route (FIXED - with path matching)
     hasAccess: (route) => {
         // SAFE: Check if SDK status exists
         if (!window.THA_SDK_STATUS) {
@@ -361,10 +355,20 @@ window.THA_Utils = {
         
         const role = window.THA_SDK_STATUS.userRole || 'anonymous';
         
-        // SAFE: Check if config exists
-        if (!window.THA_CONFIG?.userFlow) {
-            console.warn('User flow config not available');
-            return role === 'admin'; // Only admins get access if config missing
+        // SAFE: Ensure userFlow config exists with defaults
+        if (!window.THA_CONFIG) {
+            console.warn('THA_CONFIG not available');
+            return role === 'admin';
+        }
+        
+        if (!window.THA_CONFIG.userFlow) {
+            console.warn('userFlow config missing, using defaults');
+            window.THA_CONFIG.userFlow = {
+                anonymousAccess: ['/', '/about', '/contact', '/pages/auth/register.html', '/pages/auth/login.html', '/pages/auth/forgot-password.html'],
+                registeredUserAccess: ['/pages/dashboard', '/pages/subscription', '/pages/profile', '/pages/settings'],
+                subscribedUserAccess: ['/pages/academy', '/pages/signals', '/pages/premium', '/pages/live-trading'],
+                adminAccess: ['/pages/admin']
+            };
         }
         
         const config = window.THA_CONFIG.userFlow;
@@ -372,18 +376,24 @@ window.THA_Utils = {
         // Admins have access to everything
         if (role === 'admin') return true;
         
+        // Check if route matches any allowed paths for the role
+        const checkPathMatch = (allowedPaths) => {
+            if (!allowedPaths || !Array.isArray(allowedPaths)) return false;
+            return allowedPaths.some(path => route.startsWith(path));
+        };
+        
         // Check access based on role
         switch (role) {
             case 'subscribed':
                 // Subscribed users can access everything except admin
-                return !config.adminAccess?.includes(route);
+                return !checkPathMatch(config.adminAccess);
             case 'registered':
                 // Registered users can access anonymous + registered routes
-                return (config.anonymousAccess?.includes(route) || 
-                       config.registeredUserAccess?.includes(route)) || false;
+                return checkPathMatch(config.anonymousAccess) || 
+                       checkPathMatch(config.registeredUserAccess);
             case 'anonymous':
                 // Anonymous users can only access anonymous routes
-                return config.anonymousAccess?.includes(route) || false;
+                return checkPathMatch(config.anonymousAccess);
             default:
                 return false;
         }
@@ -397,10 +407,19 @@ window.THA_Utils = {
             return;
         }
         
+        // Don't redirect if SDK is still loading
+        if (window.THA_SDK_STATUS.loading) {
+            console.log('⏳ SDK still loading, delaying redirect check');
+            setTimeout(() => window.THA_Utils.redirectBasedOnRole(currentPath), 500);
+            return;
+        }
+        
         const role = window.THA_SDK_STATUS.userRole || 'anonymous';
         
         try {
             if (!window.THA_Utils.hasAccess(currentPath)) {
+                console.log(`🔄 Redirecting user (role: ${role}) from ${currentPath}`);
+                
                 switch (role) {
                     case 'anonymous':
                         if (!currentPath.includes('/auth/')) {
@@ -473,7 +492,7 @@ window.THA_PageProtection = {
         window.addEventListener('load', () => {
             setTimeout(() => {
                 window.THA_Utils.redirectBasedOnRole();
-            }, 500); // Small delay to ensure SDK is ready
+            }, 1000); // Increased delay to ensure SDK is ready
         });
         
         // Monitor auth state changes
@@ -582,7 +601,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Initialize page protection after a short delay
+// Initialize page protection after a delay
 setTimeout(() => {
     window.THA_PageProtection.init();
 }, 100);
