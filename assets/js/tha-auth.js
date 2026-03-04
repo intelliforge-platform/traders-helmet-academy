@@ -56,7 +56,28 @@ function fErr(e) {
 // ─── Supabase Helpers ─────────────────────────────────────────────────────────
 async function getUserProfile(uid) {
     const { data } = await db.from('user_profiles').select('*').eq('id', uid).single();
-    return data;
+    return data || null;
+}
+
+// Auto-create profile if missing — uses Firebase user object as fallback
+async function ensureProfile(user) {
+    let profile = await getUserProfile(user.uid);
+    if (!profile) {
+        const nameParts = (user.displayName || '').trim().split(' ');
+        const insertData = {
+            id:                  user.uid,
+            email:               user.email,
+            first_name:          nameParts[0] || '',
+            last_name:           nameParts.slice(1).join(' ') || '',
+            subscription_tier:   'none',
+            subscription_status: 'inactive',
+            email_verified:      user.emailVerified || false,
+            created_at:          new Date().toISOString()
+        };
+        const { error } = await db.from('user_profiles').insert(insertData);
+        if (!error) profile = insertData;
+    }
+    return profile;
 }
 
 // ─── Public API ───────────────────────────────────────────────────────────────
@@ -71,14 +92,14 @@ window.firebaseAuth = {
             if (displayName) await updateProfile(user, { displayName });
             await sendEmailVerification(user);
             const { error } = await db.from('user_profiles').insert({
-                id: user.uid, email,
-                first_name:          profile.firstName   || '',
-                last_name:           profile.lastName    || '',
-                phone:               profile.phone       || null,
-                referral_code:       profile.referralCode|| null,
+                id:                  user.uid,
+                email:               email,
+                first_name:          profile.firstName    || '',
+                last_name:           profile.lastName     || '',
+                phone:               profile.phone        || null,
+                referral_code:       profile.referralCode || null,
                 subscription_tier:   'none',
                 subscription_status: 'inactive',
-                admin_activated:     false,
                 email_verified:      false,
                 created_at:          new Date().toISOString()
             });
@@ -87,7 +108,11 @@ window.firebaseAuth = {
         } catch (e) { return { success: false, message: fErr(e) }; }
     },
 
-    login: async (email, password) => signInWithEmailAndPassword(auth, email, password),
+    login: async (email, password) => {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        await ensureProfile(cred.user);
+        return cred;
+    },
 
     signOut: async () => { try { await signOut(auth); } catch(e){} window.location.href = '/'; },
 
@@ -112,7 +137,6 @@ window.firebaseAuth = {
     signInWithGoogle: async () => signInWithPopup(auth, new GoogleAuthProvider()),
     errorMessage: fErr,
 
-    // PROFILE
     getUserProfile,
     getUserTier: async (uid) => { const p = await getUserProfile(uid); return p?.subscription_tier || 'none'; },
     isSubscribed: async (uid) => { const p = await getUserProfile(uid); return p?.subscription_status === 'active'; },
@@ -128,17 +152,15 @@ window.firebaseAuth = {
     isAdminActivated: async (uid, email) => {
         if (email === ADMIN_EMAIL) return true;
         const p = await getUserProfile(uid);
-        return p?.admin_activated === true;
+        return p?.subscription_status === 'active';
     },
 
     activateUser: async (uid, tier, adminEmail) => {
         const { error } = await db.from('user_profiles').update({
-            admin_activated:     true,
             subscription_tier:   tier,
             subscription_status: 'active',
             activated_by:        adminEmail,
-            activated_at:        new Date().toISOString(),
-            deactivated_at:      null
+            activated_at:        new Date().toISOString()
         }).eq('id', uid);
         if (error) throw new Error(error.message);
         return true;
@@ -146,9 +168,7 @@ window.firebaseAuth = {
 
     deactivateUser: async (uid, adminEmail) => {
         const { error } = await db.from('user_profiles').update({
-            admin_activated:     false,
             subscription_status: 'inactive',
-            deactivated_at:      new Date().toISOString(),
             activated_by:        adminEmail
         }).eq('id', uid);
         if (error) throw new Error(error.message);
@@ -170,12 +190,16 @@ window.firebaseAuth = {
     },
 
     // PAYMENT SUBMISSIONS
-    submitPayment: async (uid, { tier, amount, method, proofReference, proofNotes }) => {
-        const { data, error } = await db.from('payment_submissions').insert({
-            user_id: uid, tier, amount,
+    submitPayment: async (uid, { tier, amount, method, proofReference, proofNotes, cryptoType, txHash }) => {
+        const { data, error } = await db.from('payments').insert({
+            user_id:         uid,
+            tier:            tier,
+            amount:          amount,
             payment_method:  method,
-            proof_reference: proofReference || null,
-            proof_notes:     proofNotes     || null,
+            bank_reference:  method === 'bank_transfer' ? proofReference : null,
+            transfer_notes:  method === 'bank_transfer' ? proofNotes : null,
+            crypto_type:     cryptoType || null,
+            transaction_hash: txHash || null,
             status:          'pending',
             submitted_at:    new Date().toISOString()
         }).select().single();
@@ -184,7 +208,7 @@ window.firebaseAuth = {
     },
 
     getUserPayments: async (uid) => {
-        const { data } = await db.from('payment_submissions').select('*')
+        const { data } = await db.from('payments').select('*')
             .eq('user_id', uid).order('submitted_at', { ascending: false });
         return data || [];
     },
@@ -198,7 +222,7 @@ window.firebaseAuth = {
     },
 
     getAllPayments: async () => {
-        const { data, error } = await db.from('payment_submissions')
+        const { data, error } = await db.from('payments')
             .select('*, user_profiles(first_name, last_name, email)')
             .order('submitted_at', { ascending: false });
         if (error) throw new Error(error.message);
@@ -206,7 +230,7 @@ window.firebaseAuth = {
     },
 
     getPendingPayments: async () => {
-        const { data, error } = await db.from('payment_submissions')
+        const { data, error } = await db.from('payments')
             .select('*, user_profiles(first_name, last_name, email)')
             .eq('status', 'pending').order('submitted_at', { ascending: false });
         if (error) throw new Error(error.message);
@@ -214,7 +238,7 @@ window.firebaseAuth = {
     },
 
     confirmPayment: async (submissionId, uid, tier, adminEmail) => {
-        await db.from('payment_submissions').update({
+        await db.from('payments').update({
             status: 'confirmed', reviewed_by: adminEmail, reviewed_at: new Date().toISOString()
         }).eq('id', submissionId);
         await window.firebaseAuth.activateUser(uid, tier, adminEmail);
@@ -222,7 +246,7 @@ window.firebaseAuth = {
     },
 
     rejectPayment: async (submissionId, adminEmail, reason) => {
-        await db.from('payment_submissions').update({
+        await db.from('payments').update({
             status: 'rejected', reviewed_by: adminEmail,
             reviewed_at: new Date().toISOString(), rejection_reason: reason || null
         }).eq('id', submissionId);
