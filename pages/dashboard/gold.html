@@ -1,411 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gold Dashboard — Traders Helmet Academy</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Firebase Compat SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <style>
-        :root{--gold:#f59e0b;--gold-light:#fbbf24;--gold-dim:rgba(245,158,11,0.12);--bg:#0b0f1a;--surface:#111827;--card:#1a2235;--border:rgba(255,255,255,0.07);--text:#f1f5f9;--muted:#64748b;--sub:#94a3b8;--success:#10b981;--error:#ef4444;}
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Gold Dashboard — Traders Helmet Academy</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+:root{--tc:var(--gold);--tbg:var(--gold-dim);--bg:#0b0f1a;--surface:#111827;--card:#1a2235;--border:rgba(255,255,255,0.07);--text:#f1f5f9;--muted:#64748b;--sub:#94a3b8;--success:#10b981;--error:#ef4444;
+  --gold:#f59e0b;--gold-light:#fbbf24;--gold-dim:rgba(245,158,11,0.12);
+  --plat-light:#a78bfa;--plat-dim:rgba(139,92,246,0.12);
+  --dia-light:#22d3ee;--dia-dim:rgba(6,182,212,0.12);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-        /* Loading */
-        #loadingOverlay{position:fixed;inset:0;background:#0b0f1a;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;transition:opacity 0.5s;}
-        #loadingOverlay.gone{opacity:0;pointer-events:none;}
-        .ring{width:52px;height:52px;border:3px solid var(--gold-dim);border-top-color:var(--gold);border-radius:50%;animation:spin 0.9s linear infinite;}
-        @keyframes spin{to{transform:rotate(360deg);}}
+/* Loading */
+#lo{position:fixed;inset:0;background:#0b0f1a;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;transition:opacity .5s;}
+#lo.gone{opacity:0;pointer-events:none;}
+.ring{width:52px;height:52px;border:3px solid var(--tbg);border-top-color:var(--tc);border-radius:50%;animation:spin .9s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-        /* Toast */
-        #toast{position:fixed;top:1.5rem;right:1.5rem;z-index:9000;padding:0.9rem 1.4rem;border-radius:10px;font-size:0.9rem;font-weight:500;opacity:0;transform:translateX(20px);transition:all 0.3s;pointer-events:none;max-width:360px;}
-        #toast.show{opacity:1;transform:translateX(0);}
-        #toast.success{background:#064e3b;color:#6ee7b7;border:1px solid #065f46;}
-        #toast.error{background:#450a0a;color:#fca5a5;border:1px solid #7f1d1d;}
+/* Toast */
+#toast{position:fixed;top:1.5rem;right:1.5rem;z-index:9000;padding:.9rem 1.4rem;border-radius:10px;font-size:.9rem;font-weight:500;opacity:0;transform:translateX(20px);transition:all .3s;pointer-events:none;max-width:360px;}
+#toast.show{opacity:1;transform:translateX(0);}
+#toast.success{background:#064e3b;color:#6ee7b7;border:1px solid #065f46;}
+#toast.error{background:#450a0a;color:#fca5a5;border:1px solid #7f1d1d;}
 
-        /* Header */
-        header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
-        .h-inner{max-width:1400px;margin:0 auto;padding:0 2rem;height:68px;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
-        .brand{display:flex;align-items:center;gap:0.75rem;text-decoration:none;}
-        .brand img{width:44px;height:44px;object-fit:contain;border-radius:6px;}
-        .brand-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);}
-        .h-right{display:flex;align-items:center;gap:0.65rem;flex-wrap:wrap;}
-        .tier-pill{background:var(--gold-dim);border:1px solid rgba(245,158,11,0.4);color:var(--gold);padding:0.3rem 0.8rem;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.05em;display:flex;align-items:center;gap:0.4rem;}
-        .status-pill{padding:0.3rem 0.8rem;border-radius:20px;font-size:0.75rem;font-weight:600;border:1px solid;display:flex;align-items:center;gap:0.4rem;}
-        .status-pill.active{background:rgba(16,185,129,0.1);border-color:var(--success);color:var(--success);}
-        .status-pill.inactive{background:rgba(239,68,68,0.1);border-color:var(--error);color:var(--error);}
-        .user-chip{display:flex;align-items:center;gap:0.55rem;background:var(--card);border:1px solid var(--border);border-radius:30px;padding:0.25rem 0.75rem 0.25rem 0.25rem;}
-        .avatar{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:0.78rem;color:#1a1a1a;flex-shrink:0;}
-        #hName{font-size:0.85rem;font-weight:500;white-space:nowrap;}
-        .icon-btn{width:35px;height:35px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.85rem;transition:all 0.2s;}
-        .icon-btn:hover{border-color:var(--gold);color:var(--gold);}
-        .logout-btn{display:flex;align-items:center;gap:0.4rem;padding:0.38rem 0.85rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#ef4444;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-        .logout-btn:hover{background:rgba(239,68,68,0.2);}
+/* Header */
+header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.hi{max-width:1400px;margin:0 auto;padding:0 2rem;height:68px;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.brand{display:flex;align-items:center;gap:.75rem;text-decoration:none;}
+.brand img{width:44px;height:44px;object-fit:contain;border-radius:6px;}
+.brand-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);}
+.hr{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;}
+.tier-pill{background:var(--tbg);border:1px solid var(--tc);color:var(--tc);padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em;display:flex;align-items:center;gap:.4rem;}
+.status-pill{padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:600;border:1px solid;display:flex;align-items:center;gap:.4rem;}
+.status-pill.active{background:rgba(16,185,129,.1);border-color:var(--success);color:var(--success);}
+.status-pill.inactive{background:rgba(239,68,68,.1);border-color:var(--error);color:var(--error);}
+.uchip{display:flex;align-items:center;gap:.55rem;background:var(--card);border:1px solid var(--border);border-radius:30px;padding:.25rem .75rem .25rem .25rem;}
+.avatar{width:34px;height:34px;background:linear-gradient(135deg,#f59e0b,#f59e0bcc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.78rem;color:#fff;flex-shrink:0;}
+#hName{font-size:.85rem;font-weight:500;white-space:nowrap;}
+.icon-btn{width:35px;height:35px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .2s;}
+.icon-btn:hover{border-color:var(--tc);color:var(--tc);}
+.lbtn{display:flex;align-items:center;gap:.4rem;padding:.38rem .85rem;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;color:#ef4444;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+.lbtn:hover{background:rgba(239,68,68,.2);}
 
-        /* Layout */
-        .layout{display:grid;grid-template-columns:210px 1fr;min-height:calc(100vh - 68px);}
-        .sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.25rem 0.75rem;}
-        .s-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);padding:0.5rem 0.75rem;margin-top:0.75rem;text-transform:uppercase;}
-        .nav-btn{display:flex;align-items:center;gap:0.7rem;padding:0.7rem 0.85rem;border-radius:9px;cursor:pointer;transition:all 0.2s;color:var(--sub);font-size:0.875rem;font-weight:500;margin-bottom:0.2rem;border:none;background:none;width:100%;text-align:left;}
-        .nav-btn:hover{background:var(--card);color:var(--text);}
-        .nav-btn.on{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(245,158,11,0.2);}
-        .nav-btn i{width:17px;text-align:center;font-size:0.85rem;}
+/* Layout */
+.layout{display:grid;grid-template-columns:210px 1fr;min-height:calc(100vh - 68px);}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.25rem .75rem;}
+.slbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;color:var(--muted);padding:.5rem .75rem;margin-top:.75rem;text-transform:uppercase;}
+.nb{display:flex;align-items:center;gap:.7rem;padding:.7rem .85rem;border-radius:9px;cursor:pointer;transition:all .2s;color:var(--sub);font-size:.875rem;font-weight:500;margin-bottom:.2rem;border:none;background:none;width:100%;text-align:left;}
+.nb:hover{background:var(--card);color:var(--text);}
+.nb.on{background:var(--tbg);color:var(--tc);border:1px solid color-mix(in srgb, #f59e0b 30%, transparent);}
+.nb i{width:17px;text-align:center;font-size:.85rem;}
 
-        /* Main */
-        main{padding:2rem;overflow-y:auto;}
-        .panel{display:none;}
-        .panel.on{display:block;}
-        .page-head{margin-bottom:2rem;}
-        .page-head h1{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;line-height:1.2;}
-        .page-head h1 em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .page-head p{color:var(--sub);margin-top:0.4rem;font-size:0.92rem;}
+/* Main */
+main{padding:2rem;overflow-y:auto;max-height:calc(100vh - 68px);}
+.panel{display:none;}.panel.on{display:block;}
+.ph1{margin-bottom:2rem;}
+.ph1 h1{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;line-height:1.2;}
+.ph1 h1 em{font-style:normal;background:linear-gradient(135deg,#f59e0b,#f59e0bcc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ph1 p{color:var(--sub);margin-top:.4rem;font-size:.92rem;}
 
-        /* Stats */
-        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem;}
-        .scard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.4rem;}
-        .scard .lbl{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.4rem;}
-        .scard .val{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--gold);}
-        .scard .desc{font-size:0.78rem;color:var(--sub);margin-top:0.2rem;}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:1rem;margin-bottom:2rem;}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.4rem;}
+.sc .lbl{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.4rem;}
+.sc .val{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--tc);}
+.sc .dsc{font-size:.78rem;color:var(--sub);margin-top:.2rem;}
 
-        /* Cards */
-        .g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:1.5rem;}
-        .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;}
-        .ctitle{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:1.1rem;display:flex;align-items:center;gap:0.5rem;}
-        .ctitle i{color:var(--gold);}
+/* Cards */
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:1.5rem;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;}
+.ct{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:1.1rem;display:flex;align-items:center;gap:.5rem;}
+.ct i{color:var(--tc);}
 
-        /* Buttons */
-        .btn-g{display:inline-flex;align-items:center;gap:0.5rem;padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#1a1a1a;font-weight:700;font-size:0.9rem;border-radius:10px;text-decoration:none;border:none;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
-        .btn-g:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(245,158,11,0.35);}
-        .btn-o{display:inline-flex;align-items:center;gap:0.5rem;padding:0.8rem 1.8rem;background:transparent;color:var(--text);font-weight:600;font-size:0.9rem;border-radius:10px;text-decoration:none;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
-        .btn-o:hover{border-color:var(--gold);color:var(--gold);}
+/* Buttons */
+.btc{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.8rem;background:linear-gradient(135deg,#f59e0b,#f59e0baa);color:#fff;font-weight:700;font-size:.9rem;border-radius:10px;text-decoration:none;border:none;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btc:hover{transform:translateY(-2px);box-shadow:0 8px 22px #f59e0b44;}
+.bto{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.8rem;background:transparent;color:var(--text);font-weight:600;font-size:.9rem;border-radius:10px;text-decoration:none;border:1px solid var(--border);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.bto:hover{border-color:var(--tc);color:var(--tc);}
 
-        /* Education hero */
-        .edu-hero{background:linear-gradient(135deg,#1a2235,#0b0f1a);border:1px solid var(--gold-dim);border-radius:18px;padding:2.5rem 2rem;text-align:center;margin-bottom:1.5rem;}
-        .edu-hero .icon{font-size:3rem;margin-bottom:0.75rem;display:block;}
-        .edu-hero h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:0.6rem;}
-        .edu-hero p{color:var(--sub);max-width:460px;margin:0 auto 1.75rem;line-height:1.6;font-size:0.92rem;}
-        .btn-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+/* KV rows */
+.kv{display:flex;justify-content:space-between;align-items:center;font-size:.86rem;padding:.45rem 0;border-bottom:1px solid var(--border);}
+.kv:last-child{border:none;}.kv .k{color:var(--sub);}.kv .v{color:var(--text);font-weight:500;}.kv .vc{color:var(--tc);font-weight:600;}
 
-        /* Course list */
-        .clist{display:flex;flex-direction:column;gap:0.65rem;}
-        .citem{display:flex;align-items:center;gap:0.9rem;padding:0.85rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;transition:all 0.2s;}
-        .citem:hover{border-color:rgba(245,158,11,0.3);transform:translateX(3px);}
-        .cico{width:36px;height:36px;background:var(--gold-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:0.85rem;flex-shrink:0;}
-        .cname{font-size:0.88rem;font-weight:500;}
-        .cmeta{font-size:0.75rem;color:var(--muted);}
-        .clink{margin-left:auto;color:var(--gold);text-decoration:none;font-size:0.8rem;font-weight:600;white-space:nowrap;}
+/* Settings */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;}
+.sf{display:flex;flex-direction:column;gap:.35rem;}
+.sf label{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.sfv{padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:.88rem;color:var(--text);}
 
-        /* Placeholder */
-        .ph{text-align:center;padding:3.5rem 2rem;color:var(--muted);}
-        .ph i{font-size:2.5rem;margin-bottom:0.75rem;display:block;opacity:0.35;}
-        .ph h3{font-family:'Syne',sans-serif;font-size:1rem;color:var(--sub);margin-bottom:0.4rem;}
-        .ph p{font-size:0.85rem;}
+/* Progress */
+.pbar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-top:.4rem;}
+.pfill{height:100%;background:linear-gradient(90deg,#f59e0b,#f59e0bcc);border-radius:3px;}
 
-        /* Settings */
-        .s-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;}
-        .sf{display:flex;flex-direction:column;gap:0.35rem;}
-        .sf label{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
-        .sf-val{padding:0.7rem 0.9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:0.88rem;color:var(--text);}
+/* Placeholder */
+.ph{text-align:center;padding:3.5rem 2rem;color:var(--muted);}
+.ph i{font-size:2.5rem;margin-bottom:.75rem;display:block;opacity:.35;}
+.ph h3{font-family:'Syne',sans-serif;font-size:1rem;color:var(--sub);margin-bottom:.4rem;}
+.ph p{font-size:.85rem;}
 
-        /* Progress */
-        .pbar{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-top:0.4rem;}
-        .pfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;}
+/* Mentor */
+.mrow{display:flex;gap:1.25rem;align-items:flex-start;}
+.mav{width:62px;height:62px;background:linear-gradient(135deg,#f59e0b,#f59e0b99);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.mn{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:.2rem;}
+.mr{color:var(--tc);font-size:.82rem;margin-bottom:.6rem;}
+.mb{color:var(--sub);font-size:.86rem;line-height:1.55;}
 
-        /* Mentor */
-        .mentor-row{display:flex;gap:1.25rem;align-items:flex-start;}
-        .m-avatar{width:62px;height:62px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
-        .m-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:0.2rem;}
-        .m-role{color:var(--gold);font-size:0.82rem;margin-bottom:0.6rem;}
-        .m-bio{color:var(--sub);font-size:0.86rem;line-height:1.55;}
-
-        /* Row kv */
-        .kv{display:flex;justify-content:space-between;align-items:center;font-size:0.86rem;padding:0.45rem 0;border-bottom:1px solid var(--border);}
-        .kv:last-child{border:none;}
-        .kv .k{color:var(--sub);}
-        .kv .v{color:var(--text);font-weight:500;}
-        .kv .vg{color:var(--gold);font-weight:600;}
-
-        @media(max-width:768px){.layout{grid-template-columns:1fr;}.sidebar{display:none;}.h-inner{padding:0 1rem;}.page-head h1{font-size:1.4rem;}#hName{display:none;}}
-    </style>
+/* ── Inline Education Portal ─────────────────────────────────── */
+.edu-view{display:none;}.edu-view.on{display:block;}
+.edu-back{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 0;color:var(--sub);font-size:.85rem;font-weight:600;cursor:pointer;border:none;background:none;margin-bottom:1.5rem;transition:color .2s;}
+.edu-back:hover{color:var(--text);}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.25rem;}
+.course-tile{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .25s;}
+.course-tile:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.35);border-color:var(--tc);}
+.course-thumb{height:120px;display:flex;align-items:center;justify-content:center;position:relative;}
+.cbadge{position:absolute;top:.6rem;right:.6rem;padding:.2rem .55rem;border-radius:6px;font-size:.65rem;font-weight:700;background:rgba(0,0,0,.5);color:#fff;}
+.course-body{padding:1rem 1.1rem;}
+.course-body h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.25rem;}
+.course-body p{font-size:.78rem;color:var(--sub);line-height:1.5;margin-bottom:.7rem;}
+.course-footer{display:flex;align-items:center;justify-content:space-between;}
+.cdur{font-size:.73rem;color:var(--muted);display:flex;align-items:center;gap:.3rem;}
+.start-chip{font-size:.78rem;font-weight:700;color:var(--tc);display:flex;align-items:center;gap:.3rem;}
+.cdh{display:flex;gap:1.25rem;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;margin-bottom:1.4rem;}
+.cdh-icon{width:68px;height:68px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;}
+.cdh-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:.25rem;}
+.cdh-meta{font-size:.8rem;color:var(--sub);display:flex;gap:1rem;flex-wrap:wrap;}
+.cdh-desc{margin-top:.5rem;font-size:.86rem;color:var(--sub);line-height:1.5;}
+.llist{display:flex;flex-direction:column;gap:.55rem;}
+.lrow{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;}
+.lrow:hover{border-color:var(--tc);transform:translateX(3px);}
+.lnum{width:27px;height:27px;border-radius:50%;background:var(--tbg);border:1px solid var(--tc);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--tc);flex-shrink:0;}
+.lname{flex:1;font-size:.88rem;font-weight:500;}
+.ldur{font-size:.73rem;color:var(--muted);white-space:nowrap;}
+.lplay{width:28px;height:28px;border-radius:50%;background:var(--tc);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lplay i{font-size:.6rem;color:#111;margin-left:2px;}
+.vwrap{background:#000;border-radius:16px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;}
+.vwrap video{width:100%;height:100%;object-fit:contain;}
+.vph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;color:var(--sub);text-align:center;padding:2rem;width:100%;}
+.vph i{font-size:3rem;opacity:.25;}
+.vph code{font-size:.75rem;opacity:.7;background:rgba(255,255,255,.05);padding:.2rem .5rem;border-radius:4px;}
+.lnav{display:flex;gap:1rem;justify-content:space-between;}
+.lnb{display:flex;align-items:center;gap:.5rem;padding:.7rem 1.2rem;border-radius:9px;font-size:.85rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:all .2s;}
+.lnb:hover{border-color:var(--tc);color:var(--tc);}
+.lnb.pr{background:var(--tc);border-color:var(--tc);color:#111;}
+.lnb:disabled{opacity:.3;cursor:not-allowed;transform:none;}
+@media(max-width:768px){.layout{grid-template-columns:1fr;}.sidebar{display:none;}.hi{padding:0 1rem;}main{padding:1.25rem;}.ph1 h1{font-size:1.4rem;}#hName{display:none;}}
+</style>
 </head>
 <body>
-
-<!-- Loading -->
-<div id="loadingOverlay"><div class="ring"></div><p style="color:var(--muted);font-size:0.9rem;letter-spacing:0.04em;">Loading your dashboard…</p></div>
-
-<!-- Toast -->
+<div id="lo"><div class="ring"></div><p style="color:var(--muted);font-size:.9rem">Loading your dashboard…</p></div>
 <div id="toast"></div>
 
-<!-- Header -->
 <header>
-  <div class="h-inner">
-    <a class="brand" href="/index.html">
-      <img src="/thalogo.png" alt="THA" onerror="this.style.display='none'">
-      <span class="brand-name">Traders Helmet Academy</span>
-    </a>
-    <div class="h-right">
-      <div class="status-pill inactive" id="statusPill">● Loading…</div>
-      <div class="tier-pill"><i class="fas fa-star"></i> Gold Member</div>
-      <div class="user-chip">
-        <div class="avatar" id="hAvatar">?</div>
-        <span id="hName">Loading…</span>
-      </div>
-      <button class="icon-btn" title="Settings" onclick="go('settings')"><i class="fas fa-cog"></i></button>
-      <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </div>
+ <div class="hi">
+  <a class="brand" href="/index.html">
+   <img src="/thalogo.png" alt="THA" onerror="this.style.display='none'">
+   <span class="brand-name">Traders Helmet Academy</span>
+  </a>
+  <div class="hr">
+   <div class="status-pill inactive" id="statusPill">● Loading…</div>
+   <div class="tier-pill"><i class="fas fa-star"></i> Gold Member</div>
+   <div class="uchip"><div class="avatar" id="hAv">?</div><span id="hName">Loading…</span></div>
+   <button class="icon-btn" title="Settings" onclick="go('settings')"><i class="fas fa-cog"></i></button>
+   <button class="lbtn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
   </div>
+ </div>
 </header>
 
-<!-- Layout -->
 <div class="layout">
-  <aside class="sidebar">
-    <div class="s-label">Dashboard</div>
-    <button class="nav-btn on" id="nb-overview"   onclick="go('overview')"  ><i class="fas fa-tachometer-alt"></i> Overview</button>
-    <button class="nav-btn"    id="nb-education"  onclick="go('education')" ><i class="fas fa-graduation-cap"></i> Education</button>
-    <button class="nav-btn"    id="nb-signals"    onclick="go('signals')"   ><i class="fas fa-chart-line"></i> Signals</button>
-    <button class="nav-btn"    id="nb-mentorship" onclick="go('mentorship')"><i class="fas fa-user-tie"></i> Mentorship</button>
-    <div class="s-label">Account</div>
-    <button class="nav-btn"    id="nb-settings"   onclick="go('settings')"  ><i class="fas fa-cog"></i> Settings</button>
-    <button class="nav-btn" onclick="doLogout()" style="color:#ef4444;margin-top:auto;"><i class="fas fa-sign-out-alt"></i> Logout</button>
-  </aside>
+ <aside class="sidebar">
+  <div class="slbl">Dashboard</div>
+  <button class="nb on" id="nb-overview"   onclick="go('overview')"  ><i class="fas fa-tachometer-alt"></i> Overview</button>
+  <button class="nb"    id="nb-education"  onclick="go('education')" ><i class="fas fa-graduation-cap"></i> Education</button>
+  <button class="nb"    id="nb-signals"    onclick="go('signals')"   ><i class="fas fa-chart-line"></i> Signals</button>
+  <button class="nb"    id="nb-mentorship" onclick="go('mentorship')"><i class="fas fa-user-tie"></i> Mentorship</button>
+  <div class="slbl">Account</div>
+  <button class="nb"    id="nb-settings"   onclick="go('settings')"  ><i class="fas fa-cog"></i> Settings</button>
+  <button class="nb" onclick="doLogout()" style="color:#ef4444;margin-top:8px"><i class="fas fa-sign-out-alt"></i> Logout</button>
+ </aside>
 
-  <main>
+ <main>
 
-    <!-- OVERVIEW -->
-    <div class="panel on" id="p-overview">
-      <div class="page-head">
-        <h1>Welcome back, <em id="wName">Trader</em>!</h1>
-        <p id="wSub">Your Gold dashboard is ready.</p>
-      </div>
-      <div class="stats">
-        <div class="scard"><div class="lbl">Days Left</div><div class="val" id="statDays">--</div><div class="desc">Subscription</div></div>
-        <div class="scard"><div class="lbl">Tier</div><div class="val" style="font-size:1.1rem;padding-top:0.4rem;">Gold</div><div class="desc">Your plan</div></div>
-        <div class="scard"><div class="lbl">Courses</div><div class="val">5</div><div class="desc">Available</div></div>
-        <div class="scard"><div class="lbl">Signals</div><div class="val">Live</div><div class="desc">Check tab</div></div>
-      </div>
-      <div class="g2">
-        <div class="card">
-          <div class="ctitle"><i class="fas fa-bolt"></i> Quick Actions</div>
-          <div style="display:flex;flex-direction:column;gap:0.75rem;">
-            <a href="/pages/education/index.html" class="btn-g" style="justify-content:center;"><i class="fas fa-graduation-cap"></i> Open Education Portal</a>
-            <button class="btn-o" onclick="go('signals')" style="justify-content:center;"><i class="fas fa-chart-line"></i> View Signals</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="ctitle"><i class="fas fa-id-card"></i> Account Summary</div>
-          <div class="kv"><span class="k">Name</span><span class="v" id="sumName">--</span></div>
-          <div class="kv"><span class="k">Email</span><span class="v" id="sumEmail">--</span></div>
-          <div class="kv"><span class="k">Tier</span><span class="vg">Gold</span></div>
-          <div class="kv"><span class="k">Status</span><span class="vg" id="sumStatus">--</span></div>
-          <div class="kv"><span class="k">Member Since</span><span class="v" id="sumJoined">--</span></div>
-        </div>
-      </div>
+  <!-- OVERVIEW -->
+  <div class="panel on" id="p-overview">
+   <div class="ph1"><h1>Welcome back, <em id="wName">Trader</em>!</h1><p id="wSub">Your Gold dashboard is ready.</p></div>
+   <div class="stats">
+    <div class="sc"><div class="lbl">Days Left</div><div class="val" id="statDays">--</div><div class="dsc">Subscription</div></div>
+    <div class="sc"><div class="lbl">Tier</div><div class="val" style="font-size:1rem;padding-top:.5rem">Gold</div><div class="dsc">Active plan</div></div>
+    <div class="sc"><div class="lbl">Courses</div><div class="val">5</div><div class="dsc">Available</div></div>
+    <div class="sc"><div class="lbl">Signals</div><div class="val">Live</div><div class="dsc">Check tab</div></div>
+   </div>
+   <div class="g2">
+    <div class="card">
+     <div class="ct"><i class="fas fa-bolt"></i> Quick Actions</div>
+     <div style="display:flex;flex-direction:column;gap:.75rem">
+      <button class="btc" onclick="go('education')" style="justify-content:center"><i class="fas fa-graduation-cap"></i> Open Education Portal</button>
+      <button class="bto" onclick="go('signals')" style="justify-content:center"><i class="fas fa-chart-line"></i> View Signals</button>
+     </div>
     </div>
-
-    <!-- EDUCATION -->
-    <div class="panel" id="p-education">
-      <div class="page-head"><h1><em>Education</em> Portal</h1><p>Your Gold course library — all 5 courses included.</p></div>
-      <div class="edu-hero">
-        <span class="icon">🎓</span>
-        <h2>Gold Education Library</h2>
-        <p>Access 5 comprehensive trading courses covering Forex fundamentals, Crypto, Binary Options (HFX), Pivot Strategy, and Rhombus Strategy.</p>
-        <div class="btn-row">
-          <a href="/pages/education/index.html" class="btn-g"><i class="fas fa-play"></i> Enter Education Portal</a>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ctitle"><i class="fas fa-list"></i> Your Courses</div>
-        <div class="clist">
-          <div class="citem"><div class="cico"><i class="fas fa-graduation-cap"></i></div><div><div class="cname">Forex Education Fundamentals</div><div class="cmeta">Beginner · 4 hours</div></div><a class="clink" href="/pages/education/index.html">Start →</a></div>
-          <div class="citem"><div class="cico"><i class="fab fa-bitcoin"></i></div><div><div class="cname">Cryptocurrency Education</div><div class="cmeta">Intermediate · 6 hours</div></div><a class="clink" href="/pages/education/index.html">Start →</a></div>
-          <div class="citem"><div class="cico"><i class="fas fa-chart-bar"></i></div><div><div class="cname">Binary Options (HFX)</div><div class="cmeta">Advanced · 3 hours</div></div><a class="clink" href="/pages/education/index.html">Start →</a></div>
-          <div class="citem"><div class="cico"><i class="fas fa-compass"></i></div><div><div class="cname">Forex Pivot Strategy</div><div class="cmeta">Intermediate · 5 hours</div></div><a class="clink" href="/pages/education/index.html">Start →</a></div>
-          <div class="citem"><div class="cico"><i class="fas fa-shapes"></i></div><div><div class="cname">Forex Rhombus Strategy</div><div class="cmeta">Advanced · 4 hours</div></div><a class="clink" href="/pages/education/index.html">Start →</a></div>
-        </div>
-      </div>
+    <div class="card">
+     <div class="ct"><i class="fas fa-id-card"></i> Account Summary</div>
+     <div class="kv"><span class="k">Name</span><span class="v" id="sumName">--</span></div>
+     <div class="kv"><span class="k">Email</span><span class="v" id="sumEmail">--</span></div>
+     <div class="kv"><span class="k">Tier</span><span class="vc">Gold</span></div>
+     <div class="kv"><span class="k">Status</span><span class="vc" id="sumStatus">--</span></div>
+     <div class="kv"><span class="k">Member Since</span><span class="v" id="sumJoined">--</span></div>
     </div>
+   </div>
+  </div>
 
-    <!-- SIGNALS -->
-    <div class="panel" id="p-signals">
-      <div class="page-head"><h1><em>Trading</em> Signals</h1><p>Live signals for Gold members.</p></div>
-      <div class="card"><div class="ph"><i class="fas fa-satellite-dish"></i><h3>Signal Feed Active</h3><p>Trading signals will appear here when published by your admin.</p></div></div>
+  <!-- EDUCATION — fully inline, no separate page, single auth session -->
+  <div class="panel" id="p-education">
+   <div class="ph1" id="edu-head">
+    <h1><em>Education</em> Portal</h1>
+    <p>5 courses — all right here, no separate login.</p>
+   </div>
+
+   <!-- View 1: Course catalogue -->
+   <div class="edu-view on" id="edu-courses">
+    <div class="course-grid">
+              <div class="course-tile" onclick="openCourse('forex-fund')">
+                <div class="course-thumb" style="background:linear-gradient(135deg,#1e3a5f,#1e40af)">
+                  <span style="font-size:2.6rem">📈</span>
+                  <span class="course-badge">Beginner</span>
+                </div>
+                <div class="course-body">
+                  <h3>Forex Education Fundamentals</h3>
+                  <p>Master the basics of Forex — currencies, pips, spreads, and risk management fundamentals.</p>
+                  <div class="course-footer">
+                    <span class="course-dur"><i class="fas fa-clock"></i> 4 hrs</span>
+                    <span class="start-chip"><i class="fas fa-play"></i> Start</span>
+                  </div>
+                </div>
+              </div>
+              <div class="course-tile" onclick="openCourse('crypto-edu')">
+                <div class="course-thumb" style="background:linear-gradient(135deg,#1a1a2e,#2a1a0e)">
+                  <span style="font-size:2.6rem">₿</span>
+                  <span class="course-badge">Intermediate</span>
+                </div>
+                <div class="course-body">
+                  <h3>Cryptocurrency Education</h3>
+                  <p>Blockchain fundamentals, crypto trading strategies, and digital asset analysis.</p>
+                  <div class="course-footer">
+                    <span class="course-dur"><i class="fas fa-clock"></i> 6 hrs</span>
+                    <span class="start-chip"><i class="fas fa-play"></i> Start</span>
+                  </div>
+                </div>
+              </div>
+              <div class="course-tile" onclick="openCourse('binary-hfx')">
+                <div class="course-thumb" style="background:linear-gradient(135deg,#1a1a1a,#3b0000)">
+                  <span style="font-size:2.6rem">⚡</span>
+                  <span class="course-badge">Advanced</span>
+                </div>
+                <div class="course-body">
+                  <h3>Binary Options (HFX)</h3>
+                  <p>High-frequency binary options trading — timing, strike selection, and disciplined strategy.</p>
+                  <div class="course-footer">
+                    <span class="course-dur"><i class="fas fa-clock"></i> 3 hrs</span>
+                    <span class="start-chip"><i class="fas fa-play"></i> Start</span>
+                  </div>
+                </div>
+              </div>
+              <div class="course-tile" onclick="openCourse('pivot')">
+                <div class="course-thumb" style="background:linear-gradient(135deg,#0f2027,#1e5270)">
+                  <span style="font-size:2.6rem">🎯</span>
+                  <span class="course-badge">Intermediate</span>
+                </div>
+                <div class="course-body">
+                  <h3>Forex Pivot Strategy</h3>
+                  <p>Precision entry & exit using daily, weekly, and monthly pivot points.</p>
+                  <div class="course-footer">
+                    <span class="course-dur"><i class="fas fa-clock"></i> 5 hrs</span>
+                    <span class="start-chip"><i class="fas fa-play"></i> Start</span>
+                  </div>
+                </div>
+              </div>
+              <div class="course-tile" onclick="openCourse('rhombus')">
+                <div class="course-thumb" style="background:linear-gradient(135deg,#0f1729,#1a3a4a)">
+                  <span style="font-size:2.6rem">💠</span>
+                  <span class="course-badge">Advanced</span>
+                </div>
+                <div class="course-body">
+                  <h3>Forex Rhombus Strategy</h3>
+                  <p>Geometric pattern recognition — identifying rhombus formations for superior market timing.</p>
+                  <div class="course-footer">
+                    <span class="course-dur"><i class="fas fa-clock"></i> 4 hrs</span>
+                    <span class="start-chip"><i class="fas fa-play"></i> Start</span>
+                  </div>
+                </div>
+              </div>
     </div>
+   </div>
 
-    <!-- MENTORSHIP -->
-    <div class="panel" id="p-mentorship">
-      <div class="page-head"><h1><em>Mentorship</em></h1><p>Your dedicated Gold trading mentor.</p></div>
-      <div class="card" style="margin-bottom:1.5rem;">
-        <div class="ctitle"><i class="fas fa-user-tie"></i> Your Mentor</div>
-        <div class="mentor-row">
-          <div class="m-avatar">👨‍💼</div>
-          <div><div class="m-name">Gold Trading Mentor</div><div class="m-role">Senior Forex & Crypto Strategist</div><div class="m-bio">Dedicated Gold-tier mentorship — 2 months of guided learning covering Forex, Pivot & Rhombus strategies, and live market walkthroughs.</div></div>
-        </div>
-      </div>
-      <div class="g2">
-        <div class="card"><div class="ctitle"><i class="fas fa-calendar-alt"></i> Sessions</div><div class="ph" style="padding:2rem 1rem;"><i class="fas fa-video" style="font-size:1.8rem;"></i><h3 style="font-size:0.9rem;">No sessions scheduled yet</h3><p style="font-size:0.8rem;">Your admin will schedule sessions soon.</p></div></div>
-        <div class="card"><div class="ctitle"><i class="fas fa-chart-pie"></i> Progress</div>
-          <div class="kv"><span class="k">Sessions Done</span><span class="v">0 / 8</span></div>
-          <div class="pbar" style="margin:0.5rem 0 1rem;"><div class="pfill" style="width:0%"></div></div>
-          <div class="kv"><span class="k">Overall Grade</span><span class="vg">A+</span></div>
-          <div class="kv"><span class="k">Months Remaining</span><span class="v">2</span></div>
-        </div>
-      </div>
+   <!-- View 2: Lesson list -->
+   <div class="edu-view" id="edu-lessons">
+    <button class="edu-back" onclick="eduBack('courses')"><i class="fas fa-chevron-left"></i> All Courses</button>
+    <div class="cdh" id="edu-cdh"></div>
+    <div class="llist" id="edu-llist"></div>
+   </div>
+
+   <!-- View 3: Video player -->
+   <div class="edu-view" id="edu-player">
+    <button class="edu-back" onclick="eduBack('lessons')"><i class="fas fa-chevron-left"></i> <span id="pb-label">Back to lessons</span></button>
+    <div style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.2rem" id="player-title"></div>
+    <div class="vwrap" id="vwrap">
+     <div class="vph"><i class="fas fa-play-circle"></i><p>Video not yet uploaded.<br>Your admin will add the video file.</p></div>
     </div>
-
-    <!-- SETTINGS -->
-    <div class="panel" id="p-settings">
-      <div class="page-head"><h1><em>Settings</em></h1><p>Your account information.</p></div>
-      <div class="card" style="margin-bottom:1.5rem;">
-        <div class="ctitle"><i class="fas fa-user-circle"></i> Profile</div>
-        <div class="s-grid">
-          <div class="sf"><label>First Name</label><div class="sf-val" id="sFirst">--</div></div>
-          <div class="sf"><label>Last Name</label><div class="sf-val" id="sLast">--</div></div>
-          <div class="sf"><label>Email</label><div class="sf-val" id="sEmail">--</div></div>
-          <div class="sf"><label>Phone</label><div class="sf-val" id="sPhone">--</div></div>
-          <div class="sf"><label>Subscription Tier</label><div class="sf-val" style="color:var(--gold);font-weight:700;">Gold</div></div>
-          <div class="sf"><label>Account Status</label><div class="sf-val" id="sStatus">--</div></div>
-          <div class="sf"><label>Member Since</label><div class="sf-val" id="sJoined">--</div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ctitle"><i class="fas fa-lock"></i> Security</div>
-        <p style="color:var(--sub);font-size:0.87rem;margin-bottom:1rem;">To change your password, sign out and use "Forgot Password" on the login page.</p>
-        <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Sign Out of Account</button>
-      </div>
+    <div class="lnav">
+     <button class="lnb" id="btn-prev" onclick="prevL()"><i class="fas fa-chevron-left"></i> Previous</button>
+     <button class="lnb pr" id="btn-next" onclick="nextL()">Next <i class="fas fa-chevron-right"></i></button>
     </div>
+   </div>
+  </div>
 
-  </main>
+  <!-- SIGNALS -->
+  <div class="panel" id="p-signals">
+   <div class="ph1"><h1><em>Trading</em> Signals</h1><p>Live signals published by your admin.</p></div>
+   <div class="card"><div class="ph"><i class="fas fa-satellite-dish"></i><h3>Signal Feed Active</h3><p>Trading signals will appear here when published.</p></div></div>
+  </div>
+
+  <!-- MENTORSHIP -->
+  <div class="panel" id="p-mentorship">
+   <div class="ph1"><h1><em>Mentorship</em></h1><p>Your dedicated Gold trading mentor.</p></div>
+   <div class="card" style="margin-bottom:1.5rem">
+    <div class="ct"><i class="fas fa-user-tie"></i> Your Mentor</div>
+    <div class="mrow">
+     <div class="mav">👨‍💼</div>
+     <div><div class="mn">Gold Trading Mentor</div><div class="mr">Senior Trading Strategist</div><div class="mb">Dedicated 2 months of mentorship — guided learning covering all your Gold course strategies, live session walkthroughs, and direct mentor support.</div></div>
+    </div>
+   </div>
+   <div class="g2">
+    <div class="card"><div class="ct"><i class="fas fa-calendar-alt"></i> Sessions</div><div class="ph" style="padding:2rem 1rem"><i class="fas fa-video" style="font-size:1.8rem"></i><h3 style="font-size:.9rem">No sessions scheduled yet</h3><p style="font-size:.8rem">Your admin will schedule sessions soon.</p></div></div>
+    <div class="card"><div class="ct"><i class="fas fa-chart-pie"></i> Progress</div>
+     <div class="kv"><span class="k">Sessions Done</span><span class="v">0 / 8</span></div>
+     <div class="pbar" style="margin:.5rem 0 1rem"><div class="pfill" style="width:0%"></div></div>
+     <div class="kv"><span class="k">Overall Grade</span><span class="vc">A+</span></div>
+     <div class="kv"><span class="k">Months Remaining</span><span class="v">2</span></div>
+    </div>
+   </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="panel" id="p-settings">
+   <div class="ph1"><h1><em>Settings</em></h1><p>Your account information.</p></div>
+   <div class="card" style="margin-bottom:1.5rem">
+    <div class="ct"><i class="fas fa-user-circle"></i> Profile</div>
+    <div class="sgrid">
+     <div class="sf"><label>First Name</label><div class="sfv" id="sFirst">--</div></div>
+     <div class="sf"><label>Last Name</label><div class="sfv" id="sLast">--</div></div>
+     <div class="sf"><label>Email</label><div class="sfv" id="sEmail">--</div></div>
+     <div class="sf"><label>Phone</label><div class="sfv" id="sPhone">--</div></div>
+     <div class="sf"><label>Subscription Tier</label><div class="sfv" style="color:var(--tc);font-weight:700">Gold</div></div>
+     <div class="sf"><label>Account Status</label><div class="sfv" id="sStatus">--</div></div>
+     <div class="sf"><label>Member Since</label><div class="sfv" id="sJoined">--</div></div>
+    </div>
+   </div>
+   <div class="card">
+    <div class="ct"><i class="fas fa-lock"></i> Security</div>
+    <p style="color:var(--sub);font-size:.87rem;margin-bottom:1rem">To change your password, sign out and use "Forgot Password" on the login page.</p>
+    <button class="lbtn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+   </div>
+  </div>
+
+ </main>
 </div>
 
 <script>
-// ── Config ────────────────────────────────────────────────────────────────────
-const FB_CFG = {
-    apiKey:"AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
-    authDomain:"traders-helmet-academy.firebaseapp.com",
-    projectId:"traders-helmet-academy",
-    storageBucket:"traders-helmet-academy.firebasestorage.app",
-    messagingSenderId:"789631387729",
-    appId:"1:789631387729:web:d1f176bcc091ec40c75070"
+// ── Config ──────────────────────────────────────────────────────────────────
+const FB_CFG={"apiKey":"AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k","authDomain":"traders-helmet-academy.firebaseapp.com","projectId":"traders-helmet-academy","storageBucket":"traders-helmet-academy.firebasestorage.app","messagingSenderId":"789631387729","appId":"1:789631387729:web:d1f176bcc091ec40c75070"};
+const SB_URL="https://evtghlwiiqvclnudiyor.supabase.co",SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dGdobHdpaXF2Y2xudWRpeW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2MjYzNjgsImV4cCI6MjA4ODIwMjM2OH0.q93SKjmo_8R8AVyAZXtcNxUFH1ntjCkL7g4no6yfGpg";
+const EDU_COURSES=[{"id": "forex-fund", "title": "Forex Education Fundamentals", "icon": "📈", "level": "Beginner", "dur": "4 hrs", "bg": "linear-gradient(135deg,#1e3a5f,#1e40af)", "desc": "Master the basics of Forex — currencies, pips, spreads, and risk management fundamentals.", "lessons": [{"n": "Introduction to Forex", "d": "18 min"}, {"n": "Reading Currency Pairs", "d": "22 min"}, {"n": "Pips, Lots & Leverage", "d": "25 min"}, {"n": "Risk Management Essentials", "d": "30 min"}, {"n": "Your First Trade Walkthrough", "d": "28 min"}]}, {"id": "crypto-edu", "title": "Cryptocurrency Education", "icon": "₿", "level": "Intermediate", "dur": "6 hrs", "bg": "linear-gradient(135deg,#1a1a2e,#2a1a0e)", "desc": "Blockchain fundamentals, crypto trading strategies, and digital asset analysis.", "lessons": [{"n": "What is Blockchain?", "d": "20 min"}, {"n": "Bitcoin & Altcoin Fundamentals", "d": "28 min"}, {"n": "Crypto Market Cycles", "d": "35 min"}, {"n": "On-Chain Analysis", "d": "30 min"}, {"n": "Crypto Trading Strategies", "d": "40 min"}, {"n": "Risk & Portfolio Management", "d": "25 min"}]}, {"id": "binary-hfx", "title": "Binary Options (HFX)", "icon": "⚡", "level": "Advanced", "dur": "3 hrs", "bg": "linear-gradient(135deg,#1a1a1a,#3b0000)", "desc": "High-frequency binary options trading — timing, strike selection, and disciplined strategy.", "lessons": [{"n": "HFX Fundamentals", "d": "20 min"}, {"n": "Choosing Strike Prices", "d": "22 min"}, {"n": "Timing the Market", "d": "25 min"}, {"n": "Risk Discipline for HFX", "d": "18 min"}]}, {"id": "pivot", "title": "Forex Pivot Strategy", "icon": "🎯", "level": "Intermediate", "dur": "5 hrs", "bg": "linear-gradient(135deg,#0f2027,#1e5270)", "desc": "Precision entry & exit using daily, weekly, and monthly pivot points.", "lessons": [{"n": "What are Pivot Points?", "d": "22 min"}, {"n": "Calculating Pivots", "d": "28 min"}, {"n": "Trading S&R Levels", "d": "35 min"}, {"n": "Entry & Exit Rules", "d": "30 min"}, {"n": "Backtesting the Pivot System", "d": "40 min"}]}, {"id": "rhombus", "title": "Forex Rhombus Strategy", "icon": "💠", "level": "Advanced", "dur": "4 hrs", "bg": "linear-gradient(135deg,#0f1729,#1a3a4a)", "desc": "Geometric pattern recognition — identifying rhombus formations for superior market timing.", "lessons": [{"n": "Identifying the Rhombus Pattern", "d": "25 min"}, {"n": "Drawing It Correctly", "d": "30 min"}, {"n": "Entry Trigger Rules", "d": "28 min"}, {"n": "Stop Loss Placement", "d": "22 min"}, {"n": "Live Examples", "d": "35 min"}]}];
+
+// ── State ───────────────────────────────────────────────────────────────────
+let db,auth,fbUser,profile,activeCourse,activeLessonIdx=0;
+
+// ── Boot ─────────────────────────────────────────────────────────────────────
+async function boot(){
+  try{
+    if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
+    auth=firebase.auth(); db=supabase.createClient(SB_URL,SB_KEY);
+    auth.onAuthStateChanged(onAuth);
+  }catch(e){console.error(e);toastMsg('Init failed. Refresh the page.','error');hideLoader();}
+}
+
+async function onAuth(user){
+  if(!user){nav('/pages/auth/login.html');return;}
+  fbUser=user;
+  try{
+    const{data,error}=await db.from('user_profiles').select('*').eq('id',user.uid).single();
+    if(error||!data){nav('/pages/auth/login.html');return;}
+    profile=data;
+    if(profile.subscription_status!=='active'){
+      toastMsg('Subscription inactive. Contact admin.','error');
+      setTimeout(()=>nav('/pages/auth/login2.html'),2500);return;
+    }
+    render();hideLoader();
+  }catch(e){console.error(e);toastMsg('Could not load profile. Refresh.','error');hideLoader();}
+}
+
+function render(){
+  const fn=profile.first_name||'',ln=profile.last_name||'';
+  const full=(fn+' '+ln).trim()||fbUser.email;
+  const email=profile.email||fbUser.email||'';
+  const st=profile.subscription_status||'inactive';
+  const phone=profile.phone||'--';
+  const since=profile.created_at?new Date(profile.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}):'--';
+  const ini=((fn[0]||'')+(ln[0]||'')).toUpperCase()||(email[0]||'?').toUpperCase();
+  set('hAv',ini);set('hName',full);
+  const p=q('#statusPill');
+  if(st==='active'){p.textContent='● Active';p.className='status-pill active';}
+  else{p.textContent='● Inactive';p.className='status-pill inactive';}
+  set('wName',fn||'Trader');
+  set('wSub','Good to have you back, '+full+'. Your Gold membership is '+st+'.');
+  set('sumName',full);set('sumEmail',email);
+  set('sumStatus',st.charAt(0).toUpperCase()+st.slice(1));set('sumJoined',since);
+  loadDays();
+  set('sFirst',fn||'--');set('sLast',ln||'--');set('sEmail',email||'--');
+  set('sPhone',phone);set('sStatus',st.charAt(0).toUpperCase()+st.slice(1));set('sJoined',since);
+}
+
+async function loadDays(){
+  try{
+    const{data}=await db.from('payments').select('submitted_at,tier')
+      .eq('user_id',fbUser.uid).eq('status','verified')
+      .order('submitted_at',{ascending:false}).limit(1);
+    if(data&&data[0]){
+      const d={gold:60,platinum:90,diamond:180};
+      const exp=new Date(new Date(data[0].submitted_at).getTime()+(d[data[0].tier]||60)*864e5);
+      set('statDays',Math.max(0,Math.ceil((exp-new Date())/864e5)));
+    }
+  }catch{}
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function go(tab){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const el=document.getElementById('p-'+tab);if(el)el.classList.add('on');
+  const nb=document.getElementById('nb-'+tab);if(nb)nb.classList.add('on');
+  q('main').scrollTop=0;
+}
+
+async function doLogout(){try{await auth.signOut();}catch{}nav('/index.html');}
+function nav(url){window.location.href=url;}
+function hideLoader(){const e=document.getElementById('lo');if(e)e.classList.add('gone');setTimeout(()=>{if(e)e.style.display='none';},600);}
+function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function q(s){return document.querySelector(s);}
+function toastMsg(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='show '+type;clearTimeout(t._t);t._t=setTimeout(()=>t.className='',4500);}
+
+// ── Education Portal ──────────────────────────────────────────────────────────
+function openCourse(id){
+  activeCourse=EDU_COURSES.find(c=>c.id===id);
+  if(!activeCourse)return;
+  document.getElementById('edu-cdh').innerHTML=`
+    <div class="cdh-icon" style="background:${activeCourse.bg}">${activeCourse.icon}</div>
+    <div>
+      <div class="cdh-title">${activeCourse.title}</div>
+      <div class="cdh-meta">
+        <span><i class="fas fa-clock"></i> ${activeCourse.dur}</span>
+        <span><i class="fas fa-signal"></i> ${activeCourse.level}</span>
+        <span><i class="fas fa-list"></i> ${activeCourse.lessons.length} lessons</span>
+      </div>
+      <div class="cdh-desc">${activeCourse.desc}</div>
+    </div>`;
+  document.getElementById('edu-llist').innerHTML=
+    activeCourse.lessons.map((l,i)=>`
+      <div class="lrow" onclick="openLesson(${i})">
+        <div class="lnum">${i+1}</div>
+        <div class="lname">${l.n}</div>
+        <div class="ldur"><i class="fas fa-clock"></i> ${l.d}</div>
+        <div class="lplay"><i class="fas fa-play"></i></div>
+      </div>`).join('');
+  showEdu('lessons');
+}
+
+function openLesson(idx){
+  activeLessonIdx=idx;
+  const l=activeCourse.lessons[idx];
+  set('player-title',l.n);
+  set('pb-label',activeCourse.title);
+  const src=`/assets/videos/${activeCourse.id}/${idx+1}.mp4`;
+  document.getElementById('vwrap').innerHTML=`
+    <video id="lvid" controls preload="metadata" style="width:100%;height:100%"
+      onerror="vErr()"><source src="${src}" type="video/mp4"></video>`;
+  document.getElementById('lvid').load();
+  const pv=document.getElementById('btn-prev');
+  const nx=document.getElementById('btn-next');
+  pv.disabled=idx===0;
+  nx.disabled=idx===activeCourse.lessons.length-1;
+  nx.textContent=idx===activeCourse.lessons.length-1?'Course Complete ✓':'Next ›';
+  if(idx<activeCourse.lessons.length-1)nx.className='lnb pr';
+  showEdu('player');
+}
+
+window.vErr=function(){
+  document.getElementById('vwrap').innerHTML=`
+    <div class="vph">
+      <i class="fas fa-film"></i>
+      <p>Video not yet uploaded.<br>
+      <span style="font-size:.82rem;opacity:.7">Admin uploads to:<br>
+      <code>/assets/videos/${activeCourse.id}/${activeLessonIdx+1}.mp4</code></span></p>
+    </div>`;
 };
-const SB_URL = "https://evtghlwiiqvclnudiyor.supabase.co";
-const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dGdobHdpaXF2Y2xudWRpeW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2MjYzNjgsImV4cCI6MjA4ODIwMjM2OH0.q93SKjmo_8R8AVyAZXtcNxUFH1ntjCkL7g4no6yfGpg";
 
-let db, auth, fbUser, profile;
+function prevL(){if(activeLessonIdx>0)openLesson(activeLessonIdx-1);}
+function nextL(){if(activeLessonIdx<activeCourse.lessons.length-1)openLesson(activeLessonIdx+1);}
 
-// ── Boot ──────────────────────────────────────────────────────────────────────
-async function boot() {
-    try {
-        if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
-        auth = firebase.auth();
-        db   = supabase.createClient(SB_URL, SB_KEY);
-        auth.onAuthStateChanged(onAuth);
-    } catch(e) {
-        console.error(e);
-        toast('Initialisation failed. Please refresh.', 'error');
-        hideLoader();
-    }
+function showEdu(name){
+  document.querySelectorAll('.edu-view').forEach(v=>v.classList.remove('on'));
+  const e=document.getElementById('edu-'+name);if(e)e.classList.add('on');
+  q('main').scrollTop=0;
 }
 
-async function onAuth(user) {
-    if (!user) { go2('/pages/auth/login.html'); return; }
-    fbUser = user;
-    try {
-        const { data, error } = await db.from('user_profiles').select('*').eq('id', user.uid).single();
-        if (error || !data) { go2('/pages/auth/login.html'); return; }
-        profile = data;
-        if (profile.subscription_status !== 'active') {
-            toast('Subscription inactive. Contact admin.', 'error');
-            setTimeout(() => go2('/pages/auth/login2.html'), 2500);
-            return;
-        }
-        render();
-        hideLoader();
-    } catch(e) {
-        console.error(e);
-        toast('Could not load profile. Please refresh.', 'error');
-        hideLoader();
-    }
+function eduBack(target){
+  const v=document.getElementById('lvid');if(v)v.pause();
+  showEdu(target);
 }
 
-function render() {
-    const fn    = profile.first_name  || '';
-    const ln    = profile.last_name   || '';
-    const full  = (fn + ' ' + ln).trim() || fbUser.email;
-    const email = profile.email || fbUser.email || '';
-    const st    = profile.subscription_status || 'inactive';
-    const phone = profile.phone || '--';
-    const since = profile.created_at
-                  ? new Date(profile.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})
-                  : '--';
-    const initials = ((fn[0]||'')+(ln[0]||'')).toUpperCase() || (email[0]||'?').toUpperCase();
-
-    // Header
-    set('hAvatar', initials);
-    set('hName',   full);
-    const pill = q('#statusPill');
-    if (st === 'active') { pill.textContent='● Active'; pill.className='status-pill active'; }
-    else                 { pill.textContent='● Inactive'; pill.className='status-pill inactive'; }
-
-    // Overview
-    set('wName',    fn || 'Trader');
-    set('wSub',     `Good to have you back, ${full}. Your Gold membership is ${st}.`);
-    set('sumName',  full);
-    set('sumEmail', email);
-    set('sumStatus',st.charAt(0).toUpperCase()+st.slice(1));
-    set('sumJoined',since);
-    loadDays();
-
-    // Settings
-    set('sFirst',  fn    || '--');
-    set('sLast',   ln    || '--');
-    set('sEmail',  email || '--');
-    set('sPhone',  phone);
-    set('sStatus', st.charAt(0).toUpperCase()+st.slice(1));
-    set('sJoined', since);
-}
-
-async function loadDays() {
-    try {
-        const { data } = await db.from('payments').select('submitted_at,tier')
-            .eq('user_id', fbUser.uid).eq('status','verified')
-            .order('submitted_at',{ascending:false}).limit(1);
-        if (data && data[0]) {
-            const d = { gold:60, platinum:90, diamond:180 };
-            const exp = new Date(new Date(data[0].submitted_at).getTime()+(d[data[0].tier]||60)*864e5);
-            set('statDays', Math.max(0, Math.ceil((exp-new Date())/864e5)));
-        }
-    } catch {}
-}
-
-// ── Nav ───────────────────────────────────────────────────────────────────────
-function go(tab) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
-    const panel = document.getElementById('p-' + tab);
-    const btn   = document.getElementById('nb-' + tab);
-    if (panel) panel.classList.add('on');
-    if (btn)   btn.classList.add('on');
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-async function doLogout() { try { await auth.signOut(); } catch {} go2('/index.html'); }
-function go2(url) { window.location.href = url; }
-function hideLoader() { const el = document.getElementById('loadingOverlay'); if(el) el.classList.add('gone'); setTimeout(()=>{ if(el) el.style.display='none'; },600); }
-function set(id, v) { const el = document.getElementById(id); if(el) el.textContent = v; }
-function q(s) { return document.querySelector(s); }
-function toast(msg, type='success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'show ' + type;
-    clearTimeout(t._t); t._t = setTimeout(()=>t.className='', 4500);
-}
-
-window.go = go;
-window.doLogout = doLogout;
+// ── Expose globals ────────────────────────────────────────────────────────────
+window.go=go;window.doLogout=doLogout;
+window.openCourse=openCourse;window.openLesson=openLesson;
+window.prevL=prevL;window.nextL=nextL;window.eduBack=eduBack;
 boot();
 </script>
 </body>
