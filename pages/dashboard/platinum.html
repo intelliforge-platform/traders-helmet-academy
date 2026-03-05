@@ -416,7 +416,7 @@ main{padding:2rem;overflow-y:auto;max-height:calc(100vh - 68px);}
 // ── Config ──────────────────────────────────────────────────────────────────
 const FB_CFG={"apiKey":"AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k","authDomain":"traders-helmet-academy.firebaseapp.com","projectId":"traders-helmet-academy","storageBucket":"traders-helmet-academy.firebasestorage.app","messagingSenderId":"789631387729","appId":"1:789631387729:web:d1f176bcc091ec40c75070"};
 const SB_URL="https://evtghlwiiqvclnudiyor.supabase.co",SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dGdobHdpaXF2Y2xudWRpeW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2MjYzNjgsImV4cCI6MjA4ODIwMjM2OH0.q93SKjmo_8R8AVyAZXtcNxUFH1ntjCkL7g4no6yfGpg";
-const EDU_COURSES=[{"id": "forex-fund", "title": "Forex Education Fundamentals", "icon": "📈", "level": "Beginner", "dur": "4 hrs", "bg": "linear-gradient(135deg,#1e3a5f,#1e40af)", "desc": "Master the basics of Forex — currencies, pips, spreads, and risk management fundamentals.", "lessons": [{"n": "Introduction to Forex", "d": "18 min"}, {"n": "Reading Currency Pairs", "d": "22 min"}, {"n": "Pips, Lots & Leverage", "d": "25 min"}, {"n": "Risk Management Essentials", "d": "30 min"}, {"n": "Your First Trade Walkthrough", "d": "28 min"}]}, {"id": "crypto-edu", "title": "Cryptocurrency Education", "icon": "₿", "level": "Intermediate", "dur": "6 hrs", "bg": "linear-gradient(135deg,#1a1a2e,#2a1a0e)", "desc": "Blockchain fundamentals, crypto trading strategies, and digital asset analysis.", "lessons": [{"n": "What is Blockchain?", "d": "20 min"}, {"n": "Bitcoin & Altcoin Fundamentals", "d": "28 min"}, {"n": "Crypto Market Cycles", "d": "35 min"}, {"n": "On-Chain Analysis", "d": "30 min"}, {"n": "Crypto Trading Strategies", "d": "40 min"}, {"n": "Risk & Portfolio Management", "d": "25 min"}]}, {"id": "binary-hfx", "title": "Binary Options (HFX)", "icon": "⚡", "level": "Advanced", "dur": "3 hrs", "bg": "linear-gradient(135deg,#1a1a1a,#3b0000)", "desc": "High-frequency binary options trading — timing, strike selection, and disciplined strategy.", "lessons": [{"n": "HFX Fundamentals", "d": "20 min"}, {"n": "Choosing Strike Prices", "d": "22 min"}, {"n": "Timing the Market", "d": "25 min"}, {"n": "Risk Discipline for HFX", "d": "18 min"}]}, {"id": "pivot", "title": "Forex Pivot Strategy", "icon": "🎯", "level": "Intermediate", "dur": "5 hrs", "bg": "linear-gradient(135deg,#0f2027,#1e5270)", "desc": "Precision entry & exit using daily, weekly, and monthly pivot points.", "lessons": [{"n": "What are Pivot Points?", "d": "22 min"}, {"n": "Calculating Pivots", "d": "28 min"}, {"n": "Trading S&R Levels", "d": "35 min"}, {"n": "Entry & Exit Rules", "d": "30 min"}, {"n": "Backtesting the Pivot System", "d": "40 min"}]}, {"id": "rhombus", "title": "Forex Rhombus Strategy", "icon": "💠", "level": "Advanced", "dur": "4 hrs", "bg": "linear-gradient(135deg,#0f1729,#1a3a4a)", "desc": "Geometric pattern recognition — identifying rhombus formations for superior market timing.", "lessons": [{"n": "Identifying the Rhombus Pattern", "d": "25 min"}, {"n": "Drawing It Correctly", "d": "30 min"}, {"n": "Entry Trigger Rules", "d": "28 min"}, {"n": "Stop Loss Placement", "d": "22 min"}, {"n": "Live Examples", "d": "35 min"}]}, {"id": "market-psych", "title": "Advanced Market Psychology", "icon": "🧠", "level": "Advanced", "dur": "5 hrs", "bg": "linear-gradient(135deg,#1a0533,#2e1065)", "desc": "Crowd behaviour, sentiment analysis, and trading the institutional mindset.", "lessons": [{"n": "The Psychology of Price", "d": "28 min"}, {"n": "Fear & Greed Cycles", "d": "30 min"}, {"n": "Retail vs Institutional Behaviour", "d": "35 min"}, {"n": "Sentiment Indicators", "d": "25 min"}, {"n": "Building a Trader Mindset", "d": "32 min"}]}, {"id": "algo-basics", "title": "Algorithmic Trading Basics", "icon": "🤖", "level": "Intermediate", "dur": "6 hrs", "bg": "linear-gradient(135deg,#0d0d1a,#1e0d3b)", "desc": "Introduction to trading bots, strategy automation, and backtesting fundamentals.", "lessons": [{"n": "What is Algo Trading?", "d": "20 min"}, {"n": "Strategy to Code Logic", "d": "35 min"}, {"n": "Backtesting Fundamentals", "d": "38 min"}, {"n": "Risk Controls in Bots", "d": "28 min"}, {"n": "Paper Trading Your Bot", "d": "30 min"}, {"n": "Going Live Safely", "d": "25 min"}]}, {"id": "macro-econ", "title": "Macro Economics & Trading", "icon": "🌍", "level": "Advanced", "dur": "7 hrs", "bg": "linear-gradient(135deg,#0a1628,#0c4a6e)", "desc": "How interest rates, CPI, GDP, and geopolitics move markets — trade the big picture.", "lessons": [{"n": "Central Banks & Rate Decisions", "d": "35 min"}, {"n": "Inflation & CPI Trading", "d": "30 min"}, {"n": "GDP & Employment Data", "d": "28 min"}, {"n": "Geopolitical Risk", "d": "25 min"}, {"n": "Correlations Between Markets", "d": "32 min"}, {"n": "Building a Macro Calendar", "d": "22 min"}, {"n": "Macro Trade Examples", "d": "40 min"}]}];
+const EDU_COURSES=[{"id": "forex-fund", "title": "Forex Education Fundamentals", "icon": "📈", "level": "Beginner", "dur": "4 hrs", "bg": "linear-gradient(135deg,#1e3a5f,#1e40af)", "desc": "Master the basics of Forex — currencies, pips, spreads, and risk management fundamentals.", "lessons": [{"n": "Introduction to Forex", "d": "18 min", "v": ""}, {"n": "Reading Currency Pairs", "d": "22 min", "v": ""}, {"n": "Pips, Lots & Leverage", "d": "25 min", "v": ""}, {"n": "Risk Management Essentials", "d": "30 min", "v": ""}, {"n": "Your First Trade Walkthrough", "d": "28 min", "v": ""}]}, {"id": "crypto-edu", "title": "Cryptocurrency Education", "icon": "₿", "level": "Intermediate", "dur": "6 hrs", "bg": "linear-gradient(135deg,#1a1a2e,#2a1a0e)", "desc": "Blockchain fundamentals, crypto trading strategies, and digital asset analysis.", "lessons": [{"n": "What is Blockchain?", "d": "20 min", "v": ""}, {"n": "Bitcoin & Altcoin Fundamentals", "d": "28 min", "v": ""}, {"n": "Crypto Market Cycles", "d": "35 min", "v": ""}, {"n": "On-Chain Analysis", "d": "30 min", "v": ""}, {"n": "Crypto Trading Strategies", "d": "40 min", "v": ""}, {"n": "Risk & Portfolio Management", "d": "25 min", "v": ""}]}, {"id": "binary-hfx", "title": "Binary Options (HFX)", "icon": "⚡", "level": "Advanced", "dur": "3 hrs", "bg": "linear-gradient(135deg,#1a1a1a,#3b0000)", "desc": "High-frequency binary options trading — timing, strike selection, and disciplined strategy.", "lessons": [{"n": "HFX Fundamentals", "d": "20 min", "v": ""}, {"n": "Choosing Strike Prices", "d": "22 min", "v": ""}, {"n": "Timing the Market", "d": "25 min", "v": ""}, {"n": "Risk Discipline for HFX", "d": "18 min", "v": ""}]}, {"id": "pivot", "title": "Forex Pivot Strategy", "icon": "🎯", "level": "Intermediate", "dur": "5 hrs", "bg": "linear-gradient(135deg,#0f2027,#1e5270)", "desc": "Precision entry & exit using daily, weekly, and monthly pivot points.", "lessons": [{"n": "What are Pivot Points?", "d": "22 min", "v": ""}, {"n": "Calculating Pivots", "d": "28 min", "v": ""}, {"n": "Trading S&R Levels", "d": "35 min", "v": ""}, {"n": "Entry & Exit Rules", "d": "30 min", "v": ""}, {"n": "Backtesting the Pivot System", "d": "40 min", "v": ""}]}, {"id": "rhombus", "title": "Forex Rhombus Strategy", "icon": "💠", "level": "Advanced", "dur": "4 hrs", "bg": "linear-gradient(135deg,#0f1729,#1a3a4a)", "desc": "Geometric pattern recognition — identifying rhombus formations for superior market timing.", "lessons": [{"n": "Identifying the Rhombus Pattern", "d": "25 min", "v": ""}, {"n": "Drawing It Correctly", "d": "30 min", "v": ""}, {"n": "Entry Trigger Rules", "d": "28 min", "v": ""}, {"n": "Stop Loss Placement", "d": "22 min", "v": ""}, {"n": "Live Examples", "d": "35 min", "v": ""}]}, {"id": "market-psych", "title": "Advanced Market Psychology", "icon": "🧠", "level": "Advanced", "dur": "5 hrs", "bg": "linear-gradient(135deg,#1a0533,#2e1065)", "desc": "Crowd behaviour, sentiment analysis, and trading the institutional mindset.", "lessons": [{"n": "The Psychology of Price", "d": "28 min", "v": ""}, {"n": "Fear & Greed Cycles", "d": "30 min", "v": ""}, {"n": "Retail vs Institutional Behaviour", "d": "35 min", "v": ""}, {"n": "Sentiment Indicators", "d": "25 min", "v": ""}, {"n": "Building a Trader Mindset", "d": "32 min", "v": ""}]}, {"id": "algo-basics", "title": "Algorithmic Trading Basics", "icon": "🤖", "level": "Intermediate", "dur": "6 hrs", "bg": "linear-gradient(135deg,#0d0d1a,#1e0d3b)", "desc": "Introduction to trading bots, strategy automation, and backtesting fundamentals.", "lessons": [{"n": "What is Algo Trading?", "d": "20 min", "v": ""}, {"n": "Strategy to Code Logic", "d": "35 min", "v": ""}, {"n": "Backtesting Fundamentals", "d": "38 min", "v": ""}, {"n": "Risk Controls in Bots", "d": "28 min", "v": ""}, {"n": "Paper Trading Your Bot", "d": "30 min", "v": ""}, {"n": "Going Live Safely", "d": "25 min", "v": ""}]}, {"id": "macro-econ", "title": "Macro Economics & Trading", "icon": "🌍", "level": "Advanced", "dur": "7 hrs", "bg": "linear-gradient(135deg,#0a1628,#0c4a6e)", "desc": "How interest rates, CPI, GDP, and geopolitics move markets — trade the big picture.", "lessons": [{"n": "Central Banks & Rate Decisions", "d": "35 min", "v": ""}, {"n": "Inflation & CPI Trading", "d": "30 min", "v": ""}, {"n": "GDP & Employment Data", "d": "28 min", "v": ""}, {"n": "Geopolitical Risk", "d": "25 min", "v": ""}, {"n": "Correlations Between Markets", "d": "32 min", "v": ""}, {"n": "Building a Macro Calendar", "d": "22 min", "v": ""}, {"n": "Macro Trade Examples", "d": "40 min", "v": ""}]}];
 
 // ── State ───────────────────────────────────────────────────────────────────
 let db,auth,fbUser,profile,activeCourse,activeLessonIdx=0;
@@ -521,34 +521,99 @@ function openCourse(id){
   showEdu('lessons');
 }
 
+
+
 function openLesson(idx){
   activeLessonIdx=idx;
   const l=activeCourse.lessons[idx];
   set('player-title',l.n);
   set('pb-label',activeCourse.title);
-  const src=`/assets/videos/${activeCourse.id}/${idx+1}.mp4`;
-  document.getElementById('vwrap').innerHTML=`
-    <video id="lvid" controls preload="metadata" style="width:100%;height:100%"
-      onerror="vErr()"><source src="${src}" type="video/mp4"></video>`;
-  document.getElementById('lvid').load();
+
+  const raw = (l.v||'').trim();
+  const vwrap = document.getElementById('vwrap');
+  const ytId  = resolveYouTubeId(raw);
+
+  if (ytId) {
+    // ── YouTube ────────────────────────────────────────────────────────────
+    vwrap.innerHTML=`
+      <iframe id="lvid"
+        src="https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1&playsinline=1"
+        style="width:100%;height:100%;border:0"
+        allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+        allowfullscreen></iframe>`;
+
+  } else if (raw.includes('iframe.mediadelivery.net') || raw.includes('bunnycdn') || raw.includes('mediadelivery')) {
+    // ── Bunny.net Stream embed ─────────────────────────────────────────────
+    vwrap.innerHTML=`
+      <iframe id="lvid"
+        src="${raw}?autoplay=false&responsive=true"
+        style="width:100%;height:100%;border:0"
+        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
+        allowfullscreen></iframe>`;
+
+  } else if (raw && raw.match(/\.(mp4|webm|ogg|mov)(\?|$)/i)) {
+    // ── Direct video file (MP4, WebM etc.) ────────────────────────────────
+    vwrap.innerHTML=`
+      <video id="lvid" controls preload="metadata"
+        style="width:100%;height:100%" onerror="vErr()">
+        <source src="${raw}" type="video/mp4">
+      </video>`;
+    document.getElementById('lvid').load();
+
+  } else if (raw && raw.startsWith('http')) {
+    // ── Unknown URL — try as iframe (catches other CDNs like Vimeo) ───────
+    vwrap.innerHTML=`
+      <iframe id="lvid" src="${raw}"
+        style="width:100%;height:100%;border:0"
+        allow="autoplay;fullscreen"
+        allowfullscreen></iframe>`;
+
+  } else {
+    // ── No video yet ───────────────────────────────────────────────────────
+    vwrap.innerHTML=`
+      <div class="vph">
+        <i class="fas fa-film"></i>
+        <p style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Video not yet uploaded</p>
+        <p style="font-size:.82rem;opacity:.7;line-height:1.6">
+          To add this video, open the dashboard HTML file,<br>
+          find this lesson and paste the Bunny.net or YouTube URL<br>
+          into the <code>v:</code> field.
+        </p>
+      </div>`;
+  }
+
   const pv=document.getElementById('btn-prev');
   const nx=document.getElementById('btn-next');
   pv.disabled=idx===0;
   nx.disabled=idx===activeCourse.lessons.length-1;
-  nx.textContent=idx===activeCourse.lessons.length-1?'Course Complete ✓':'Next ›';
-  if(idx<activeCourse.lessons.length-1)nx.className='lnb pr';
+  if(idx<activeCourse.lessons.length-1){
+    nx.textContent='Next ›'; nx.className='lnb pr';
+  } else {
+    nx.textContent='Course Complete ✓'; nx.className='lnb';
+  }
   showEdu('player');
+}
+
+function resolveYouTubeId(raw){
+  if(!raw)return null;
+  if(/^[a-zA-Z0-9_-]{11}$/.test(raw))return raw;
+  const s=raw.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  if(s)return s[1];
+  const l=raw.match(/(?:v=|\/embed\/)([a-zA-Z0-9_-]{11})/);
+  if(l)return l[1];
+  return null;
 }
 
 window.vErr=function(){
   document.getElementById('vwrap').innerHTML=`
     <div class="vph">
       <i class="fas fa-film"></i>
-      <p>Video not yet uploaded.<br>
-      <span style="font-size:.82rem;opacity:.7">Admin uploads to:<br>
-      <code>/assets/videos/${activeCourse.id}/${activeLessonIdx+1}.mp4</code></span></p>
+      <p>Video could not be loaded.<br>
+      <span style="font-size:.82rem;opacity:.7">Check the URL in the dashboard lesson data.</span></p>
     </div>`;
 };
+
+
 
 function prevL(){if(activeLessonIdx>0)openLesson(activeLessonIdx-1);}
 function nextL(){if(activeLessonIdx<activeCourse.lessons.length-1)openLesson(activeLessonIdx+1);}
@@ -566,7 +631,7 @@ function eduBack(target){
 
 // ── Expose globals ────────────────────────────────────────────────────────────
 window.go=go;window.doLogout=doLogout;
-window.openCourse=openCourse;window.openLesson=openLesson;
+window.openCourse=openCourse;window.resolveYouTubeId=resolveYouTubeId;window.openLesson=openLesson;
 window.prevL=prevL;window.nextL=nextL;window.eduBack=eduBack;
 boot();
 </script>
