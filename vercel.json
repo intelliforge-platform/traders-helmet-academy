@@ -1,32 +1,16 @@
 {
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/$1" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://traders-helmet-academy.firebaseapp.com https://firebaseinstallations.googleapis.com https://www.googleapis.com https://xhaohziyrlwminomymbm.supabase.co wss://xhaohziyrlwminomymbm.supabase.co; img-src 'self' data: https: blob:; frame-src 'self' https://traders-helmet-academy.firebaseapp.com https://accounts.google.com; worker-src 'self' blob:;"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://js.stripe.com https://vercel.live; script-src-elem 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://js.stripe.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://traders-helmet-academy.firebaseapp.com https://firebaseinstallations.googleapis.com https://www.googleapis.com https://evtghlwiiqvclnudiyor.supabase.co wss://evtghlwiiqvclnudiyor.supabase.co https://api.stripe.com; frame-src 'self' https://traders-helmet-academy.firebaseapp.com https://accounts.google.com https://js.stripe.com;"
         }
       ]
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    }
-  ],
-  "trailingSlash": false
+  ]
 }
