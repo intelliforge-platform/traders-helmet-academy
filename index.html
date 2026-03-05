@@ -1,1750 +1,416 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traders Helmet Academy - Your Gateway to Trading Excellence</title>
-    <meta name="description" content="Master forex, crypto, and binary options trading with expert mentorship, proven strategies, and exclusive signals. Join thousands of successful traders.">
-    <meta name="keywords" content="forex trading, cryptocurrency education, binary options, trading signals, financial education, trading mentorship">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tradershelmetacademy.com/">
-    <meta property="og:title" content="Traders Helmet Academy - Your Gateway to Trading Excellence">
-    <meta property="og:description" content="Master forex, crypto, and binary options trading with expert mentorship, proven strategies, and exclusive signals.">
-    <meta property="og:image" content="https://tradershelmetacademy.com/assets/images/og-image.jpg">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://tradershelmetacademy.com/">
-    <meta property="twitter:title" content="Traders Helmet Academy - Your Gateway to Trading Excellence">
-    <meta property="twitter:description" content="Master forex, crypto, and binary options trading with expert mentorship, proven strategies, and exclusive signals.">
-    <meta property="twitter:image" content="https://tradershelmetacademy.com/assets/images/twitter-image.jpg">
-
-    <!-- Stylesheets -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    
-    <style>
-        :root {
-            /* Color Palette - Light Theme */
-            --primary-blue: #1e40af;
-            --primary-blue-dark: #1e3a8a;
-            --primary-blue-light: #3b82f6;
-            --accent-cream: #fef3c7;
-            --accent-gold: #f59e0b;
-            
-            /* Light Theme Colors */
-            --light-bg: #ffffff;
-            --light-surface: #f8fafc;
-            --light-card: #ffffff;
-            --light-section: #f1f5f9;
-            
-            /* Text Colors */
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --text-light: #94a3b8;
-            
-            /* Status Colors */
-            --success: #10b981;
-            --success-light: rgba(16, 185, 129, 0.1);
-            --error: #ef4444;
-            --warning: #f59e0b;
-            --info: #0ea5e9;
-            
-            /* Gradients */
-            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            --gradient-hero: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
-            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-            --gradient-platinum: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            --gradient-diamond: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
-            
-            /* Shadow Colors */
-            --shadow-light: rgba(15, 23, 42, 0.08);
-            --shadow-medium: rgba(15, 23, 42, 0.12);
-            --shadow-heavy: rgba(15, 23, 42, 0.15);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--light-bg);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Header & Navigation */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(15, 23, 42, 0.1);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .header.scrolled {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 4px 20px var(--shadow-light);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 2rem;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: url('tradershelmetlogo.png') no-repeat center center;
-            background-size: contain;
-            border-radius: 8px;
-        }
-
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-blue);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary {
-            background: var(--gradient-gold);
-            color: #1a1a1a;
-            font-weight: 700;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 2px solid rgba(15, 23, 42, 0.2);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary-blue);
-            color: var(--primary-blue);
-            background: rgba(59, 130, 246, 0.05);
-        }
-
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            background: var(--gradient-hero);
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(59,130,246,0.08)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
-            opacity: 0.5;
-        }
-
-        .hero-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-content {
-            max-width: 600px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            color: var(--primary-blue);
-            margin-bottom: 2rem;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-            display: block;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-large {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-        }
-
-        .hero-visual {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .trading-dashboard {
-            background: var(--light-card);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 20px 40px var(--shadow-medium);
-            border: 1px solid rgba(15, 23, 42, 0.1);
-            max-width: 500px;
-            width: 100%;
-        }
-
-        .dashboard-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-        }
-
-        .dashboard-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .profit-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--success);
-            font-weight: 600;
-        }
-
-        .chart-placeholder {
-            height: 200px;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(59, 130, 246, 0.1);
-        }
-
-        .chart-line {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            height: 2px;
-            background: var(--gradient-primary);
-            border-radius: 2px;
-        }
-
-        .chart-points {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            height: 100%;
-            padding: 20px;
-        }
-
-        .chart-point {
-            width: 4px;
-            background: var(--primary-blue);
-            border-radius: 2px;
-            animation: chartGrow 2s ease-in-out infinite;
-        }
-
-        .chart-point:nth-child(1) { height: 30%; animation-delay: 0s; }
-        .chart-point:nth-child(2) { height: 60%; animation-delay: 0.2s; }
-        .chart-point:nth-child(3) { height: 45%; animation-delay: 0.4s; }
-        .chart-point:nth-child(4) { height: 80%; animation-delay: 0.6s; }
-        .chart-point:nth-child(5) { height: 65%; animation-delay: 0.8s; }
-        .chart-point:nth-child(6) { height: 90%; animation-delay: 1s; }
-
-        @keyframes chartGrow {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(1.2); }
-        }
-
-        .dashboard-metrics {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .metric-card {
-            background: var(--light-surface);
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid rgba(15, 23, 42, 0.05);
-        }
-
-        .metric-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-
-        .metric-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 6rem 0;
-            background: var(--light-section);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--gradient-primary);
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.25);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-primary);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(30, 64, 175, 0.4);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            color: #1a1a1a;
-        }
-
-        .feature-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #ffffff;
-        }
-
-        .feature-description {
-            color: rgba(255, 255, 255, 0.88);
-            line-height: 1.6;
-        }
-
-        /* Pricing Section */
-        .pricing {
-            padding: 6rem 0;
-            background: var(--light-bg);
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .pricing-card {
-            background: var(--gradient-primary);
-            border-radius: 24px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.25);
-            border: 2px solid rgba(59, 130, 246, 0.3);
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(30, 64, 175, 0.4);
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent-gold);
-            transform: scale(1.05);
-        }
-
-        .pricing-card.featured::before {
-            content: 'Most Popular';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gradient-gold);
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .tier-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .tier-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            font-weight: bold;
-        }
-
-        .tier-icon.gold {
-            background: var(--gradient-gold);
-        }
-
-        .tier-icon.platinum {
-            background: var(--gradient-platinum);
-        }
-
-        .tier-icon.diamond {
-            background: var(--gradient-diamond);
-        }
-
-        .tier-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-
-        .tier-duration {
-            color: rgba(255, 255, 255, 0.75);
-            font-size: 0.9rem;
-        }
-
-        .tier-price {
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--accent-gold);
-            text-align: center;
-            margin: 1.5rem 0;
-        }
-
-        .tier-price .currency {
-            font-size: 1.5rem;
-            vertical-align: top;
-        }
-
-        .tier-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .tier-features li {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0;
-            color: rgba(255, 255, 255, 0.88);
-        }
-
-        .tier-features .check-icon {
-            width: 20px;
-            height: 20px;
-            background: var(--success);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.7rem;
-            flex-shrink: 0;
-        }
-
-        .tier-cta {
-            text-align: center;
-        }
-
-        .btn-tier {
-            width: 100%;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 12px;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .btn-tier.gold {
-            background: var(--gradient-gold);
-            color: white;
-        }
-
-        .btn-tier.platinum {
-            background: var(--gradient-platinum);
-            color: white;
-        }
-
-        .btn-tier.diamond {
-            background: var(--gradient-diamond);
-            color: white;
-        }
-
-        .btn-tier:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--shadow-medium);
-        }
-
-        /* Testimonials Section */
-        .testimonials {
-            padding: 6rem 0;
-            background: var(--light-section);
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .testimonial-card {
-            background: var(--gradient-primary);
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.25);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            position: relative;
-        }
-
-        .testimonial-content {
-            font-style: italic;
-            color: rgba(255, 255, 255, 0.88);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        .author-info h4 {
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .author-info p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-        }
-
-        .quote-icon {
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            font-size: 2rem;
-            color: var(--primary-blue);
-            opacity: 0.2;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            padding: 6rem 0;
-            background: var(--gradient-hero);
-            text-align: center;
-        }
-
-        .cta-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .cta-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .cta-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--text-primary);
-            padding: 3rem 0 1rem;
-            border-top: 1px solid rgba(15, 23, 42, 0.1);
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .footer-section p {
-            color: #cbd5e1;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary-blue-light);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin: 1rem 0;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            background: rgba(59, 130, 246, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-blue-light);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: var(--primary-blue-light);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 968px) {
-            .nav-menu {
-                display: none;
-            }
-
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .hero-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 2rem;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-stats {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .features-grid,
-            .pricing-grid,
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pricing-card.featured {
-                transform: none;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .nav-container {
-                padding: 1rem;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .tier-price {
-                font-size: 2.5rem;
-            }
-
-            .cta-title {
-                font-size: 2rem;
-            }
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Loading Animation */
-        .loading-dots {
-            display: inline-flex;
-            gap: 4px;
-        }
-
-        .loading-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--primary-blue);
-            border-radius: 50%;
-            animation: loadingDot 1.5s ease-in-out infinite;
-        }
-
-        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes loadingDot {
-            0%, 60%, 100% { transform: scale(1); opacity: 0.7; }
-            30% { transform: scale(1.2); opacity: 1; }
-        }
-
-        /* Accessibility */
-        body.keyboard-navigation .btn:focus,
-        body.keyboard-navigation .nav-link:focus {
-            outline: 2px solid var(--primary-blue);
-            outline-offset: 2px;
-        }
-
-        @media (prefers-contrast: high) {
-            :root {
-                --text-primary: #000000;
-                --text-secondary: #333333;
-                --primary-blue: #0000cc;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traders Helmet Academy — Your Gateway to Trading Excellence</title>
+<meta name="description" content="Master forex, crypto, and binary options trading with expert mentorship, proven strategies, and exclusive signals.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tradershelmetacademy.com/">
+<meta property="og:title" content="Traders Helmet Academy — Your Gateway to Trading Excellence">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1b3e;--navy-mid:#1a2b52;--navy-light:#243666;
+  --gold:#f5c518;--gold-dk:#d4a800;--gold-lt:#fdd835;
+  --white:#fff;--off:#f8f9fc;--grey:#e8eaf0;
+  --td:#0d1b3e;--tm:#3a4a6b;--tmut:#6b7a99;
+  --ok:#10b981;--shn:rgba(13,27,62,.18);--shg:rgba(245,197,24,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--td);line-height:1.65;overflow-x:hidden;}
+/* HEADER */
+.header{position:fixed;top:0;left:0;right:0;background:var(--navy);z-index:1000;transition:box-shadow .3s;}
+.header.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.nc{max-width:1200px;margin:0 auto;padding:0 2rem;height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.logo{display:flex;align-items:center;gap:.75rem;text-decoration:none;}
+.logo img{width:44px;height:44px;object-fit:contain;border-radius:6px;}
+.logo-t{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--white);line-height:1.2;}
+.logo-t span{color:var(--gold);}
+.nav-menu{display:flex;list-style:none;gap:1.75rem;align-items:center;}
+.nl{color:rgba(255,255,255,.78);text-decoration:none;font-weight:500;font-size:.9rem;transition:color .2s;position:relative;padding-bottom:3px;}
+.nl::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gold);transition:width .25s;}
+.nl:hover{color:var(--white);}.nl:hover::after{width:100%;}
+.nav-ctas{display:flex;gap:.75rem;align-items:center;}
+.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.35rem;border-radius:8px;font-weight:600;font-size:.88rem;text-decoration:none;border:none;cursor:pointer;transition:all .25s;font-family:'DM Sans',sans-serif;}
+.btn-ol{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.3);}
+.btn-ol:hover{border-color:var(--gold);color:var(--gold);}
+.btn-gold{background:var(--gold);color:var(--navy);font-weight:700;}
+.btn-gold:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 6px 20px var(--shg);}
+.mob-tog{display:none;background:none;border:none;color:var(--white);font-size:1.4rem;cursor:pointer;}
+/* HERO */
+.hero{min-height:100vh;background:var(--navy);position:relative;overflow:hidden;display:flex;align-items:center;padding-top:70px;}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(245,197,24,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(245,197,24,.04) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
+.hglow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(245,197,24,.1) 0%,transparent 68%);top:-200px;right:-150px;pointer-events:none;}
+.hc{max-width:1200px;margin:0 auto;padding:4rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:2;}
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,197,24,.12);border:1px solid rgba(245,197,24,.3);color:var(--gold);padding:.45rem 1rem;border-radius:30px;font-size:.8rem;font-weight:600;margin-bottom:1.75rem;letter-spacing:.04em;}
+.h1{font-family:'Syne',sans-serif;font-size:3.1rem;font-weight:800;line-height:1.1;color:var(--white);margin-bottom:1.4rem;}
+.h1 .ac{color:var(--gold);}
+.hsub{font-size:1.05rem;color:rgba(255,255,255,.68);margin-bottom:2.5rem;line-height:1.7;}
+.hctas{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3rem;}
+.bhp{padding:.9rem 2rem;font-size:1rem;background:var(--gold);color:var(--navy);font-weight:700;border-radius:10px;display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;transition:all .25s;}
+.bhp:hover{background:var(--gold-lt);transform:translateY(-3px);box-shadow:0 10px 28px var(--shg);}
+.bhs{padding:.9rem 2rem;font-size:1rem;background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.28);border-radius:10px;display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;transition:all .25s;}
+.bhs:hover{border-color:var(--gold);color:var(--gold);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.si{text-align:center;padding:1.1rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;}
+.sn{font-family:'Syne',sans-serif;font-size:1.85rem;font-weight:800;color:var(--gold);display:block;}
+.sl{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.2rem;letter-spacing:.06em;text-transform:uppercase;}
+/* Dashboard visual */
+.hv{position:relative;}
+.dc{background:rgba(255,255,255,.05);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.75rem;max-width:420px;margin-left:auto;}
+.dt{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;}
+.dl{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--white);}
+.dp{color:var(--ok);font-weight:700;font-size:.88rem;display:flex;align-items:center;gap:.35rem;}
+.ca{height:155px;background:rgba(245,197,24,.04);border:1px solid rgba(245,197,24,.1);border-radius:12px;display:flex;align-items:flex-end;justify-content:space-around;padding:1rem;margin-bottom:1.25rem;gap:.3rem;}
+.bar{background:linear-gradient(to top,var(--gold-dk),var(--gold));border-radius:3px 3px 0 0;flex:1;animation:bg 2.5s ease-in-out infinite;}
+.bar:nth-child(1){height:35%;animation-delay:0s;}.bar:nth-child(2){height:62%;animation-delay:.15s;}.bar:nth-child(3){height:46%;animation-delay:.3s;}.bar:nth-child(4){height:84%;animation-delay:.45s;}.bar:nth-child(5){height:57%;animation-delay:.6s;}.bar:nth-child(6){height:93%;animation-delay:.75s;}.bar:nth-child(7){height:70%;animation-delay:.9s;}
+@keyframes bg{0%,100%{opacity:.8;}50%{opacity:1;}}
+.dm{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+.mc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.85rem;text-align:center;}
+.mv{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--gold);}
+.ml{font-size:.68rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem;}
+.fb{position:absolute;background:var(--navy-mid);border:1px solid rgba(245,197,24,.22);border-radius:10px;padding:.55rem .9rem;font-size:.78rem;font-weight:600;color:var(--white);display:flex;align-items:center;gap:.45rem;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.fb i{color:var(--gold);}
+.fb1{top:-18px;left:-25px;animation:fy 3s ease-in-out infinite;}
+.fb2{bottom:-12px;right:-18px;animation:fy 3s ease-in-out infinite .8s;}
+@keyframes fy{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+/* FEATURES */
+.features{padding:6rem 0;background:var(--off);}
+.cont{max-width:1200px;margin:0 auto;padding:0 2rem;}
+.sh{text-align:center;margin-bottom:3.5rem;}
+.eyebrow{display:inline-block;background:rgba(13,27,62,.08);color:var(--navy);padding:.3rem .9rem;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.9rem;}
+.st{font-family:'Syne',sans-serif;font-size:2.3rem;font-weight:800;color:var(--navy);margin-bottom:.7rem;line-height:1.2;}
+.st .go{color:var(--gold-dk);}
+.ss{font-size:.97rem;color:var(--tmut);max-width:540px;margin:0 auto;}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.7rem;}
+.fc{background:var(--white);border:1px solid var(--grey);border-radius:18px;padding:2.2rem;transition:all .3s;position:relative;overflow:hidden;}
+.fc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--navy),var(--gold));}
+.fc:hover{transform:translateY(-8px);box-shadow:0 20px 50px var(--shn);border-color:rgba(13,27,62,.12);}
+.fi{width:56px;height:56px;background:var(--navy);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;color:var(--gold);margin-bottom:1.35rem;}
+.ftt{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.7rem;}
+.fd{color:var(--tmut);font-size:.9rem;line-height:1.65;}
+/* PRICING */
+.pricing{padding:6rem 0;background:var(--navy);position:relative;overflow:hidden;}
+.pricing::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(245,197,24,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,197,24,.03) 1px,transparent 1px);background-size:50px 50px;}
+.pricing .eyebrow{background:rgba(245,197,24,.12);color:var(--gold);}
+.pricing .st{color:var(--white);}
+.pricing .ss{color:rgba(255,255,255,.58);}
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.7rem;margin-top:3rem;position:relative;z-index:1;}
+.pc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:2.4rem;transition:all .3s;cursor:pointer;}
+.pc:hover{background:rgba(255,255,255,.07);transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.4);}
+.pc.feat{background:var(--white);border-color:var(--gold);position:relative;}
+.pc.feat .tn{color:var(--navy);}.pc.feat .td2{color:var(--tmut);}.pc.feat .tp{color:var(--navy);}.pc.feat .tfl li{color:var(--tm);}
+.pop{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy);padding:.35rem 1.3rem;border-radius:20px;font-size:.72rem;font-weight:800;letter-spacing:.06em;white-space:nowrap;}
+.th{text-align:center;margin-bottom:1.7rem;}
+.ti{width:70px;height:70px;border-radius:50%;margin:0 auto .9rem;display:flex;align-items:center;justify-content:center;font-size:1.75rem;}
+.ti.gi{background:linear-gradient(135deg,#f59e0b,#fbbf24);}
+.ti.pi{background:linear-gradient(135deg,#8b5cf6,#7c3aed);}
+.ti.di{background:linear-gradient(135deg,#06b6d4,#0ea5e9);}
+.tn{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;color:var(--white);margin-bottom:.2rem;}
+.td2{font-size:.83rem;color:rgba(255,255,255,.48);}
+.tp{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:900;color:var(--gold);text-align:center;margin:1.1rem 0;}
+.tp .cu{font-size:1.3rem;vertical-align:top;margin-top:.5rem;display:inline-block;}
+.tfl{list-style:none;margin-bottom:1.75rem;}
+.tfl li{display:flex;align-items:center;gap:.65rem;padding:.4rem 0;color:rgba(255,255,255,.72);font-size:.87rem;}
+.ck{width:19px;height:19px;background:var(--ok);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:.6rem;flex-shrink:0;}
+.bt{display:block;text-align:center;padding:.85rem 1.4rem;border-radius:10px;font-weight:700;font-size:.92rem;text-decoration:none;transition:all .25s;font-family:'DM Sans',sans-serif;}
+.bt.gt{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:var(--navy);}
+.bt.pt{background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:var(--white);}
+.bt.dt{background:linear-gradient(135deg,#06b6d4,#0ea5e9);color:var(--white);}
+.bt:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.3);}
+/* TESTIMONIALS */
+.testimonials{padding:6rem 0;background:var(--off);}
+.tg{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem;margin-top:3rem;}
+.tc{background:var(--white);border:1px solid var(--grey);border-radius:18px;padding:1.9rem;position:relative;transition:all .3s;}
+.tc:hover{box-shadow:0 16px 40px var(--shn);transform:translateY(-5px);}
+.qm{position:absolute;top:1.1rem;right:1.4rem;font-size:2.2rem;color:var(--navy);opacity:.07;font-family:Georgia,serif;}
+.stars{color:var(--gold-dk);font-size:.8rem;margin-bottom:.7rem;}
+.tt{font-style:italic;color:var(--tmut);line-height:1.7;margin-bottom:1.4rem;font-size:.9rem;}
+.ta{display:flex;align-items:center;gap:.8rem;}
+.av{width:44px;height:44px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;flex-shrink:0;}
+.an{font-weight:700;color:var(--navy);font-size:.9rem;}
+.ar{color:var(--tmut);font-size:.78rem;}
+/* CTA BAND */
+.ctab{padding:5.5rem 0;background:var(--gold);text-align:center;}
+.ctab .st{color:var(--navy);font-size:2.15rem;}
+.ctasub{color:rgba(13,27,62,.68);font-size:.97rem;max-width:540px;margin:1rem auto 2rem;}
+.ctabts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.bn{background:var(--navy);color:var(--white);padding:.9rem 2rem;font-size:.97rem;border-radius:10px;display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;font-weight:700;font-family:'DM Sans',sans-serif;transition:all .25s;}
+.bn:hover{background:var(--navy-mid);transform:translateY(-2px);box-shadow:0 10px 28px rgba(13,27,62,.3);}
+.bno{background:transparent;color:var(--navy);border:2px solid var(--navy);padding:.9rem 2rem;font-size:.97rem;border-radius:10px;display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;font-weight:700;font-family:'DM Sans',sans-serif;transition:all .25s;}
+.bno:hover{background:var(--navy);color:var(--gold);}
+/* FOOTER */
+.footer{background:var(--navy);padding:4rem 0 0;}
+.fg2{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:2.5rem;margin-bottom:3rem;}
+.fb-brand p{color:rgba(255,255,255,.52);font-size:.87rem;line-height:1.7;margin:1rem 0 1.5rem;}
+.flogo{display:flex;align-items:center;gap:.65rem;text-decoration:none;margin-bottom:.5rem;}
+.flogo img{width:38px;height:38px;object-fit:contain;border-radius:6px;}
+.flt{font-family:'Syne',sans-serif;font-size:.98rem;font-weight:700;color:var(--white);}
+.flt span{color:var(--gold);}
+.srow{display:flex;gap:.6rem;}
+.sc2{width:34px;height:34px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.58);text-decoration:none;font-size:.82rem;transition:all .2s;}
+.sc2:hover{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.fcol h4{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:1.2rem;font-size:.93rem;}
+.fl{list-style:none;}
+.fl li{margin-bottom:.55rem;}
+.fl a{color:rgba(255,255,255,.52);text-decoration:none;font-size:.86rem;transition:color .2s;}
+.fl a:hover{color:var(--gold);}
+.cr{display:flex;align-items:flex-start;gap:.65rem;margin-bottom:.8rem;color:rgba(255,255,255,.58);font-size:.86rem;line-height:1.55;}
+.cr i{color:var(--gold);margin-top:.15rem;flex-shrink:0;width:15px;}
+.cr a{color:rgba(255,255,255,.58);text-decoration:none;}.cr a:hover{color:var(--gold);}
+.fbot{border-top:1px solid rgba(255,255,255,.08);padding:1.5rem 0;text-align:center;}
+.fbot p{color:rgba(255,255,255,.38);font-size:.81rem;}
+.fbot strong{color:rgba(255,255,255,.58);}
+/* RESPONSIVE */
+@media(max-width:968px){
+  .nav-menu{display:none;}.mob-tog{display:block;}
+  .hc{grid-template-columns:1fr;text-align:center;gap:2.5rem;}
+  .hctas{justify-content:center;}.stats{max-width:380px;margin:0 auto;}
+  .hv{display:none;}.fg2{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:640px){
+  .h1{font-size:2.1rem;}.st{font-size:1.85rem;}
+  .stats{grid-template-columns:1fr;}.pc.feat{transform:none;}
+  .fg2{grid-template-columns:1fr;}.ctabts{flex-direction:column;align-items:center;}
+}
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header" id="header">
-        <div class="nav-container">
-            <a href="/" class="logo">
-                <div class="logo-icon"></div>
-                <div class="logo-text">Traders Helmet Academy</div>
-            </a>
-            
-            <nav class="nav-menu" id="navMenu">
-                <li><a href="#features" class="nav-link">Features</a></li>
-                <li><a href="#pricing" class="nav-link">Pricing</a></li>
-                <li><a href="#testimonials" class="nav-link">Reviews</a></li>
-                <li><a href="/pages/signals/index.html" class="nav-link">Signals</a></li>
-                <li><a href="/pages/education/index.html" class="nav-link">Education</a></li>
-            </nav>
 
-            <div class="cta-buttons">
-                <a href="pages/auth/login.html" class="btn btn-secondary">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Login 
-                </a>
-                <a href="pages/auth/register.html" class="btn btn-primary">
-                    <i class="fas fa-rocket"></i>
-                    Register
-                </a>
-            </div>
+<header class="header" id="header">
+  <div class="nc">
+    <a href="/" class="logo">
+      <img src="/thalogo.png" alt="THA" onerror="this.style.display='none'">
+      <div class="logo-t">Traders Helmet <span>Academy</span></div>
+    </a>
+    <nav><ul class="nav-menu" id="navMenu">
+      <li><a href="#features" class="nl">Features</a></li>
+      <li><a href="#pricing" class="nl">Pricing</a></li>
+      <li><a href="#testimonials" class="nl">Reviews</a></li>
+      <li><a href="/pages/about/index.html" class="nl">About Us</a></li>
+    </ul></nav>
+    <div class="nav-ctas">
+      <a href="pages/auth/login.html" class="btn btn-ol"><i class="fas fa-sign-in-alt"></i> Login</a>
+      <a href="pages/auth/register.html" class="btn btn-gold"><i class="fas fa-rocket"></i> Register</a>
+    </div>
+    <button class="mob-tog" id="mobTog"><i class="fas fa-bars"></i></button>
+  </div>
+</header>
 
-            <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+<section class="hero">
+  <div class="hgrid"></div><div class="hglow"></div>
+  <div class="hc">
+    <div data-aos="fade-right">
+      <div class="badge"><i class="fas fa-shield-alt"></i> Africa's Premier Trading Academy</div>
+      <h1 class="h1">Master the Markets.<br><span class="ac">Secure Your Future.</span></h1>
+      <p class="hsub">At Traders Helmet Academy we equip you with proven strategies, personal mentorship, and live signals to profit consistently from Forex, Crypto, and Binary Options.</p>
+      <div class="hctas">
+        <a href="pages/auth/login2.html" class="bhp"><i class="fas fa-graduation-cap"></i> My Dashboard</a>
+        <a href="#pricing" class="bhs"><i class="fas fa-list"></i> View Plans</a>
+      </div>
+      <div class="stats">
+        <div class="si"><span class="sn">500+</span><span class="sl">Students</span></div>
+        <div class="si"><span class="sn">8+</span><span class="sl">Years Experience</span></div>
+        <div class="si"><span class="sn">89%</span><span class="sl">Success Rate</span></div>
+      </div>
+    </div>
+    <div class="hv" data-aos="fade-left" data-aos-delay="200">
+      <div class="fb fb1"><i class="fas fa-arrow-up"></i> Trade Active</div>
+      <div class="dc">
+        <div class="dt"><span class="dl">Portfolio Performance</span><span class="dp"><i class="fas fa-arrow-trend-up"></i> +24.8%</span></div>
+        <div class="ca">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content" data-aos="fade-right">
-                <div class="hero-badge">
-                    <i class="fas fa-star"></i>
-                    <span>Trusted by 10,000+ traders worldwide</span>
-                </div>
-                
-                <h1 class="hero-title">
-                    Master Trading.<br>
-                    Build Wealth.<br>
-                    <span style="color: var(--accent-gold);">Transform Your Future.</span>
-                </h1>
-                
-                <p class="hero-subtitle">
-                    Welcome to Traders Helmet Academy, the place where the fascinating world of financial markets comes to life. Since our inception in 2019, we have been pioneers in shaping the future of online education, specializing in the art of forex & cryptocurrency trading. Join the elite academy where beginners become profitable traders. Learn forex, crypto, and binary options with expert mentorship, proven strategies, and exclusive signals.
-                </p>
-
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-number" data-count="10000">0</span>
-                        <span class="stat-label">Active Students</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-count="89">0</span>
-                        <span class="stat-label">Success Rate %</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" data-count="24">0</span>
-                        <span class="stat-label">Countries Served</span>
-                    </div>
-                </div>
-
-                <div class="hero-cta">
-                    <a href="pages/auth/login2.html" class="btn btn-primary btn-large">
-                        <i class="fas fa-rocket"></i>
-                        My Dashboard
-                    </a>
-                    <a href="#features" class="btn btn-secondary btn-large">
-                        <i class="fas fa-play"></i>
-                        Learn More
-                    </a>
-                </div>
-            </div>
-
-            <div class="hero-visual" data-aos="fade-left">
-                <div class="trading-dashboard">
-                    <div class="dashboard-header">
-                        <h3 class="dashboard-title">Trading Dashboard</h3>
-                        <div class="profit-indicator">
-                            <i class="fas fa-trending-up"></i>
-                            <span>+24.7%</span>
-                        </div>
-                    </div>
-                    
-                    <div class="chart-placeholder">
-                        <div class="chart-points">
-                            <div class="chart-point"></div>
-                            <div class="chart-point"></div>
-                            <div class="chart-point"></div>
-                            <div class="chart-point"></div>
-                            <div class="chart-point"></div>
-                            <div class="chart-point"></div>
-                        </div>
-                        <div class="chart-line"></div>
-                    </div>
-
-                    <div class="dashboard-metrics">
-                        <div class="metric-card">
-                            <div class="metric-value">$12,450</div>
-                            <div class="metric-label">Portfolio Value</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">47</div>
-                            <div class="metric-label">Winning Trades</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">$2,890</div>
-                            <div class="metric-label">Monthly Profit</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">89%</div>
-                            <div class="metric-label">Success Rate</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="dm">
+          <div class="mc"><div class="mv">$4,820</div><div class="ml">This Month</div></div>
+          <div class="mc"><div class="mv">92%</div><div class="ml">Win Rate</div></div>
+          <div class="mc"><div class="mv">47</div><div class="ml">Trades Won</div></div>
+          <div class="mc"><div class="mv">3.8x</div><div class="ml">ROI</div></div>
         </div>
-    </section>
+      </div>
+      <div class="fb fb2"><i class="fas fa-satellite-dish"></i> Live Signal Sent</div>
+    </div>
+  </div>
+</section>
 
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Why Choose Traders Helmet Academy?</h2>
-                <p class="section-subtitle">
-                    We provide comprehensive training, expert mentorship, and cutting-edge tools to help you succeed in the financial markets.
-                </p>
-            </div>
+<section id="features" class="features">
+  <div class="cont">
+    <div class="sh" data-aos="fade-up">
+      <div class="eyebrow">Why Choose Us</div>
+      <h2 class="st">Everything You Need to <span class="go">Trade with Confidence</span></h2>
+      <p class="ss">Comprehensive training, expert mentorship, and cutting-edge tools — all in one place.</p>
+    </div>
+    <div class="fg">
+      <div class="fc" data-aos="fade-up" data-aos-delay="100"><div class="fi"><i class="fas fa-graduation-cap"></i></div><h3 class="ftt">Expert Education</h3><p class="fd">Master Forex, Cryptocurrency, and Binary Options with comprehensive courses designed by professionals with 8+ years of live market experience.</p></div>
+      <div class="fc" data-aos="fade-up" data-aos-delay="200"><div class="fi"><i class="fas fa-chart-line"></i></div><h3 class="ftt">Proven Strategies</h3><p class="fd">Learn our exclusive Pivot and Rhombus strategies, plus institutional order flow techniques that professional traders use daily in the live market.</p></div>
+      <div class="fc" data-aos="fade-up" data-aos-delay="300"><div class="fi"><i class="fas fa-satellite-dish"></i></div><h3 class="ftt">Live Trading Signals</h3><p class="fd">Receive real-time trading signals with precise entry points, stop losses, and take profits from our expert analysts — directly to your dashboard.</p></div>
+      <div class="fc" data-aos="fade-up" data-aos-delay="100"><div class="fi"><i class="fas fa-user-tie"></i></div><h3 class="ftt">Personal Mentorship</h3><p class="fd">One-on-one guidance from experienced traders who will help you develop and refine your skills across the full length of your membership.</p></div>
+      <div class="fc" data-aos="fade-up" data-aos-delay="200"><div class="fi"><i class="fas fa-tools"></i></div><h3 class="ftt">Premium Tools</h3><p class="fd">Access professional trading software, advanced charting tools, and exclusive indicators that sharpen your edge in any market condition.</p></div>
+      <div class="fc" data-aos="fade-up" data-aos-delay="300"><div class="fi"><i class="fas fa-headset"></i></div><h3 class="ftt">Dedicated Support</h3><p class="fd">Our support team is available to help with any questions, technical issues, or guidance you need throughout your entire learning journey.</p></div>
+    </div>
+  </div>
+</section>
 
-            <div class="features-grid">
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3 class="feature-title">Expert Education</h3>
-                    <p class="feature-description">
-                        Master forex, cryptocurrency, and binary options with our comprehensive courses designed by industry professionals.
-                    </p>
-                </div>
+<section id="pricing" class="pricing">
+  <div class="cont">
+    <div class="sh" data-aos="fade-up">
+      <div class="eyebrow">Membership Plans</div>
+      <h2 class="st">Choose Your Path to <span style="color:var(--gold)">Financial Freedom</span></h2>
+      <p class="ss">Select the membership tier that best fits your trading goals and experience level.</p>
+    </div>
+    <div class="pg">
+      <div class="pc" data-aos="fade-up" data-aos-delay="100">
+        <div class="th"><div class="ti gi"><i class="fas fa-star" style="color:#fff"></i></div><h3 class="tn">Gold Membership</h3><p class="td2">2 Months Program</p></div>
+        <div class="tp"><span class="cu">$</span>300</div>
+        <ul class="tfl">
+          <li><span class="ck"><i class="fas fa-check"></i></span>Forex Education Fundamentals</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Cryptocurrency Education</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Binary Options (HFX) Training</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Forex Pivot Strategy Master Class</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Forex Rhombus Strategy Master Class</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>2 Months Personal Mentorship</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Free Trading Signals</li>
+        </ul>
+        <a href="/pages/auth/register.html?tier=gold" class="bt gt">Get Started with Gold</a>
+      </div>
+      <div class="pc feat" data-aos="fade-up" data-aos-delay="200">
+        <div class="pop">⭐ Most Popular</div>
+        <div class="th"><div class="ti pi"><i class="fas fa-gem" style="color:#fff"></i></div><h3 class="tn">Platinum Membership</h3><p class="td2">3 Months Program</p></div>
+        <div class="tp"><span class="cu">$</span>600</div>
+        <ul class="tfl">
+          <li><span class="ck"><i class="fas fa-check"></i></span>Everything in Gold</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Advanced Market Psychology</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Algorithmic Trading Basics</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Macro Economics & Trading</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Free Trading Software Tools</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>3 Months Extended Mentorship</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Priority Signal Access</li>
+        </ul>
+        <a href="/pages/auth/register.html?tier=platinum" class="bt pt">Get Started with Platinum</a>
+      </div>
+      <div class="pc" data-aos="fade-up" data-aos-delay="300">
+        <div class="th"><div class="ti di"><i class="fas fa-crown" style="color:#fff"></i></div><h3 class="tn">Diamond Membership</h3><p class="td2">6 Months Program</p></div>
+        <div class="tp"><span class="cu">$</span>1300</div>
+        <ul class="tfl">
+          <li><span class="ck"><i class="fas fa-check"></i></span>Everything in Platinum</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Institutional Order Flow Master Class</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Advanced Risk Management</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Proprietary THA System</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Live Market Mastery Sessions</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>6 Months VIP Mentorship</li>
+          <li><span class="ck"><i class="fas fa-check"></i></span>Personal Trading Coach</li>
+        </ul>
+        <a href="/pages/auth/register.html?tier=diamond" class="bt dt">Get Started with Diamond</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="feature-title">Proven Strategies</h3>
-                    <p class="feature-description">
-                        Learn our exclusive Pivot and Rhombus strategies, plus institutional order flow techniques used by professional traders.
-                    </p>
-                </div>
+<section id="testimonials" class="testimonials">
+  <div class="cont">
+    <div class="sh" data-aos="fade-up">
+      <div class="eyebrow">Student Success Stories</div>
+      <h2 class="st">What Our <span class="go">Students Say</span></h2>
+      <p class="ss">Join hundreds of successful traders who have transformed their financial lives.</p>
+    </div>
+    <div class="tg">
+      <div class="tc" data-aos="fade-up" data-aos-delay="100"><div class="qm">"</div><div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tt">"Traders Helmet Academy completely changed my life. The mentorship and strategies are invaluable. I went from losing money to consistent profits in just 3 months."</p><div class="ta"><div class="av">JM</div><div><div class="an">James Martinez</div><div class="ar">Diamond Member, Spain</div></div></div></div>
+      <div class="tc" data-aos="fade-up" data-aos-delay="200"><div class="qm">"</div><div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tt">"The Pivot and Rhombus strategies work incredibly well. I made back my investment within the first month and continue to grow my account consistently."</p><div class="ta"><div class="av">SA</div><div><div class="an">Sarah Aniefiok</div><div class="ar">Platinum Member, Nigeria</div></div></div></div>
+      <div class="tc" data-aos="fade-up" data-aos-delay="300"><div class="qm">"</div><div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tt">"As a total beginner the structured approach and personal mentorship made everything clear. Now I trade confidently and profitably every single week."</p><div class="ta"><div class="av">DK</div><div><div class="an">David Nkemakolam</div><div class="ar">Gold Member, Nigeria</div></div></div></div>
+      <div class="tc" data-aos="fade-up" data-aos-delay="100"><div class="qm">"</div><div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tt">"The trading signals alone are worth the membership fee. Combined with the education and mentorship, the value this academy provides is extraordinary."</p><div class="ta"><div class="av">LT</div><div><div class="an">Lisa Thompson</div><div class="ar">Platinum Member, Canada</div></div></div></div>
+      <div class="tc" data-aos="fade-up" data-aos-delay="200"><div class="qm">"</div><div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tt">"The institutional order flow course in Diamond opened my eyes to how markets really work. The knowledge I gained here transformed my trading forever."</p><div class="ta"><div class="av">MR</div><div><div class="an">Michael Roberts</div><div class="ar">Diamond Member, UK</div></div></div></div>
+      <div class="tc" data-aos="fade-up" data-aos-delay="300"><div class="qm">"</div><div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tt">"Having experienced mentors guide you step by step makes all the difference. The community and structure here create the perfect learning environment."</p><div class="ta"><div class="av">PR</div><div><div class="an">Priya Raj</div><div class="ar">Gold Member, India</div></div></div></div>
+    </div>
+  </div>
+</section>
 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-icon">
-                        <i class="fas fa-signal"></i>
-                    </div>
-                    <h3 class="feature-title">Live Trading Signals</h3>
-                    <p class="feature-description">
-                        Receive real-time trading signals with entry points, stop losses, and take profits from our expert analysts.
-                    </p>
-                </div>
+<section class="ctab">
+  <div class="cont">
+    <div data-aos="fade-up">
+      <h2 class="st" style="font-size:2.15rem;color:var(--navy)">Ready to Transform Your Trading?</h2>
+      <p class="ctasub">Join hundreds of successful traders who have already started their journey to financial freedom. Your story starts here.</p>
+      <div class="ctabts">
+        <a href="/pages/auth/register.html" class="bn"><i class="fas fa-rocket"></i> Start Your Journey Today</a>
+        <a href="/pages/about/index.html" class="bno"><i class="fas fa-info-circle"></i> Learn About Us</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="feature-title">Personal Mentorship</h3>
-                    <p class="feature-description">
-                        Get one-on-one guidance from experienced traders who will help you develop and refine your trading skills.
-                    </p>
-                </div>
-
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <h3 class="feature-title">Premium Tools</h3>
-                    <p class="feature-description">
-                        Access professional trading software, advanced charting tools, and exclusive indicators to enhance your trading.
-                    </p>
-                </div>
-
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h3 class="feature-title">24/7 Support</h3>
-                    <p class="feature-description">
-                        Our dedicated support team is available around the clock to help you with any questions or technical issues.
-                    </p>
-                </div>
-            </div>
+<footer class="footer">
+  <div class="cont">
+    <div class="fg2">
+      <div class="fb-brand">
+        <a href="/" class="flogo"><img src="/thalogo.png" alt="THA" onerror="this.style.display='none'"><span class="flt">Traders Helmet <span>Academy</span></span></a>
+        <p>Since 2019 we have been pioneers in shaping the future of online trading education, specialising in Forex &amp; Cryptocurrency trading across Africa and beyond.</p>
+        <div class="srow">
+          <a href="#" class="sc2"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="sc2"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" class="sc2"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="sc2"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="sc2"><i class="fab fa-youtube"></i></a>
         </div>
-    </section>
+      </div>
+      <div class="fcol">
+        <h4>Quick Links</h4>
+        <ul class="fl">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
+          <li><a href="/pages/about/index.html">About Us</a></li>
+          <li><a href="/pages/auth/register.html">Register</a></li>
+          <li><a href="/pages/auth/login2.html">Login</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h4>Legal</h4>
+        <ul class="fl">
+          <li><a href="/pages/legal/terms.html">Terms of Service</a></li>
+          <li><a href="/pages/legal/privacy.html">Privacy Policy</a></li>
+          <li><a href="/pages/legal/disclaimer.html">Risk Disclaimer</a></li>
+          <li><a href="/pages/legal/refund.html">Refund Policy</a></li>
+          <li><a href="/pages/support/faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h4>Contact Us</h4>
+        <div class="cr"><i class="fas fa-map-marker-alt"></i><span>No. 22 Ndidem Usang Iso Road, Calabar, Cross River State, Nigeria</span></div>
+        <div class="cr"><i class="fas fa-phone"></i><a href="tel:+2347052777715">+234 705 277 7715</a></div>
+        <div class="cr"><i class="fas fa-envelope"></i><a href="mailto:info@tradershelmetacademy.com">info@tradershelmetacademy.com</a></div>
+        <div class="cr"><i class="fas fa-globe"></i><a href="https://tradershelmetacademy.com">www.tradershelmetacademy.com</a></div>
+      </div>
+    </div>
+    <div class="fbot">
+      <p>&copy; 2025 Traders Helmet Academy. All rights reserved. &nbsp;|&nbsp; <strong>Risk Warning:</strong> Trading involves substantial risk and may result in the loss of your invested capital.</p>
+    </div>
+  </div>
+</footer>
 
-    <!-- Pricing Section -->
-    <section id="pricing" class="pricing">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Choose Your Path to Success</h2>
-                <p class="section-subtitle">
-                    Select the membership tier that best fits your trading goals and experience level.
-                </p>
-            </div>
-
-            <div class="pricing-grid">
-                <!-- Gold Tier -->
-                <div class="pricing-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="tier-header">
-                        <div class="tier-icon gold">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h3 class="tier-name">Gold Membership</h3>
-                        <p class="tier-duration">2 Months Program</p>
-                    </div>
-
-                    <div class="tier-price">
-                        <span class="currency">$</span>300
-                    </div>
-
-                    <ul class="tier-features">
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Forex Education & Cryptocurrency Education
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Binary Options (HFX) Training
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Forex Master Class on Pivot Strategy
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Forex Master Class on Rhombus Strategy
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            2 Months Personal Mentorship
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Free Trading Signals
-                        </li>
-                    </ul>
-
-                    <div class="tier-cta">
-                        <a href="/payment-processing.html?tier=gold" class="btn-tier gold">
-                            Get Started with Gold
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Platinum Tier -->
-                <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="200">
-                    <div class="tier-header">
-                        <div class="tier-icon platinum">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <h3 class="tier-name">Platinum Membership</h3>
-                        <p class="tier-duration">3 Months Program</p>
-                    </div>
-
-                    <div class="tier-price">
-                        <span class="currency">$</span>600
-                    </div>
-
-                    <ul class="tier-features">
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Everything in Gold
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Free Trading Software Tools
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            3 Months Extended Mentorship
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Priority Support Access
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Advanced Trading Signals
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Weekly Live Trading Sessions
-                        </li>
-                    </ul>
-
-                    <div class="tier-cta">
-                        <a href="/payment-processing.html?tier=platinum" class="btn-tier platinum">
-                            Get Started with Platinum
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Diamond Tier -->
-                <div class="pricing-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="tier-header">
-                        <div class="tier-icon diamond">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <h3 class="tier-name">Diamond Membership</h3>
-                        <p class="tier-duration">6 Months Program</p>
-                    </div>
-
-                    <div class="tier-price">
-                        <span class="currency">$</span>1300
-                    </div>
-
-                    <ul class="tier-features">
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Everything in Platinum
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Institutional Order Flow Master Class
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            6 Months VIP Mentorship
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Personal Trading Coach
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            Exclusive VIP Community Access
-                        </li>
-                        <li>
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            24/7 Priority Support
-                        </li>
-                    </ul>
-
-                    <div class="tier-cta">
-                        <a href="/payment-processing.html?tier=diamond" class="btn-tier diamond">
-                            Get Started with Diamond
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">What Our Students Say</h2>
-                <p class="section-subtitle">
-                    Join thousands of successful traders who have transformed their lives with our academy.
-                </p>
-            </div>
-
-            <div class="testimonials-grid">
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        "Traders Helmet Academy completely changed my life. The mentorship and strategies taught here are invaluable. I went from losing money to consistent profits in just 3 months."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JM</div>
-                        <div class="author-info">
-                            <h4>James Martinez</h4>
-                            <p>Diamond Member, Spain</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        "The education quality is outstanding. The Pivot and Rhombus strategies work incredibly well. I've made back my investment within the first month and continue to grow my account."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SA</div>
-                        <div class="author-info">
-                            <h4>Sarah Aniefiok</h4>
-                            <p>Platinum Member, Nigeria</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        "As a beginner, I was overwhelmed by trading. The academy's structured approach and personal mentorship made everything clear. Now I trade confidently and profitably."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">DK</div>
-                        <div class="author-info">
-                            <h4>David Nkemakolam</h4>
-                            <p>Gold Member, Nigeria</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        "The trading signals alone are worth the membership fee. Combined with the education and mentorship, this academy provides incredible value for money."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">LT</div>
-                        <div class="author-info">
-                            <h4>Lisa Thompson</h4>
-                            <p>Platinum Member, Canada</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        "The institutional order flow course in the Diamond tier opened my eyes to how markets really work. The knowledge I gained here is priceless and transformed my trading."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MR</div>
-                        <div class="author-info">
-                            <h4>Michael Roberts</h4>
-                            <p>Diamond Member, UK</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        "The community aspect is amazing. Learning alongside other motivated traders and having access to experienced mentors creates the perfect learning environment."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">PR</div>
-                        <div class="author-info">
-                            <h4>Priya Raj</h4>
-                            <p>Gold Member, India</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content" data-aos="fade-up">
-                <h2 class="cta-title">Ready to Transform Your Trading?</h2>
-                <p class="cta-subtitle">
-                    Join thousands of successful traders who have already started their journey to financial freedom. Your trading success story starts here.
-                </p>
-                <div class="cta-buttons">
-                    <a href="pages/auth/login2.html" class="btn btn-primary btn-large">
-                        <i class="fas fa-rocket"></i>
-                        Start Your Journey Today
-                    </a>
-                    <a href="pages/auth/register.html" class="btn btn-secondary btn-large">
-                        <i class="fas fa-user-plus"></i>
-                        Create Free Account
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Traders Helmet Academy</h3>
-                    <p style="color: #cbd5e1; margin-bottom: 1rem;">
-                        Welcome to Traders Helmet Academy, the place where the fascinating world of financial markets comes to life. Since our inception in 2019, we have been pioneers in shaping the future of online education, specializing in the art of forex & cryptocurrency trading.
-                    </p>
-                    <div class="social-links">
-                        <a href="#" class="social-link" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link" title="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="social-link" title="YouTube">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="#testimonials">Reviews</a></li>
-                        <li><a href="/pages/signals/index.html">Trading Signals</a></li>
-                        <li><a href="/pages/education/index.html">Education</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Support</h3>
-                    <ul class="footer-links">
-                        <li><a href="/pages/support/help.html">Help Center</a></li>
-                        <li><a href="/pages/support/contact.html">Contact Us</a></li>
-                        <li><a href="/pages/support/faq.html">FAQ</a></li>
-                        <li><a href="/pages/support/tickets.html">Support Tickets</a></li>
-                        <li><a href="/pages/community/index.html">Community</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <ul class="footer-links">
-                        <li><a href="/pages/legal/terms.html">Terms of Service</a></li>
-                        <li><a href="/pages/legal/privacy.html">Privacy Policy</a></li>
-                        <li><a href="/pages/legal/disclaimer.html">Risk Disclaimer</a></li>
-                        <li><a href="/pages/legal/refund.html">Refund Policy</a></li>
-                        <li><a href="/pages/legal/cookies.html">Cookie Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2024 Traders Helmet Academy. All rights reserved.</p>
-                <p style="margin-top: 0.5rem; font-size: 0.8rem;">
-                    <strong>Risk Warning:</strong> Trading involves substantial risk and may result in the loss of your invested capital.
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-        // Initialize AOS (Animate On Scroll)
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true,
-            offset: 100
-        });
-
-        // Header scroll effect
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Mobile menu toggle
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const navMenu = document.getElementById('navMenu');
-
-        mobileMenuToggle.addEventListener('click', () => {
-            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Counter animation for hero stats
-        function animateCounters() {
-            const counters = document.querySelectorAll('[data-count]');
-            
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-count'));
-                const duration = 2000; // 2 seconds
-                const step = target / (duration / 16); // 60fps
-                let current = 0;
-                
-                const timer = setInterval(() => {
-                    current += step;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    
-                    // Format numbers with commas
-                    const formatted = Math.floor(current).toLocaleString();
-                    counter.textContent = counter.getAttribute('data-count').includes('%') 
-                        ? Math.floor(current) + '%' 
-                        : formatted + (counter.getAttribute('data-count').includes('000') ? '+' : '');
-                }, 16);
-            });
-        }
-
-        // Trigger counter animation when hero section is visible
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    observer.unobserve(entry.target);
-                }
-            });
-        });
-
-        const heroStats = document.querySelector('.hero-stats');
-        if (heroStats) {
-            observer.observe(heroStats);
-        }
-
-        // Loading dots animation for any loading states
-        function createLoadingDots(container) {
-            const dotsContainer = document.createElement('div');
-            dotsContainer.className = 'loading-dots';
-            
-            for (let i = 0; i < 3; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'loading-dot';
-                dotsContainer.appendChild(dot);
-            }
-            
-            container.appendChild(dotsContainer);
-            return dotsContainer;
-        }
-
-        // Fade in animation for elements
-        function setupFadeInAnimation() {
-            const fadeElements = document.querySelectorAll('.fade-in');
-            
-            const fadeObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
-
-            fadeElements.forEach(element => {
-                fadeObserver.observe(element);
-            });
-        }
-
-        // Initialize fade in animations
-        setupFadeInAnimation();
-
-        // Preload critical images
-        function preloadImages() {
-            const imagesToPreload = [
-                'tradershelmetlogo.png'
-            ];
-            
-            imagesToPreload.forEach(src => {
-                const img = new Image();
-                img.src = src;
-            });
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            preloadImages();
-            
-            // Add loading state to CTA buttons
-            document.querySelectorAll('.btn-tier, .btn-primary').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    if (this.href && this.href.includes('payment-processing')) {
-                        this.style.opacity = '0.7';
-                        this.style.pointerEvents = 'none';
-                        
-                        // Create loading dots
-                        const originalText = this.textContent;
-                        this.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
-                        
-                        // Reset after navigation (in case it fails)
-                        setTimeout(() => {
-                            this.textContent = originalText;
-                            this.style.opacity = '1';
-                            this.style.pointerEvents = 'auto';
-                        }, 5000);
-                    }
-                });
-            });
-        });
-
-        // Performance optimization: Lazy load testimonial avatars
-        const testimonialObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Simulate avatar loading with initials
-                    const avatar = entry.target.querySelector('.author-avatar');
-                    if (avatar && !avatar.dataset.loaded) {
-                        avatar.dataset.loaded = 'true';
-                        avatar.style.opacity = '1';
-                    }
-                }
-            });
-        });
-
-        document.querySelectorAll('.testimonial-card').forEach(card => {
-            testimonialObserver.observe(card);
-        });
-
-        // Add form validation for any forms on the page
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        // Global error handling
-        window.addEventListener('error', function(e) {
-            console.log('Page error handled:', e.message);
-            // Could send to analytics service in production
-        });
-
-        // Accessibility improvements
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Tab') {
-                document.body.classList.add('keyboard-navigation');
-            }
-        });
-
-        document.addEventListener('mousedown', function() {
-            document.body.classList.remove('keyboard-navigation');
-        });
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+AOS.init({duration:800,easing:'ease-in-out',once:true,offset:80});
+const hdr=document.getElementById('header');
+window.addEventListener('scroll',()=>hdr.classList.toggle('scrolled',window.scrollY>80));
+document.getElementById('mobTog').addEventListener('click',()=>{
+  const m=document.getElementById('navMenu');
+  const open=m.style.display==='flex';
+  m.style.display=open?'none':'flex';
+  if(!open){Object.assign(m.style,{flexDirection:'column',position:'absolute',top:'70px',left:'0',right:'0',background:'#0d1b3e',padding:'1.5rem 2rem',gap:'1.25rem',borderTop:'1px solid rgba(255,255,255,.08)',zIndex:'999'});}
+});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+    const m=document.getElementById('navMenu');
+    if(window.innerWidth<968)m.style.display='none';
+  });
+});
+</script>
 </body>
 </html>
-
-
