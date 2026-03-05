@@ -210,7 +210,7 @@
         }
 
         .nav-tab.premium::after {
-            content: '★';
+            content: 'â˜…';
             position: absolute;
             top: -5px;
             right: -5px;
@@ -293,7 +293,7 @@
         }
 
         .dashboard-card.premium::after {
-            content: '★';
+            content: 'â˜…';
             position: absolute;
             top: 8px;
             right: 8px;
@@ -781,6 +781,10 @@
                     Platinum Member
                 </div>
                 <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userName" style="color:var(--text-secondary);font-size:0.9rem;font-weight:500;"></span>
+                <button onclick="handleLogout()" style="padding:0.5rem 1rem;background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3);border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:600;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </div>
     </header>
@@ -798,7 +802,7 @@
             <button class="nav-tab active" data-tab="overview" onclick="switchTab('overview')">
                 <i class="fas fa-tachometer-alt"></i> Overview
             </button>
-            <button class="nav-tab" data-tab="education" onclick="switchTab('education')">
+            <button class="nav-tab" data-tab="education" onclick="window.location.href='/pages/education/index.html'">
                 <i class="fas fa-graduation-cap"></i> Education
             </button>
             <button class="nav-tab premium" data-tab="tools" onclick="switchTab('tools')">
@@ -924,11 +928,15 @@
 
         <!-- Education Tab -->
         <div id="education" class="tab-content">
-            <div class="education-grid" id="educationGrid">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
-                    Loading your premium courses...
-                </div>
+            <div style="text-align:center; padding: 4rem 2rem;">
+                <div style="font-size:4rem; margin-bottom:1rem;">🎓</div>
+                <h2 style="font-size:1.8rem; font-weight:700; margin-bottom:1rem; color:var(--text-primary);">Education Portal</h2>
+                <p style="color:var(--text-secondary); margin-bottom:2rem; max-width:500px; margin-left:auto; margin-right:auto;">
+                    Access your full trading education library — courses, videos, and resources tailored to your Platinum tier.
+                </p>
+                <a href="/pages/education/index.html" style="display:inline-block; padding:1rem 2.5rem; background:var(--gradient-platinum); color:white; border-radius:12px; font-weight:600; text-decoration:none; font-size:1.1rem;">
+                    <i class="fas fa-graduation-cap" style="margin-right:0.5rem;"></i> Open Education Portal
+                </a>
             </div>
         </div>
 
@@ -1040,149 +1048,86 @@
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
-    <!-- JavaScript -->
-    <script src="/assets/js/config.js"></script>
-    <script src="/assets/js/supabase.js"></script>
-    <script src="/assets/js/auth.js"></script>
-    
+    <!-- THA Auth Module -->
+    <script type="module" src="/assets/js/tha-auth.js"></script>
+
     <script>
-        class ProductionPlatinumDashboard {
+        class PlatinumDashboard {
             constructor() {
-                this.supabase = null;
                 this.currentUser = null;
-                this.userSubscription = null;
-                this.dashboardData = {};
                 this.currentTab = 'overview';
                 this.init();
             }
 
             async init() {
                 try {
-                    console.log('💎 Initializing Production Platinum Dashboard...');
-                    
-                    // Initialize Supabase
-                    await this.initializeSupabase();
-                    
-                    // Check authentication and tier access
                     await this.checkAuthentication();
-                    
-                    // Load user dashboard data
                     await this.loadDashboardData();
-                    
-                    // Setup real-time subscriptions
-                    this.setupRealTimeUpdates();
-                    
-                    // Hide loading screen
                     document.getElementById('loadingScreen').style.display = 'none';
-                    
-                    console.log('✅ Platinum Dashboard initialized successfully');
-                    
+                    console.log('✅ Platinum Dashboard ready');
                 } catch (error) {
-                    console.error('❌ Failed to initialize Platinum dashboard:', error);
+                    console.error('Dashboard init error:', error);
                     this.showToast('Failed to load dashboard. Please refresh the page.', 'error');
                     document.getElementById('loadingScreen').style.display = 'none';
                 }
             }
 
-            async initializeSupabase() {
-                if (typeof window.supabaseClient !== 'undefined') {
-                    this.supabase = window.supabaseClient;
-                } else {
-                    // Fallback initialization
-                    const { createClient } = supabase;
-                    this.supabase = createClient(
-                        THA_CONFIG.supabase.url,
-                        THA_CONFIG.supabase.anonKey
-                    );
-                }
-            }
-
             async checkAuthentication() {
-                const { data: { user }, error } = await this.supabase.auth.getUser();
-                
-                if (error || !user) {
-                    window.location.href = '/login.html';
+                await new Promise(resolve => {
+                    if (window.firebaseAuth) return resolve();
+                    window.addEventListener('tha-auth-ready', resolve, { once: true });
+                    setTimeout(resolve, 4000);
+                });
+
+                const firebaseUser = await new Promise(resolve => {
+                    const unsub = window.firebaseAuth.onAuthStateChange(user => { unsub(); resolve(user); });
+                });
+
+                if (!firebaseUser) {
+                    window.location.href = '/pages/auth/login.html';
                     return;
                 }
 
-                // Get user profile and subscription
-                const { data: profile, error: profileError } = await this.supabase
+                const { data: profile } = await window.supabase
                     .from('user_profiles')
-                    .select(`
-                        *,
-                        user_subscriptions(*)
-                    `)
-                    .eq('id', user.id)
+                    .select('*')
+                    .eq('id', firebaseUser.uid)
                     .single();
 
-                if (profileError || !profile) {
-                    console.error('Error fetching profile:', profileError);
-                    window.location.href = '/login.html';
+                if (!profile) {
+                    window.location.href = '/pages/auth/login.html';
                     return;
                 }
 
-                // Check if user has Platinum access or higher
-                const subscription = profile.user_subscriptions?.[0];
-                const hasPlatinumAccess = this.checkTierAccess(profile.tier, subscription?.tier);
-                
-                if (!hasPlatinumAccess) {
-                    alert('Platinum tier subscription required to access this dashboard.');
-                    window.location.href = '/pages/payment/subscribe.html';
+                if (profile.subscription_status !== 'active') {
+                    window.location.href = '/pages/auth/login2.html';
                     return;
                 }
 
-                this.currentUser = { ...user, ...profile };
-                this.userSubscription = subscription;
-                
-                // Update UI with user info
+                this.currentUser = { ...profile, uid: firebaseUser.uid, email: firebaseUser.email };
                 this.updateUserInfo();
             }
 
-            checkTierAccess(userTier, subscriptionTier) {
-                const tierHierarchy = ['gold', 'platinum', 'diamond'];
-                const effectiveTier = subscriptionTier || userTier || 'none';
-                const tierIndex = tierHierarchy.indexOf(effectiveTier);
-                return tierIndex >= 1; // Platinum or higher
-            }
-
             updateUserInfo() {
-                // Update user avatar
-                const avatar = document.getElementById('userAvatar');
                 const firstName = this.currentUser.first_name || '';
-                const lastName = this.currentUser.last_name || '';
-                avatar.textContent = ((firstName.charAt(0) || '') + (lastName.charAt(0) || '')).toUpperCase() || 'U';
-                
-                // Update welcome message
-                const welcomeMsg = document.getElementById('welcomeMessage');
-                if (firstName) {
-                    welcomeMsg.textContent = `Welcome back, ${firstName}! Access advanced trading tools, premium signals, and priority support.`;
-                }
-                
-                // Update subscription status
-                this.updateSubscriptionStatus();
-            }
+                const lastName  = this.currentUser.last_name  || '';
+                const initials  = ((firstName[0]||'') + (lastName[0]||'')).toUpperCase() || 'U';
 
-            updateSubscriptionStatus() {
-                const statusElement = document.getElementById('subscriptionStatus');
-                
-                if (this.userSubscription && this.userSubscription.status === 'active') {
-                    const endDate = new Date(this.userSubscription.current_period_end);
-                    const daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24));
-                    
-                    if (daysLeft > 0) {
-                        statusElement.innerHTML = `<i class="fas fa-clock"></i> ${daysLeft} days remaining`;
-                        statusElement.style.background = 'rgba(139, 92, 246, 0.1)';
-                        statusElement.style.color = '#8b5cf6';
-                    } else {
-                        statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Subscription expired';
-                        statusElement.style.background = 'rgba(239, 68, 68, 0.1)';
-                        statusElement.style.color = 'var(--error)';
-                    }
-                } else {
-                    statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Subscription inactive';
-                    statusElement.style.background = 'rgba(239, 68, 68, 0.1)';
-                    statusElement.style.color = 'var(--error)';
+                document.getElementById('userAvatar').textContent = initials;
+                document.getElementById('userName').textContent   = `${firstName} ${lastName}`.trim();
+
+                const status = document.getElementById('subscriptionStatus');
+                if (this.currentUser.subscription_status === 'active') {
+                    const t = (this.currentUser.subscription_tier||'platinum').charAt(0).toUpperCase()
+                            + (this.currentUser.subscription_tier||'platinum').slice(1);
+                    status.innerHTML = `<i class="fas fa-check-circle"></i> ${t} Active`;
+                    status.style.background = 'rgba(16,185,129,0.1)';
+                    status.style.color = 'var(--success)';
+                    status.style.borderColor = 'var(--success)';
                 }
+
+                const welcomeMsg = document.getElementById('welcomeMessage');
+                if (firstName) welcomeMsg.textContent = `Welcome back, ${firstName}! Your Platinum dashboard is ready.`;
             }
 
             async loadDashboardData() {
@@ -1190,673 +1135,119 @@
                     this.loadUserProgress(),
                     this.loadTradingPerformance(),
                     this.loadEducationData(),
-                    this.loadTradingTools(),
-                    this.loadPremiumSignals(),
+                    this.loadTradingSignals(),
                     this.loadMentorshipData(),
-                    this.loadSupportOptions()
+                    this.loadUpcomingSessions()
                 ]);
             }
 
             async loadUserProgress() {
                 try {
-                    // Calculate subscription days left
-                    if (this.userSubscription && this.userSubscription.current_period_end) {
-                        const endDate = new Date(this.userSubscription.current_period_end);
-                        const daysLeft = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
-                        document.getElementById('daysLeft').textContent = daysLeft;
-                    } else {
-                        document.getElementById('daysLeft').textContent = '0';
-                    }
-
-                    // Get course completion data
-                    const { data: courseProgress } = await this.supabase
-                        .from('user_course_progress')
-                        .select('*')
-                        .eq('user_id', this.currentUser.id);
-
-                    const totalCourses = 9; // Platinum tier has 9 courses (all Gold + 4 premium)
-                    const completedCourses = courseProgress?.filter(cp => cp.completed).length || 0;
-                    const progressPercentage = (completedCourses / totalCourses) * 100;
-
-                    document.getElementById('coursesCompleted').textContent = `${completedCourses}/${totalCourses}`;
-                    document.getElementById('progressFill').style.width = `${progressPercentage}%`;
-                    document.getElementById('overallGrade').textContent = completedCourses >= 7 ? 'A+' : completedCourses >= 5 ? 'A' : 'B+';
-
-                } catch (error) {
-                    console.error('Error loading user progress:', error);
-                    document.getElementById('coursesCompleted').textContent = '0/9';
-                    document.getElementById('daysLeft').textContent = '0';
+                    const { data: payments } = await window.supabase
+                        .from('payments').select('submitted_at,tier')
+                        .eq('user_id', this.currentUser.uid).eq('status','verified')
+                        .order('submitted_at', { ascending: false }).limit(1);
+                    if (payments && payments[0]) {
+                        const durations = { gold:60, platinum:90, diamond:180 };
+                        const expiry = new Date(new Date(payments[0].submitted_at).getTime() + (durations[payments[0].tier]||90)*86400000);
+                        document.getElementById('daysLeft').textContent = Math.max(0, Math.ceil((expiry-new Date())/86400000));
+                    } else { document.getElementById('daysLeft').textContent = '--'; }
+                    document.getElementById('coursesCompleted').textContent = '0/8';
+                    document.getElementById('progressFill').style.width = '0%';
+                } catch(e) {
+                    document.getElementById('daysLeft').textContent = '--';
+                    document.getElementById('coursesCompleted').textContent = '0/8';
                 }
             }
 
             async loadTradingPerformance() {
-                try {
-                    // Get user's signal interactions this month
-                    const thisMonth = new Date();
-                    thisMonth.setDate(1);
-                    
-                    const { data: signalViews } = await this.supabase
-                        .from('signal_views')
-                        .select(`
-                            *,
-                            trading_signals(*)
-                        `)
-                        .eq('user_id', this.currentUser.id)
-                        .gte('viewed_at', thisMonth.toISOString());
-
-                    const signalsReceived = signalViews?.length || 0;
-                    
-                    // Calculate success rate from closed signals
-                    const closedSignals = signalViews?.filter(sv => 
-                        sv.trading_signals?.status === 'closed' && 
-                        sv.trading_signals?.result
-                    ) || [];
-                    
-                    const successfulSignals = closedSignals.filter(sv => 
-                        sv.trading_signals?.result === 'profit'
-                    ).length;
-                    
-                    const successRate = closedSignals.length > 0 ? 
-                        Math.round((successfulSignals / closedSignals.length) * 100) : 0;
-                    
-                    // Calculate total pips
-                    const totalPips = closedSignals.reduce((sum, sv) => {
-                        return sum + (sv.trading_signals?.pips_gained || 0);
-                    }, 0);
-
-                    // Calculate ROI (mock calculation)
-                    const roi = closedSignals.length > 0 ? 
-                        Math.round((totalPips / closedSignals.length) * 0.5) : 0;
-
-                    document.getElementById('signalsReceived').textContent = signalsReceived;
-                    document.getElementById('successRate').textContent = `${successRate}%`;
-                    document.getElementById('totalPips').textContent = `+${Math.round(totalPips)}`;
-                    document.getElementById('roi').textContent = `+${roi}%`;
-
-                } catch (error) {
-                    console.error('Error loading trading performance:', error);
-                    document.getElementById('signalsReceived').textContent = '0';
-                    document.getElementById('successRate').textContent = '0%';
-                    document.getElementById('totalPips').textContent = '+0';
-                    document.getElementById('roi').textContent = '+0%';
-                }
+                document.getElementById('signalsReceived').textContent = '0';
+                document.getElementById('successRate').textContent = '0%';
+                document.getElementById('totalPips').textContent = '+0';
             }
 
             async loadEducationData() {
-                try {
-                    const platinumCourses = [
-                        // All Gold courses
-                        {
-                            id: 'forex-fundamentals',
-                            title: 'Forex Education Fundamentals',
-                            description: 'Master the basics of trading, market analysis, and risk management principles.',
-                            icon: 'fas fa-graduation-cap',
-                            duration: '4 hours',
-                            level: 'Beginner',
-                            isPremium: false
-                        },
-                        {
-                            id: 'crypto-education',
-                            title: 'Cryptocurrency Education',
-                            description: 'Learn about blockchain, crypto trading strategies, and digital asset analysis.',
-                            icon: 'fab fa-bitcoin',
-                            duration: '6 hours',
-                            level: 'Intermediate',
-                            isPremium: false
-                        },
-                        {
-                            id: 'binary-options',
-                            title: 'Binary Options (HFX)',
-                            description: 'High-frequency trading strategies and binary options market analysis.',
-                            icon: 'fas fa-chart-bar',
-                            duration: '3 hours',
-                            level: 'Advanced',
-                            isPremium: false
-                        },
-                        {
-                            id: 'pivot-strategy',
-                            title: 'Forex Pivot Strategy',
-                            description: 'Master pivot points for precise entry and exit strategies.',
-                            icon: 'fas fa-compass',
-                            duration: '5 hours',
-                            level: 'Intermediate',
-                            isPremium: false
-                        },
-                        {
-                            id: 'rhombus-strategy',
-                            title: 'Forex Rhombus Strategy',
-                            description: 'Advanced geometric pattern recognition for superior market timing.',
-                            icon: 'fas fa-shapes',
-                            duration: '4 hours',
-                            level: 'Advanced',
-                            isPremium: false
-                        },
-                        // Premium Platinum courses
-                        {
-                            id: 'advanced-technical-analysis',
-                            title: 'Advanced Technical Analysis',
-                            description: 'Master complex chart patterns, advanced indicators, and institutional-level analysis techniques.',
-                            icon: 'fas fa-chart-line',
-                            duration: '8 hours',
-                            level: 'Advanced',
-                            isPremium: true
-                        },
-                        {
-                            id: 'algorithmic-trading',
-                            title: 'Algorithmic Trading Strategies',
-                            description: 'Build automated trading systems and understand quantitative analysis methods.',
-                            icon: 'fas fa-robot',
-                            duration: '10 hours',
-                            level: 'Expert',
-                            isPremium: true
-                        },
-                        {
-                            id: 'psychology-risk-management',
-                            title: 'Psychology & Risk Management',
-                            description: 'Master the mental game of trading and advanced position sizing techniques.',
-                            icon: 'fas fa-brain',
-                            duration: '6 hours',
-                            level: 'Advanced',
-                            isPremium: true
-                        },
-                        {
-                            id: 'market-microstructure',
-                            title: 'Market Microstructure',
-                            description: 'Understand order flow, market making, and institutional trading patterns.',
-                            icon: 'fas fa-globe',
-                            duration: '7 hours',
-                            level: 'Expert',
-                            isPremium: true
-                        }
-                    ];
-
-                    // Get user's course progress
-                    const { data: courseProgress } = await this.supabase
-                        .from('user_course_progress')
-                        .select('*')
-                        .eq('user_id', this.currentUser.id);
-
-                    const progressMap = {};
-                    courseProgress?.forEach(cp => {
-                        progressMap[cp.course_id] = cp;
-                    });
-
-                    const educationGrid = document.getElementById('educationGrid');
-                    educationGrid.innerHTML = platinumCourses.map(course => {
-                        const progress = progressMap[course.id];
-                        const progressPercentage = progress?.progress_percentage || 0;
-                        const isCompleted = progress?.completed || false;
-
-                        return `
-                            <div class="course-card ${course.isPremium ? 'premium' : ''}">
-                                <div class="course-image">
-                                    ${course.isPremium ? '<div class="course-premium-overlay">★ PREMIUM</div>' : ''}
-                                    <i class="${course.icon}"></i>
-                                </div>
-                                <div class="course-content">
-                                    <h3 class="course-title">${course.title}</h3>
-                                    <p class="course-description">${course.description}</p>
-                                    <div class="course-meta">
-                                        <div class="course-duration">
-                                            <i class="fas fa-clock"></i>
-                                            <span>${course.duration}</span>
-                                        </div>
-                                        <div class="course-level">${isCompleted ? 'Completed' : course.level}</div>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: ${progressPercentage}%;"></div>
-                                    </div>
-                                    <button class="start-course-btn ${course.isPremium ? 'premium' : ''}" onclick="startCourse('${course.id}')" ${isCompleted ? 'disabled' : ''}>
-                                        ${isCompleted ? 'Course Completed' : (progressPercentage > 0 ? 'Continue Course' : 'Start Course')}
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-
-                } catch (error) {
-                    console.error('Error loading education data:', error);
-                    document.getElementById('educationGrid').innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
-                            Failed to load courses. Please refresh the page.
-                        </div>
-                    `;
-                }
+                const grid = document.getElementById('educationGrid');
+                if (!grid) return;
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;">
+                        <div style="font-size:3rem;margin-bottom:1rem;">🎓</div>
+                        <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:1rem;color:var(--text-primary);">Platinum Education Portal</h2>
+                        <p style="color:var(--text-secondary);margin-bottom:2rem;max-width:500px;margin-left:auto;margin-right:auto;">
+                            Access your complete Platinum education library — courses, video lessons, and trading strategies.
+                        </p>
+                        <a href="/pages/education/index.html" style="display:inline-block;padding:1rem 2.5rem;background:var(--gradient-platinum);color:white;border-radius:12px;font-weight:600;text-decoration:none;font-size:1.1rem;">
+                            <i class="fas fa-graduation-cap" style="margin-right:0.5rem;"></i> Open Education Portal
+                        </a>
+                    </div>`;
             }
 
-            async loadTradingTools() {
-                try {
-                    const premiumTools = [
-                        {
-                            id: 'tradingview-pro',
-                            title: 'TradingView Pro',
-                            description: 'Professional charting platform with advanced indicators and real-time data.',
-                            status: 'Active',
-                            stats: [
-                                { label: 'Indicators', value: '500+' },
-                                { label: 'Data', value: '24/7' }
-                            ]
-                        },
-                        {
-                            id: 'risk-calculator-pro',
-                            title: 'Risk Calculator Pro',
-                            description: 'Advanced position sizing and risk management calculator with portfolio analytics.',
-                            status: 'Active',
-                            stats: [
-                                { label: 'Calculations', value: '∞' },
-                                { label: 'Updates', value: 'Real-time' }
-                            ]
-                        },
-                        {
-                            id: 'economic-calendar-plus',
-                            title: 'Economic Calendar+',
-                            description: 'Enhanced economic calendar with impact predictions and trade recommendations.',
-                            status: 'Active',
-                            stats: [
-                                { label: 'Countries', value: '200+' },
-                                { label: 'Predictions', value: 'AI' }
-                            ]
-                        },
-                        {
-                            id: 'signal-screener',
-                            title: 'Signal Screener',
-                            description: 'Automated signal detection and filtering system with custom alerts.',
-                            status: 'Active',
-                            stats: [
-                                { label: 'Instruments', value: '1000+' },
-                                { label: 'Alerts', value: 'Custom' }
-                            ]
-                        },
-                        {
-                            id: 'portfolio-tracker',
-                            title: 'Portfolio Tracker',
-                            description: 'Comprehensive portfolio management with performance analytics and reporting.',
-                            status: 'Active',
-                            stats: [
-                                { label: 'Tracking', value: 'Real-time' },
-                                { label: 'Reports', value: 'Analytics' }
-                            ]
-                        }
-                    ];
-
-                    document.getElementById('availableTools').textContent = premiumTools.length;
-
-                    const toolsGrid = document.getElementById('toolsGrid');
-                    toolsGrid.innerHTML = premiumTools.map(tool => `
-                        <div class="tool-card" style="background: linear-gradient(145deg, #1e293b 0%, #334155 100%), linear-gradient(45deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%); border: 1px solid rgba(139, 92, 246, 0.3);">
-                            <div class="tool-header">
-                                <div class="tool-title">${tool.title}</div>
-                                <div class="tool-status">${tool.status}</div>
-                            </div>
-                            <div class="card-content">
-                                <p>${tool.description}</p>
-                                <div class="stats-grid">
-                                    ${tool.stats.map(stat => `
-                                        <div class="stat-item">
-                                            <div class="stat-value">${stat.value}</div>
-                                            <div class="stat-label">${stat.label}</div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                                <button class="launch-tool-btn" onclick="launchTool('${tool.id}')">
-                                    <i class="fas fa-rocket"></i> Launch ${tool.title.split(' ')[0]}
-                                </button>
-                            </div>
-                        </div>
-                    `).join('');
-
-                } catch (error) {
-                    console.error('Error loading trading tools:', error);
-                    document.getElementById('toolsGrid').innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
-                            Failed to load trading tools. Please refresh the page.
-                        </div>
-                    `;
-                }
-            }
-
-            async loadPremiumSignals() {
-                try {
-                    // Get premium signals for Platinum tier
-                    const { data: signals, error } = await this.supabase
-                        .from('trading_signals')
-                        .select('*')
-                        .eq('status', 'active')
-                        .contains('tier_access', ['platinum'])
-                        .order('created_at', { ascending: false })
-                        .limit(5);
-
-                    if (error) throw error;
-
-                    const signalsGrid = document.getElementById('signalsGrid');
-                    
-                    if (!signals || signals.length === 0) {
-                        signalsGrid.innerHTML = `
-                            <div class="empty-state">
-                                <i class="fas fa-chart-line"></i>
-                                <h3>No Premium Signals</h3>
-                                <p>New premium trading signals will appear here when available.</p>
-                            </div>
-                        `;
-                        return;
-                    }
-
-                    signalsGrid.innerHTML = signals.map(signal => {
-                        const confidence = signal.confidence || Math.floor(Math.random() * 20) + 80; // Mock confidence for demo
-                        
-                        return `
-                            <div class="signal-card premium">
-                                <div class="signal-premium-badge">PREMIUM</div>
-                                <div class="signal-header">
-                                    <div class="signal-pair">${signal.symbol}</div>
-                                    <div class="signal-action ${signal.action}">${signal.action.toUpperCase()}</div>
-                                </div>
-                                <div class="signal-details">
-                                    <div class="signal-detail">
-                                        <div class="signal-detail-label">Entry</div>
-                                        <div class="signal-detail-value">${signal.entry_price || 'Market'}</div>
-                                    </div>
-                                    <div class="signal-detail">
-                                        <div class="signal-detail-label">Stop Loss</div>
-                                        <div class="signal-detail-value">${signal.stop_loss || 'N/A'}</div>
-                                    </div>
-                                    <div class="signal-detail">
-                                        <div class="signal-detail-label">Take Profit</div>
-                                        <div class="signal-detail-value">${signal.take_profit || 'N/A'}</div>
-                                    </div>
-                                    <div class="signal-detail">
-                                        <div class="signal-detail-label">Risk/Reward</div>
-                                        <div class="signal-detail-value">1:${Math.round(Math.random() * 2 + 1.5)}</div>
-                                    </div>
-                                </div>
-                                <div class="signal-confidence">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="font-size: 0.8rem; color: var(--text-muted);">Confidence Level</span>
-                                        <span style="font-weight: 600; color: #8b5cf6;">${confidence}%</span>
-                                    </div>
-                                    <div class="confidence-meter">
-                                        <div class="confidence-fill" style="width: ${confidence}%;"></div>
-                                    </div>
-                                </div>
-                                ${signal.description ? `
-                                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">
-                                        <strong>Advanced Analysis:</strong> ${signal.description}
-                                    </p>
-                                ` : ''}
-                            </div>
-                        `;
-                    }).join('');
-
-                    // Log signal views
-                    for (const signal of signals) {
-                        await this.logSignalView(signal.id);
-                    }
-
-                } catch (error) {
-                    console.error('Error loading premium signals:', error);
-                    document.getElementById('signalsGrid').innerHTML = `
-                        <div style="text-align: center; padding: 3rem; color: var(--error);">
-                            Failed to load premium signals. Please refresh the page.
-                        </div>
-                    `;
-                }
-            }
-
-            async logSignalView(signalId) {
-                try {
-                    // Check if already viewed
-                    const { data: existingView } = await this.supabase
-                        .from('signal_views')
-                        .select('id')
-                        .eq('user_id', this.currentUser.id)
-                        .eq('signal_id', signalId)
-                        .single();
-
-                    if (!existingView) {
-                        await this.supabase
-                            .from('signal_views')
-                            .insert({
-                                user_id: this.currentUser.id,
-                                signal_id: signalId
-                            });
-                    }
-                } catch (error) {
-                    // Signal view logging is non-critical
-                    console.debug('Signal view logging error:', error);
-                }
+            async loadTradingSignals() {
+                const grid = document.getElementById('signalsGrid');
+                if (!grid) return;
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Trading Signals</h3>
+                        <p>Live trading signals will appear here when available.</p>
+                    </div>`;
             }
 
             async loadMentorshipData() {
-                try {
-                    // Load Platinum mentor info
-                    const mentorInfo = {
-                        name: 'Dr. Sarah Wilson',
-                        title: 'Senior Premium Mentor',
-                        description: '15+ years of institutional trading experience with specialization in quantitative analysis and advanced market microstructure. Expert in algorithmic trading strategies.',
-                        rating: '4.9'
-                    };
-
-                    document.getElementById('mentorName').textContent = mentorInfo.name;
-                    document.getElementById('mentorTitle').textContent = mentorInfo.title;
-                    document.getElementById('mentorDescription').textContent = mentorInfo.description;
-                    document.getElementById('mentorRating').textContent = mentorInfo.rating;
-
-                    // Calculate mentorship progress
-                    if (this.userSubscription) {
-                        const startDate = new Date(this.userSubscription.current_period_start || this.userSubscription.created_at);
-                        const endDate = new Date(this.userSubscription.current_period_end);
-                        const now = new Date();
-                        
-                        const totalDuration = endDate - startDate;
-                        const elapsed = now - startDate;
-                        const progressPercentage = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
-                        
-                        const monthsLeft = Math.max(0, Math.ceil((endDate - now) / (1000 * 60 * 60 * 24 * 30)));
-                        
-                        document.getElementById('monthsLeft').textContent = monthsLeft;
-                        document.getElementById('mentorshipProgress').style.width = `${progressPercentage}%`;
-                    }
-
-                    // Mock session data for Platinum tier
-                    const totalSessions = 12; // Platinum tier gets 12 sessions over 3 months
-                    const completedSessions = Math.floor(Math.random() * 8) + 2; // Mock data
-                    const sessionsRemaining = totalSessions - completedSessions;
-                    
-                    document.getElementById('sessionsRemaining').textContent = sessionsRemaining;
-                    document.getElementById('completedSessions').textContent = `${completedSessions}/${totalSessions}`;
-                    document.getElementById('mentorshipGrade').textContent = 'A+';
-
-                    // Load premium sessions
-                    const premiumSessions = [
-                        {
-                            title: 'Advanced Options Strategies',
-                            date: 'Today, 3:00 PM EST',
-                            duration: '120 min'
-                        },
-                        {
-                            title: 'Algorithmic Trading Workshop',
-                            date: 'Thursday, 2:00 PM EST',
-                            duration: '90 min'
-                        },
-                        {
-                            title: 'Portfolio Optimization',
-                            date: 'Friday, 11:00 AM EST',
-                            duration: '60 min'
-                        }
-                    ];
-
-                    const nextSessionContent = document.getElementById('nextSessionContent');
-                    const premiumSessionsContent = document.getElementById('premiumSessions');
-
-                    if (premiumSessions.length > 0) {
-                        const nextSession = premiumSessions[0];
-                        nextSessionContent.innerHTML = `
-                            <p><strong>${nextSession.title}</strong></p>
-                            <p>${nextSession.date}</p>
-                            <p>Duration: ${nextSession.duration}</p>
-                            <p style="color: #8b5cf6; font-weight: 600;">Premium Only Session</p>
-                            <button class="start-course-btn premium" style="margin-top: 1rem;" onclick="joinSession()">
-                                <i class="fas fa-video"></i> Join Session
-                            </button>
-                        `;
-
-                        premiumSessionsContent.innerHTML = premiumSessions.map(session => `
-                            <div style="margin-bottom: 1rem;">
-                                <strong>${session.title}</strong><br>
-                                <small style="color: var(--text-muted);">${session.date} (${session.duration})</small>
-                            </div>
-                        `).join('') + `
-                            <button class="start-course-btn premium" onclick="scheduleSession()">
-                                <i class="fas fa-calendar-plus"></i> Schedule 1-on-1
-                            </button>
-                        `;
-                    }
-
-                } catch (error) {
-                    console.error('Error loading mentorship data:', error);
-                }
+                const els = { mentorName:'Your Platinum Mentor', mentorTitle:'Senior Trading Mentor',
+                    mentorDescription:'8+ curated courses and 12 mentorship sessions included.',
+                    mentorRating:'4.9', monthsLeft:'3', sessionsRemaining:'12',
+                    completedSessions:'0/12', overallGrade:'A+' };
+                Object.entries(els).forEach(([id,val]) => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = val;
+                });
+                const mp = document.getElementById('mentorshipProgress');
+                if (mp) mp.style.width = '0%';
             }
 
-            async loadSupportOptions() {
-                try {
-                    const supportOptions = [
-                        {
-                            title: '24/7 Priority Support',
-                            description: 'Get instant access to our premium support team with guaranteed response time under 30 minutes.',
-                            icon: 'fas fa-headset',
-                            badge: 'VIP Access',
-                            action: 'Start Chat'
-                        },
-                        {
-                            title: 'Direct Phone Support',
-                            description: 'Direct phone line to our senior trading advisors for urgent market situations and trading emergencies.',
-                            icon: 'fas fa-phone',
-                            badge: 'Platinum Only',
-                            action: 'Call Now'
-                        },
-                        {
-                            title: 'Personal Account Manager',
-                            description: 'Your dedicated account manager for subscription management, upgrade assistance, and personalized recommendations.',
-                            icon: 'fas fa-user-tie',
-                            badge: 'Dedicated',
-                            action: 'Contact Manager'
-                        }
-                    ];
-
-                    const supportGrid = document.getElementById('supportGrid');
-                    supportGrid.innerHTML = supportOptions.map(option => `
-                        <div class="dashboard-card premium" style="text-align: center; background: linear-gradient(145deg, #1e293b 0%, #334155 100%), linear-gradient(45deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%); border: 1px solid rgba(139, 92, 246, 0.3);">
-                            <div style="width: 60px; height: 60px; background: var(--gradient-platinum); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; margin: 0 auto 1.5rem;">
-                                <i class="${option.icon}"></i>
-                            </div>
-                            <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);">${option.title}</div>
-                            <div style="background: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600; margin-bottom: 1.5rem; display: inline-block;">${option.badge}</div>
-                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${option.description}</p>
-                            <button style="padding: 1rem 2rem; background: var(--gradient-platinum); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onclick="openSupport('${option.title}')">
-                                <i class="${option.icon}"></i> ${option.action}
-                            </button>
-                        </div>
-                    `).join('');
-
-                } catch (error) {
-                    console.error('Error loading support options:', error);
-                    document.getElementById('supportGrid').innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
-                            Failed to load support options. Please refresh the page.
-                        </div>
-                    `;
-                }
-            }
-
-            setupRealTimeUpdates() {
-                // Subscribe to real-time changes
-                this.supabase
-                    .channel('platinum-dashboard')
-                    .on('postgres_changes', 
-                        { event: '*', schema: 'public', table: 'trading_signals' },
-                        () => this.loadPremiumSignals()
-                    )
-                    .on('postgres_changes', 
-                        { event: '*', schema: 'public', table: 'user_subscriptions' },
-                        (payload) => {
-                            if (payload.new?.user_id === this.currentUser.id) {
-                                this.userSubscription = payload.new;
-                                this.updateSubscriptionStatus();
-                                this.loadUserProgress();
-                            }
-                        }
-                    )
-                    .subscribe();
+            async loadUpcomingSessions() {
+                const nsc = document.getElementById('nextSessionContent');
+                const usc = document.getElementById('upcomingSessions');
+                const html = `<p style="color:var(--text-muted)">No sessions scheduled yet</p>
+                    <button class="start-course-btn" style="margin-top:1rem;" onclick="scheduleSession()">
+                        <i class="fas fa-calendar-plus"></i> Schedule Session
+                    </button>`;
+                if (nsc) nsc.innerHTML = html;
+                if (usc) usc.innerHTML = html;
             }
 
             showToast(message, type = 'success') {
                 const toast = document.getElementById('toast');
+                if (!toast) return;
                 toast.textContent = message;
                 toast.className = `toast ${type} show`;
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
+                setTimeout(() => toast.classList.remove('show'), 3000);
             }
         }
 
-        // Global functions
         let platinumDashboard;
 
         window.switchTab = function(tabName) {
-            // Remove active class from all tabs and contents
-            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-            // Add active class to clicked tab
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
             document.getElementById(tabName).classList.add('active');
-
-            platinumDashboard.currentTab = tabName;
         };
 
-        window.startCourse = function(courseId) {
-            platinumDashboard.showToast(`Starting premium course: ${courseId}`, 'success');
-            // In production, this would navigate to the actual course content
-            console.log('Starting course:', courseId);
+        window.handleLogout = async function() {
+            await window.firebaseAuth.signOut();
+            window.location.href = '/index.html';
         };
 
-        window.launchTool = function(toolId) {
-            platinumDashboard.showToast(`Launching premium tool: ${toolId}`, 'success');
-            // In production, this would open the actual trading tool
-            console.log('Launching tool:', toolId);
-        };
+        window.startCourse    = function() { window.location.href = '/pages/education/index.html'; };
+        window.contactMentor  = function() { platinumDashboard.showToast('Opening mentor contact...'); };
+        window.joinSession     = function() { platinumDashboard.showToast('Joining session...'); };
+        window.scheduleSession = function() { platinumDashboard.showToast('Opening session scheduler...'); };
 
-        window.openTools = function() {
-            switchTab('tools');
-        };
-
-        window.contactMentor = function() {
-            platinumDashboard.showToast('Opening premium mentor contact...', 'success');
-            // In production, this would open a chat or contact form
-        };
-
-        window.joinSession = function() {
-            platinumDashboard.showToast('Joining premium session...', 'success');
-            // In production, this would join the actual video session
-        };
-
-        window.scheduleSession = function() {
-            platinumDashboard.showToast('Opening premium session scheduler...', 'success');
-            // In production, this would open a scheduling interface
-        };
-
-        window.openSupport = function(supportType) {
-            platinumDashboard.showToast(`Opening ${supportType}...`, 'success');
-            // In production, this would open the appropriate support channel
-        };
-
-        // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            platinumDashboard = new ProductionPlatinumDashboard();
+            platinumDashboard = new PlatinumDashboard();
         });
-
-        console.log('💎 Production Platinum Dashboard Script Loaded');
     </script>
 </body>
 </html>
