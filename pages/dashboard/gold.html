@@ -664,6 +664,10 @@
                     Gold Member
                 </div>
                 <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userName" style="color:var(--text-secondary);font-size:0.9rem;font-weight:500;"></span>
+                <button onclick="handleLogout()" style="padding:0.5rem 1rem;background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3);border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:600;transition:all 0.2s;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </div>
     </header>
@@ -681,7 +685,7 @@
             <button class="nav-tab active" data-tab="overview" onclick="switchTab('overview')">
                 <i class="fas fa-tachometer-alt"></i> Overview
             </button>
-            <button class="nav-tab" data-tab="education" onclick="switchTab('education')">
+            <button class="nav-tab" data-tab="education" onclick="window.location.href='/pages/education/index.html'">
                 <i class="fas fa-graduation-cap"></i> Education
             </button>
             <button class="nav-tab" data-tab="signals" onclick="switchTab('signals')">
@@ -767,11 +771,15 @@
 
         <!-- Education Tab -->
         <div id="education" class="tab-content">
-            <div class="education-grid" id="educationGrid">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
-                    Loading your courses...
-                </div>
+            <div style="text-align:center; padding: 4rem 2rem;">
+                <div style="font-size:4rem; margin-bottom:1rem;">🎓</div>
+                <h2 style="font-size:1.8rem; font-weight:700; margin-bottom:1rem; color:var(--text-primary);">Education Portal</h2>
+                <p style="color:var(--text-secondary); margin-bottom:2rem; max-width:500px; margin-left:auto; margin-right:auto;">
+                    Access your full trading education library — courses, videos, and resources tailored to your tier.
+                </p>
+                <a href="/pages/education/index.html" style="display:inline-block; padding:1rem 2.5rem; background:var(--gradient-primary); color:white; border-radius:12px; font-weight:600; text-decoration:none; font-size:1.1rem; transition:all 0.3s ease;">
+                    <i class="fas fa-graduation-cap" style="margin-right:0.5rem;"></i> Open Education Portal
+                </a>
             </div>
         </div>
 
@@ -865,148 +873,90 @@
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
-    <!-- JavaScript -->
-    <script src="/assets/js/config.js"></script>
-    <script src="/assets/js/supabase.js"></script>
-    <script src="/assets/js/auth.js"></script>
-    
+    <!-- THA Auth Module -->
+    <script type="module" src="/assets/js/tha-auth.js"></script>
+
     <script>
-        class ProductionGoldDashboard {
+        class GoldDashboard {
             constructor() {
-                this.supabase = null;
                 this.currentUser = null;
-                this.userSubscription = null;
-                this.dashboardData = {};
                 this.currentTab = 'overview';
                 this.init();
             }
 
             async init() {
                 try {
-                    console.log('🥇 Initializing Production Gold Dashboard...');
-                    
-                    // Initialize Supabase
-                    await this.initializeSupabase();
-                    
-                    // Check authentication and tier access
                     await this.checkAuthentication();
-                    
-                    // Load user dashboard data
                     await this.loadDashboardData();
-                    
-                    // Setup real-time subscriptions
-                    this.setupRealTimeUpdates();
-                    
-                    // Hide loading screen
                     document.getElementById('loadingScreen').style.display = 'none';
-                    
-                    console.log('✅ Gold Dashboard initialized successfully');
-                    
+                    console.log('✅ Gold Dashboard ready');
                 } catch (error) {
-                    console.error('❌ Failed to initialize Gold dashboard:', error);
+                    console.error('Dashboard init error:', error);
                     this.showToast('Failed to load dashboard. Please refresh the page.', 'error');
                     document.getElementById('loadingScreen').style.display = 'none';
                 }
             }
 
-            async initializeSupabase() {
-                if (typeof window.supabaseClient !== 'undefined') {
-                    this.supabase = window.supabaseClient;
-                } else {
-                    // Fallback initialization
-                    const { createClient } = supabase;
-                    this.supabase = createClient(
-                        THA_CONFIG.supabase.url,
-                        THA_CONFIG.supabase.anonKey
-                    );
-                }
-            }
-
             async checkAuthentication() {
-                const { data: { user }, error } = await this.supabase.auth.getUser();
-                
-                if (error || !user) {
-                    window.location.href = '/login.html';
+                // Wait for tha-auth.js to initialise
+                await new Promise(resolve => {
+                    if (window.firebaseAuth) return resolve();
+                    window.addEventListener('tha-auth-ready', resolve, { once: true });
+                    setTimeout(resolve, 4000);
+                });
+
+                // Get Firebase current user
+                const firebaseUser = await new Promise(resolve => {
+                    const unsub = window.firebaseAuth.onAuthStateChange(user => { unsub(); resolve(user); });
+                });
+
+                if (!firebaseUser) {
+                    window.location.href = '/pages/auth/login.html';
                     return;
                 }
 
-                // Get user profile and subscription
-                const { data: profile, error: profileError } = await this.supabase
+                // Fetch Supabase profile
+                const { data: profile } = await window.supabase
                     .from('user_profiles')
-                    .select(`
-                        *,
-                        user_subscriptions(*)
-                    `)
-                    .eq('id', user.id)
+                    .select('*')
+                    .eq('id', firebaseUser.uid)
                     .single();
 
-                if (profileError || !profile) {
-                    console.error('Error fetching profile:', profileError);
-                    window.location.href = '/login.html';
+                if (!profile) {
+                    window.location.href = '/pages/auth/login.html';
                     return;
                 }
 
-                // Check if user has Gold access or higher
-                const subscription = profile.user_subscriptions?.[0];
-                const hasGoldAccess = this.checkTierAccess(profile.tier, subscription?.tier);
-                
-                if (!hasGoldAccess) {
-                    alert('Gold tier subscription required to access this dashboard.');
-                    window.location.href = '/pages/payment/subscribe.html';
+                // Must be active subscriber
+                if (profile.subscription_status !== 'active') {
+                    window.location.href = '/pages/auth/login2.html';
                     return;
                 }
 
-                this.currentUser = { ...user, ...profile };
-                this.userSubscription = subscription;
-                
-                // Update UI with user info
+                this.currentUser = { ...profile, uid: firebaseUser.uid, email: firebaseUser.email };
                 this.updateUserInfo();
             }
 
-            checkTierAccess(userTier, subscriptionTier) {
-                const tierHierarchy = ['gold', 'platinum', 'diamond'];
-                const effectiveTier = subscriptionTier || userTier || 'none';
-                return tierHierarchy.includes(effectiveTier);
-            }
-
             updateUserInfo() {
-                // Update user avatar
-                const avatar = document.getElementById('userAvatar');
                 const firstName = this.currentUser.first_name || '';
-                const lastName = this.currentUser.last_name || '';
-                avatar.textContent = ((firstName.charAt(0) || '') + (lastName.charAt(0) || '')).toUpperCase() || 'U';
-                
-                // Update welcome message
-                const welcomeMsg = document.getElementById('welcomeMessage');
-                if (firstName) {
-                    welcomeMsg.textContent = `Welcome back, ${firstName}! Your gateway to essential trading education and profitable signals.`;
-                }
-                
-                // Update subscription status
-                this.updateSubscriptionStatus();
-            }
+                const lastName  = this.currentUser.last_name  || '';
+                const initials  = ((firstName[0]||'') + (lastName[0]||'')).toUpperCase() || 'U';
 
-            updateSubscriptionStatus() {
-                const statusElement = document.getElementById('subscriptionStatus');
-                
-                if (this.userSubscription && this.userSubscription.status === 'active') {
-                    const endDate = new Date(this.userSubscription.current_period_end);
-                    const daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24));
-                    
-                    if (daysLeft > 0) {
-                        statusElement.innerHTML = `<i class="fas fa-clock"></i> ${daysLeft} days remaining`;
-                        statusElement.style.background = 'rgba(245, 158, 11, 0.1)';
-                        statusElement.style.color = 'var(--accent-gold)';
-                    } else {
-                        statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Subscription expired';
-                        statusElement.style.background = 'rgba(239, 68, 68, 0.1)';
-                        statusElement.style.color = 'var(--error)';
-                    }
-                } else {
-                    statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Subscription inactive';
-                    statusElement.style.background = 'rgba(239, 68, 68, 0.1)';
-                    statusElement.style.color = 'var(--error)';
+                document.getElementById('userAvatar').textContent = initials;
+                document.getElementById('userName').textContent   = `${firstName} ${lastName}`.trim();
+
+                const status = document.getElementById('subscriptionStatus');
+                if (this.currentUser.subscription_status === 'active') {
+                    const tier = (this.currentUser.subscription_tier || 'gold').charAt(0).toUpperCase()
+                               + (this.currentUser.subscription_tier || 'gold').slice(1);
+                    status.innerHTML = `<i class="fas fa-check-circle"></i> ${tier} Active`;
+                    status.style.background = 'rgba(16,185,129,0.1)';
+                    status.style.color = 'var(--success)';
+                    status.style.borderColor = 'var(--success)';
                 }
+
+                const welcomeMsg = document.getElementById('welcomeMessage');
+                if (firstName) welcomeMsg.textContent = `Welcome back, ${firstName}! Your gateway to essential trading education and profitable signals.`;
             }
 
             async loadDashboardData() {
@@ -1022,458 +972,131 @@
 
             async loadUserProgress() {
                 try {
-                    // Calculate subscription days left
-                    if (this.userSubscription && this.userSubscription.current_period_end) {
-                        const endDate = new Date(this.userSubscription.current_period_end);
-                        const daysLeft = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
+                    const { data: payments } = await window.supabase
+                        .from('payments')
+                        .select('submitted_at, tier')
+                        .eq('user_id', this.currentUser.uid)
+                        .eq('status', 'verified')
+                        .order('submitted_at', { ascending: false })
+                        .limit(1);
+
+                    if (payments && payments[0]) {
+                        const activatedDate = new Date(payments[0].submitted_at);
+                        const tier = payments[0].tier;
+                        const durations = { gold: 60, platinum: 90, diamond: 180 };
+                        const durationDays = durations[tier] || 60;
+                        const expiryDate = new Date(activatedDate.getTime() + durationDays * 86400000);
+                        const daysLeft = Math.max(0, Math.ceil((expiryDate - new Date()) / 86400000));
                         document.getElementById('daysLeft').textContent = daysLeft;
                     } else {
-                        document.getElementById('daysLeft').textContent = '0';
+                        document.getElementById('daysLeft').textContent = '--';
                     }
-
-                    // Get course completion data
-                    const { data: courseProgress } = await this.supabase
-                        .from('user_course_progress')
-                        .select('*')
-                        .eq('user_id', this.currentUser.id);
-
-                    const totalCourses = 5; // Gold tier has 5 courses
-                    const completedCourses = courseProgress?.filter(cp => cp.completed).length || 0;
-                    const progressPercentage = (completedCourses / totalCourses) * 100;
-
-                    document.getElementById('coursesCompleted').textContent = `${completedCourses}/${totalCourses}`;
-                    document.getElementById('progressFill').style.width = `${progressPercentage}%`;
-
-                } catch (error) {
-                    console.error('Error loading user progress:', error);
                     document.getElementById('coursesCompleted').textContent = '0/5';
-                    document.getElementById('daysLeft').textContent = '0';
+                    document.getElementById('progressFill').style.width = '0%';
+                } catch (e) {
+                    document.getElementById('daysLeft').textContent = '--';
+                    document.getElementById('coursesCompleted').textContent = '0/5';
                 }
             }
 
             async loadTradingPerformance() {
-                try {
-                    // Get user's signal interactions this month
-                    const thisMonth = new Date();
-                    thisMonth.setDate(1);
-                    
-                    const { data: signalViews } = await this.supabase
-                        .from('signal_views')
-                        .select(`
-                            *,
-                            trading_signals(*)
-                        `)
-                        .eq('user_id', this.currentUser.id)
-                        .gte('viewed_at', thisMonth.toISOString());
-
-                    const signalsReceived = signalViews?.length || 0;
-                    
-                    // Calculate success rate from closed signals
-                    const closedSignals = signalViews?.filter(sv => 
-                        sv.trading_signals?.status === 'closed' && 
-                        sv.trading_signals?.result
-                    ) || [];
-                    
-                    const successfulSignals = closedSignals.filter(sv => 
-                        sv.trading_signals?.result === 'profit'
-                    ).length;
-                    
-                    const successRate = closedSignals.length > 0 ? 
-                        Math.round((successfulSignals / closedSignals.length) * 100) : 0;
-                    
-                    // Calculate total pips
-                    const totalPips = closedSignals.reduce((sum, sv) => {
-                        return sum + (sv.trading_signals?.pips_gained || 0);
-                    }, 0);
-
-                    document.getElementById('signalsReceived').textContent = signalsReceived;
-                    document.getElementById('successRate').textContent = `${successRate}%`;
-                    document.getElementById('totalPips').textContent = `+${Math.round(totalPips)}`;
-
-                } catch (error) {
-                    console.error('Error loading trading performance:', error);
-                    document.getElementById('signalsReceived').textContent = '0';
-                    document.getElementById('successRate').textContent = '0%';
-                    document.getElementById('totalPips').textContent = '+0';
-                }
+                document.getElementById('signalsReceived').textContent = '0';
+                document.getElementById('successRate').textContent = '0%';
+                document.getElementById('totalPips').textContent = '+0';
             }
 
             async loadEducationData() {
-                try {
-                    const goldCourses = [
-                        {
-                            id: 'forex-fundamentals',
-                            title: 'Forex Education Fundamentals',
-                            description: 'Master the basics of trading, market analysis, and risk management principles.',
-                            icon: 'fas fa-graduation-cap',
-                            duration: '4 hours',
-                            level: 'Beginner'
-                        },
-                        {
-                            id: 'crypto-education',
-                            title: 'Cryptocurrency Education',
-                            description: 'Learn about blockchain, crypto trading strategies, and digital asset analysis.',
-                            icon: 'fab fa-bitcoin',
-                            duration: '6 hours',
-                            level: 'Intermediate'
-                        },
-                        {
-                            id: 'binary-options',
-                            title: 'Binary Options (HFX)',
-                            description: 'High-frequency trading strategies and binary options market analysis.',
-                            icon: 'fas fa-chart-bar',
-                            duration: '3 hours',
-                            level: 'Advanced'
-                        },
-                        {
-                            id: 'pivot-strategy',
-                            title: 'Forex Pivot Strategy',
-                            description: 'Master pivot points for precise entry and exit strategies in forex trading.',
-                            icon: 'fas fa-compass',
-                            duration: '5 hours',
-                            level: 'Intermediate'
-                        },
-                        {
-                            id: 'rhombus-strategy',
-                            title: 'Forex Rhombus Strategy',
-                            description: 'Advanced geometric pattern recognition for superior market timing.',
-                            icon: 'fas fa-shapes',
-                            duration: '4 hours',
-                            level: 'Advanced'
-                        }
-                    ];
-
-                    // Get user's course progress
-                    const { data: courseProgress } = await this.supabase
-                        .from('user_course_progress')
-                        .select('*')
-                        .eq('user_id', this.currentUser.id);
-
-                    const progressMap = {};
-                    courseProgress?.forEach(cp => {
-                        progressMap[cp.course_id] = cp;
-                    });
-
-                    const educationGrid = document.getElementById('educationGrid');
-                    educationGrid.innerHTML = goldCourses.map(course => {
-                        const progress = progressMap[course.id];
-                        const progressPercentage = progress?.progress_percentage || 0;
-                        const isCompleted = progress?.completed || false;
-
-                        return `
-                            <div class="course-card">
-                                <div class="course-image">
-                                    <i class="${course.icon}"></i>
-                                </div>
-                                <div class="course-content">
-                                    <h3 class="course-title">${course.title}</h3>
-                                    <p class="course-description">${course.description}</p>
-                                    <div class="course-meta">
-                                        <div class="course-duration">
-                                            <i class="fas fa-clock"></i>
-                                            <span>${course.duration}</span>
-                                        </div>
-                                        <div class="course-level">${isCompleted ? 'Completed' : course.level}</div>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: ${progressPercentage}%;"></div>
-                                    </div>
-                                    <button class="start-course-btn" onclick="startCourse('${course.id}')" ${isCompleted ? 'disabled' : ''}>
-                                        ${isCompleted ? 'Course Completed' : (progressPercentage > 0 ? 'Continue Course' : 'Start Course')}
-                                    </button>
-                                </div>
+                const goldCourses = [
+                    { id:'forex-fundamentals', title:'Forex Education Fundamentals', description:'Master the basics of trading, market analysis, and risk management principles.', icon:'fas fa-graduation-cap', duration:'4 hours', level:'Beginner' },
+                    { id:'crypto-education',   title:'Cryptocurrency Education',      description:'Learn about blockchain, crypto trading strategies, and digital asset analysis.', icon:'fab fa-bitcoin', duration:'6 hours', level:'Intermediate' },
+                    { id:'binary-options',     title:'Binary Options (HFX)',           description:'High-frequency trading strategies and binary options market analysis.', icon:'fas fa-chart-bar', duration:'3 hours', level:'Advanced' },
+                    { id:'pivot-strategy',     title:'Forex Pivot Strategy',           description:'Master pivot points for precise entry and exit strategies in forex trading.', icon:'fas fa-compass', duration:'5 hours', level:'Intermediate' },
+                    { id:'rhombus-strategy',   title:'Forex Rhombus Strategy',         description:'Advanced geometric pattern recognition for superior market timing.', icon:'fas fa-shapes', duration:'4 hours', level:'Advanced' }
+                ];
+                const grid = document.getElementById('educationGrid');
+                grid.innerHTML = goldCourses.map(c => `
+                    <div class="course-card">
+                        <div class="course-image"><i class="${c.icon}"></i></div>
+                        <div class="course-content">
+                            <h3 class="course-title">${c.title}</h3>
+                            <p class="course-description">${c.description}</p>
+                            <div class="course-meta">
+                                <div class="course-duration"><i class="fas fa-clock"></i> ${c.duration}</div>
+                                <div class="course-level">${c.level}</div>
                             </div>
-                        `;
-                    }).join('');
-
-                } catch (error) {
-                    console.error('Error loading education data:', error);
-                    document.getElementById('educationGrid').innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--error);">
-                            Failed to load courses. Please refresh the page.
+                            <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                            <a href="/pages/education/index.html" class="start-course-btn" style="display:block;text-align:center;text-decoration:none;">
+                                <i class="fas fa-play"></i> Start Course
+                            </a>
                         </div>
-                    `;
-                }
+                    </div>`).join('');
             }
 
             async loadTradingSignals() {
-                try {
-                    // Get active signals for Gold tier
-                    const { data: signals, error } = await this.supabase
-                        .from('trading_signals')
-                        .select('*')
-                        .eq('status', 'active')
-                        .contains('tier_access', ['gold'])
-                        .order('created_at', { ascending: false })
-                        .limit(5);
-
-                    if (error) throw error;
-
-                    const signalsGrid = document.getElementById('signalsGrid');
-                    
-                    if (!signals || signals.length === 0) {
-                        signalsGrid.innerHTML = `
-                            <div class="empty-state">
-                                <i class="fas fa-chart-line"></i>
-                                <h3>No Active Signals</h3>
-                                <p>New trading signals will appear here when available.</p>
-                            </div>
-                        `;
-                        return;
-                    }
-
-                    signalsGrid.innerHTML = signals.map(signal => `
-                        <div class="signal-card">
-                            <div class="signal-status"></div>
-                            <div class="signal-header">
-                                <div class="signal-pair">${signal.symbol}</div>
-                                <div class="signal-action ${signal.action}">${signal.action.toUpperCase()}</div>
-                            </div>
-                            <div class="signal-details">
-                                <div class="signal-detail">
-                                    <div class="signal-detail-label">Entry</div>
-                                    <div class="signal-detail-value">${signal.entry_price || 'Market'}</div>
-                                </div>
-                                <div class="signal-detail">
-                                    <div class="signal-detail-label">Stop Loss</div>
-                                    <div class="signal-detail-value">${signal.stop_loss || 'N/A'}</div>
-                                </div>
-                                <div class="signal-detail">
-                                    <div class="signal-detail-label">Take Profit</div>
-                                    <div class="signal-detail-value">${signal.take_profit || 'N/A'}</div>
-                                </div>
-                                <div class="signal-detail">
-                                    <div class="signal-detail-label">Risk</div>
-                                    <div class="signal-detail-value">${signal.risk_level || 'Medium'}</div>
-                                </div>
-                            </div>
-                            ${signal.description ? `
-                                <div class="signal-description">
-                                    <strong>Analysis:</strong> ${signal.description}
-                                </div>
-                            ` : ''}
-                        </div>
-                    `).join('');
-
-                    // Log signal views
-                    for (const signal of signals) {
-                        await this.logSignalView(signal.id);
-                    }
-
-                } catch (error) {
-                    console.error('Error loading trading signals:', error);
-                    document.getElementById('signalsGrid').innerHTML = `
-                        <div style="text-align: center; padding: 3rem; color: var(--error);">
-                            Failed to load trading signals. Please refresh the page.
-                        </div>
-                    `;
-                }
-            }
-
-            async logSignalView(signalId) {
-                try {
-                    // Check if already viewed
-                    const { data: existingView } = await this.supabase
-                        .from('signal_views')
-                        .select('id')
-                        .eq('user_id', this.currentUser.id)
-                        .eq('signal_id', signalId)
-                        .single();
-
-                    if (!existingView) {
-                        await this.supabase
-                            .from('signal_views')
-                            .insert({
-                                user_id: this.currentUser.id,
-                                signal_id: signalId
-                            });
-                    }
-                } catch (error) {
-                    // Signal view logging is non-critical
-                    console.debug('Signal view logging error:', error);
-                }
+                document.getElementById('signalsGrid').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Trading Signals</h3>
+                        <p>Live trading signals will appear here when available.</p>
+                    </div>`;
             }
 
             async loadMentorshipData() {
-                try {
-                    // Load Gold mentor info (this could come from system settings or a mentors table)
-                    const mentorInfo = {
-                        name: 'Alex Thompson',
-                        title: 'Senior Trading Mentor',
-                        description: '10+ years of trading experience with expertise in forex and cryptocurrency markets. Specialized in pivot and rhombus strategies.',
-                        rating: '4.8'
-                    };
-
-                    document.getElementById('mentorName').textContent = mentorInfo.name;
-                    document.getElementById('mentorTitle').textContent = mentorInfo.title;
-                    document.getElementById('mentorDescription').textContent = mentorInfo.description;
-                    document.getElementById('mentorRating').textContent = mentorInfo.rating;
-
-                    // Calculate mentorship progress
-                    if (this.userSubscription) {
-                        const startDate = new Date(this.userSubscription.current_period_start || this.userSubscription.created_at);
-                        const endDate = new Date(this.userSubscription.current_period_end);
-                        const now = new Date();
-                        
-                        const totalDuration = endDate - startDate;
-                        const elapsed = now - startDate;
-                        const progressPercentage = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
-                        
-                        const monthsLeft = Math.max(0, Math.ceil((endDate - now) / (1000 * 60 * 60 * 24 * 30)));
-                        
-                        document.getElementById('monthsLeft').textContent = monthsLeft;
-                        document.getElementById('mentorshipProgress').style.width = `${progressPercentage}%`;
-                    }
-
-                    // Mock session data - in production, this would come from a mentorship_sessions table
-                    const totalSessions = 8; // Gold tier gets 8 sessions over 2 months
-                    const completedSessions = Math.floor(Math.random() * 6); // Mock data
-                    const sessionsRemaining = totalSessions - completedSessions;
-                    
-                    document.getElementById('sessionsRemaining').textContent = sessionsRemaining;
-                    document.getElementById('completedSessions').textContent = `${completedSessions}/${totalSessions}`;
-                    document.getElementById('overallGrade').textContent = 'A+';
-
-                } catch (error) {
-                    console.error('Error loading mentorship data:', error);
-                }
+                document.getElementById('mentorName').textContent = 'Your Gold Mentor';
+                document.getElementById('mentorTitle').textContent = 'Senior Trading Mentor';
+                document.getElementById('mentorDescription').textContent = '10+ years of trading experience with expertise in forex and cryptocurrency markets.';
+                document.getElementById('mentorRating').textContent = '4.8';
+                document.getElementById('monthsLeft').textContent = '2';
+                document.getElementById('sessionsRemaining').textContent = '8';
+                document.getElementById('completedSessions').textContent = '0/8';
+                document.getElementById('overallGrade').textContent = 'A+';
+                document.getElementById('mentorshipProgress').style.width = '0%';
             }
 
             async loadUpcomingSessions() {
-                try {
-                    // In production, this would query actual scheduled sessions
-                    const upcomingSessions = [
-                        {
-                            title: 'Pivot Strategy Deep Dive',
-                            date: 'Tomorrow, 2:00 PM EST',
-                            duration: '90 minutes'
-                        },
-                        {
-                            title: 'Market Analysis Workshop',
-                            date: 'Friday, 10:00 AM EST',
-                            duration: '60 minutes'
-                        }
-                    ];
-
-                    const nextSessionContent = document.getElementById('nextSessionContent');
-                    const upcomingSessionsContent = document.getElementById('upcomingSessions');
-
-                    if (upcomingSessions.length > 0) {
-                        const nextSession = upcomingSessions[0];
-                        nextSessionContent.innerHTML = `
-                            <p><strong>${nextSession.title}</strong></p>
-                            <p>${nextSession.date}</p>
-                            <p>Duration: ${nextSession.duration}</p>
-                            <button class="start-course-btn" style="margin-top: 1rem;" onclick="joinSession()">
-                                <i class="fas fa-video"></i> Join Session
-                            </button>
-                        `;
-
-                        upcomingSessionsContent.innerHTML = upcomingSessions.map(session => `
-                            <div style="margin-bottom: 1rem;">
-                                <strong>${session.title}</strong><br>
-                                <small style="color: var(--text-muted);">${session.date}</small>
-                            </div>
-                        `).join('') + `
-                            <button class="start-course-btn" onclick="scheduleSession()">
-                                <i class="fas fa-calendar-plus"></i> Schedule Session
-                            </button>
-                        `;
-                    } else {
-                        nextSessionContent.innerHTML = `
-                            <p>No upcoming sessions scheduled</p>
-                            <button class="start-course-btn" style="margin-top: 1rem;" onclick="scheduleSession()">
-                                <i class="fas fa-calendar-plus"></i> Schedule Session
-                            </button>
-                        `;
-                        
-                        upcomingSessionsContent.innerHTML = `
-                            <p style="text-align: center; color: var(--text-muted);">No scheduled sessions</p>
-                            <button class="start-course-btn" onclick="scheduleSession()">
-                                <i class="fas fa-calendar-plus"></i> Schedule Session
-                            </button>
-                        `;
-                    }
-
-                } catch (error) {
-                    console.error('Error loading upcoming sessions:', error);
-                }
-            }
-
-            setupRealTimeUpdates() {
-                // Subscribe to real-time changes
-                this.supabase
-                    .channel('gold-dashboard')
-                    .on('postgres_changes', 
-                        { event: '*', schema: 'public', table: 'trading_signals' },
-                        () => this.loadTradingSignals()
-                    )
-                    .on('postgres_changes', 
-                        { event: '*', schema: 'public', table: 'user_subscriptions' },
-                        (payload) => {
-                            if (payload.new?.user_id === this.currentUser.id) {
-                                this.userSubscription = payload.new;
-                                this.updateSubscriptionStatus();
-                                this.loadUserProgress();
-                            }
-                        }
-                    )
-                    .subscribe();
+                document.getElementById('nextSessionContent').innerHTML = `
+                    <p>No upcoming sessions scheduled</p>
+                    <button class="start-course-btn" style="margin-top:1rem;" onclick="scheduleSession()">
+                        <i class="fas fa-calendar-plus"></i> Schedule Session
+                    </button>`;
+                document.getElementById('upcomingSessions').innerHTML = `
+                    <p style="text-align:center;color:var(--text-muted)">No scheduled sessions</p>
+                    <button class="start-course-btn" onclick="scheduleSession()">
+                        <i class="fas fa-calendar-plus"></i> Schedule Session
+                    </button>`;
             }
 
             showToast(message, type = 'success') {
                 const toast = document.getElementById('toast');
                 toast.textContent = message;
                 toast.className = `toast ${type} show`;
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
+                setTimeout(() => toast.classList.remove('show'), 3000);
             }
         }
 
-        // Global functions
+        // ── Global helpers ────────────────────────────────────────────────────
         let goldDashboard;
 
         window.switchTab = function(tabName) {
-            // Remove active class from all tabs and contents
-            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-            // Add active class to clicked tab
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
             document.getElementById(tabName).classList.add('active');
-
-            goldDashboard.currentTab = tabName;
         };
 
-        window.startCourse = function(courseId) {
-            goldDashboard.showToast(`Starting course: ${courseId}`, 'success');
-            // In production, this would navigate to the actual course content
-            console.log('Starting course:', courseId);
+        window.handleLogout = async function() {
+            await window.firebaseAuth.signOut();
+            window.location.href = '/index.html';
         };
 
-        window.contactMentor = function() {
-            goldDashboard.showToast('Opening mentor contact form...', 'success');
-            // In production, this would open a chat or contact form
+        window.startCourse = function(id) {
+            window.location.href = '/pages/education/index.html';
         };
+        window.contactMentor  = function() { goldDashboard.showToast('Opening mentor contact form...'); };
+        window.joinSession     = function() { goldDashboard.showToast('Joining session...'); };
+        window.scheduleSession = function() { goldDashboard.showToast('Opening session scheduler...'); };
 
-        window.joinSession = function() {
-            goldDashboard.showToast('Joining session...', 'success');
-            // In production, this would join the actual video session
-        };
-
-        window.scheduleSession = function() {
-            goldDashboard.showToast('Opening session scheduler...', 'success');
-            // In production, this would open a scheduling interface
-        };
-
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            goldDashboard = new ProductionGoldDashboard();
-        });
-
-        console.log('🥇 Production Gold Dashboard Script Loaded');
+        document.addEventListener('DOMContentLoaded', () => { goldDashboard = new GoldDashboard(); });
     </script>
 </body>
 </html>
