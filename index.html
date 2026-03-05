@@ -21,9 +21,6 @@
     <meta property="twitter:description" content="Master forex, crypto, and binary options trading with expert mentorship, proven strategies, and exclusive signals.">
     <meta property="twitter:image" content="https://tradershelmetacademy.com/assets/images/twitter-image.jpg">
 
-    <!-- SDK Configuration - CRITICAL FOR AUTHENTICATION -->
-    <script src="/assets/js/sdk-config.js"></script>
-
     <!-- Stylesheets -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -185,23 +182,6 @@
             border: none;
             cursor: pointer;
             font-size: 0.9rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
         }
 
         .btn-primary {
@@ -225,29 +205,6 @@
             border-color: var(--primary-blue);
             color: var(--primary-blue);
             background: rgba(59, 130, 246, 0.05);
-        }
-
-        .btn.loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .btn.loading::after {
-            content: '';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            height: 16px;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: translateY(-50%) rotate(360deg); }
         }
 
         .mobile-menu-toggle {
@@ -519,7 +476,7 @@
             background: var(--gradient-primary);
             padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.25);
             border: 1px solid rgba(59, 130, 246, 0.3);
             transition: all 0.3s ease;
             position: relative;
@@ -538,20 +495,20 @@
 
         .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 50px var(--shadow-medium);
+            box-shadow: 0 20px 50px rgba(30, 64, 175, 0.4);
         }
 
         .feature-icon {
             width: 60px;
             height: 60px;
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
             font-size: 1.5rem;
-            color: white;
+            color: #1a1a1a;
         }
 
         .feature-title {
@@ -562,7 +519,7 @@
         }
 
         .feature-description {
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.88);
             line-height: 1.6;
         }
 
@@ -583,16 +540,15 @@
             background: var(--gradient-primary);
             border-radius: 24px;
             padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.25);
             border: 2px solid rgba(59, 130, 246, 0.3);
             position: relative;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
 
         .pricing-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 30px 60px var(--shadow-medium);
+            box-shadow: 0 30px 60px rgba(30, 64, 175, 0.4);
         }
 
         .pricing-card.featured {
@@ -652,7 +608,7 @@
         }
 
         .tier-duration {
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.75);
             font-size: 0.9rem;
         }
 
@@ -679,7 +635,7 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.5rem 0;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.88);
         }
 
         .tier-features .check-icon {
@@ -708,8 +664,6 @@
             text-decoration: none;
             display: inline-block;
             transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
         }
 
         .btn-tier.gold {
@@ -746,17 +700,17 @@
         }
 
         .testimonial-card {
-            background: var(--light-card);
+            background: var(--gradient-primary);
             padding: 2rem;
             border-radius: 20px;
-            box-shadow: 0 10px 30px var(--shadow-light);
-            border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.25);
+            border: 1px solid rgba(59, 130, 246, 0.3);
             position: relative;
         }
 
         .testimonial-content {
             font-style: italic;
-            color: var(--text-secondary);
+            color: rgba(255, 255, 255, 0.88);
             margin-bottom: 1.5rem;
             line-height: 1.6;
         }
@@ -781,11 +735,11 @@
 
         .author-info h4 {
             font-weight: 600;
-            color: var(--text-primary);
+            color: #ffffff;
         }
 
         .author-info p {
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.9rem;
         }
 
@@ -906,32 +860,6 @@
             background: var(--primary-blue-light);
             color: white;
             transform: translateY(-2px);
-        }
-
-        /* Auth Status Indicator */
-        .auth-status {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            z-index: 9999;
-            display: none;
-        }
-
-        .auth-status.show {
-            display: block;
-        }
-
-        .auth-status.authenticated {
-            background: var(--success);
-        }
-
-        .auth-status.unauthenticated {
-            background: var(--warning);
         }
 
         /* Responsive Design */
@@ -1056,11 +984,6 @@
     </style>
 </head>
 <body>
-    <!-- Auth Status Indicator (for debugging) -->
-    <div id="authStatus" class="auth-status">
-        <span id="authStatusText">Checking authentication...</span>
-    </div>
-
     <!-- Header -->
     <header class="header" id="header">
         <div class="nav-container">
@@ -1078,14 +1001,14 @@
             </nav>
 
             <div class="cta-buttons">
-                <button onclick="handleAuthenticatedAction('login')" class="btn btn-secondary" id="loginBtn">
+                <a href="pages/auth/login.html" class="btn btn-secondary">
                     <i class="fas fa-sign-in-alt"></i>
-                    <span>Login</span>
-                </button>
-                <button onclick="handleEngagementAction('get-started')" class="btn btn-primary" id="getStartedBtn">
+                    Login 
+                </a>
+                <a href="pages/auth/register.html" class="btn btn-primary">
                     <i class="fas fa-rocket"></i>
-                    <span>Get Started</span>
-                </button>
+                    Register
+                </a>
             </div>
 
             <button class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -1129,10 +1052,10 @@
                 </div>
 
                 <div class="hero-cta">
-                    <button onclick="handleEngagementAction('start-journey')" class="btn btn-primary btn-large" id="startJourneyBtn">
+                    <a href="pages/auth/login2.html" class="btn btn-primary btn-large">
                         <i class="fas fa-rocket"></i>
-                        <span>Start Your Journey</span>
-                    </button>
+                        My Dashboard
+                    </a>
                     <a href="#features" class="btn btn-secondary btn-large">
                         <i class="fas fa-play"></i>
                         Learn More
@@ -1271,7 +1194,7 @@
 
             <div class="pricing-grid">
                 <!-- Gold Tier -->
-                <div class="pricing-card" data-aos="fade-up" data-aos-delay="100" onclick="handlePricingAction('gold')">
+                <div class="pricing-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="tier-header">
                         <div class="tier-icon gold">
                             <i class="fas fa-star"></i>
@@ -1312,14 +1235,14 @@
                     </ul>
 
                     <div class="tier-cta">
-                        <button onclick="event.stopPropagation(); handlePricingAction('gold')" class="btn-tier gold">
+                        <a href="/payment-processing.html?tier=gold" class="btn-tier gold">
                             Get Started with Gold
-                        </button>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Platinum Tier -->
-                <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="200" onclick="handlePricingAction('platinum')">
+                <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="200">
                     <div class="tier-header">
                         <div class="tier-icon platinum">
                             <i class="fas fa-gem"></i>
@@ -1360,14 +1283,14 @@
                     </ul>
 
                     <div class="tier-cta">
-                        <button onclick="event.stopPropagation(); handlePricingAction('platinum')" class="btn-tier platinum">
+                        <a href="/payment-processing.html?tier=platinum" class="btn-tier platinum">
                             Get Started with Platinum
-                        </button>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Diamond Tier -->
-                <div class="pricing-card" data-aos="fade-up" data-aos-delay="300" onclick="handlePricingAction('diamond')">
+                <div class="pricing-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="tier-header">
                         <div class="tier-icon diamond">
                             <i class="fas fa-crown"></i>
@@ -1408,9 +1331,9 @@
                     </ul>
 
                     <div class="tier-cta">
-                        <button onclick="event.stopPropagation(); handlePricingAction('diamond')" class="btn-tier diamond">
+                        <a href="/payment-processing.html?tier=diamond" class="btn-tier diamond">
                             Get Started with Diamond
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1536,14 +1459,14 @@
                     Join thousands of successful traders who have already started their journey to financial freedom. Your trading success story starts here.
                 </p>
                 <div class="cta-buttons">
-                    <button onclick="handleEngagementAction('start-journey-today')" class="btn btn-primary btn-large" id="startJourneyTodayBtn">
+                    <a href="pages/auth/login2.html" class="btn btn-primary btn-large">
                         <i class="fas fa-rocket"></i>
-                        <span>Start Your Journey Today</span>
-                    </button>
-                    <button onclick="handleAuthenticatedAction('create-account')" class="btn btn-secondary btn-large" id="createAccountBtn">
+                        Start Your Journey Today
+                    </a>
+                    <a href="pages/auth/register.html" class="btn btn-secondary btn-large">
                         <i class="fas fa-user-plus"></i>
-                        <span>Create Free Account</span>
-                    </button>
+                        Create Free Account
+                    </a>
                 </div>
             </div>
         </div>
@@ -1623,321 +1546,191 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // ===================================================
-        // HOMEPAGE AUTHENTICATION & USER FLOW MANAGEMENT
-        // ===================================================
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
 
-        class HomepageManager {
-            constructor() {
-                this.currentUser = null;
-                this.isAuthenticated = false;
-                this.authCheckComplete = false;
-                
-                this.init();
-            }
-
-            async init() {
-                console.log('ðŸ”„ Initializing Homepage Manager...');
-                
-                // Wait for SDKs to be ready
-                if (window.SDK_DEBUG && (window.SDK_DEBUG.firebase || window.SDK_DEBUG.supabase)) {
-                    this.handleSDKReady();
-                } else {
-                    window.addEventListener('sdksReady', () => this.handleSDKReady());
-                }
-
-                this.setupAnimations();
-                this.setupMobileMenu();
-                this.setupScrollEffects();
-            }
-
-            async handleSDKReady() {
-                console.log('âœ… SDKs ready on homepage');
-                await this.checkAuthentication();
-                this.updateAuthStatus();
-            }
-
-            async checkAuthentication() {
-                try {
-                    console.log('ðŸ” Checking authentication status...');
-
-                    // Check Firebase auth
-                    if (window.firebaseAuth && window.firebaseAuth.getCurrentUser) {
-                        this.currentUser = window.firebaseAuth.getCurrentUser();
-                        this.isAuthenticated = !!this.currentUser;
-                    }
-
-                    // If not authenticated via Firebase, check Supabase
-                    if (!this.isAuthenticated && window.supabase) {
-                        const { data: { user } } = await window.supabase.auth.getUser();
-                        this.currentUser = user;
-                        this.isAuthenticated = !!user;
-                    }
-
-                    this.authCheckComplete = true;
-                    
-                    console.log('ðŸ” Authentication check complete:', {
-                        authenticated: this.isAuthenticated,
-                        user: this.currentUser?.email || 'None'
-                    });
-
-                    this.updateUIForAuthState();
-
-                } catch (error) {
-                    console.error('Authentication check error:', error);
-                    this.authCheckComplete = true;
-                    this.isAuthenticated = false;
-                    this.updateUIForAuthState();
-                }
-            }
-
-            updateUIForAuthState() {
-                // Update header buttons based on auth state
-                const loginBtn = document.getElementById('loginBtn');
-                const getStartedBtn = document.getElementById('getStartedBtn');
-
-                if (this.isAuthenticated) {
-                    // User is logged in
-                    loginBtn.innerHTML = '<i class="fas fa-tachometer-alt"></i><span>Dashboard</span>';
-                    loginBtn.onclick = () => window.location.href = '/pages/dashboard/';
-                    
-                    getStartedBtn.innerHTML = '<i class="fas fa-tachometer-alt"></i><span>Go to Dashboard</span>';
-                } else {
-                    // User is not logged in - keep original functionality
-                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Login</span>';
-                    getStartedBtn.innerHTML = '<i class="fas fa-rocket"></i><span>Get Started</span>';
-                }
-            }
-
-            updateAuthStatus() {
-                const statusElement = document.getElementById('authStatus');
-                const statusText = document.getElementById('authStatusText');
-                
-                if (this.authCheckComplete) {
-                    if (this.isAuthenticated) {
-                        statusElement.className = 'auth-status authenticated show';
-                        statusText.textContent = `Authenticated: ${this.currentUser.email}`;
-                    } else {
-                        statusElement.className = 'auth-status unauthenticated show';
-                        statusText.textContent = 'Not authenticated';
-                    }
-                    
-                    // Hide after 3 seconds
-                    setTimeout(() => {
-                        statusElement.classList.remove('show');
-                    }, 3000);
-                } else {
-                    statusElement.className = 'auth-status show';
-                    statusText.textContent = 'Checking authentication...';
-                }
-            }
-
-            setButtonLoading(buttonElement, loading = true) {
-                if (loading) {
-                    buttonElement.classList.add('loading');
-                    buttonElement.disabled = true;
-                } else {
-                    buttonElement.classList.remove('loading');
-                    buttonElement.disabled = false;
-                }
-            }
-
-            setupAnimations() {
-                // Initialize AOS (Animate On Scroll)
-                AOS.init({
-                    duration: 800,
-                    easing: 'ease-in-out',
-                    once: true,
-                    offset: 100
-                });
-
-                // Counter animation for hero stats
-                this.animateCounters();
-            }
-
-            animateCounters() {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const counters = document.querySelectorAll('[data-count]');
-                            
-                            counters.forEach(counter => {
-                                const target = parseInt(counter.getAttribute('data-count'));
-                                const duration = 2000;
-                                const step = target / (duration / 16);
-                                let current = 0;
-                                
-                                const timer = setInterval(() => {
-                                    current += step;
-                                    if (current >= target) {
-                                        current = target;
-                                        clearInterval(timer);
-                                    }
-                                    
-                                    const formatted = Math.floor(current).toLocaleString();
-                                    counter.textContent = counter.getAttribute('data-count').includes('%') 
-                                        ? Math.floor(current) + '%' 
-                                        : formatted + (counter.getAttribute('data-count').includes('000') ? '+' : '');
-                                }, 16);
-                            });
-                            
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                });
-
-                const heroStats = document.querySelector('.hero-stats');
-                if (heroStats) {
-                    observer.observe(heroStats);
-                }
-            }
-
-            setupMobileMenu() {
-                const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-                const navMenu = document.getElementById('navMenu');
-
-                mobileMenuToggle.addEventListener('click', () => {
-                    navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
-                });
-            }
-
-            setupScrollEffects() {
-                const header = document.getElementById('header');
-                
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 100) {
-                        header.classList.add('scrolled');
-                    } else {
-                        header.classList.remove('scrolled');
-                    }
-                });
-
-                // Smooth scrolling for anchor links
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const target = document.querySelector(this.getAttribute('href'));
-                        if (target) {
-                            target.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    });
-                });
-            }
-        }
-
-        // ===================================================
-        // GLOBAL FUNCTIONS FOR BUTTON ACTIONS
-        // ===================================================
-
-        // Handle engagement actions (Get Started, Start Journey, etc.)
-        function handleEngagementAction(actionType) {
-            console.log('ðŸŽ¯ Engagement action triggered:', actionType);
-            
-            const buttonElement = event.target.closest('button');
-            if (buttonElement) {
-                window.homepageManager.setButtonLoading(buttonElement, true);
-            }
-
-            // Wait for auth check to complete
-            if (!window.homepageManager.authCheckComplete) {
-                console.log('â³ Waiting for auth check to complete...');
-                setTimeout(() => handleEngagementAction(actionType), 500);
-                return;
-            }
-
-            if (window.homepageManager.isAuthenticated) {
-                // User is authenticated - redirect to dashboard
-                console.log('âœ… User authenticated, redirecting to dashboard');
-                window.location.href = '/pages/dashboard/';
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
             } else {
-                // User not authenticated - redirect to registration
-                console.log('ðŸ”„ User not authenticated, redirecting to registration');
-                const redirectParam = encodeURIComponent('subscription');
-                window.location.href = `/pages/auth/register.html?redirect=${redirectParam}&source=${actionType}`;
+                header.classList.remove('scrolled');
             }
+        });
 
-            if (buttonElement) {
-                window.homepageManager.setButtonLoading(buttonElement, false);
-            }
-        }
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navMenu = document.getElementById('navMenu');
 
-        // Handle pricing card actions
-        function handlePricingAction(tier) {
-            console.log('ðŸ’° Pricing action triggered:', tier);
+        mobileMenuToggle.addEventListener('click', () => {
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Counter animation for hero stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('[data-count]');
             
-            const buttonElement = event.target.closest('button') || event.target.closest('.pricing-card');
-            if (buttonElement) {
-                window.homepageManager.setButtonLoading(buttonElement, true);
-            }
-
-            // Wait for auth check to complete
-            if (!window.homepageManager.authCheckComplete) {
-                console.log('â³ Waiting for auth check to complete...');
-                setTimeout(() => handlePricingAction(tier), 500);
-                return;
-            }
-
-            if (window.homepageManager.isAuthenticated) {
-                // User is authenticated - go directly to payment processing
-                console.log('âœ… User authenticated, redirecting to payment processing');
-                window.location.href = `/payment-processing.html?tier=${tier}&action=subscribe`;
-            } else {
-                // User not authenticated - redirect to registration first
-                console.log('ðŸ”„ User not authenticated, redirecting to registration');
-                const redirectParam = encodeURIComponent(`payment-${tier}`);
-                window.location.href = `/pages/auth/register.html?redirect=${redirectParam}&tier=${tier}`;
-            }
-
-            if (buttonElement) {
-                window.homepageManager.setButtonLoading(buttonElement, false);
-            }
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000; // 2 seconds
+                const step = target / (duration / 16); // 60fps
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    
+                    // Format numbers with commas
+                    const formatted = Math.floor(current).toLocaleString();
+                    counter.textContent = counter.getAttribute('data-count').includes('%') 
+                        ? Math.floor(current) + '%' 
+                        : formatted + (counter.getAttribute('data-count').includes('000') ? '+' : '');
+                }, 16);
+            });
         }
 
-        // Handle authentication-specific actions (Login, Create Account)
-        function handleAuthenticatedAction(actionType) {
-            console.log('ðŸ” Auth action triggered:', actionType);
+        // Trigger counter animation when hero section is visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        const heroStats = document.querySelector('.hero-stats');
+        if (heroStats) {
+            observer.observe(heroStats);
+        }
+
+        // Loading dots animation for any loading states
+        function createLoadingDots(container) {
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'loading-dots';
             
-            const buttonElement = event.target.closest('button');
-            if (buttonElement) {
-                window.homepageManager.setButtonLoading(buttonElement, true);
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'loading-dot';
+                dotsContainer.appendChild(dot);
             }
-
-            switch (actionType) {
-                case 'login':
-                    if (window.homepageManager.isAuthenticated) {
-                        window.location.href = '/pages/dashboard/';
-                    } else {
-                        window.location.href = '/pages/auth/login.html?redirect=dashboard';
-                    }
-                    break;
-                    
-                case 'create-account':
-                    if (window.homepageManager.isAuthenticated) {
-                        window.location.href = '/pages/dashboard/';
-                    } else {
-                        window.location.href = '/pages/auth/register.html?redirect=dashboard';
-                    }
-                    break;
-                    
-                default:
-                    console.warn('Unknown auth action:', actionType);
-            }
-
-            if (buttonElement) {
-                window.homepageManager.setButtonLoading(buttonElement, false);
-            }
+            
+            container.appendChild(dotsContainer);
+            return dotsContainer;
         }
 
-        // ===================================================
-        // INITIALIZE EVERYTHING
-        // ===================================================
+        // Fade in animation for elements
+        function setupFadeInAnimation() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
 
-        // Initialize homepage manager when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            window.homepageManager = new HomepageManager();
+            fadeElements.forEach(element => {
+                fadeObserver.observe(element);
+            });
+        }
+
+        // Initialize fade in animations
+        setupFadeInAnimation();
+
+        // Preload critical images
+        function preloadImages() {
+            const imagesToPreload = [
+                'tradershelmetlogo.png'
+            ];
+            
+            imagesToPreload.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            preloadImages();
+            
+            // Add loading state to CTA buttons
+            document.querySelectorAll('.btn-tier, .btn-primary').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (this.href && this.href.includes('payment-processing')) {
+                        this.style.opacity = '0.7';
+                        this.style.pointerEvents = 'none';
+                        
+                        // Create loading dots
+                        const originalText = this.textContent;
+                        this.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+                        
+                        // Reset after navigation (in case it fails)
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                            this.style.opacity = '1';
+                            this.style.pointerEvents = 'auto';
+                        }, 5000);
+                    }
+                });
+            });
+        });
+
+        // Performance optimization: Lazy load testimonial avatars
+        const testimonialObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Simulate avatar loading with initials
+                    const avatar = entry.target.querySelector('.author-avatar');
+                    if (avatar && !avatar.dataset.loaded) {
+                        avatar.dataset.loaded = 'true';
+                        avatar.style.opacity = '1';
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.testimonial-card').forEach(card => {
+            testimonialObserver.observe(card);
+        });
+
+        // Add form validation for any forms on the page
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Global error handling
+        window.addEventListener('error', function(e) {
+            console.log('Page error handled:', e.message);
+            // Could send to analytics service in production
         });
 
         // Accessibility improvements
@@ -1950,13 +1743,6 @@
         document.addEventListener('mousedown', function() {
             document.body.classList.remove('keyboard-navigation');
         });
-
-        // Global error handling
-        window.addEventListener('error', function(e) {
-            console.log('Page error handled:', e.message);
-        });
-
-        console.log('ðŸš€ Traders Helmet Academy Homepage Loaded Successfully!');
     </script>
 </body>
 </html>
