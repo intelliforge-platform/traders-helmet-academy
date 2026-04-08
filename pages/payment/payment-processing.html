@@ -4,734 +4,338 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complete Your Payment - Traders Helmet Academy</title>
-    <meta name="description" content="Secure payment processing for your Traders Helmet Academy subscription.">
-    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-
     <style>
-        :root {
-            --primary-blue: #1e40af;
-            --primary-blue-light: #3b82f6;
-            --dark-bg: #0f172a;
-            --dark-surface: #1e293b;
-            --dark-card: #334155;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --success: #10b981;
-            --success-light: rgba(16, 185, 129, 0.1);
-            --error: #ef4444;
-            --error-light: rgba(239, 68, 68, 0.1);
-            --warning: #f59e0b;
-            --warning-light: rgba(245, 158, 11, 0.1);
-            --info: #0ea5e9;
-            --info-light: rgba(14, 165, 233, 0.1);
-            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-            --gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 100%);
-            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-            --gradient-platinum: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            --gradient-diamond: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--gradient-hero);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
-
-        .header { text-align: center; margin-bottom: 2.5rem; }
-        .brand-header { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
-        .brand-text { font-size: 1.6rem; font-weight: 700; color: var(--primary-blue-light); }
-        .header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ffffff, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .header p { color: var(--text-secondary); }
-
-        .tier-banner {
-            background: var(--gradient-card);
-            border-radius: 16px;
-            padding: 1.5rem 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .tier-banner-icon {
-            width: 56px; height: 56px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; color: white; font-weight: bold; flex-shrink: 0;
-        }
-        .tier-banner-icon.gold { background: var(--gradient-gold); }
-        .tier-banner-icon.platinum { background: var(--gradient-platinum); }
-        .tier-banner-icon.diamond { background: var(--gradient-diamond); }
-        .tier-banner-info h3 { font-size: 1.3rem; font-weight: 700; }
-        .tier-banner-info p { color: var(--text-secondary); font-size: 0.9rem; }
-        .tier-banner-price { font-size: 2rem; font-weight: 800; color: var(--primary-blue-light); }
-        .locked-badge {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: var(--text-muted);
-            padding: 0.3rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .payment-container { display: grid; grid-template-columns: 1fr 360px; gap: 2.5rem; align-items: start; }
-
-        .payment-form {
-            background: var(--gradient-card);
-            border-radius: 24px;
-            padding: 2.5rem;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .form-section { margin-bottom: 2rem; }
-        .section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-
-        .payment-tabs {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
-            margin-bottom: 2rem;
-        }
-        .payment-tab {
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 12px; padding: 1rem; text-align: center;
-            cursor: pointer; transition: all 0.3s;
-        }
-        .payment-tab.active {
-            border-color: var(--primary-blue-light);
-            background: rgba(59,130,246,0.1);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-        }
-        .payment-tab.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-        .payment-tab-icon { font-size: 1.5rem; margin-bottom: 0.35rem; color: var(--primary-blue-light); }
-        .payment-tab-name { font-weight: 600; font-size: 0.9rem; }
-        .payment-tab-desc { font-size: 0.75rem; color: var(--text-muted); }
-
-        .payment-content { display: none; }
-        .payment-content.active { display: block; }
-
-        .form-group { margin-bottom: 1.25rem; }
-        .form-label { display: block; margin-bottom: 0.4rem; font-weight: 500; color: var(--text-secondary); font-size: 0.9rem; }
-        .form-input {
-            width: 100%; padding: 0.9rem 1.1rem;
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 10px; color: var(--text-primary); font-size: 0.95rem;
-            transition: all 0.3s; font-family: inherit;
-        }
-        .form-input:focus { outline: none; border-color: var(--primary-blue-light); background: rgba(59,130,246,0.08); }
-        .form-input::placeholder { color: var(--text-muted); }
-        .form-input:read-only {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-        .bank-details {
-            background: rgba(14,165,233,0.08);
-            border: 1px solid rgba(14,165,233,0.3);
-            border-radius: 12px; padding: 1.25rem; margin: 1rem 0;
-        }
-        .bank-detail-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.6rem 0; border-bottom: 1px solid rgba(14,165,233,0.15);
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .bank-detail-item:last-child { border-bottom: none; }
-        .bank-detail-label { font-weight: 600; color: var(--info); font-size: 0.9rem; }
-        .bank-detail-value { font-family: 'Courier New', monospace; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-        .copy-btn {
-            background: var(--info); color: white; border: none;
-            padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;
-            cursor: pointer; transition: all 0.2s;
-        }
-        .copy-btn:hover { background: var(--primary-blue-light); }
-
-        .crypto-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1rem 0; }
-        .crypto-option {
-            background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 10px; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.3s;
-        }
-        .crypto-option:hover, .crypto-option.active { border-color: var(--warning); background: rgba(245,158,11,0.1); }
-        .crypto-icon { width: 36px; height: 36px; margin: 0 auto 0.4rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; }
-        .crypto-icon.btc { background: linear-gradient(135deg, #f7931a, #ff9500); color: white; }
-        .crypto-icon.eth { background: linear-gradient(135deg, #627eea, #3c4eda); color: white; }
-        .crypto-icon.usdt { background: linear-gradient(135deg, #26a17b, #009393); color: white; }
-        .crypto-name { font-weight: 600; font-size: 0.85rem; }
-        .crypto-network { font-size: 0.75rem; color: var(--text-muted); }
-
-        .crypto-payment-details {
-            display: none; background: rgba(245,158,11,0.08);
-            border: 1px solid rgba(245,158,11,0.3);
-            border-radius: 12px; padding: 1.5rem; margin-top: 1rem; text-align: center;
-        }
-        .crypto-payment-details.active { display: block; }
-        .qr-code { width: 160px; height: 160px; margin: 0.75rem auto; background: white; padding: 0.75rem; border-radius: 10px; }
-        .wallet-address {
-            background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 8px;
-            font-family: 'Courier New', monospace; word-break: break-all; margin: 0.75rem 0; font-size: 0.85rem;
-        }
-        .crypto-amount { font-size: 1rem; font-weight: 600; color: var(--warning); margin-top: 0.5rem; }
-
-        .card-placeholder {
-            background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.3);
-            border-radius: 12px; padding: 2rem; text-align: center; margin: 1rem 0;
-        }
-        .card-placeholder i { font-size: 2.5rem; color: var(--primary-blue-light); margin-bottom: 1rem; display: block; }
-
-        .alert { padding: 1rem 1.25rem; border-radius: 10px; margin: 0.75rem 0; }
-        .alert.info { background: var(--info-light); border: 1px solid var(--info); color: var(--info); }
-        .alert.warning { background: var(--warning-light); border: 1px solid var(--warning); color: var(--warning); }
-        .alert.success { background: var(--success-light); border: 1px solid var(--success); color: var(--success); }
-        .alert.error { background: var(--error-light); border: 1px solid var(--error); color: var(--error); }
-        .alert h4 { margin-bottom: 0.4rem; font-size: 0.95rem; }
-        .alert ul { margin: 0.4rem 0; padding-left: 1.4rem; font-size: 0.85rem; }
-
-        .pay-button {
-            width: 100%; padding: 1.1rem 2rem;
-            background: var(--gradient-primary); color: white; border: none;
-            border-radius: 12px; font-size: 1rem; font-weight: 600;
-            cursor: pointer; transition: all 0.3s; margin-top: 1.5rem;
-        }
-        .pay-button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59,130,246,0.4); }
-        .pay-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
-        .pay-button .spin { display: none; animation: spin 1s linear infinite; margin-right: 0.5rem; }
-        .pay-button.loading .spin { display: inline-block; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .order-summary {
-            background: var(--gradient-card);
-            border-radius: 24px; padding: 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            position: sticky; top: 1.5rem;
-        }
-        .summary-tier-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .summary-tier-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: white; flex-shrink: 0; }
-        .summary-tier-icon.gold { background: var(--gradient-gold); }
-        .summary-tier-icon.platinum { background: var(--gradient-platinum); }
-        .summary-tier-icon.diamond { background: var(--gradient-diamond); }
-        .summary-features { list-style: none; margin: 1rem 0; }
-        .summary-features li { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0; color: var(--text-secondary); font-size: 0.88rem; }
-        .feature-check { width: 18px; height: 18px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.6rem; flex-shrink: 0; }
-        .price-total { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 1.2rem; font-weight: 700; }
-
-        .success-screen {
-            display: none; background: var(--gradient-card);
-            border: 1px solid var(--success); border-radius: 24px;
-            padding: 3rem; text-align: center;
-        }
-        .success-screen.show { display: block; }
-        .success-screen i { font-size: 4rem; color: var(--success); margin-bottom: 1rem; display: block; }
-        .success-screen h2 { font-size: 1.8rem; margin-bottom: 1rem; }
-        .success-screen p { color: var(--text-secondary); margin-bottom: 2rem; }
-        .success-btn { background: var(--gradient-primary); color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 1rem; }
-        .success-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
-
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.92); display: none; align-items: center; justify-content: center; z-index: 9999; }
-        .loading-overlay.show { display: flex; }
-        .loading-content { text-align: center; }
-        .spinner-lg { width: 56px; height: 56px; border: 4px solid rgba(59,130,246,0.3); border-top-color: var(--primary-blue-light); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
-
-        @media (max-width: 900px) {
-            .payment-container { grid-template-columns: 1fr; }
-            .order-summary { position: static; }
-            .payment-tabs { grid-template-columns: 1fr; }
-            .crypto-options { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 600px) {
-            .container { padding: 1rem; }
-            .tier-banner { flex-direction: column; text-align: center; }
-            .tier-banner-price { margin-left: 0; }
-            .form-row { grid-template-columns: 1fr; }
-            .bank-detail-item { flex-direction: column; align-items: flex-start; }
-        }
+        :root{--primary-blue:#1e40af;--primary-blue-light:#3b82f6;--dark-bg:#0f172a;--dark-surface:#1e293b;--dark-card:#334155;--text-primary:#f1f5f9;--text-secondary:#cbd5e1;--text-muted:#94a3b8;--success:#10b981;--success-light:rgba(16,185,129,0.1);--error:#ef4444;--error-light:rgba(239,68,68,0.1);--warning:#f59e0b;--warning-light:rgba(245,158,11,0.1);--info:#0ea5e9;--info-light:rgba(14,165,233,0.1);--grad-primary:linear-gradient(135deg,#1e40af 0%,#3b82f6 100%);--grad-hero:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#334155 100%);--grad-card:linear-gradient(145deg,#1e293b 0%,#334155 100%);--grad-gold:linear-gradient(135deg,#f59e0b 0%,#fbbf24 100%);--grad-plat:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);--grad-diam:linear-gradient(135deg,#06b6d4 0%,#0ea5e9 100%);}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',sans-serif;background:var(--grad-hero);color:var(--text-primary);line-height:1.6;min-height:100vh;}
+        .container{max-width:1100px;margin:0 auto;padding:2rem 1rem;}
+        .header{text-align:center;margin-bottom:2rem;}
+        .brand-text{font-size:1.6rem;font-weight:700;color:var(--primary-blue-light);margin-bottom:1rem;display:block;}
+        .header h1{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,#fff,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .tier-banner{background:var(--grad-card);border-radius:16px;padding:1.5rem 2rem;border:1px solid rgba(255,255,255,0.1);margin-bottom:2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+        .tier-banner-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:white;flex-shrink:0;}
+        .tier-banner-icon.gold{background:var(--grad-gold);}
+        .tier-banner-icon.platinum{background:var(--grad-plat);}
+        .tier-banner-icon.diamond{background:var(--grad-diam);}
+        .tier-banner-price{font-size:2rem;font-weight:800;color:var(--primary-blue-light);}
+        .locked-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:var(--text-muted);padding:0.3rem 0.75rem;border-radius:20px;font-size:0.75rem;display:inline-flex;align-items:center;gap:0.4rem;}
+        .payment-container{display:grid;grid-template-columns:1fr 360px;gap:2.5rem;align-items:start;}
+        .payment-form{background:var(--grad-card);border-radius:24px;padding:2.5rem;border:1px solid rgba(255,255,255,0.1);}
+        .form-section{margin-bottom:2rem;}
+        .section-title{font-size:1.1rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
+        .payment-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:2rem;}
+        .payment-tab{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:1rem;text-align:center;cursor:pointer;transition:all 0.3s;opacity:0.35;pointer-events:none;}
+        .payment-tab.active{border-color:var(--primary-blue-light);background:rgba(59,130,246,0.1);opacity:1;pointer-events:auto;box-shadow:0 0 0 3px rgba(59,130,246,0.15);}
+        .payment-tab-icon{font-size:1.5rem;margin-bottom:0.35rem;color:var(--primary-blue-light);}
+        .payment-tab-name{font-weight:600;font-size:0.9rem;}
+        .payment-tab-desc{font-size:0.75rem;color:var(--text-muted);}
+        .payment-content{display:none;}
+        .payment-content.active{display:block;}
+        .form-group{margin-bottom:1.25rem;}
+        .form-label{display:block;margin-bottom:0.4rem;font-weight:500;color:var(--text-secondary);font-size:0.9rem;}
+        .form-input{width:100%;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text-primary);font-size:0.95rem;transition:all 0.3s;font-family:inherit;}
+        .form-input:focus{outline:none;border-color:var(--primary-blue-light);background:rgba(59,130,246,0.08);}
+        .form-input::placeholder{color:var(--text-muted);}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+        .bank-details{background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.3);border-radius:12px;padding:1.25rem;margin:1rem 0;}
+        .bank-detail-item{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid rgba(14,165,233,0.15);}
+        .bank-detail-item:last-child{border-bottom:none;}
+        .bank-detail-label{font-weight:600;color:var(--info);font-size:0.9rem;}
+        .bank-detail-value{font-family:'Courier New',monospace;font-size:0.88rem;display:flex;align-items:center;gap:0.5rem;}
+        .copy-btn{background:var(--info);color:white;border:none;padding:0.2rem 0.5rem;border-radius:4px;font-size:0.7rem;cursor:pointer;transition:all 0.2s;}
+        .copy-btn:hover{background:var(--primary-blue-light);}
+        .crypto-options{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin:1rem 0;}
+        .crypto-option{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:all 0.3s;}
+        .crypto-option:hover,.crypto-option.active{border-color:var(--warning);background:rgba(245,158,11,0.1);}
+        .crypto-icon{width:36px;height:36px;margin:0 auto 0.4rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:bold;}
+        .crypto-icon.btc{background:linear-gradient(135deg,#f7931a,#ff9500);color:white;}
+        .crypto-icon.eth{background:linear-gradient(135deg,#627eea,#3c4eda);color:white;}
+        .crypto-icon.usdt{background:linear-gradient(135deg,#26a17b,#009393);color:white;}
+        .crypto-details{display:none;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:1.5rem;margin-top:1rem;text-align:center;}
+        .crypto-details.active{display:block;}
+        .qr-code{width:150px;height:150px;margin:0.75rem auto;background:white;padding:0.75rem;border-radius:10px;}
+        .wallet-address{background:rgba(0,0,0,0.3);padding:0.75rem;border-radius:8px;font-family:'Courier New',monospace;word-break:break-all;margin:0.75rem 0;font-size:0.85rem;}
+        .crypto-amount{font-size:1rem;font-weight:600;color:var(--warning);margin-top:0.5rem;}
+        .card-placeholder{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.3);border-radius:12px;padding:2rem;text-align:center;margin:1rem 0;}
+        .alert{padding:1rem 1.25rem;border-radius:10px;margin:0.75rem 0;}
+        .alert.info{background:var(--info-light);border:1px solid var(--info);color:var(--info);}
+        .alert.warning{background:var(--warning-light);border:1px solid var(--warning);color:var(--warning);}
+        .alert h4{margin-bottom:0.4rem;font-size:0.95rem;}
+        .alert ul{margin:0.4rem 0;padding-left:1.4rem;font-size:0.85rem;}
+        .pay-button{width:100%;padding:1.1rem 2rem;background:var(--grad-primary);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.3s;margin-top:1.5rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;}
+        .pay-button:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(59,130,246,0.4);}
+        .pay-button:disabled{opacity:0.6;cursor:not-allowed;transform:none;box-shadow:none;}
+        @keyframes spin{to{transform:rotate(360deg);}}
+        .spin{animation:spin 1s linear infinite;}
+        .order-summary{background:var(--grad-card);border-radius:24px;padding:2rem;border:1px solid rgba(255,255,255,0.1);position:sticky;top:1.5rem;}
+        .sum-tier-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.1);}
+        .sum-tier-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:white;flex-shrink:0;}
+        .sum-tier-icon.gold{background:var(--grad-gold);}
+        .sum-tier-icon.platinum{background:var(--grad-plat);}
+        .sum-tier-icon.diamond{background:var(--grad-diam);}
+        .sum-features{list-style:none;margin:1rem 0;}
+        .sum-features li{display:flex;align-items:center;gap:0.6rem;padding:0.4rem 0;color:var(--text-secondary);font-size:0.88rem;}
+        .feat-check{width:18px;height:18px;background:var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.6rem;flex-shrink:0;}
+        .price-total{border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem;margin-top:1rem;display:flex;justify-content:space-between;align-items:center;font-size:1.2rem;font-weight:700;}
+        .success-screen{display:none;background:var(--grad-card);border:1px solid var(--success);border-radius:24px;padding:3rem;text-align:center;}
+        .success-screen.show{display:block;}
+        .success-screen i{font-size:4rem;color:var(--success);margin-bottom:1rem;display:block;}
+        .success-screen h2{font-size:1.8rem;margin-bottom:1rem;}
+        .success-screen p{color:var(--text-secondary);margin-bottom:2rem;}
+        .success-btn{background:var(--grad-primary);color:white;border:none;padding:1rem 2rem;border-radius:10px;font-weight:600;cursor:pointer;transition:all 0.3s;font-size:1rem;}
+        .success-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(59,130,246,0.4);}
+        .loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.92);display:none;align-items:center;justify-content:center;z-index:9999;}
+        .loading-overlay.show{display:flex;}
+        .loading-content{text-align:center;}
+        .spinner-lg{width:56px;height:56px;border:4px solid rgba(59,130,246,0.3);border-top-color:var(--primary-blue-light);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1rem;}
+        @media(max-width:900px){.payment-container{grid-template-columns:1fr;}.order-summary{position:static;}.form-row{grid-template-columns:1fr;}}
     </style>
 </head>
 <body>
-
 <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-content">
-        <div class="spinner-lg"></div>
-        <h3 id="loadingMsg">Processing...</h3>
-        <p>Please wait</p>
-    </div>
+    <div class="loading-content"><div class="spinner-lg"></div><h3>Submitting payment...</h3><p>Please wait</p></div>
 </div>
-
 <div class="container">
     <div class="header">
-        <div class="brand-header">
-            <div class="brand-text">Traders Helmet Academy</div>
-        </div>
+        <span class="brand-text">Traders Helmet Academy</span>
         <h1 id="pageTitle">Complete Your Subscription</h1>
-        <p id="pageSubtitle">Review your selected plan and choose a payment method</p>
     </div>
-
     <div class="success-screen" id="successScreen">
         <i class="fas fa-check-circle"></i>
-        <h2 id="successTitle">Payment Submitted!</h2>
-        <p id="successText">Your payment has been received. The admin will review and activate your account within 24 hours. You'll receive an email once activated.</p>
-        <button class="success-btn" onclick="window.location.href='/pages/dashboard/index.html'">
-            <i class="fas fa-home"></i> Return to Dashboard
-        </button>
+        <h2>Payment Submitted!</h2>
+        <p>Your payment has been received. The admin will review and activate your account within 24 hours. You'll receive confirmation once activated.</p>
+        <button class="success-btn" onclick="window.location.href='/pages/dashboard/index.html'"><i class="fas fa-home"></i> Return to Dashboard</button>
     </div>
-
     <div class="tier-banner" id="tierBanner">
         <div class="tier-banner-icon gold" id="bannerIcon"><i class="fas fa-star"></i></div>
-        <div class="tier-banner-info">
-            <h3 id="bannerTierName">Gold Membership</h3>
-            <p id="bannerTierDesc">2 Months — Essential trading foundation</p>
-        </div>
+        <div><h3 id="bannerTierName">Gold Membership</h3><p id="bannerTierDesc" style="color:var(--text-secondary);font-size:0.9rem;">2 Months</p></div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;margin-left:auto;">
             <div class="tier-banner-price" id="bannerPrice">$300</div>
             <span class="locked-badge"><i class="fas fa-lock"></i> Plan locked</span>
         </div>
     </div>
-
     <div class="payment-container" id="mainContainer">
         <div class="payment-form">
             <div class="form-section">
                 <h3 class="section-title"><i class="fas fa-user"></i> Your Details</h3>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">First Name</label>
-                        <input type="text" id="firstName" class="form-input" placeholder="Enter your first name">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" id="lastName" class="form-input" placeholder="Enter your last name">
-                    </div>
+                    <div class="form-group"><label class="form-label">First Name</label><input type="text" id="firstName" class="form-input" readonly></div>
+                    <div class="form-group"><label class="form-label">Last Name</label><input type="text" id="lastName" class="form-input" readonly></div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" id="email" class="form-input" placeholder="Enter your email address">
-                </div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" id="email" class="form-input" readonly></div>
             </div>
-
             <div class="form-section">
                 <h3 class="section-title"><i class="fas fa-credit-card"></i> Payment Method</h3>
                 <div class="payment-tabs">
-                    <div class="payment-tab disabled" id="tab-card" data-method="card">
-                        <div class="payment-tab-icon"><i class="fas fa-credit-card"></i></div>
-                        <div class="payment-tab-name">Card</div>
-                        <div class="payment-tab-desc">Coming Soon</div>
-                    </div>
-                    <div class="payment-tab" id="tab-bank" data-method="bank">
-                        <div class="payment-tab-icon"><i class="fas fa-university"></i></div>
-                        <div class="payment-tab-name">Bank Transfer</div>
-                        <div class="payment-tab-desc">24h verification</div>
-                    </div>
-                    <div class="payment-tab" id="tab-crypto" data-method="crypto">
-                        <div class="payment-tab-icon"><i class="fab fa-bitcoin"></i></div>
-                        <div class="payment-tab-name">Crypto</div>
-                        <div class="payment-tab-desc">BTC · ETH · USDT</div>
-                    </div>
+                    <div class="payment-tab" id="tab-card"><div class="payment-tab-icon"><i class="fas fa-credit-card"></i></div><div class="payment-tab-name">Card</div><div class="payment-tab-desc">Instant</div></div>
+                    <div class="payment-tab" id="tab-bank"><div class="payment-tab-icon"><i class="fas fa-university"></i></div><div class="payment-tab-name">Bank Transfer</div><div class="payment-tab-desc">24h verification</div></div>
+                    <div class="payment-tab" id="tab-crypto"><div class="payment-tab-icon"><i class="fab fa-bitcoin"></i></div><div class="payment-tab-name">Crypto</div><div class="payment-tab-desc">BTC · ETH · USDT</div></div>
                 </div>
-
+                <!-- Card -->
                 <div id="content-card" class="payment-content">
-                    <div class="card-placeholder">
-                        <i class="fas fa-credit-card"></i>
-                        <h4 style="margin-bottom:0.5rem;">Card Payment Coming Soon</h4>
-                        <p style="color:var(--text-secondary);font-size:0.9rem;">Card payments are currently being set up. Please use Bank Transfer or Crypto for now, or contact support.</p>
-                    </div>
+                    <div class="card-placeholder"><i class="fas fa-credit-card" style="font-size:2.5rem;color:var(--primary-blue-light);display:block;margin-bottom:1rem;"></i><h4>Card Payment</h4><p style="color:var(--text-secondary);font-size:0.9rem;margin-top:0.5rem;">Card payments are being set up. Please use Bank Transfer or Crypto.</p></div>
                 </div>
-
+                <!-- Bank -->
                 <div id="content-bank" class="payment-content">
-                    <div class="alert info">
-                        <h4><i class="fas fa-info-circle"></i> Bank Transfer Instructions</h4>
-                        <p>Transfer the exact amount below. Use your reference code so we can match your payment. Your account will be activated within 24 hours.</p>
-                    </div>
+                    <div class="alert info"><h4><i class="fas fa-info-circle"></i> Bank Transfer Instructions</h4><p>Transfer the exact amount below and include your reference code. Account activates within 24 hours.</p></div>
                     <div class="bank-details">
-                        <div class="bank-detail-item">
-                            <span class="bank-detail-label">Bank Name</span>
-                            <span class="bank-detail-value">Providus Bank <button class="copy-btn" onclick="copyText('Providus Bank')">Copy</button></span>
-                        </div>
-                        <div class="bank-detail-item">
-                            <span class="bank-detail-label">Account Name</span>
-                            <span class="bank-detail-value">Traders Helmet Serves <button class="copy-btn" onclick="copyText('Traders Helmet Serves')">Copy</button></span>
-                        </div>
-                        <div class="bank-detail-item">
-                            <span class="bank-detail-label">Account Number</span>
-                            <span class="bank-detail-value">5404073281 <button class="copy-btn" onclick="copyText('5404073281')">Copy</button></span>
-                        </div>
-                        <div class="bank-detail-item">
-                            <span class="bank-detail-label">Reference</span>
-                            <span class="bank-detail-value" id="bankRefDisplay">Loading...</span>
-                        </div>
-                        <div class="bank-detail-item">
-                            <span class="bank-detail-label">Amount</span>
-                            <span class="bank-detail-value" id="bankAmountDisplay" style="color:var(--warning);font-weight:700;">$300.00</span>
-                        </div>
+                        <div class="bank-detail-item"><span class="bank-detail-label">Bank Name</span><span class="bank-detail-value">Providus Bank <button class="copy-btn" onclick="copyText('Providus Bank')">Copy</button></span></div>
+                        <div class="bank-detail-item"><span class="bank-detail-label">Account Name</span><span class="bank-detail-value">Traders Helmet Serves <button class="copy-btn" onclick="copyText('Traders Helmet Serves')">Copy</button></span></div>
+                        <div class="bank-detail-item"><span class="bank-detail-label">Account Number</span><span class="bank-detail-value">5404073281 <button class="copy-btn" onclick="copyText('5404073281')">Copy</button></span></div>
+                        <div class="bank-detail-item"><span class="bank-detail-label">Reference</span><span class="bank-detail-value" id="bankRefVal">THA-LOADING <button class="copy-btn" onclick="copyBankRef()">Copy</button></span></div>
+                        <div class="bank-detail-item"><span class="bank-detail-label">Amount</span><span class="bank-detail-value" id="bankAmtVal" style="color:var(--warning);font-weight:700;">$300.00</span></div>
                     </div>
-                    <div class="form-group" style="margin-top:1rem;">
-                        <label class="form-label">Additional Notes (Optional)</label>
-                        <textarea id="bankNotes" class="form-input" rows="2" placeholder="e.g. Transfer date, bank used..."></textarea>
-                    </div>
-                    <div class="alert warning">
-                        <h4><i class="fas fa-exclamation-triangle"></i> Important</h4>
-                        <ul>
-                            <li>Include the reference code in your transfer description</li>
-                            <li>Account will be activated within 24 hours after verification</li>
-                            <li>Keep your transfer receipt for records</li>
-                        </ul>
-                    </div>
+                    <div class="form-group" style="margin-top:1rem;"><label class="form-label">Additional Notes (Optional)</label><textarea id="bankNotes" class="form-input" rows="2" placeholder="e.g. Transfer date, bank used..."></textarea></div>
+                    <div class="alert warning"><h4><i class="fas fa-exclamation-triangle"></i> Important</h4><ul><li>Include the reference code in your transfer</li><li>Account activates within 24 hours after verification</li><li>Keep your transfer receipt</li></ul></div>
                 </div>
-
+                <!-- Crypto -->
                 <div id="content-crypto" class="payment-content">
-                    <div class="alert info">
-                        <h4><i class="fas fa-info-circle"></i> Crypto Payment Instructions</h4>
-                        <p>Select your coin, send the exact amount to the address shown, then enter your transaction hash below.</p>
-                    </div>
+                    <div class="alert info"><h4><i class="fas fa-info-circle"></i> Crypto Instructions</h4><p>Select your coin, send the exact amount, then enter your transaction hash below.</p></div>
                     <div class="crypto-options">
-                        <div class="crypto-option active" data-crypto="btc" onclick="selectCrypto('btc')">
-                            <div class="crypto-icon btc">₿</div>
-                            <div class="crypto-name">Bitcoin</div>
-                            <div class="crypto-network">BTC</div>
-                        </div>
-                        <div class="crypto-option" data-crypto="eth" onclick="selectCrypto('eth')">
-                            <div class="crypto-icon eth">Ξ</div>
-                            <div class="crypto-name">Ethereum</div>
-                            <div class="crypto-network">ETH</div>
-                        </div>
-                        <div class="crypto-option" data-crypto="usdt" onclick="selectCrypto('usdt')">
-                            <div class="crypto-icon usdt">₮</div>
-                            <div class="crypto-name">USDT</div>
-                            <div class="crypto-network">TRC20</div>
-                        </div>
+                        <div class="crypto-option active" data-crypto="btc" onclick="selectCrypto('btc')"><div class="crypto-icon btc">₿</div><div style="font-weight:600;font-size:0.85rem;">Bitcoin</div><div style="font-size:0.75rem;color:var(--text-muted);">BTC</div></div>
+                        <div class="crypto-option" data-crypto="eth" onclick="selectCrypto('eth')"><div class="crypto-icon eth">Ξ</div><div style="font-weight:600;font-size:0.85rem;">Ethereum</div><div style="font-size:0.75rem;color:var(--text-muted);">ETH</div></div>
+                        <div class="crypto-option" data-crypto="usdt" onclick="selectCrypto('usdt')"><div class="crypto-icon usdt">₮</div><div style="font-weight:600;font-size:0.85rem;">USDT</div><div style="font-size:0.75rem;color:var(--text-muted);">TRC20</div></div>
                     </div>
-
-                    <div id="btcDetails" class="crypto-payment-details active">
-                        <h4>Send Bitcoin</h4>
-                        <canvas id="btcQR" class="qr-code"></canvas>
-                        <div class="wallet-address">
-                            <strong>Address:</strong><br>
-                            <span id="btcAddr">1A1zXjDvafdL4Rwdjhr4CYsKvHvXqUe8Kz</span>
-                            <button class="copy-btn" onclick="copyText(document.getElementById('btcAddr').textContent)">Copy</button>
-                        </div>
-                        <div class="crypto-amount" id="btcAmt">≈ 0.007 BTC</div>
-                    </div>
-                    <div id="ethDetails" class="crypto-payment-details">
-                        <h4>Send Ethereum</h4>
-                        <canvas id="ethQR" class="qr-code"></canvas>
-                        <div class="wallet-address">
-                            <strong>Address:</strong><br>
-                            <span id="ethAddr">0x742F35Cc7b45Bd9ac44F5E229E4Fce5B8B4b8a1d</span>
-                            <button class="copy-btn" onclick="copyText(document.getElementById('ethAddr').textContent)">Copy</button>
-                        </div>
-                        <div class="crypto-amount" id="ethAmt">≈ 0.125 ETH</div>
-                    </div>
-                    <div id="usdtDetails" class="crypto-payment-details">
-                        <h4>Send USDT (TRC20)</h4>
-                        <canvas id="usdtQR" class="qr-code"></canvas>
-                        <div class="wallet-address">
-                            <strong>Address:</strong><br>
-                            <span id="usdtAddr">TMDbCHwFa1dyWopGS9KERBRZAMs8uXZ5Zf</span>
-                            <button class="copy-btn" onclick="copyText(document.getElementById('usdtAddr').textContent)">Copy</button>
-                        </div>
-                        <div class="crypto-amount" id="usdtAmt">300 USDT</div>
-                    </div>
-
-                    <div class="form-group" style="margin-top:1.25rem;">
-                        <label class="form-label">Transaction Hash <span style="color:var(--error)">*</span></label>
-                        <input type="text" id="txHash" class="form-input" placeholder="Paste your transaction hash here after sending...">
-                    </div>
-                    <div class="alert warning">
-                        <h4><i class="fas fa-exclamation-triangle"></i> Important</h4>
-                        <ul>
-                            <li>Send the exact amount shown</li>
-                            <li>Double-check the network (BTC / ETH / TRC20)</li>
-                            <li>Account activates after admin verification</li>
-                        </ul>
-                    </div>
+                    <div id="btcDetails" class="crypto-details active"><h4>Send Bitcoin</h4><canvas id="btcQR" class="qr-code"></canvas><div class="wallet-address"><strong>Address:</strong><br><span id="btcAddr">1A1zXjDvafdL4Rwdjhr4CYsKvHvXqUe8Kz</span> <button class="copy-btn" onclick="copyText(document.getElementById('btcAddr').textContent)">Copy</button></div><div class="crypto-amount" id="btcAmt">≈ 0.007 BTC</div></div>
+                    <div id="ethDetails" class="crypto-details"><h4>Send Ethereum</h4><canvas id="ethQR" class="qr-code"></canvas><div class="wallet-address"><strong>Address:</strong><br><span id="ethAddr">0x742F35Cc7b45Bd9ac44F5E229E4Fce5B8B4b8a1d</span> <button class="copy-btn" onclick="copyText(document.getElementById('ethAddr').textContent)">Copy</button></div><div class="crypto-amount" id="ethAmt">≈ 0.125 ETH</div></div>
+                    <div id="usdtDetails" class="crypto-details"><h4>Send USDT (TRC20)</h4><canvas id="usdtQR" class="qr-code"></canvas><div class="wallet-address"><strong>Address:</strong><br><span id="usdtAddr">TMDbCHwFa1dyWopGS9KERBRZAMs8uXZ5Zf</span> <button class="copy-btn" onclick="copyText(document.getElementById('usdtAddr').textContent)">Copy</button></div><div class="crypto-amount" id="usdtAmt">300 USDT</div></div>
+                    <div class="form-group" style="margin-top:1.25rem;"><label class="form-label">Transaction Hash <span style="color:var(--error)">*</span></label><input type="text" id="txHash" class="form-input" placeholder="Paste your transaction hash after sending..."></div>
+                    <div class="alert warning"><h4><i class="fas fa-exclamation-triangle"></i> Important</h4><ul><li>Send the exact amount shown</li><li>Double-check the network</li><li>Account activates after admin verification</li></ul></div>
                 </div>
             </div>
-
             <button id="submitBtn" class="pay-button" onclick="handleSubmit()">
-                <i class="fas fa-circle-notch spin"></i>
+                <i class="fas fa-circle-notch spin" id="submitSpin" style="display:none"></i>
                 <span id="submitBtnText">I Have Completed the Payment</span>
             </button>
-
-            <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:1rem;">
-                By completing this form you agree to our 
-                <a href="/pages/legal/terms.html" style="color:var(--primary-blue-light);">Terms of Service</a>.
-            </p>
+            <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:1rem;">By completing this form you agree to our <a href="/pages/legal/terms.html" style="color:var(--primary-blue-light);">Terms of Service</a>.</p>
         </div>
-
         <div class="order-summary">
-            <div class="summary-tier-header">
-                <div class="summary-tier-icon gold" id="summaryIcon"><i class="fas fa-star"></i></div>
-                <div>
-                    <h3 id="summaryTierName" style="font-size:1.2rem;font-weight:700;">Gold Membership</h3>
-                    <p id="summaryTierDesc" style="color:var(--text-secondary);font-size:0.85rem;">2 Months</p>
-                </div>
+            <div class="sum-tier-header">
+                <div class="sum-tier-icon gold" id="sumIcon"><i class="fas fa-star"></i></div>
+                <div><h3 id="sumTierName" style="font-size:1.2rem;font-weight:700;">Gold Membership</h3><p id="sumTierDesc" style="color:var(--text-secondary);font-size:0.85rem;">2 Months</p></div>
             </div>
-            <ul class="summary-features" id="summaryFeatures"></ul>
-            <div class="price-total">
-                <span>Total</span>
-                <span id="summaryTotal" style="color:var(--primary-blue-light);">$300.00</span>
-            </div>
+            <ul class="sum-features" id="sumFeatures"></ul>
+            <div class="price-total"><span>Total</span><span id="sumTotal" style="color:var(--primary-blue-light);">$300.00</span></div>
         </div>
     </div>
 </div>
 
 <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-    const FIREBASE_CONFIG = {
-        apiKey: "AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
-        authDomain: "traders-helmet-academy.firebaseapp.com",
-        projectId: "traders-helmet-academy"
-    };
-    const SUPABASE_URL = 'https://evtghlwiiqvclnudiyor.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dGdobHdpaXF2Y2xudWRpeW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2MjYzNjgsImV4cCI6MjA4ODIwMjM2OH0.q93SKjmo_8R8AVyAZXtcNxUFH1ntjCkL7g4no6yfGpg';
+const app = initializeApp({
+  apiKey:"AIzaSyCHdhs1wQxyslO7ecotTiqKyc9fH-cJI1k",
+  authDomain:"traders-helmet-academy.firebaseapp.com",
+  projectId:"traders-helmet-academy",
+  storageBucket:"traders-helmet-academy.appspot.com",
+  messagingSenderId:"789631387729",
+  appId:"1:789631387729:web:d1f176bcc091ec40c75070"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-    const TIERS = {
-        gold:     { name: 'Gold Membership',     price: 300,  duration: '2 Months', icon: 'fas fa-star',  features: ['Forex Education','Cryptocurrency Education','Binary Options (HFX)','Forex Master Class on Pivot Strategy','Forex Master Class on Rhombus Strategy','2 Months Mentorship','Free Signals'] },
-        platinum: { name: 'Platinum Membership', price: 600,  duration: '3 Months', icon: 'fas fa-gem',   features: ['Forex Education','Cryptocurrency Education','Binary Options (HFX)','Forex Master Class on Pivot Strategy','Forex Master Class on Rhombus Strategy','Free Trading Software Tools','3 Months Mentorship','Free Signals'] },
-        diamond:  { name: 'Diamond Membership',  price: 1300, duration: '6 Months', icon: 'fas fa-crown', features: ['Forex Education','Cryptocurrency Education','Binary Options (HFX)','Forex Master Class on Pivot Strategy','Forex Master Class on Rhombus Strategy','Forex Master Class on Institutional Order Flow','Free Trading Software Tools','6 Months Mentorship','Free Signals'] }
-    };
+const TIERS = {
+  gold:     {name:'Gold Membership',     price:300,  duration:'2 Months', icon:'fas fa-star',  features:['Forex Education','Cryptocurrency Education','Binary Options (HFX)','Forex Master Class on Pivot Strategy','Forex Master Class on Rhombus Strategy','2 Months Mentorship','Free Signals']},
+  platinum: {name:'Platinum Membership', price:600,  duration:'3 Months', icon:'fas fa-gem',   features:['Forex Education','Cryptocurrency Education','Binary Options (HFX)','Forex Master Class on Pivot Strategy','Forex Master Class on Rhombus Strategy','Free Trading Software Tools','3 Months Mentorship','Free Signals']},
+  diamond:  {name:'Diamond Membership',  price:1300, duration:'6 Months', icon:'fas fa-crown', features:['Forex Education','Cryptocurrency Education','Binary Options (HFX)','Forex Master Class on Pivot Strategy','Forex Master Class on Rhombus Strategy','Forex Master Class on Institutional Order Flow','Free Trading Software Tools','6 Months Mentorship','Free Signals']}
+};
+const WALLETS = {btc:'1A1zXjDvafdL4Rwdjhr4CYsKvHvXqUe8Kz',eth:'0x742F35Cc7b45Bd9ac44F5E229E4Fce5B8B4b8a1d',usdt:'TMDbCHwFa1dyWopGS9KERBRZAMs8uXZ5Zf'};
+const RATES = {btc:43000,eth:2400,usdt:1};
 
-    const WALLETS = {
-        btc:  '1A1zXjDvafdL4Rwdjhr4CYsKvHvXqUe8Kz',
-        eth:  '0x742F35Cc7b45Bd9ac44F5E229E4Fce5B8B4b8a1d',
-        usdt: 'TMDbCHwFa1dyWopGS9KERBRZAMs8uXZ5Zf'
-    };
+let currentUser, selectedTier, selectedMethod, selectedCrypto='btc', bankRef;
 
-    const RATES = { btc: 43000, eth: 2400, usdt: 1 };
+const params = new URLSearchParams(window.location.search);
+selectedTier = params.get('tier')||'gold';
+selectedMethod = params.get('method')||'bank';
+if(!TIERS[selectedTier]) selectedTier='gold';
+if(!['card','bank','crypto'].includes(selectedMethod)) selectedMethod='bank';
 
-    let app, auth, supabase, currentUser, selectedTier, selectedMethod, selectedCrypto = 'btc', bankRef;
+updateTierUI();
+activateTab(selectedMethod);
+bankRef = 'THA-' + Date.now().toString().slice(-8);
+updateBankRef();
 
-    async function init() {
-        const params = new URLSearchParams(window.location.search);
-        selectedTier = params.get('tier') || 'gold';
-        selectedMethod = params.get('method') || 'bank';
+onAuthStateChanged(auth, async (user) => {
+  if(!user){window.location.href='/pages/auth/login.html?redirect='+encodeURIComponent(window.location.href);return;}
+  currentUser = user;
+  const snap = await getDoc(doc(db,'user_profiles',user.uid));
+  if(snap.exists()){
+    const p=snap.data();
+    document.getElementById('firstName').value=p.first_name||'';
+    document.getElementById('lastName').value=p.last_name||'';
+    document.getElementById('email').value=p.email||user.email||'';
+    bankRef='THA-'+user.uid.slice(0,8).toUpperCase()+'-'+selectedTier.toUpperCase();
+    updateBankRef();
+  }
+  setTimeout(generateQRCodes,400);
+  updateCryptoAmounts();
+});
 
-        if (!TIERS[selectedTier]) selectedTier = 'gold';
-        if (!['card','bank','crypto'].includes(selectedMethod)) selectedMethod = 'bank';
+function updateTierUI(){
+  const t=TIERS[selectedTier];
+  const icons={gold:'<i class="fas fa-star"></i>',platinum:'<i class="fas fa-gem"></i>',diamond:'<i class="fas fa-crown"></i>'};
+  document.getElementById('bannerIcon').className='tier-banner-icon '+selectedTier;
+  document.getElementById('bannerIcon').innerHTML=icons[selectedTier];
+  document.getElementById('bannerTierName').textContent=t.name;
+  document.getElementById('bannerTierDesc').textContent=t.duration;
+  document.getElementById('bannerPrice').textContent='$'+t.price;
+  document.getElementById('sumIcon').className='sum-tier-icon '+selectedTier;
+  document.getElementById('sumIcon').innerHTML=icons[selectedTier];
+  document.getElementById('sumTierName').textContent=t.name;
+  document.getElementById('sumTierDesc').textContent=t.duration;
+  document.getElementById('sumTotal').textContent='$'+t.price.toFixed(2);
+  document.getElementById('sumFeatures').innerHTML=t.features.map(f=>`<li><div class="feat-check"><i class="fas fa-check"></i></div><span>${f}</span></li>`).join('');
+}
 
-        app = initializeApp(FIREBASE_CONFIG);
-        auth = getAuth(app);
-        supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+function activateTab(method){
+  document.querySelectorAll('.payment-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.payment-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+method).classList.add('active');
+  document.getElementById('content-'+method).classList.add('active');
+  const texts={card:'Card Payment (Coming Soon)',bank:'I Have Completed the Bank Transfer',crypto:'I Have Sent the Crypto Payment'};
+  document.getElementById('submitBtnText').textContent=texts[method];
+}
 
-        updateTierUI();
-        activatePaymentTab(selectedMethod);
-        
-        bankRef = 'THA-' + Date.now().toString().slice(-8);
-        document.getElementById('bankRefDisplay').innerHTML = bankRef + ' <button class="copy-btn" onclick="copyBankRef()">Copy</button>';
-        document.getElementById('bankAmountDisplay').textContent = '$' + TIERS[selectedTier].price.toFixed(2);
+function updateBankRef(){
+  document.getElementById('bankRefVal').innerHTML=bankRef+' <button class="copy-btn" onclick="window.copyBankRef()">Copy</button>';
+  document.getElementById('bankAmtVal').textContent='$'+TIERS[selectedTier].price.toFixed(2);
+}
 
-        setTimeout(generateQRCodes, 300);
-        updateCryptoAmounts();
+function generateQRCodes(){
+  if(!window.QRCode)return;
+  try{QRCode.toCanvas(document.getElementById('btcQR'),WALLETS.btc,{width:130});}catch(e){}
+  try{QRCode.toCanvas(document.getElementById('ethQR'),WALLETS.eth,{width:130});}catch(e){}
+  try{QRCode.toCanvas(document.getElementById('usdtQR'),WALLETS.usdt,{width:130});}catch(e){}
+}
 
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = '/pages/auth/login.html?redirect=' + encodeURIComponent(window.location.href);
-                return;
-            }
-            currentUser = user;
-            
-            try {
-                const { data: profile, error } = await supabase
-                    .from('user_profiles')
-                    .select('*')
-                    .eq('id', user.uid)
-                    .maybeSingle();
-                
-                if (profile && !error) {
-                    document.getElementById('firstName').value = profile.first_name || '';
-                    document.getElementById('lastName').value = profile.last_name || '';
-                    document.getElementById('email').value = profile.email || user.email || '';
-                    
-                    bankRef = 'THA-' + user.uid.slice(0,8).toUpperCase() + '-' + selectedTier.toUpperCase();
-                    document.getElementById('bankRefDisplay').innerHTML = bankRef + ' <button class="copy-btn" onclick="copyBankRef()">Copy</button>';
-                } else {
-                    document.getElementById('firstName').value = user.displayName?.split(' ')[0] || '';
-                    document.getElementById('lastName').value = user.displayName?.split(' ')[1] || '';
-                    document.getElementById('email').value = user.email || '';
-                }
-            } catch (err) {
-                console.warn('Error fetching profile:', err);
-                document.getElementById('email').value = user.email || '';
-            }
-        });
-    }
+function updateCryptoAmounts(){
+  const p=TIERS[selectedTier].price;
+  document.getElementById('btcAmt').textContent='≈ '+(p/RATES.btc).toFixed(6)+' BTC';
+  document.getElementById('ethAmt').textContent='≈ '+(p/RATES.eth).toFixed(4)+' ETH';
+  document.getElementById('usdtAmt').textContent=p.toFixed(2)+' USDT';
+}
 
-    function updateTierUI() {
-        const tier = TIERS[selectedTier];
-        const icons = { gold: '<i class="fas fa-star"></i>', platinum: '<i class="fas fa-gem"></i>', diamond: '<i class="fas fa-crown"></i>' };
+window.selectCrypto=function(c){
+  selectedCrypto=c;
+  document.querySelectorAll('.crypto-option').forEach(o=>o.classList.remove('active'));
+  document.querySelector('[data-crypto="'+c+'"]').classList.add('active');
+  document.querySelectorAll('.crypto-details').forEach(d=>d.classList.remove('active'));
+  document.getElementById(c+'Details').classList.add('active');
+};
 
-        document.getElementById('bannerIcon').className = `tier-banner-icon ${selectedTier}`;
-        document.getElementById('bannerIcon').innerHTML = icons[selectedTier];
-        document.getElementById('bannerTierName').textContent = tier.name;
-        document.getElementById('bannerTierDesc').textContent = tier.duration + ' — ' + (tier.features[tier.features.length - 2] || tier.features[0]);
-        document.getElementById('bannerPrice').textContent = '$' + tier.price;
+window.copyText=function(t){navigator.clipboard.writeText(t).catch(()=>{});};
+window.copyBankRef=function(){navigator.clipboard.writeText(bankRef).catch(()=>{});};
 
-        document.getElementById('summaryIcon').className = `summary-tier-icon ${selectedTier}`;
-        document.getElementById('summaryIcon').innerHTML = icons[selectedTier];
-        document.getElementById('summaryTierName').textContent = tier.name;
-        document.getElementById('summaryTierDesc').textContent = tier.duration;
-        document.getElementById('summaryTotal').textContent = '$' + tier.price.toFixed(2);
+window.handleSubmit=async function(){
+  if(!currentUser){alert('Please log in first.');return;}
+  if(selectedMethod==='card'){alert('Card payment is being set up. Please use Bank Transfer or Crypto.');return;}
+  if(selectedMethod==='crypto'&&!document.getElementById('txHash').value.trim()){alert('Please enter your transaction hash before submitting.');return;}
 
-        const featuresList = document.getElementById('summaryFeatures');
-        featuresList.innerHTML = tier.features.map(f => `<li><div class="feature-check"><i class="fas fa-check"></i></div><span>${f}</span></li>`).join('');
-    }
+  const btn=document.getElementById('submitBtn');
+  const spin=document.getElementById('submitSpin');
+  btn.disabled=true;spin.style.display='inline-block';
+  document.getElementById('loadingOverlay').classList.add('show');
 
-    function activatePaymentTab(method) {
-        document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.payment-content').forEach(c => c.classList.remove('active'));
-        
-        const tab = document.getElementById('tab-' + method);
-        const content = document.getElementById('content-' + method);
-        
-        if (tab && content) {
-            tab.classList.add('active');
-            content.classList.add('active');
-        } else {
-            document.getElementById('tab-bank').classList.add('active');
-            document.getElementById('content-bank').classList.add('active');
-            method = 'bank';
-        }
-        
-        const texts = { card: 'Card Payment (Coming Soon)', bank: 'I Have Completed the Bank Transfer', crypto: 'I Have Sent the Crypto Payment' };
-        document.getElementById('submitBtnText').textContent = texts[method] || 'I Have Completed the Payment';
-    }
-
-    function generateQRCodes() {
-        if (!window.QRCode) {
-            console.warn('QRCode library not loaded yet');
-            return;
-        }
-        try { QRCode.toCanvas(document.getElementById('btcQR'), WALLETS.btc, { width: 140 }); } catch(e) { console.warn('BTC QR error:', e); }
-        try { QRCode.toCanvas(document.getElementById('ethQR'), WALLETS.eth, { width: 140 }); } catch(e) { console.warn('ETH QR error:', e); }
-        try { QRCode.toCanvas(document.getElementById('usdtQR'), WALLETS.usdt, { width: 140 }); } catch(e) { console.warn('USDT QR error:', e); }
-    }
-
-    function updateCryptoAmounts() {
-        const price = TIERS[selectedTier].price;
-        document.getElementById('btcAmt').textContent = '≈ ' + (price / RATES.btc).toFixed(6) + ' BTC';
-        document.getElementById('ethAmt').textContent = '≈ ' + (price / RATES.eth).toFixed(4) + ' ETH';
-        document.getElementById('usdtAmt').textContent = price.toFixed(2) + ' USDT';
-    }
-
-    window.selectCrypto = function(crypto) {
-        selectedCrypto = crypto;
-        document.querySelectorAll('.crypto-option').forEach(o => o.classList.remove('active'));
-        document.querySelector('[data-crypto="' + crypto + '"]').classList.add('active');
-        document.querySelectorAll('.crypto-payment-details').forEach(d => d.classList.remove('active'));
-        const details = document.getElementById(crypto + 'Details');
-        if (details) details.classList.add('active');
+  try {
+    const tier=TIERS[selectedTier];
+    const paymentData={
+      user_id:currentUser.uid,
+      tier:selectedTier,
+      amount:tier.price,
+      currency:'USD',
+      payment_method:selectedMethod==='bank'?'bank_transfer':'crypto',
+      status:'pending',
+      customer_name:document.getElementById('firstName').value+' '+document.getElementById('lastName').value,
+      customer_email:document.getElementById('email').value,
+      bank_reference:selectedMethod==='bank'?bankRef:null,
+      transfer_notes:selectedMethod==='bank'?(document.getElementById('bankNotes').value||null):null,
+      crypto_type:selectedMethod==='crypto'?selectedCrypto:null,
+      transaction_hash:selectedMethod==='crypto'?document.getElementById('txHash').value.trim():null,
+      wallet_address:selectedMethod==='crypto'?WALLETS[selectedCrypto]:null,
+      submitted_at:serverTimestamp()
     };
 
-    window.copyText = async function(text) {
-        try {
-            await navigator.clipboard.writeText(text);
-            alert('Copied to clipboard!');
-        } catch(e) {
-            console.warn('Copy failed:', e);
-        }
-    };
+    await addDoc(collection(db,'payments'), paymentData);
+    await updateDoc(doc(db,'user_profiles',currentUser.uid),{
+      subscription_tier:selectedTier,
+      subscription_status:'pending'
+    });
 
-    window.copyBankRef = async function() {
-        if (bankRef) {
-            await navigator.clipboard.writeText(bankRef);
-            alert('Reference code copied!');
-        }
-    };
-
-    window.handleSubmit = async function() {
-        if (!currentUser) {
-            alert('Please log in first.');
-            window.location.href = '/pages/auth/login.html';
-            return;
-        }
-        
-        const firstName = document.getElementById('firstName').value.trim();
-        const lastName = document.getElementById('lastName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        
-        if (!firstName || !lastName || !email) {
-            alert('Please fill in all your details before submitting.');
-            return;
-        }
-        
-        if (selectedMethod === 'card') {
-            alert('Card payment is being set up. Please use Bank Transfer or Crypto.');
-            return;
-        }
-        
-        if (selectedMethod === 'crypto') {
-            const tx = document.getElementById('txHash').value.trim();
-            if (!tx) {
-                alert('Please enter your transaction hash before submitting.');
-                return;
-            }
-        }
-
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.classList.add('loading');
-        document.getElementById('loadingMsg').textContent = 'Submitting your payment...';
-        document.getElementById('loadingOverlay').classList.add('show');
-
-        try {
-            const tier = TIERS[selectedTier];
-            const paymentData = {
-                user_id: currentUser.uid,
-                tier: selectedTier,
-                amount: tier.price,
-                currency: 'USD',
-                payment_method: selectedMethod === 'bank' ? 'bank_transfer' : 'crypto',
-                status: 'pending',
-                customer_name: firstName + ' ' + lastName,
-                customer_email: email,
-                bank_reference: selectedMethod === 'bank' ? bankRef : null,
-                transfer_notes: selectedMethod === 'bank' ? (document.getElementById('bankNotes').value || null) : null,
-                crypto_type: selectedMethod === 'crypto' ? selectedCrypto : null,
-                transaction_hash: selectedMethod === 'crypto' ? document.getElementById('txHash').value.trim() : null,
-                wallet_address: selectedMethod === 'crypto' ? WALLETS[selectedCrypto] : null,
-                created_at: new Date().toISOString()
-            };
-
-            const { error } = await supabase.from('payments').insert([paymentData]);
-            if (error) throw error;
-
-            await supabase.from('user_profiles')
-                .update({ subscription_tier: selectedTier, subscription_status: 'pending' })
-                .eq('id', currentUser.uid);
-
-            document.getElementById('loadingOverlay').classList.remove('show');
-            document.getElementById('mainContainer').style.display = 'none';
-            document.getElementById('tierBanner').style.display = 'none';
-            document.getElementById('successScreen').classList.add('show');
-
-        } catch (err) {
-            document.getElementById('loadingOverlay').classList.remove('show');
-            btn.disabled = false;
-            btn.classList.remove('loading');
-            alert('Error submitting payment: ' + err.message);
-        }
-    };
-
-    init();
+    document.getElementById('loadingOverlay').classList.remove('show');
+    document.getElementById('mainContainer').style.display='none';
+    document.getElementById('tierBanner').style.display='none';
+    document.getElementById('successScreen').classList.add('show');
+  } catch(err){
+    document.getElementById('loadingOverlay').classList.remove('show');
+    btn.disabled=false;spin.style.display='none';
+    alert('Error: '+err.message);
+  }
+};
 </script>
 </body>
 </html>
