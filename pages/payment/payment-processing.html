@@ -54,7 +54,6 @@
         .header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ffffff, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .header p { color: var(--text-secondary); }
 
-        /* Tier Banner - shows selected tier, locked */
         .tier-banner {
             background: var(--gradient-card);
             border-radius: 16px;
@@ -64,6 +63,7 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
+            flex-wrap: wrap;
         }
         .tier-banner-icon {
             width: 56px; height: 56px; border-radius: 50%;
@@ -75,7 +75,7 @@
         .tier-banner-icon.diamond { background: var(--gradient-diamond); }
         .tier-banner-info h3 { font-size: 1.3rem; font-weight: 700; }
         .tier-banner-info p { color: var(--text-secondary); font-size: 0.9rem; }
-        .tier-banner-price { margin-left: auto; font-size: 2rem; font-weight: 800; color: var(--primary-blue-light); }
+        .tier-banner-price { font-size: 2rem; font-weight: 800; color: var(--primary-blue-light); }
         .locked-badge {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
@@ -83,7 +83,9 @@
             padding: 0.3rem 0.75rem;
             border-radius: 20px;
             font-size: 0.75rem;
-            display: flex; align-items: center; gap: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
         .payment-container { display: grid; grid-template-columns: 1fr 360px; gap: 2.5rem; align-items: start; }
@@ -98,7 +100,6 @@
         .form-section { margin-bottom: 2rem; }
         .section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
 
-        /* Payment Method Tabs - locked to one method */
         .payment-tabs {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
             margin-bottom: 2rem;
@@ -107,13 +108,17 @@
             background: rgba(255,255,255,0.05);
             border: 2px solid rgba(255,255,255,0.1);
             border-radius: 12px; padding: 1rem; text-align: center;
-            cursor: pointer; transition: all 0.3s; opacity: 0.4; pointer-events: none;
+            cursor: pointer; transition: all 0.3s;
         }
         .payment-tab.active {
             border-color: var(--primary-blue-light);
             background: rgba(59,130,246,0.1);
-            opacity: 1; pointer-events: auto;
             box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .payment-tab.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
         }
         .payment-tab-icon { font-size: 1.5rem; margin-bottom: 0.35rem; color: var(--primary-blue-light); }
         .payment-tab-name { font-weight: 600; font-size: 0.9rem; }
@@ -133,9 +138,12 @@
         }
         .form-input:focus { outline: none; border-color: var(--primary-blue-light); background: rgba(59,130,246,0.08); }
         .form-input::placeholder { color: var(--text-muted); }
+        .form-input:read-only {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-        /* Bank Details */
         .bank-details {
             background: rgba(14,165,233,0.08);
             border: 1px solid rgba(14,165,233,0.3);
@@ -144,10 +152,12 @@
         .bank-detail-item {
             display: flex; justify-content: space-between; align-items: center;
             padding: 0.6rem 0; border-bottom: 1px solid rgba(14,165,233,0.15);
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
         .bank-detail-item:last-child { border-bottom: none; }
         .bank-detail-label { font-weight: 600; color: var(--info); font-size: 0.9rem; }
-        .bank-detail-value { font-family: 'Courier New', monospace; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+        .bank-detail-value { font-family: 'Courier New', monospace; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
         .copy-btn {
             background: var(--info); color: white; border: none;
             padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;
@@ -155,7 +165,6 @@
         }
         .copy-btn:hover { background: var(--primary-blue-light); }
 
-        /* Crypto */
         .crypto-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1rem 0; }
         .crypto-option {
             background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1);
@@ -182,14 +191,12 @@
         }
         .crypto-amount { font-size: 1rem; font-weight: 600; color: var(--warning); margin-top: 0.5rem; }
 
-        /* Card placeholder */
         .card-placeholder {
             background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.3);
             border-radius: 12px; padding: 2rem; text-align: center; margin: 1rem 0;
         }
         .card-placeholder i { font-size: 2.5rem; color: var(--primary-blue-light); margin-bottom: 1rem; display: block; }
 
-        /* Alert */
         .alert { padding: 1rem 1.25rem; border-radius: 10px; margin: 0.75rem 0; }
         .alert.info { background: var(--info-light); border: 1px solid var(--info); color: var(--info); }
         .alert.warning { background: var(--warning-light); border: 1px solid var(--warning); color: var(--warning); }
@@ -198,20 +205,18 @@
         .alert h4 { margin-bottom: 0.4rem; font-size: 0.95rem; }
         .alert ul { margin: 0.4rem 0; padding-left: 1.4rem; font-size: 0.85rem; }
 
-        /* Submit Button */
         .pay-button {
             width: 100%; padding: 1.1rem 2rem;
             background: var(--gradient-primary); color: white; border: none;
             border-radius: 12px; font-size: 1rem; font-weight: 600;
             cursor: pointer; transition: all 0.3s; margin-top: 1.5rem;
         }
-        .pay-button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59,130,246,0.4); }
+        .pay-button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59,130,246,0.4); }
         .pay-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
         .pay-button .spin { display: none; animation: spin 1s linear infinite; margin-right: 0.5rem; }
         .pay-button.loading .spin { display: inline-block; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Order Summary */
         .order-summary {
             background: var(--gradient-card);
             border-radius: 24px; padding: 2rem;
@@ -228,7 +233,6 @@
         .feature-check { width: 18px; height: 18px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.6rem; flex-shrink: 0; }
         .price-total { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 1.2rem; font-weight: 700; }
 
-        /* Success Screen */
         .success-screen {
             display: none; background: var(--gradient-card);
             border: 1px solid var(--success); border-radius: 24px;
@@ -241,7 +245,6 @@
         .success-btn { background: var(--gradient-primary); color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 1rem; }
         .success-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
 
-        /* Loading */
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.92); display: none; align-items: center; justify-content: center; z-index: 9999; }
         .loading-overlay.show { display: flex; }
         .loading-content { text-align: center; }
@@ -255,9 +258,10 @@
         }
         @media (max-width: 600px) {
             .container { padding: 1rem; }
-            .tier-banner { flex-wrap: wrap; }
+            .tier-banner { flex-direction: column; text-align: center; }
             .tier-banner-price { margin-left: 0; }
             .form-row { grid-template-columns: 1fr; }
+            .bank-detail-item { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -280,7 +284,6 @@
         <p id="pageSubtitle">Review your selected plan and choose a payment method</p>
     </div>
 
-    <!-- Success Screen -->
     <div class="success-screen" id="successScreen">
         <i class="fas fa-check-circle"></i>
         <h2 id="successTitle">Payment Submitted!</h2>
@@ -290,7 +293,6 @@
         </button>
     </div>
 
-    <!-- Tier Banner (locked) -->
     <div class="tier-banner" id="tierBanner">
         <div class="tier-banner-icon gold" id="bannerIcon"><i class="fas fa-star"></i></div>
         <div class="tier-banner-info">
@@ -303,37 +305,33 @@
         </div>
     </div>
 
-    <!-- Main Payment Area -->
     <div class="payment-container" id="mainContainer">
         <div class="payment-form">
-
-            <!-- Customer Info (pre-filled from auth) -->
             <div class="form-section">
                 <h3 class="section-title"><i class="fas fa-user"></i> Your Details</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">First Name</label>
-                        <input type="text" id="firstName" class="form-input" readonly>
+                        <input type="text" id="firstName" class="form-input" placeholder="Enter your first name">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Last Name</label>
-                        <input type="text" id="lastName" class="form-input" readonly>
+                        <input type="text" id="lastName" class="form-input" placeholder="Enter your last name">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
-                    <input type="email" id="email" class="form-input" readonly>
+                    <input type="email" id="email" class="form-input" placeholder="Enter your email address">
                 </div>
             </div>
 
-            <!-- Payment Method Tabs (locked to URL param, others dimmed) -->
             <div class="form-section">
                 <h3 class="section-title"><i class="fas fa-credit-card"></i> Payment Method</h3>
                 <div class="payment-tabs">
-                    <div class="payment-tab" id="tab-card" data-method="card">
+                    <div class="payment-tab disabled" id="tab-card" data-method="card">
                         <div class="payment-tab-icon"><i class="fas fa-credit-card"></i></div>
                         <div class="payment-tab-name">Card</div>
-                        <div class="payment-tab-desc">Instant</div>
+                        <div class="payment-tab-desc">Coming Soon</div>
                     </div>
                     <div class="payment-tab" id="tab-bank" data-method="bank">
                         <div class="payment-tab-icon"><i class="fas fa-university"></i></div>
@@ -347,16 +345,14 @@
                     </div>
                 </div>
 
-                <!-- CARD PAYMENT -->
                 <div id="content-card" class="payment-content">
                     <div class="card-placeholder">
                         <i class="fas fa-credit-card"></i>
-                        <h4 style="margin-bottom:0.5rem;">Card Payment</h4>
+                        <h4 style="margin-bottom:0.5rem;">Card Payment Coming Soon</h4>
                         <p style="color:var(--text-secondary);font-size:0.9rem;">Card payments are currently being set up. Please use Bank Transfer or Crypto for now, or contact support.</p>
                     </div>
                 </div>
 
-                <!-- BANK TRANSFER -->
                 <div id="content-bank" class="payment-content">
                     <div class="alert info">
                         <h4><i class="fas fa-info-circle"></i> Bank Transfer Instructions</h4>
@@ -377,7 +373,7 @@
                         </div>
                         <div class="bank-detail-item">
                             <span class="bank-detail-label">Reference</span>
-                            <span class="bank-detail-value" id="bankRefDisplay">THA-LOADING <button class="copy-btn" id="bankRefCopyBtn" onclick="copyBankRef()">Copy</button></span>
+                            <span class="bank-detail-value" id="bankRefDisplay">Loading...</span>
                         </div>
                         <div class="bank-detail-item">
                             <span class="bank-detail-label">Amount</span>
@@ -398,7 +394,6 @@
                     </div>
                 </div>
 
-                <!-- CRYPTO PAYMENT -->
                 <div id="content-crypto" class="payment-content">
                     <div class="alert info">
                         <h4><i class="fas fa-info-circle"></i> Crypto Payment Instructions</h4>
@@ -468,7 +463,6 @@
                 </div>
             </div>
 
-            <!-- Submit Button -->
             <button id="submitBtn" class="pay-button" onclick="handleSubmit()">
                 <i class="fas fa-circle-notch spin"></i>
                 <span id="submitBtnText">I Have Completed the Payment</span>
@@ -480,7 +474,6 @@
             </p>
         </div>
 
-        <!-- Order Summary -->
         <div class="order-summary">
             <div class="summary-tier-header">
                 <div class="summary-tier-icon gold" id="summaryIcon"><i class="fas fa-star"></i></div>
@@ -528,7 +521,6 @@
     let app, auth, supabase, currentUser, selectedTier, selectedMethod, selectedCrypto = 'btc', bankRef;
 
     async function init() {
-        // Read URL params
         const params = new URLSearchParams(window.location.search);
         selectedTier = params.get('tier') || 'gold';
         selectedMethod = params.get('method') || 'bank';
@@ -536,40 +528,49 @@
         if (!TIERS[selectedTier]) selectedTier = 'gold';
         if (!['card','bank','crypto'].includes(selectedMethod)) selectedMethod = 'bank';
 
-        // Init Firebase & Supabase
         app = initializeApp(FIREBASE_CONFIG);
         auth = getAuth(app);
         supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Update UI with tier
         updateTierUI();
-        // Lock to selected payment method
         activatePaymentTab(selectedMethod);
-        // Generate bank reference placeholder
+        
         bankRef = 'THA-' + Date.now().toString().slice(-8);
-        document.getElementById('bankRefDisplay').innerHTML = bankRef + ' <button class="copy-btn" id="bankRefCopyBtn" onclick="copyBankRef()">Copy</button>';
+        document.getElementById('bankRefDisplay').innerHTML = bankRef + ' <button class="copy-btn" onclick="copyBankRef()">Copy</button>';
         document.getElementById('bankAmountDisplay').textContent = '$' + TIERS[selectedTier].price.toFixed(2);
 
-        // Generate QR codes
         setTimeout(generateQRCodes, 300);
         updateCryptoAmounts();
 
-        // Auth check
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = '/pages/auth/login.html?redirect=' + encodeURIComponent(window.location.href);
                 return;
             }
             currentUser = user;
-            // Prefill form
-            const { data: profile } = await supabase.from('user_profiles').select('*').eq('id', user.uid).single();
-            if (profile) {
-                document.getElementById('firstName').value = profile.first_name || '';
-                document.getElementById('lastName').value = profile.last_name || '';
-                document.getElementById('email').value = profile.email || user.email || '';
-                // Now update bank ref with real user ID
-                bankRef = 'THA-' + user.uid.slice(0,8).toUpperCase() + '-' + selectedTier.toUpperCase();
-                document.getElementById('bankRefDisplay').innerHTML = bankRef + ' <button class="copy-btn" onclick="window.copyBankRef()">Copy</button>';
+            
+            try {
+                const { data: profile, error } = await supabase
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('id', user.uid)
+                    .maybeSingle();
+                
+                if (profile && !error) {
+                    document.getElementById('firstName').value = profile.first_name || '';
+                    document.getElementById('lastName').value = profile.last_name || '';
+                    document.getElementById('email').value = profile.email || user.email || '';
+                    
+                    bankRef = 'THA-' + user.uid.slice(0,8).toUpperCase() + '-' + selectedTier.toUpperCase();
+                    document.getElementById('bankRefDisplay').innerHTML = bankRef + ' <button class="copy-btn" onclick="copyBankRef()">Copy</button>';
+                } else {
+                    document.getElementById('firstName').value = user.displayName?.split(' ')[0] || '';
+                    document.getElementById('lastName').value = user.displayName?.split(' ')[1] || '';
+                    document.getElementById('email').value = user.email || '';
+                }
+            } catch (err) {
+                console.warn('Error fetching profile:', err);
+                document.getElementById('email').value = user.email || '';
             }
         });
     }
@@ -578,14 +579,12 @@
         const tier = TIERS[selectedTier];
         const icons = { gold: '<i class="fas fa-star"></i>', platinum: '<i class="fas fa-gem"></i>', diamond: '<i class="fas fa-crown"></i>' };
 
-        // Banner
         document.getElementById('bannerIcon').className = `tier-banner-icon ${selectedTier}`;
         document.getElementById('bannerIcon').innerHTML = icons[selectedTier];
         document.getElementById('bannerTierName').textContent = tier.name;
-        document.getElementById('bannerTierDesc').textContent = tier.duration + ' — ' + tier.features[tier.features.length - 2];
+        document.getElementById('bannerTierDesc').textContent = tier.duration + ' — ' + (tier.features[tier.features.length - 2] || tier.features[0]);
         document.getElementById('bannerPrice').textContent = '$' + tier.price;
 
-        // Summary
         document.getElementById('summaryIcon').className = `summary-tier-icon ${selectedTier}`;
         document.getElementById('summaryIcon').innerHTML = icons[selectedTier];
         document.getElementById('summaryTierName').textContent = tier.name;
@@ -599,18 +598,31 @@
     function activatePaymentTab(method) {
         document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.payment-content').forEach(c => c.classList.remove('active'));
-        document.getElementById('tab-' + method).classList.add('active');
-        document.getElementById('content-' + method).classList.add('active');
-        // Update button text
+        
+        const tab = document.getElementById('tab-' + method);
+        const content = document.getElementById('content-' + method);
+        
+        if (tab && content) {
+            tab.classList.add('active');
+            content.classList.add('active');
+        } else {
+            document.getElementById('tab-bank').classList.add('active');
+            document.getElementById('content-bank').classList.add('active');
+            method = 'bank';
+        }
+        
         const texts = { card: 'Card Payment (Coming Soon)', bank: 'I Have Completed the Bank Transfer', crypto: 'I Have Sent the Crypto Payment' };
-        document.getElementById('submitBtnText').textContent = texts[method];
+        document.getElementById('submitBtnText').textContent = texts[method] || 'I Have Completed the Payment';
     }
 
     function generateQRCodes() {
-        if (!window.QRCode) return;
-        try { QRCode.toCanvas(document.getElementById('btcQR'), WALLETS.btc, { width: 140 }); } catch(e) {}
-        try { QRCode.toCanvas(document.getElementById('ethQR'), WALLETS.eth, { width: 140 }); } catch(e) {}
-        try { QRCode.toCanvas(document.getElementById('usdtQR'), WALLETS.usdt, { width: 140 }); } catch(e) {}
+        if (!window.QRCode) {
+            console.warn('QRCode library not loaded yet');
+            return;
+        }
+        try { QRCode.toCanvas(document.getElementById('btcQR'), WALLETS.btc, { width: 140 }); } catch(e) { console.warn('BTC QR error:', e); }
+        try { QRCode.toCanvas(document.getElementById('ethQR'), WALLETS.eth, { width: 140 }); } catch(e) { console.warn('ETH QR error:', e); }
+        try { QRCode.toCanvas(document.getElementById('usdtQR'), WALLETS.usdt, { width: 140 }); } catch(e) { console.warn('USDT QR error:', e); }
     }
 
     function updateCryptoAmounts() {
@@ -625,27 +637,58 @@
         document.querySelectorAll('.crypto-option').forEach(o => o.classList.remove('active'));
         document.querySelector('[data-crypto="' + crypto + '"]').classList.add('active');
         document.querySelectorAll('.crypto-payment-details').forEach(d => d.classList.remove('active'));
-        document.getElementById(crypto + 'Details').classList.add('active');
+        const details = document.getElementById(crypto + 'Details');
+        if (details) details.classList.add('active');
     };
 
-    window.copyText = function(text) {
-        navigator.clipboard.writeText(text).catch(() => {});
+    window.copyText = async function(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            alert('Copied to clipboard!');
+        } catch(e) {
+            console.warn('Copy failed:', e);
+        }
     };
 
-    window.copyBankRef = function() {
-        navigator.clipboard.writeText(bankRef).catch(() => {});
+    window.copyBankRef = async function() {
+        if (bankRef) {
+            await navigator.clipboard.writeText(bankRef);
+            alert('Reference code copied!');
+        }
     };
 
     window.handleSubmit = async function() {
-        if (!currentUser) { alert('Please log in first.'); return; }
-        if (selectedMethod === 'card') { alert('Card payment is being set up. Please use Bank Transfer or Crypto.'); return; }
+        if (!currentUser) {
+            alert('Please log in first.');
+            window.location.href = '/pages/auth/login.html';
+            return;
+        }
+        
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        
+        if (!firstName || !lastName || !email) {
+            alert('Please fill in all your details before submitting.');
+            return;
+        }
+        
+        if (selectedMethod === 'card') {
+            alert('Card payment is being set up. Please use Bank Transfer or Crypto.');
+            return;
+        }
+        
         if (selectedMethod === 'crypto') {
             const tx = document.getElementById('txHash').value.trim();
-            if (!tx) { alert('Please enter your transaction hash before submitting.'); return; }
+            if (!tx) {
+                alert('Please enter your transaction hash before submitting.');
+                return;
+            }
         }
 
         const btn = document.getElementById('submitBtn');
-        btn.disabled = true; btn.classList.add('loading');
+        btn.disabled = true;
+        btn.classList.add('loading');
         document.getElementById('loadingMsg').textContent = 'Submitting your payment...';
         document.getElementById('loadingOverlay').classList.add('show');
 
@@ -658,19 +701,19 @@
                 currency: 'USD',
                 payment_method: selectedMethod === 'bank' ? 'bank_transfer' : 'crypto',
                 status: 'pending',
-                customer_name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
-                customer_email: document.getElementById('email').value,
+                customer_name: firstName + ' ' + lastName,
+                customer_email: email,
                 bank_reference: selectedMethod === 'bank' ? bankRef : null,
                 transfer_notes: selectedMethod === 'bank' ? (document.getElementById('bankNotes').value || null) : null,
                 crypto_type: selectedMethod === 'crypto' ? selectedCrypto : null,
                 transaction_hash: selectedMethod === 'crypto' ? document.getElementById('txHash').value.trim() : null,
                 wallet_address: selectedMethod === 'crypto' ? WALLETS[selectedCrypto] : null,
+                created_at: new Date().toISOString()
             };
 
             const { error } = await supabase.from('payments').insert([paymentData]);
             if (error) throw error;
 
-            // Update user subscription_status to 'pending' in user_profiles
             await supabase.from('user_profiles')
                 .update({ subscription_tier: selectedTier, subscription_status: 'pending' })
                 .eq('id', currentUser.uid);
@@ -682,7 +725,8 @@
 
         } catch (err) {
             document.getElementById('loadingOverlay').classList.remove('show');
-            btn.disabled = false; btn.classList.remove('loading');
+            btn.disabled = false;
+            btn.classList.remove('loading');
             alert('Error submitting payment: ' + err.message);
         }
     };
