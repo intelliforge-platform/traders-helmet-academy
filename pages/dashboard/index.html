@@ -32,29 +32,27 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--background-dark); color: var(--text-primary); line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
         
-        /* 📱 Mobile First Container Layout Configuration */
+        /* 📱 Mobile First (Default Base Layout) */
         .dashboard-container { display: flex; flex-direction: column; min-height: 100vh; }
         
         .sidebar { background: var(--background-card); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1rem 1.5rem; width: 100%; }
-        .logo { text-align: center; margin-bottom: 0; padding-bottom: 0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; width: 100%; }
+        .logo { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; width: 100%; }
         .logo-text { text-align: left; }
         .logo h2 { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.3rem; font-weight: 700; }
         
-        /* Mobile-First Navigation Menu Scrollbar Wrapper */
+        /* Horizontal Side-Scroll Menu for Mobile/Tablet Screens */
         .nav-wrapper { width: 100%; overflow-x: auto; margin-top: 1rem; -webkit-overflow-scrolling: touch; }
-        .nav-wrapper::-webkit-scrollbar { display: none; } /* Hide tracking bar for cleaner UI */
+        .nav-wrapper::-webkit-scrollbar { display: none; }
         .nav-menu { display: flex; flex-direction: row; list-style: none; gap: 0.5rem; width: max-content; padding-bottom: 0.25rem; }
-        .nav-item { margin-bottom: 0; }
         .nav-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.85rem; color: var(--text-secondary); text-decoration: none; border-radius: 8px; transition: all 0.3s ease; font-weight: 500; cursor: pointer; white-space: nowrap; font-size: 0.85rem; }
-        .nav-link:hover, .nav-link.active { background: var(--gradient-primary); color: white; transform: none; }
-        .nav-link i { width: auto; text-align: center; }
+        .nav-link:hover, .nav-link.active { background: var(--gradient-primary); color: white; }
         
-        .main-content { padding: 1.25rem; overflow-y: auto; width: 100%; max-width: 100vw; }
+        .main-content { padding: 1.25rem; width: 100%; max-width: 100vw; }
         .dashboard-header { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 2rem; gap: 1.25rem; width: 100%; }
         .dashboard-header h1 { font-size: 1.75rem; font-weight: 700; }
         
         .user-info { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; background: rgba(255,255,255,0.02); padding: 0.75rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-        .user-meta-block { display: flex; align-items: center; gap: 0.75rem; }
+        .user-meta-block { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
         .user-avatar { width: 38px; height: 38px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; flex-shrink: 0; }
         .user-details { min-width: 0; }
         .user-details strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.95rem; }
@@ -62,7 +60,7 @@
         .logout-btn { background: rgba(239,68,68,0.1); border: 1px solid var(--error); color: var(--error); padding: 0.5rem 0.85rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; transition: all 0.3s ease; cursor: pointer; white-space: nowrap; }
         .logout-btn:hover { background: var(--error); color: white; }
         
-        /* Layout Card Grids Defaults */
+        /* Grids Default Layout (Stacks neatly on mobile) */
         .stats-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2rem; }
         .stat-card { background: var(--gradient-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; transition: transform 0.3s ease; }
         .stat-card:hover { transform: translateY(-5px); }
@@ -80,7 +78,6 @@
         .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .card-title { font-size: 1.2rem; font-weight: 600; }
         
-        /* Form Specific Responsive Alignment Updates */
         .form-row-split { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
         
         .subscription-status { background: var(--gradient-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem 1rem; text-align: center; margin-bottom: 2rem; }
@@ -112,7 +109,7 @@
         .activity-content h4 { font-size: 0.9rem; margin-bottom: 0.25rem; word-break: break-word; }
         .activity-content p { font-size: 0.8rem; color: var(--text-muted); word-break: break-word; }
         
-        .quick-actions { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem; }
+        .quick-action-grid-wrapper { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         .quick-action { background: var(--gradient-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.25rem; text-align: center; text-decoration: none; color: var(--text-primary); transition: all 0.3s ease; cursor: pointer; display: block; width: 100%; }
         .quick-action:hover { transform: translateY(-3px); border-color: var(--primary-blue-light); }
         .quick-action i { font-size: 1.75rem; color: var(--primary-blue-light); margin-bottom: 0.75rem; }
@@ -121,7 +118,6 @@
         
         .locked-content { opacity: 0.5; pointer-events: none; position: relative; }
         
-        /* Loading overlay */
         #dashboardLoader {
             position: fixed; inset: 0; background: var(--background-dark);
             display: flex; align-items: center; justify-content: center;
@@ -131,31 +127,37 @@
         .spin { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary-blue-light); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* 🖥️ Desktop Media Queries (Scale Up smoothly for large monitors) */
+        /* 💻 Tablet & Small Desktop Views */
         @media (min-width: 769px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .upgrade-options { grid-template-columns: repeat(2, 1fr); }
+            .quick-action-grid-wrapper { grid-template-columns: repeat(3, 1fr); }
             .btn { width: auto; }
-            .quick-action-grid-wrapper { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
         }
 
+        /* 🖥️ Large Screen Desktop View (Strict Restructuring) */
         @media (min-width: 1025px) {
             .dashboard-container { display: grid; grid-template-columns: 280px 1fr; }
-            .sidebar { width: auto; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); padding: 2rem 1.5rem; height: 100vh; position: sticky; top: 0; }
+            
+            /* Restore structural vertical sidebar layout */
+            .sidebar { width: 280px; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); padding: 2rem 1.5rem; height: 100vh; position: sticky; top: 0; display: block; }
             .logo { display: block; text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
             .logo-text { text-align: center; }
-            .nav-wrapper { overflow-x: visible; margin-top: 0; }
-            .nav-menu { display: flex; flex-direction: column; width: 100%; gap: 0.5rem; padding-bottom: 0; }
-            .nav-link { font-size: 0.95rem; padding: 0.875rem 1rem; }
-            .nav-link:hover, .nav-link.active { transform: translateX(5px); }
-            .nav-link i { width: 20px; }
             
+            /* Revert navigation matrix back to a uniform vertical column */
+            .nav-wrapper { overflow-x: visible; margin-top: 0; width: 100%; }
+            .nav-menu { display: flex; flex-direction: column; width: 100%; gap: 0.5rem; padding-bottom: 0; }
+            .nav-link { font-size: 0.95rem; padding: 0.875rem 1rem; display: flex; width: 100%; }
+            .nav-link:hover, .nav-link.active { transform: translateX(5px); background: var(--gradient-primary); color: white; }
+            .nav-link i { width: 20px; text-align: center; }
+            
+            /* Expand canvas containers */
             .main-content { padding: 2.5rem; max-width: none; }
             .dashboard-header { flex-direction: row; justify-content: space-between; align-items: center; }
             .dashboard-header h1 { font-size: 2.25rem; }
-            .user-info { width: auto; background: none; border: none; padding: 0; gap: 1rem; }
-            .user-avatar { width: 40px; height: 40px; }
-            .user-details span { font-size: 0.9rem; }
+            
+            /* Reset the header panel items horizontally */
+            .user-info { width: auto; background: none; border: none; padding: 0; gap: 1.5rem; }
             
             .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
             .content-grid { grid-template-columns: 2fr 1fr; gap: 2rem; }
@@ -163,7 +165,6 @@
             .form-row-split { grid-template-columns: 1fr 1fr; gap: 1rem; }
             .subscription-status { padding: 2rem; }
             .upgrade-options { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-            .quick-action-grid-wrapper { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
         }
     </style>
 </head>
@@ -231,7 +232,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header"><h3 class="card-title">Quick Actions</h3></div>
-                        <div class="quick-action-grid-wrapper" style="display:grid;gap:0.75rem;margin-top:0;">
+                        <div class="quick-action-grid-wrapper">
                             <a class="quick-action" data-tab="subscription"><i class="fas fa-crown"></i><h4>Upgrade Plan</h4><p>Access premium features</p></a>
                             <a class="quick-action" data-tab="profile"><i class="fas fa-user-edit"></i><h4>Edit Profile</h4><p>Update your information</p></a>
                             <a class="quick-action" data-tab="support"><i class="fas fa-headset"></i><h4>Get Support</h4><p>Contact our team</p></a>
@@ -355,7 +356,6 @@
                     this.currentTab   = 'dashboard';
                 }
 
-                // ── Bootstrap: wait for tha-auth.js then check auth ─────────────
                 start() {
                     if (window.firebaseAuth) {
                         this.checkAuthentication();
@@ -368,12 +368,10 @@
                 async checkAuthentication() {
                     window.firebaseAuth.onAuthStateChange(async (user) => {
                         if (!user) {
-                            console.log('❌ Not authenticated — redirecting to login');
                             window.location.href = '/pages/auth/login.html?error=session_expired';
                             return;
                         }
                         this.currentUser = user;
-                        console.log('✅ Authenticated:', user.email);
                         await this.loadUserProfile();
                         this.updateUI();
                         this.showDashboard();
@@ -410,7 +408,8 @@
 
                 showDashboard() {
                     document.getElementById('dashboardLoader').style.display  = 'none';
-                    document.getElementById('dashboardContent').style.display = 'flex'; // Handled via responsive flex wrapper setup
+                    // Reverts seamlessly to grid/flex mechanics via pure media query controls
+                    document.getElementById('dashboardContent').style.display = ''; 
                 }
 
                 updateUI() {
@@ -505,7 +504,6 @@
                     if (target) target.style.display = 'block';
                     this.currentTab = name;
                     
-                    // Smooth auto scroll to top of window when tab navigation fires on smaller devices
                     if(window.innerWidth <= 1024) {
                         window.scrollTo({top: 0, behavior: 'smooth'});
                     }
