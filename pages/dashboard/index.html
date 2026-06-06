@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Dashboard - Traders Helmet Academy</title>
     <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -31,80 +31,522 @@
             --gradient-card: linear-gradient(135deg, rgba(30,58,138,0.1) 0%, rgba(124,58,237,0.1) 100%);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--background-dark); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
-        .dashboard-container { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
-        .sidebar { background: var(--background-card); border-right: 1px solid rgba(255,255,255,0.1); padding: 2rem 1.5rem; }
-        .logo { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo h2 { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.3rem; font-weight: 700; }
-        .nav-menu { list-style: none; }
-        .nav-item { margin-bottom: 0.5rem; }
-        .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1rem; color: var(--text-secondary); text-decoration: none; border-radius: 8px; transition: all 0.3s ease; font-weight: 500; cursor: pointer; }
-        .nav-link:hover, .nav-link.active { background: var(--gradient-primary); color: white; transform: translateX(5px); }
-        .nav-link i { width: 20px; text-align: center; }
-        .main-content { padding: 2rem; overflow-y: auto; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
-        .dashboard-header h1 { font-size: 2rem; font-weight: 700; }
-        .user-info { display: flex; align-items: center; gap: 1rem; }
-        .user-avatar { width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; }
-        .user-details span { display: block; color: var(--text-muted); font-size: 0.9rem; }
-        .logout-btn { background: rgba(239,68,68,0.1); border: 1px solid var(--error); color: var(--error); padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; cursor: pointer; }
-        .logout-btn:hover { background: var(--error); color: white; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .stat-card { background: var(--gradient-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; transition: transform 0.3s ease; }
-        .stat-card:hover { transform: translateY(-5px); }
-        .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-        .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--background-dark); color: var(--text-primary); line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+        
+        /* Dashboard Container */
+        .dashboard-container { 
+            display: grid; 
+            grid-template-columns: 280px 1fr; 
+            min-height: 100vh; 
+            position: relative;
+        }
+        
+        /* Sidebar */
+        .sidebar { 
+            background: var(--background-card); 
+            border-right: 1px solid rgba(255,255,255,0.1); 
+            padding: 2rem 1.5rem; 
+            transition: transform 0.3s ease;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Mobile Menu Overlay */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            backdrop-filter: blur(4px);
+        }
+        
+        .menu-overlay.active {
+            display: block;
+        }
+        
+        .logo { 
+            text-align: center; 
+            margin-bottom: 2rem; 
+            padding-bottom: 1.5rem; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+        }
+        .logo h2 { 
+            background: var(--gradient-primary); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text; 
+            font-size: 1.3rem; 
+            font-weight: 700; 
+        }
+        .nav-menu { 
+            list-style: none; 
+        }
+        .nav-item { 
+            margin-bottom: 0.5rem; 
+        }
+        .nav-link { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.75rem; 
+            padding: 0.875rem 1rem; 
+            color: var(--text-secondary); 
+            text-decoration: none; 
+            border-radius: 8px; 
+            transition: all 0.3s ease; 
+            font-weight: 500; 
+            cursor: pointer; 
+        }
+        .nav-link:hover, .nav-link.active { 
+            background: var(--gradient-primary); 
+            color: white; 
+            transform: translateX(5px); 
+        }
+        .nav-link i { 
+            width: 20px; 
+            text-align: center; 
+        }
+        
+        /* Main Content */
+        .main-content { 
+            padding: 2rem; 
+            overflow-y: auto; 
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .dashboard-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 2rem; 
+            flex-wrap: wrap; 
+            gap: 1rem; 
+        }
+        .dashboard-header h1 { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            word-break: break-word;
+        }
+        .user-info { 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+            flex-wrap: wrap;
+        }
+        .user-avatar { 
+            width: 40px; 
+            height: 40px; 
+            background: var(--gradient-primary); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-weight: 600; 
+        }
+        .user-details span { 
+            display: block; 
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+        }
+        .logout-btn { 
+            background: rgba(239,68,68,0.1); 
+            border: 1px solid var(--error); 
+            color: var(--error); 
+            padding: 0.5rem 1rem; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-size: 0.9rem; 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+        }
+        .logout-btn:hover { 
+            background: var(--error); 
+            color: white; 
+        }
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); 
+            gap: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+        .stat-card { 
+            background: var(--gradient-card); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 16px; 
+            padding: 1.5rem; 
+            transition: transform 0.3s ease; 
+        }
+        .stat-card:hover { 
+            transform: translateY(-5px); 
+        }
+        .stat-header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 1rem; 
+        }
+        .stat-icon { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.5rem; 
+            color: white; 
+        }
         .stat-icon.blue { background: var(--primary-blue-light); }
         .stat-icon.purple { background: var(--secondary-purple); }
         .stat-icon.gold { background: var(--accent-gold); }
         .stat-icon.green { background: var(--success); }
-        .stat-value { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
-        .stat-label { color: var(--text-secondary); font-size: 0.9rem; }
-        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-        .card { background: var(--gradient-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; }
-        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .card-title { font-size: 1.3rem; font-weight: 600; }
-        .subscription-status { background: var(--gradient-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem; text-align: center; margin-bottom: 2rem; }
-        .subscription-status.active { border-color: var(--success); background: var(--success-light); }
-        .subscription-status.inactive { border-color: var(--warning); background: var(--warning-light); }
-        .status-icon { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; }
+        .stat-value { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            margin-bottom: 0.25rem; 
+            word-break: break-word;
+        }
+        .stat-label { 
+            color: var(--text-secondary); 
+            font-size: 0.9rem; 
+        }
+        .content-grid { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            gap: 2rem; 
+            margin-bottom: 2rem; 
+        }
+        .card { 
+            background: var(--gradient-card); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 16px; 
+            padding: 1.5rem; 
+            overflow-x: auto;
+        }
+        .card-header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 1.5rem; 
+            padding-bottom: 1rem; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .card-title { 
+            font-size: 1.3rem; 
+            font-weight: 600; 
+        }
+        .subscription-status { 
+            background: var(--gradient-card); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 16px; 
+            padding: 2rem; 
+            text-align: center; 
+            margin-bottom: 2rem; 
+        }
+        .subscription-status.active { 
+            border-color: var(--success); 
+            background: var(--success-light); 
+        }
+        .subscription-status.inactive { 
+            border-color: var(--warning); 
+            background: var(--warning-light); 
+        }
+        .status-icon { 
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+            margin: 0 auto 1rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 2rem; 
+            color: white; 
+        }
         .status-icon.active { background: var(--success); }
         .status-icon.inactive { background: var(--warning); }
-        .subscription-tier { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .subscription-tier { 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem; 
+        }
         .subscription-tier.active { color: var(--success); }
         .subscription-tier.inactive { color: var(--warning); }
-        .upgrade-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; margin-top: 1.5rem; }
-        .upgrade-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; }
-        .upgrade-card:hover { border-color: var(--primary-blue-light); transform: translateY(-3px); }
-        .upgrade-card.current { border-color: var(--success); background: var(--success-light); }
-        .upgrade-price { font-size: 1.8rem; font-weight: 700; color: var(--primary-blue-light); margin-bottom: 0.5rem; }
-        .upgrade-name { font-weight: 600; margin-bottom: 1rem; }
-        .btn { padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
-        .btn-primary { background: var(--gradient-primary); color: white; }
-        .btn-secondary { background: rgba(255,255,255,0.1); color: var(--text-primary); border: 1px solid rgba(255,255,255,0.2); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        .activity-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .activity-item:last-child { border-bottom: none; }
-        .activity-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-blue-light); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.9rem; }
-        .activity-content h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
-        .activity-content p { font-size: 0.85rem; color: var(--text-muted); }
-        .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; margin-top: 2rem; }
-        .quick-action { background: var(--gradient-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; text-align: center; text-decoration: none; color: var(--text-primary); transition: all 0.3s ease; cursor: pointer; }
-        .quick-action:hover { transform: translateY(-3px); border-color: var(--primary-blue-light); }
-        .quick-action i { font-size: 2rem; color: var(--primary-blue-light); margin-bottom: 1rem; }
-        .locked-content { opacity: 0.5; pointer-events: none; position: relative; }
+        .upgrade-options { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); 
+            gap: 1rem; 
+            margin-top: 1.5rem; 
+        }
+        .upgrade-card { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.2); 
+            border-radius: 12px; 
+            padding: 1.5rem; 
+            text-align: center; 
+            transition: all 0.3s ease; 
+        }
+        .upgrade-card:hover { 
+            border-color: var(--primary-blue-light); 
+            transform: translateY(-3px); 
+        }
+        .upgrade-card.current { 
+            border-color: var(--success); 
+            background: var(--success-light); 
+        }
+        .upgrade-price { 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            color: var(--primary-blue-light); 
+            margin-bottom: 0.5rem; 
+        }
+        .upgrade-name { 
+            font-weight: 600; 
+            margin-bottom: 1rem; 
+        }
+        .btn { 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: all 0.3s ease; 
+            border: none; 
+            cursor: pointer; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+            font-size: 0.9rem; 
+        }
+        .btn-primary { 
+            background: var(--gradient-primary); 
+            color: white; 
+        }
+        .btn-secondary { 
+            background: rgba(255,255,255,0.1); 
+            color: var(--text-primary); 
+            border: 1px solid rgba(255,255,255,0.2); 
+        }
+        .btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+        }
+        .btn:disabled { 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+            transform: none; 
+        }
+        .activity-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+            padding: 1rem 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+        }
+        .activity-item:last-child { 
+            border-bottom: none; 
+        }
+        .activity-icon { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            background: var(--primary-blue-light); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 0.9rem; 
+        }
+        .activity-content h4 { 
+            font-size: 0.95rem; 
+            margin-bottom: 0.25rem; 
+        }
+        .activity-content p { 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+        }
+        .quick-actions { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); 
+            gap: 1rem; 
+            margin-top: 2rem; 
+        }
+        .quick-action { 
+            background: var(--gradient-card); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 12px; 
+            padding: 1.5rem; 
+            text-align: center; 
+            text-decoration: none; 
+            color: var(--text-primary); 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+        }
+        .quick-action:hover { 
+            transform: translateY(-3px); 
+            border-color: var(--primary-blue-light); 
+        }
+        .quick-action i { 
+            font-size: 2rem; 
+            color: var(--primary-blue-light); 
+            margin-bottom: 1rem; 
+        }
+        .locked-content { 
+            opacity: 0.5; 
+            pointer-events: none; 
+            position: relative; 
+        }
+        
         /* Loading overlay */
         #dashboardLoader {
-            position: fixed; inset: 0; background: var(--background-dark);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 9999; flex-direction: column; gap: 1rem;
+            position: fixed; 
+            inset: 0; 
+            background: var(--background-dark);
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            z-index: 9999; 
+            flex-direction: column; 
+            gap: 1rem;
         }
         #dashboardLoader p { color: var(--text-secondary); }
-        .spin { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary-blue-light); border-radius: 50%; animation: spin 1s linear infinite; }
+        .spin { 
+            width: 40px; 
+            height: 40px; 
+            border: 3px solid rgba(255,255,255,0.1); 
+            border-top-color: var(--primary-blue-light); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 1024px) { .dashboard-container { grid-template-columns: 1fr; } .sidebar { display: none; } .content-grid { grid-template-columns: 1fr; } }
-        @media (max-width: 768px) { .main-content { padding: 1rem; } .dashboard-header { flex-direction: column; align-items: flex-start; } .stats-grid { grid-template-columns: 1fr; } }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) { 
+            .content-grid { 
+                grid-template-columns: 1fr; 
+            }
+        }
+        
+        @media (max-width: 768px) { 
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .dashboard-container { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .sidebar { 
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100vh;
+                z-index: 1000;
+                transform: translateX(-100%);
+                overflow-y: auto;
+            }
+            
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            .main-content { 
+                padding: 1rem;
+                padding-top: 5rem;
+            }
+            
+            .dashboard-header { 
+                flex-direction: column; 
+                align-items: flex-start; 
+            }
+            
+            .stats-grid { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .dashboard-header h1 { 
+                font-size: 1.5rem; 
+            }
+            
+            .upgrade-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .user-details {
+                flex: 1;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0.75rem;
+                padding-top: 5rem;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .subscription-tier {
+                font-size: 1.2rem;
+            }
+            
+            .upgrade-price {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .activity-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -115,9 +557,17 @@
         <p>Loading your dashboard...</p>
     </div>
 
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
     <div class="dashboard-container" id="dashboardContent" style="display:none;">
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <div class="logo">
                 <h2>Traders Helmet</h2>
                 <p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.25rem;">Academy</p>
@@ -307,6 +757,40 @@
                         window.addEventListener('tha-auth-ready', () => this.checkAuthentication(), { once: true });
                     }
                     this.attachEventListeners();
+                    this.initMobileMenu();
+                }
+
+                initMobileMenu() {
+                    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                    const sidebar = document.getElementById('sidebar');
+                    const menuOverlay = document.getElementById('menuOverlay');
+                    
+                    if (mobileMenuBtn && sidebar && menuOverlay) {
+                        // Open menu
+                        mobileMenuBtn.addEventListener('click', () => {
+                            sidebar.classList.add('mobile-open');
+                            menuOverlay.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+                        
+                        // Close menu when clicking overlay
+                        menuOverlay.addEventListener('click', () => {
+                            sidebar.classList.remove('mobile-open');
+                            menuOverlay.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                        
+                        // Close menu when clicking a nav link
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.addEventListener('click', () => {
+                                if (window.innerWidth <= 768) {
+                                    sidebar.classList.remove('mobile-open');
+                                    menuOverlay.classList.remove('active');
+                                    document.body.style.overflow = '';
+                                }
+                            });
+                        });
+                    }
                 }
 
                 async checkAuthentication() {
@@ -336,171 +820,4 @@
                             const [first, ...rest] = (this.currentUser.displayName || '').split(' ');
                             this.userProfile = {
                                 first_name:          first || 'User',
-                                last_name:           rest.join(' ') || '',
-                                email:               this.currentUser.email,
-                                subscription_tier:   'none',
-                                subscription_status: 'inactive',
-                                created_at:          new Date().toISOString()
-                            };
-                            // Persist it
-                            await window.supabase.from('user_profiles').insert({
-                                id: this.currentUser.uid, ...this.userProfile
-                            });
-                        }
-                    } catch (err) {
-                        console.error('loadUserProfile error:', err);
-                        this.userProfile = {
-                            first_name: 'User', last_name: '', email: this.currentUser.email,
-                            subscription_tier: 'none', subscription_status: 'inactive'
-                        };
-                    }
-                }
-
-                showDashboard() {
-                    document.getElementById('dashboardLoader').style.display  = 'none';
-                    document.getElementById('dashboardContent').style.display = 'grid';
-                }
-
-                updateUI() {
-                    const p = this.userProfile;
-                    const displayName = `${p.first_name} ${p.last_name}`.trim() || 'User';
-
-                    document.getElementById('userName').textContent     = displayName;
-                    document.getElementById('userEmail').textContent    = p.email;
-                    document.getElementById('userAvatar').textContent   = (p.first_name?.[0] || 'U').toUpperCase();
-                    document.getElementById('welcomeMessage').textContent = `Welcome back, ${p.first_name}!`;
-                    document.getElementById('memberSince').textContent  = this.formatDate(p.created_at);
-                    document.getElementById('currentTier').textContent  = this.formatTier(p.subscription_tier);
-
-                    this.updateSubscriptionStatus();
-                    this.updateContentAccess();
-                    this.populateProfileForm();
-                }
-
-                updateSubscriptionStatus() {
-                    const p        = this.userProfile;
-                    const isActive = p.subscription_status === 'active' && p.subscription_tier !== 'none';
-                    const el       = document.getElementById('subscriptionStatus');
-                    const icon     = el.querySelector('.status-icon');
-                    const text     = el.querySelector('.subscription-tier');
-                    const desc     = el.querySelector('p');
-
-                    if (isActive) {
-                        el.className   = 'subscription-status active';
-                        icon.className = 'status-icon active';
-                        icon.innerHTML = '<i class="fas fa-crown"></i>';
-                        text.className = 'subscription-tier active';
-                        text.textContent = `${this.formatTier(p.subscription_tier)} Member`;
-                        desc.textContent = 'Your subscription is active. All features are unlocked.';
-                        // Mark current plan button
-                        document.querySelectorAll('.upgrade-card').forEach(card => {
-                            if (card.dataset.tier === p.subscription_tier) {
-                                card.classList.add('current');
-                                const btn = card.querySelector('button');
-                                btn.textContent = 'Current Plan';
-                                btn.disabled = true;
-                            }
-                        });
-                    } else {
-                        el.className   = 'subscription-status inactive';
-                        icon.className = 'status-icon inactive';
-                        icon.innerHTML = '<i class="fas fa-clock"></i>';
-                        text.className = 'subscription-tier inactive';
-                        text.textContent = 'No Active Subscription';
-                        desc.textContent = 'Unlock premium trading features with a subscription.';
-                    }
-                }
-
-                updateContentAccess() {
-                    const p          = this.userProfile;
-                    const subscribed = p.subscription_status === 'active' && p.subscription_tier !== 'none';
-
-                    document.getElementById('academyLock').style.display  = subscribed ? 'none' : 'inline';
-                    document.getElementById('signalsLock').style.display   = subscribed ? 'none' : 'inline';
-                    document.getElementById('academyContent').classList.toggle('locked-content', !subscribed);
-                    document.getElementById('signalsContent').classList.toggle('locked-content', !subscribed);
-                }
-
-                populateProfileForm() {
-                    const p = this.userProfile;
-                    document.getElementById('profileFirstName').value = p.first_name || '';
-                    document.getElementById('profileLastName').value  = p.last_name  || '';
-                    document.getElementById('profileEmail').value     = p.email      || '';
-                    document.getElementById('profilePhone').value     = p.phone      || '';
-                }
-
-                attachEventListeners() {
-                    // Sidebar nav
-                    document.querySelectorAll('.nav-link[data-tab], .quick-action[data-tab]').forEach(link => {
-                        link.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            this.switchTab(link.dataset.tab);
-                        });
-                    });
-
-                    // Logout
-                    document.getElementById('logoutBtn').addEventListener('click', () => {
-                        window.firebaseAuth.signOut();
-                    });
-
-                    // Profile form
-                    document.getElementById('profileForm').addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.handleProfileUpdate();
-                    });
-                }
-
-                switchTab(name) {
-                    document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.tab === name));
-                    document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-                    const target = document.getElementById(name + 'Tab');
-                    if (target) target.style.display = 'block';
-                    this.currentTab = name;
-                }
-
-                async handleProfileUpdate() {
-                    try {
-                        const updates = {
-                            first_name: document.getElementById('profileFirstName').value,
-                            last_name:  document.getElementById('profileLastName').value,
-                            phone:      document.getElementById('profilePhone').value
-                        };
-                        await window.supabase.from('user_profiles').update(updates).eq('id', this.currentUser.uid);
-                        Object.assign(this.userProfile, updates);
-                        this.updateUI();
-                        alert('Profile updated successfully!');
-                    } catch (err) {
-                        console.error('Profile update error:', err);
-                        alert('Failed to update profile. Please try again.');
-                    }
-                }
-
-                formatDate(str) {
-                    if (!str) return '--';
-                    return new Date(str).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
-                }
-
-                formatTier(tier) {
-                    if (!tier || tier === 'none') return 'None';
-                    return tier.charAt(0).toUpperCase() + tier.slice(1);
-                }
-            }
-
-            // Plan selection → payment page
-            window.selectPlan = function (tier) {
-                window.location.href = `/pages/payment/payment-processing.html?tier=${tier}`;
-            };
-
-            const dashboard = new UserDashboard();
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => dashboard.start());
-            } else {
-                dashboard.start();
-            }
-
-        })();
-    </script>
-</body>
-</html>
-
+                                last_name:           rest.join
