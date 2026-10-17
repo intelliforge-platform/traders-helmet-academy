@@ -1,0 +1,7 @@
+{
+  "name": "safeark-ai-landing",
+  "version": "1.1.0",
+  "private": true,
+  "description": "SafeArk AI landing page with Vercel Functions for THAgent and silent lead capture",
+  "engines": { "node": ">=18.17" }
+}
