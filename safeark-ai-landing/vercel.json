@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/safearkai", "destination": "/index.html" },
+    { "source": "/safearkai/", "destination": "/index.html" }
+  ]
+}
